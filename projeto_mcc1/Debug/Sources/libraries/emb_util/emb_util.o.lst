@@ -1,0 +1,2195 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"emb_util.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.EmbUtil_StrCopy,"ax",%progbits
+  18              		.align	2
+  19              		.global	EmbUtil_StrCopy
+  20              		.code	16
+  21              		.thumb_func
+  23              	EmbUtil_StrCopy:
+  24              	.LFB5:
+  25              		.file 1 "../Sources/libraries/emb_util/emb_util.c"
+   1:../Sources/libraries/emb_util/emb_util.c **** /**
+   2:../Sources/libraries/emb_util/emb_util.c ****  * @file	emb_util.c
+   3:../Sources/libraries/emb_util/emb_util.c ****  * @author  Matheus Leitzke Pinto <matheus.pinto@ifsc.edu.br>
+   4:../Sources/libraries/emb_util/emb_util.c ****  * @version 1.1
+   5:../Sources/libraries/emb_util/emb_util.c ****  * @date    2021
+   6:../Sources/libraries/emb_util/emb_util.c ****  *
+   7:../Sources/libraries/emb_util/emb_util.c ****  * @section LICENSE
+   8:../Sources/libraries/emb_util/emb_util.c ****  *
+   9:../Sources/libraries/emb_util/emb_util.c ****  * This program is free software; you can redistribute it and/or
+  10:../Sources/libraries/emb_util/emb_util.c ****  * modify it under the terms of the GNU General Public License as
+  11:../Sources/libraries/emb_util/emb_util.c ****  * published by the Free Software Foundation; either version 2 of
+  12:../Sources/libraries/emb_util/emb_util.c ****  * the License, or (at your option) any later version.
+  13:../Sources/libraries/emb_util/emb_util.c ****  *
+  14:../Sources/libraries/emb_util/emb_util.c ****  * This program is distributed in the hope that it will be useful, but
+  15:../Sources/libraries/emb_util/emb_util.c ****  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:../Sources/libraries/emb_util/emb_util.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  17:../Sources/libraries/emb_util/emb_util.c ****  * General Public License for more details at
+  18:../Sources/libraries/emb_util/emb_util.c ****  * http://www.gnu.org/copyleft/gpl.html
+  19:../Sources/libraries/emb_util/emb_util.c ****  *
+  20:../Sources/libraries/emb_util/emb_util.c ****  * @section DESCRIPTION
+  21:../Sources/libraries/emb_util/emb_util.c ****  *
+  22:../Sources/libraries/emb_util/emb_util.c ****  * It contains prototype functions and defines useful for embedded applications.
+  23:../Sources/libraries/emb_util/emb_util.c ****  *
+  24:../Sources/libraries/emb_util/emb_util.c ****  */
+  25:../Sources/libraries/emb_util/emb_util.c **** 
+  26:../Sources/libraries/emb_util/emb_util.c **** #include "emb_util.h"
+  27:../Sources/libraries/emb_util/emb_util.c **** #include "string.h"
+  28:../Sources/libraries/emb_util/emb_util.c **** 
+  29:../Sources/libraries/emb_util/emb_util.c **** /*******************************************************************************
+  30:../Sources/libraries/emb_util/emb_util.c ****  * Code
+  31:../Sources/libraries/emb_util/emb_util.c ****  ******************************************************************************/
+  32:../Sources/libraries/emb_util/emb_util.c **** 
+  33:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_STR_COPY_FUNC
+  34:../Sources/libraries/emb_util/emb_util.c **** // Credits: Erich Styger component from Processor Expert https://mcuoneclipse.com/author/mcuoneclip
+  35:../Sources/libraries/emb_util/emb_util.c **** void EmbUtil_StrCopy(uint8_t *dst, size_t dstSize, const char *src)
+  36:../Sources/libraries/emb_util/emb_util.c **** {
+  26              		.loc 1 36 0
+  27              		.cfi_startproc
+  28 0000 80B5     		push	{r7, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 7, -8
+  31              		.cfi_offset 14, -4
+  32 0002 84B0     		sub	sp, sp, #16
+  33              		.cfi_def_cfa_offset 24
+  34 0004 00AF     		add	r7, sp, #0
+  35              		.cfi_def_cfa_register 7
+  36 0006 F860     		str	r0, [r7, #12]
+  37 0008 B960     		str	r1, [r7, #8]
+  38 000a 7A60     		str	r2, [r7, #4]
+  37:../Sources/libraries/emb_util/emb_util.c ****   dstSize--; /* for zero byte */
+  39              		.loc 1 37 0
+  40 000c BB68     		ldr	r3, [r7, #8]
+  41 000e 013B     		sub	r3, r3, #1
+  42 0010 BB60     		str	r3, [r7, #8]
+  38:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *src != '\0') {
+  43              		.loc 1 38 0
+  44 0012 0BE0     		b	.L2
+  45              	.L4:
+  39:../Sources/libraries/emb_util/emb_util.c ****     *dst++ = *src++;
+  46              		.loc 1 39 0
+  47 0014 FB68     		ldr	r3, [r7, #12]
+  48 0016 5A1C     		add	r2, r3, #1
+  49 0018 FA60     		str	r2, [r7, #12]
+  50 001a 7A68     		ldr	r2, [r7, #4]
+  51 001c 511C     		add	r1, r2, #1
+  52 001e 7960     		str	r1, [r7, #4]
+  53 0020 1278     		ldrb	r2, [r2]
+  54 0022 D2B2     		uxtb	r2, r2
+  55 0024 1A70     		strb	r2, [r3]
+  40:../Sources/libraries/emb_util/emb_util.c ****     dstSize--;
+  56              		.loc 1 40 0
+  57 0026 BB68     		ldr	r3, [r7, #8]
+  58 0028 013B     		sub	r3, r3, #1
+  59 002a BB60     		str	r3, [r7, #8]
+  60              	.L2:
+  38:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *src != '\0') {
+  61              		.loc 1 38 0 discriminator 1
+  62 002c BB68     		ldr	r3, [r7, #8]
+  63 002e 002B     		cmp	r3, #0
+  64 0030 03D0     		beq	.L3
+  38:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *src != '\0') {
+  65              		.loc 1 38 0 is_stmt 0 discriminator 2
+  66 0032 7B68     		ldr	r3, [r7, #4]
+  67 0034 1B78     		ldrb	r3, [r3]
+  68 0036 002B     		cmp	r3, #0
+  69 0038 ECD1     		bne	.L4
+  70              	.L3:
+  41:../Sources/libraries/emb_util/emb_util.c ****   }
+  42:../Sources/libraries/emb_util/emb_util.c ****   *dst = '\0';
+  71              		.loc 1 42 0 is_stmt 1
+  72 003a FB68     		ldr	r3, [r7, #12]
+  73 003c 0022     		mov	r2, #0
+  74 003e 1A70     		strb	r2, [r3]
+  43:../Sources/libraries/emb_util/emb_util.c **** }
+  75              		.loc 1 43 0
+  76 0040 BD46     		mov	sp, r7
+  77 0042 04B0     		add	sp, sp, #16
+  78              		@ sp needed
+  79 0044 80BD     		pop	{r7, pc}
+  80              		.cfi_endproc
+  81              	.LFE5:
+  83 0046 C046     		.section	.text.EmbUtil_StrCat,"ax",%progbits
+  84              		.align	2
+  85              		.global	EmbUtil_StrCat
+  86              		.code	16
+  87              		.thumb_func
+  89              	EmbUtil_StrCat:
+  90              	.LFB6:
+  44:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMB_STR_COPY_FUNC */
+  45:../Sources/libraries/emb_util/emb_util.c **** 
+  46:../Sources/libraries/emb_util/emb_util.c **** 
+  47:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_STR_CAT_FUNC
+  48:../Sources/libraries/emb_util/emb_util.c **** // Credits: Erich Styger component from Processor Expert https://mcuoneclipse.com/author/mcuoneclip
+  49:../Sources/libraries/emb_util/emb_util.c **** void EmbUtil_StrCat(uint8_t *dst, size_t dstSize, const unsigned char *src)
+  50:../Sources/libraries/emb_util/emb_util.c **** {
+  91              		.loc 1 50 0
+  92              		.cfi_startproc
+  93 0000 80B5     		push	{r7, lr}
+  94              		.cfi_def_cfa_offset 8
+  95              		.cfi_offset 7, -8
+  96              		.cfi_offset 14, -4
+  97 0002 84B0     		sub	sp, sp, #16
+  98              		.cfi_def_cfa_offset 24
+  99 0004 00AF     		add	r7, sp, #0
+ 100              		.cfi_def_cfa_register 7
+ 101 0006 F860     		str	r0, [r7, #12]
+ 102 0008 B960     		str	r1, [r7, #8]
+ 103 000a 7A60     		str	r2, [r7, #4]
+  51:../Sources/libraries/emb_util/emb_util.c ****   dstSize--; /* for zero byte */
+ 104              		.loc 1 51 0
+ 105 000c BB68     		ldr	r3, [r7, #8]
+ 106 000e 013B     		sub	r3, r3, #1
+ 107 0010 BB60     		str	r3, [r7, #8]
+  52:../Sources/libraries/emb_util/emb_util.c ****   /* point to the end of the source */
+  53:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *dst != '\0')
+ 108              		.loc 1 53 0
+ 109 0012 05E0     		b	.L6
+ 110              	.L8:
+  54:../Sources/libraries/emb_util/emb_util.c ****   {
+  55:../Sources/libraries/emb_util/emb_util.c ****     dst++;
+ 111              		.loc 1 55 0
+ 112 0014 FB68     		ldr	r3, [r7, #12]
+ 113 0016 0133     		add	r3, r3, #1
+ 114 0018 FB60     		str	r3, [r7, #12]
+  56:../Sources/libraries/emb_util/emb_util.c ****     dstSize--;
+ 115              		.loc 1 56 0
+ 116 001a BB68     		ldr	r3, [r7, #8]
+ 117 001c 013B     		sub	r3, r3, #1
+ 118 001e BB60     		str	r3, [r7, #8]
+ 119              	.L6:
+  53:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *dst != '\0')
+ 120              		.loc 1 53 0 discriminator 1
+ 121 0020 BB68     		ldr	r3, [r7, #8]
+ 122 0022 002B     		cmp	r3, #0
+ 123 0024 03D0     		beq	.L7
+  53:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *dst != '\0')
+ 124              		.loc 1 53 0 is_stmt 0 discriminator 2
+ 125 0026 FB68     		ldr	r3, [r7, #12]
+ 126 0028 1B78     		ldrb	r3, [r3]
+ 127 002a 002B     		cmp	r3, #0
+ 128 002c F2D1     		bne	.L8
+ 129              	.L7:
+  57:../Sources/libraries/emb_util/emb_util.c ****   }
+  58:../Sources/libraries/emb_util/emb_util.c ****   /* copy the src in the destination */
+  59:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *src != '\0')
+ 130              		.loc 1 59 0 is_stmt 1
+ 131 002e 0AE0     		b	.L9
+ 132              	.L11:
+  60:../Sources/libraries/emb_util/emb_util.c ****   {
+  61:../Sources/libraries/emb_util/emb_util.c ****     *dst++ = *src++;
+ 133              		.loc 1 61 0
+ 134 0030 FB68     		ldr	r3, [r7, #12]
+ 135 0032 5A1C     		add	r2, r3, #1
+ 136 0034 FA60     		str	r2, [r7, #12]
+ 137 0036 7A68     		ldr	r2, [r7, #4]
+ 138 0038 511C     		add	r1, r2, #1
+ 139 003a 7960     		str	r1, [r7, #4]
+ 140 003c 1278     		ldrb	r2, [r2]
+ 141 003e 1A70     		strb	r2, [r3]
+  62:../Sources/libraries/emb_util/emb_util.c ****     dstSize--;
+ 142              		.loc 1 62 0
+ 143 0040 BB68     		ldr	r3, [r7, #8]
+ 144 0042 013B     		sub	r3, r3, #1
+ 145 0044 BB60     		str	r3, [r7, #8]
+ 146              	.L9:
+  59:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *src != '\0')
+ 147              		.loc 1 59 0 discriminator 1
+ 148 0046 BB68     		ldr	r3, [r7, #8]
+ 149 0048 002B     		cmp	r3, #0
+ 150 004a 03D0     		beq	.L10
+  59:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *src != '\0')
+ 151              		.loc 1 59 0 is_stmt 0 discriminator 2
+ 152 004c 7B68     		ldr	r3, [r7, #4]
+ 153 004e 1B78     		ldrb	r3, [r3]
+ 154 0050 002B     		cmp	r3, #0
+ 155 0052 EDD1     		bne	.L11
+ 156              	.L10:
+  63:../Sources/libraries/emb_util/emb_util.c ****   }
+  64:../Sources/libraries/emb_util/emb_util.c ****   /* terminate the string */
+  65:../Sources/libraries/emb_util/emb_util.c ****   *dst = '\0';
+ 157              		.loc 1 65 0 is_stmt 1
+ 158 0054 FB68     		ldr	r3, [r7, #12]
+ 159 0056 0022     		mov	r2, #0
+ 160 0058 1A70     		strb	r2, [r3]
+  66:../Sources/libraries/emb_util/emb_util.c **** }
+ 161              		.loc 1 66 0
+ 162 005a BD46     		mov	sp, r7
+ 163 005c 04B0     		add	sp, sp, #16
+ 164              		@ sp needed
+ 165 005e 80BD     		pop	{r7, pc}
+ 166              		.cfi_endproc
+ 167              	.LFE6:
+ 169              		.section	.text.EmbUtil_CharCat,"ax",%progbits
+ 170              		.align	2
+ 171              		.global	EmbUtil_CharCat
+ 172              		.code	16
+ 173              		.thumb_func
+ 175              	EmbUtil_CharCat:
+ 176              	.LFB7:
+  67:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMB_STR_CAT_FUNC */
+  68:../Sources/libraries/emb_util/emb_util.c **** 
+  69:../Sources/libraries/emb_util/emb_util.c **** 
+  70:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_CHAR_CAT_FUNC
+  71:../Sources/libraries/emb_util/emb_util.c **** // Credits: Erich Styger component from Processor Expert https://mcuoneclipse.com/author/mcuoneclip
+  72:../Sources/libraries/emb_util/emb_util.c **** void EmbUtil_CharCat(unsigned char *dst, size_t dstSize, uint8_t ch)
+  73:../Sources/libraries/emb_util/emb_util.c **** {
+ 177              		.loc 1 73 0
+ 178              		.cfi_startproc
+ 179 0000 80B5     		push	{r7, lr}
+ 180              		.cfi_def_cfa_offset 8
+ 181              		.cfi_offset 7, -8
+ 182              		.cfi_offset 14, -4
+ 183 0002 84B0     		sub	sp, sp, #16
+ 184              		.cfi_def_cfa_offset 24
+ 185 0004 00AF     		add	r7, sp, #0
+ 186              		.cfi_def_cfa_register 7
+ 187 0006 F860     		str	r0, [r7, #12]
+ 188 0008 B960     		str	r1, [r7, #8]
+ 189 000a FB1D     		add	r3, r7, #7
+ 190 000c 1A70     		strb	r2, [r3]
+  74:../Sources/libraries/emb_util/emb_util.c ****   dstSize--; /* for zero byte */
+ 191              		.loc 1 74 0
+ 192 000e BB68     		ldr	r3, [r7, #8]
+ 193 0010 013B     		sub	r3, r3, #1
+ 194 0012 BB60     		str	r3, [r7, #8]
+  75:../Sources/libraries/emb_util/emb_util.c ****   /* point to the end of the source */
+  76:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *dst != '\0') {
+ 195              		.loc 1 76 0
+ 196 0014 05E0     		b	.L13
+ 197              	.L15:
+  77:../Sources/libraries/emb_util/emb_util.c ****     dst++;
+ 198              		.loc 1 77 0
+ 199 0016 FB68     		ldr	r3, [r7, #12]
+ 200 0018 0133     		add	r3, r3, #1
+ 201 001a FB60     		str	r3, [r7, #12]
+  78:../Sources/libraries/emb_util/emb_util.c ****     dstSize--;
+ 202              		.loc 1 78 0
+ 203 001c BB68     		ldr	r3, [r7, #8]
+ 204 001e 013B     		sub	r3, r3, #1
+ 205 0020 BB60     		str	r3, [r7, #8]
+ 206              	.L13:
+  76:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *dst != '\0') {
+ 207              		.loc 1 76 0 discriminator 1
+ 208 0022 BB68     		ldr	r3, [r7, #8]
+ 209 0024 002B     		cmp	r3, #0
+ 210 0026 03D0     		beq	.L14
+  76:../Sources/libraries/emb_util/emb_util.c ****   while (dstSize > 0 && *dst != '\0') {
+ 211              		.loc 1 76 0 is_stmt 0 discriminator 2
+ 212 0028 FB68     		ldr	r3, [r7, #12]
+ 213 002a 1B78     		ldrb	r3, [r3]
+ 214 002c 002B     		cmp	r3, #0
+ 215 002e F2D1     		bne	.L15
+ 216              	.L14:
+  79:../Sources/libraries/emb_util/emb_util.c ****   }
+  80:../Sources/libraries/emb_util/emb_util.c ****   /* copy the ch in the destination */
+  81:../Sources/libraries/emb_util/emb_util.c ****   if (dstSize > 0) {
+ 217              		.loc 1 81 0 is_stmt 1
+ 218 0030 BB68     		ldr	r3, [r7, #8]
+ 219 0032 002B     		cmp	r3, #0
+ 220 0034 05D0     		beq	.L16
+  82:../Sources/libraries/emb_util/emb_util.c ****     *dst++ = ch;
+ 221              		.loc 1 82 0
+ 222 0036 FB68     		ldr	r3, [r7, #12]
+ 223 0038 5A1C     		add	r2, r3, #1
+ 224 003a FA60     		str	r2, [r7, #12]
+ 225 003c FA1D     		add	r2, r7, #7
+ 226 003e 1278     		ldrb	r2, [r2]
+ 227 0040 1A70     		strb	r2, [r3]
+ 228              	.L16:
+  83:../Sources/libraries/emb_util/emb_util.c ****   }
+  84:../Sources/libraries/emb_util/emb_util.c ****   /* terminate the string */
+  85:../Sources/libraries/emb_util/emb_util.c ****   *dst = '\0';
+ 229              		.loc 1 85 0
+ 230 0042 FB68     		ldr	r3, [r7, #12]
+ 231 0044 0022     		mov	r2, #0
+ 232 0046 1A70     		strb	r2, [r3]
+  86:../Sources/libraries/emb_util/emb_util.c **** }
+ 233              		.loc 1 86 0
+ 234 0048 BD46     		mov	sp, r7
+ 235 004a 04B0     		add	sp, sp, #16
+ 236              		@ sp needed
+ 237 004c 80BD     		pop	{r7, pc}
+ 238              		.cfi_endproc
+ 239              	.LFE7:
+ 241 004e C046     		.section	.text.EmbUtil_ReverseStr,"ax",%progbits
+ 242              		.align	2
+ 243              		.global	EmbUtil_ReverseStr
+ 244              		.code	16
+ 245              		.thumb_func
+ 247              	EmbUtil_ReverseStr:
+ 248              	.LFB8:
+  87:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMB_CHAR_CAT_FUNC */
+  88:../Sources/libraries/emb_util/emb_util.c **** 
+  89:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_REVERSE_FUNC
+  90:../Sources/libraries/emb_util/emb_util.c **** void EmbUtil_ReverseStr(uint8_t *str, size_t length)
+  91:../Sources/libraries/emb_util/emb_util.c **** {
+ 249              		.loc 1 91 0
+ 250              		.cfi_startproc
+ 251 0000 80B5     		push	{r7, lr}
+ 252              		.cfi_def_cfa_offset 8
+ 253              		.cfi_offset 7, -8
+ 254              		.cfi_offset 14, -4
+ 255 0002 86B0     		sub	sp, sp, #24
+ 256              		.cfi_def_cfa_offset 32
+ 257 0004 00AF     		add	r7, sp, #0
+ 258              		.cfi_def_cfa_register 7
+ 259 0006 7860     		str	r0, [r7, #4]
+ 260 0008 3960     		str	r1, [r7]
+  92:../Sources/libraries/emb_util/emb_util.c ****     int start = 0;
+ 261              		.loc 1 92 0
+ 262 000a 0023     		mov	r3, #0
+ 263 000c 7B61     		str	r3, [r7, #20]
+  93:../Sources/libraries/emb_util/emb_util.c ****     int end = length -1;
+ 264              		.loc 1 93 0
+ 265 000e 3B68     		ldr	r3, [r7]
+ 266 0010 013B     		sub	r3, r3, #1
+ 267 0012 3B61     		str	r3, [r7, #16]
+  94:../Sources/libraries/emb_util/emb_util.c ****     while (start < end)
+ 268              		.loc 1 94 0
+ 269 0014 1EE0     		b	.L18
+ 270              	.L19:
+ 271              	.LBB2:
+  95:../Sources/libraries/emb_util/emb_util.c ****     {
+  96:../Sources/libraries/emb_util/emb_util.c ****         EmbUtil_Swap(*(str+start), *(str+end));
+ 272              		.loc 1 96 0
+ 273 0016 3B69     		ldr	r3, [r7, #16]
+ 274 0018 7A68     		ldr	r2, [r7, #4]
+ 275 001a D218     		add	r2, r2, r3
+ 276 001c 3B1C     		mov	r3, r7
+ 277 001e 0C33     		add	r3, r3, #12
+ 278 0020 1278     		ldrb	r2, [r2]
+ 279 0022 1A70     		strb	r2, [r3]
+ 280 0024 3B69     		ldr	r3, [r7, #16]
+ 281 0026 7A68     		ldr	r2, [r7, #4]
+ 282 0028 D218     		add	r2, r2, r3
+ 283 002a 7B69     		ldr	r3, [r7, #20]
+ 284 002c 7968     		ldr	r1, [r7, #4]
+ 285 002e CB18     		add	r3, r1, r3
+ 286 0030 101C     		mov	r0, r2
+ 287 0032 191C     		mov	r1, r3
+ 288 0034 0122     		mov	r2, #1
+ 289 0036 FFF7FEFF 		bl	memcpy
+ 290 003a 7B69     		ldr	r3, [r7, #20]
+ 291 003c 7A68     		ldr	r2, [r7, #4]
+ 292 003e D318     		add	r3, r2, r3
+ 293 0040 3A1C     		mov	r2, r7
+ 294 0042 0C32     		add	r2, r2, #12
+ 295 0044 1278     		ldrb	r2, [r2]
+ 296 0046 1A70     		strb	r2, [r3]
+ 297              	.LBE2:
+  97:../Sources/libraries/emb_util/emb_util.c ****         start++;
+ 298              		.loc 1 97 0
+ 299 0048 7B69     		ldr	r3, [r7, #20]
+ 300 004a 0133     		add	r3, r3, #1
+ 301 004c 7B61     		str	r3, [r7, #20]
+  98:../Sources/libraries/emb_util/emb_util.c ****         end--;
+ 302              		.loc 1 98 0
+ 303 004e 3B69     		ldr	r3, [r7, #16]
+ 304 0050 013B     		sub	r3, r3, #1
+ 305 0052 3B61     		str	r3, [r7, #16]
+ 306              	.L18:
+  94:../Sources/libraries/emb_util/emb_util.c ****     while (start < end)
+ 307              		.loc 1 94 0 discriminator 1
+ 308 0054 7A69     		ldr	r2, [r7, #20]
+ 309 0056 3B69     		ldr	r3, [r7, #16]
+ 310 0058 9A42     		cmp	r2, r3
+ 311 005a DCDB     		blt	.L19
+  99:../Sources/libraries/emb_util/emb_util.c ****     }
+ 100:../Sources/libraries/emb_util/emb_util.c **** }
+ 312              		.loc 1 100 0
+ 313 005c BD46     		mov	sp, r7
+ 314 005e 06B0     		add	sp, sp, #24
+ 315              		@ sp needed
+ 316 0060 80BD     		pop	{r7, pc}
+ 317              		.cfi_endproc
+ 318              	.LFE8:
+ 320 0062 C046     		.section	.text.EmbUtil_StrFind,"ax",%progbits
+ 321              		.align	2
+ 322              		.global	EmbUtil_StrFind
+ 323              		.code	16
+ 324              		.thumb_func
+ 326              	EmbUtil_StrFind:
+ 327              	.LFB9:
+ 101:../Sources/libraries/emb_util/emb_util.c **** #endif
+ 102:../Sources/libraries/emb_util/emb_util.c **** 
+ 103:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_STR_FIND_FUNC
+ 104:../Sources/libraries/emb_util/emb_util.c **** // Credits: Erich Styger component from Processor Expert https://mcuoneclipse.com/author/mcuoneclip
+ 105:../Sources/libraries/emb_util/emb_util.c **** int16_t EmbUtil_StrFind(uint8_t *str, uint8_t *subStr)
+ 106:../Sources/libraries/emb_util/emb_util.c **** {
+ 328              		.loc 1 106 0
+ 329              		.cfi_startproc
+ 330 0000 80B5     		push	{r7, lr}
+ 331              		.cfi_def_cfa_offset 8
+ 332              		.cfi_offset 7, -8
+ 333              		.cfi_offset 14, -4
+ 334 0002 84B0     		sub	sp, sp, #16
+ 335              		.cfi_def_cfa_offset 24
+ 336 0004 00AF     		add	r7, sp, #0
+ 337              		.cfi_def_cfa_register 7
+ 338 0006 7860     		str	r0, [r7, #4]
+ 339 0008 3960     		str	r1, [r7]
+ 107:../Sources/libraries/emb_util/emb_util.c ****   int16_t i, len;
+ 108:../Sources/libraries/emb_util/emb_util.c **** 
+ 109:../Sources/libraries/emb_util/emb_util.c ****   len = (int16_t)EmbUtil_StrLen((char*)subStr);
+ 340              		.loc 1 109 0
+ 341 000a 3B68     		ldr	r3, [r7]
+ 342 000c 181C     		mov	r0, r3
+ 343 000e FFF7FEFF 		bl	strlen
+ 344 0012 021C     		mov	r2, r0
+ 345 0014 3B1C     		mov	r3, r7
+ 346 0016 0C33     		add	r3, r3, #12
+ 347 0018 1A80     		strh	r2, [r3]
+ 110:../Sources/libraries/emb_util/emb_util.c ****   for (i=0; *str!='\0'; i++, str++) {
+ 348              		.loc 1 110 0
+ 349 001a 3B1C     		mov	r3, r7
+ 350 001c 0E33     		add	r3, r3, #14
+ 351 001e 0022     		mov	r2, #0
+ 352 0020 1A80     		strh	r2, [r3]
+ 353 0022 1BE0     		b	.L21
+ 354              	.L24:
+ 111:../Sources/libraries/emb_util/emb_util.c ****     if (EmbUtil_StrNCmp((char*)str, (char*)subStr, len)==0) {
+ 355              		.loc 1 111 0
+ 356 0024 3B1C     		mov	r3, r7
+ 357 0026 0C33     		add	r3, r3, #12
+ 358 0028 0022     		mov	r2, #0
+ 359 002a 9B5E     		ldrsh	r3, [r3, r2]
+ 360 002c 7968     		ldr	r1, [r7, #4]
+ 361 002e 3A68     		ldr	r2, [r7]
+ 362 0030 081C     		mov	r0, r1
+ 363 0032 111C     		mov	r1, r2
+ 364 0034 1A1C     		mov	r2, r3
+ 365 0036 FFF7FEFF 		bl	strncmp
+ 366 003a 031C     		mov	r3, r0
+ 367 003c 002B     		cmp	r3, #0
+ 368 003e 03D1     		bne	.L22
+ 112:../Sources/libraries/emb_util/emb_util.c ****       return i; /* found */
+ 369              		.loc 1 112 0
+ 370 0040 3B1C     		mov	r3, r7
+ 371 0042 0E33     		add	r3, r3, #14
+ 372 0044 1B88     		ldrh	r3, [r3]
+ 373 0046 0EE0     		b	.L23
+ 374              	.L22:
+ 110:../Sources/libraries/emb_util/emb_util.c ****   for (i=0; *str!='\0'; i++, str++) {
+ 375              		.loc 1 110 0
+ 376 0048 3B1C     		mov	r3, r7
+ 377 004a 0E33     		add	r3, r3, #14
+ 378 004c 1A88     		ldrh	r2, [r3]
+ 379 004e 3B1C     		mov	r3, r7
+ 380 0050 0E33     		add	r3, r3, #14
+ 381 0052 0132     		add	r2, r2, #1
+ 382 0054 1A80     		strh	r2, [r3]
+ 383 0056 7B68     		ldr	r3, [r7, #4]
+ 384 0058 0133     		add	r3, r3, #1
+ 385 005a 7B60     		str	r3, [r7, #4]
+ 386              	.L21:
+ 110:../Sources/libraries/emb_util/emb_util.c ****   for (i=0; *str!='\0'; i++, str++) {
+ 387              		.loc 1 110 0 is_stmt 0 discriminator 1
+ 388 005c 7B68     		ldr	r3, [r7, #4]
+ 389 005e 1B78     		ldrb	r3, [r3]
+ 390 0060 002B     		cmp	r3, #0
+ 391 0062 DFD1     		bne	.L24
+ 113:../Sources/libraries/emb_util/emb_util.c ****     }
+ 114:../Sources/libraries/emb_util/emb_util.c ****   }
+ 115:../Sources/libraries/emb_util/emb_util.c ****   return -1; /* not found */
+ 392              		.loc 1 115 0 is_stmt 1
+ 393 0064 024B     		ldr	r3, .L25
+ 394              	.L23:
+ 395 0066 1BB2     		sxth	r3, r3
+ 116:../Sources/libraries/emb_util/emb_util.c **** }
+ 396              		.loc 1 116 0
+ 397 0068 181C     		mov	r0, r3
+ 398 006a BD46     		mov	sp, r7
+ 399 006c 04B0     		add	sp, sp, #16
+ 400              		@ sp needed
+ 401 006e 80BD     		pop	{r7, pc}
+ 402              	.L26:
+ 403              		.align	2
+ 404              	.L25:
+ 405 0070 FFFF0000 		.word	65535
+ 406              		.cfi_endproc
+ 407              	.LFE9:
+ 409              		.global	__aeabi_idivmod
+ 410              		.global	__aeabi_idiv
+ 411              		.section	.text.EmbUtil_ItoA,"ax",%progbits
+ 412              		.align	2
+ 413              		.global	EmbUtil_ItoA
+ 414              		.code	16
+ 415              		.thumb_func
+ 417              	EmbUtil_ItoA:
+ 418              	.LFB10:
+ 117:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMB_STR_FIND_FUNC */
+ 118:../Sources/libraries/emb_util/emb_util.c **** 
+ 119:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_ITOA_FUNC
+ 120:../Sources/libraries/emb_util/emb_util.c **** int EmbUtil_ItoA(int32_t num, uint8_t* str, uint8_t base)
+ 121:../Sources/libraries/emb_util/emb_util.c **** {
+ 419              		.loc 1 121 0
+ 420              		.cfi_startproc
+ 421 0000 80B5     		push	{r7, lr}
+ 422              		.cfi_def_cfa_offset 8
+ 423              		.cfi_offset 7, -8
+ 424              		.cfi_offset 14, -4
+ 425 0002 88B0     		sub	sp, sp, #32
+ 426              		.cfi_def_cfa_offset 40
+ 427 0004 00AF     		add	r7, sp, #0
+ 428              		.cfi_def_cfa_register 7
+ 429 0006 F860     		str	r0, [r7, #12]
+ 430 0008 B960     		str	r1, [r7, #8]
+ 431 000a FB1D     		add	r3, r7, #7
+ 432 000c 1A70     		strb	r2, [r3]
+ 122:../Sources/libraries/emb_util/emb_util.c ****     int i = 0;
+ 433              		.loc 1 122 0
+ 434 000e 0023     		mov	r3, #0
+ 435 0010 FB61     		str	r3, [r7, #28]
+ 123:../Sources/libraries/emb_util/emb_util.c **** 
+ 124:../Sources/libraries/emb_util/emb_util.c ****     EmbUtil_Assert(str);
+ 436              		.loc 1 124 0
+ 437 0012 BB68     		ldr	r3, [r7, #8]
+ 438 0014 002B     		cmp	r3, #0
+ 439 0016 00D1     		bne	.L28
+ 440              	.L29:
+ 441              		.loc 1 124 0 is_stmt 0 discriminator 1
+ 442 0018 FEE7     		b	.L29
+ 443              	.L28:
+ 125:../Sources/libraries/emb_util/emb_util.c **** 
+ 126:../Sources/libraries/emb_util/emb_util.c ****     bool isNegative = false;
+ 444              		.loc 1 126 0 is_stmt 1
+ 445 001a 3B1C     		mov	r3, r7
+ 446 001c 1B33     		add	r3, r3, #27
+ 447 001e 0022     		mov	r2, #0
+ 448 0020 1A70     		strb	r2, [r3]
+ 127:../Sources/libraries/emb_util/emb_util.c **** 
+ 128:../Sources/libraries/emb_util/emb_util.c ****     /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+ 129:../Sources/libraries/emb_util/emb_util.c ****     if (num == 0)
+ 449              		.loc 1 129 0
+ 450 0022 FB68     		ldr	r3, [r7, #12]
+ 451 0024 002B     		cmp	r3, #0
+ 452 0026 0DD1     		bne	.L30
+ 130:../Sources/libraries/emb_util/emb_util.c ****     {
+ 131:../Sources/libraries/emb_util/emb_util.c ****         str[i++] = '0';
+ 453              		.loc 1 131 0
+ 454 0028 FB69     		ldr	r3, [r7, #28]
+ 455 002a 5A1C     		add	r2, r3, #1
+ 456 002c FA61     		str	r2, [r7, #28]
+ 457 002e BA68     		ldr	r2, [r7, #8]
+ 458 0030 D318     		add	r3, r2, r3
+ 459 0032 3022     		mov	r2, #48
+ 460 0034 1A70     		strb	r2, [r3]
+ 132:../Sources/libraries/emb_util/emb_util.c ****         str[i] = '\0';
+ 461              		.loc 1 132 0
+ 462 0036 FB69     		ldr	r3, [r7, #28]
+ 463 0038 BA68     		ldr	r2, [r7, #8]
+ 464 003a D318     		add	r3, r2, r3
+ 465 003c 0022     		mov	r2, #0
+ 466 003e 1A70     		strb	r2, [r3]
+ 133:../Sources/libraries/emb_util/emb_util.c ****         return i;
+ 467              		.loc 1 133 0
+ 468 0040 FB69     		ldr	r3, [r7, #28]
+ 469 0042 4DE0     		b	.L31
+ 470              	.L30:
+ 134:../Sources/libraries/emb_util/emb_util.c ****     }
+ 135:../Sources/libraries/emb_util/emb_util.c **** 
+ 136:../Sources/libraries/emb_util/emb_util.c ****     // In standard itoa(), negative numbers are handled only with
+ 137:../Sources/libraries/emb_util/emb_util.c ****     // base 10. Otherwise numbers are considered unsigned.
+ 138:../Sources/libraries/emb_util/emb_util.c ****     if (num < 0 && base == 10)
+ 471              		.loc 1 138 0
+ 472 0044 FB68     		ldr	r3, [r7, #12]
+ 473 0046 002B     		cmp	r3, #0
+ 474 0048 0BDA     		bge	.L32
+ 475              		.loc 1 138 0 is_stmt 0 discriminator 1
+ 476 004a FB1D     		add	r3, r7, #7
+ 477 004c 1B78     		ldrb	r3, [r3]
+ 478 004e 0A2B     		cmp	r3, #10
+ 479 0050 07D1     		bne	.L32
+ 139:../Sources/libraries/emb_util/emb_util.c ****     {
+ 140:../Sources/libraries/emb_util/emb_util.c ****         isNegative = true;
+ 480              		.loc 1 140 0 is_stmt 1
+ 481 0052 3B1C     		mov	r3, r7
+ 482 0054 1B33     		add	r3, r3, #27
+ 483 0056 0122     		mov	r2, #1
+ 484 0058 1A70     		strb	r2, [r3]
+ 141:../Sources/libraries/emb_util/emb_util.c ****         num = -num;
+ 485              		.loc 1 141 0
+ 486 005a FB68     		ldr	r3, [r7, #12]
+ 487 005c 5B42     		neg	r3, r3
+ 488 005e FB60     		str	r3, [r7, #12]
+ 142:../Sources/libraries/emb_util/emb_util.c ****     }
+ 143:../Sources/libraries/emb_util/emb_util.c **** 
+ 144:../Sources/libraries/emb_util/emb_util.c ****     // Process individual digits
+ 145:../Sources/libraries/emb_util/emb_util.c ****     while (num != 0)
+ 489              		.loc 1 145 0
+ 490 0060 23E0     		b	.L33
+ 491              	.L32:
+ 492 0062 22E0     		b	.L33
+ 493              	.L36:
+ 494              	.LBB3:
+ 146:../Sources/libraries/emb_util/emb_util.c ****     {
+ 147:../Sources/libraries/emb_util/emb_util.c ****         int rem = num % base;
+ 495              		.loc 1 147 0
+ 496 0064 FB1D     		add	r3, r7, #7
+ 497 0066 1B78     		ldrb	r3, [r3]
+ 498 0068 FA68     		ldr	r2, [r7, #12]
+ 499 006a 101C     		mov	r0, r2
+ 500 006c 191C     		mov	r1, r3
+ 501 006e FFF7FEFF 		bl	__aeabi_idivmod
+ 502 0072 0B1C     		mov	r3, r1
+ 503 0074 7B61     		str	r3, [r7, #20]
+ 148:../Sources/libraries/emb_util/emb_util.c ****         str[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+ 504              		.loc 1 148 0
+ 505 0076 FB69     		ldr	r3, [r7, #28]
+ 506 0078 5A1C     		add	r2, r3, #1
+ 507 007a FA61     		str	r2, [r7, #28]
+ 508 007c BA68     		ldr	r2, [r7, #8]
+ 509 007e D218     		add	r2, r2, r3
+ 510 0080 7B69     		ldr	r3, [r7, #20]
+ 511 0082 092B     		cmp	r3, #9
+ 512 0084 04DD     		ble	.L34
+ 513              		.loc 1 148 0 is_stmt 0 discriminator 1
+ 514 0086 7B69     		ldr	r3, [r7, #20]
+ 515 0088 DBB2     		uxtb	r3, r3
+ 516 008a 5733     		add	r3, r3, #87
+ 517 008c DBB2     		uxtb	r3, r3
+ 518 008e 03E0     		b	.L35
+ 519              	.L34:
+ 520              		.loc 1 148 0 discriminator 2
+ 521 0090 7B69     		ldr	r3, [r7, #20]
+ 522 0092 DBB2     		uxtb	r3, r3
+ 523 0094 3033     		add	r3, r3, #48
+ 524 0096 DBB2     		uxtb	r3, r3
+ 525              	.L35:
+ 526              		.loc 1 148 0 discriminator 3
+ 527 0098 1370     		strb	r3, [r2]
+ 149:../Sources/libraries/emb_util/emb_util.c ****         num = num/base;
+ 528              		.loc 1 149 0 is_stmt 1 discriminator 3
+ 529 009a FB1D     		add	r3, r7, #7
+ 530 009c 1B78     		ldrb	r3, [r3]
+ 531 009e F868     		ldr	r0, [r7, #12]
+ 532 00a0 191C     		mov	r1, r3
+ 533 00a2 FFF7FEFF 		bl	__aeabi_idiv
+ 534 00a6 031C     		mov	r3, r0
+ 535 00a8 FB60     		str	r3, [r7, #12]
+ 536              	.L33:
+ 537              	.LBE3:
+ 145:../Sources/libraries/emb_util/emb_util.c ****     while (num != 0)
+ 538              		.loc 1 145 0 discriminator 1
+ 539 00aa FB68     		ldr	r3, [r7, #12]
+ 540 00ac 002B     		cmp	r3, #0
+ 541 00ae D9D1     		bne	.L36
+ 150:../Sources/libraries/emb_util/emb_util.c ****     }
+ 151:../Sources/libraries/emb_util/emb_util.c **** 
+ 152:../Sources/libraries/emb_util/emb_util.c ****     // If number is negative, append '-'
+ 153:../Sources/libraries/emb_util/emb_util.c ****     if (isNegative)
+ 542              		.loc 1 153 0
+ 543 00b0 3B1C     		mov	r3, r7
+ 544 00b2 1B33     		add	r3, r3, #27
+ 545 00b4 1B78     		ldrb	r3, [r3]
+ 546 00b6 002B     		cmp	r3, #0
+ 547 00b8 06D0     		beq	.L37
+ 154:../Sources/libraries/emb_util/emb_util.c ****         str[i++] = '-';
+ 548              		.loc 1 154 0
+ 549 00ba FB69     		ldr	r3, [r7, #28]
+ 550 00bc 5A1C     		add	r2, r3, #1
+ 551 00be FA61     		str	r2, [r7, #28]
+ 552 00c0 BA68     		ldr	r2, [r7, #8]
+ 553 00c2 D318     		add	r3, r2, r3
+ 554 00c4 2D22     		mov	r2, #45
+ 555 00c6 1A70     		strb	r2, [r3]
+ 556              	.L37:
+ 155:../Sources/libraries/emb_util/emb_util.c **** 
+ 156:../Sources/libraries/emb_util/emb_util.c ****     str[i] = '\0'; // Append string terminator
+ 557              		.loc 1 156 0
+ 558 00c8 FB69     		ldr	r3, [r7, #28]
+ 559 00ca BA68     		ldr	r2, [r7, #8]
+ 560 00cc D318     		add	r3, r2, r3
+ 561 00ce 0022     		mov	r2, #0
+ 562 00d0 1A70     		strb	r2, [r3]
+ 157:../Sources/libraries/emb_util/emb_util.c **** 
+ 158:../Sources/libraries/emb_util/emb_util.c ****     // Reverse the string
+ 159:../Sources/libraries/emb_util/emb_util.c ****     EmbUtil_ReverseStr(str, i);
+ 563              		.loc 1 159 0
+ 564 00d2 FB69     		ldr	r3, [r7, #28]
+ 565 00d4 BA68     		ldr	r2, [r7, #8]
+ 566 00d6 101C     		mov	r0, r2
+ 567 00d8 191C     		mov	r1, r3
+ 568 00da FFF7FEFF 		bl	EmbUtil_ReverseStr
+ 160:../Sources/libraries/emb_util/emb_util.c **** 
+ 161:../Sources/libraries/emb_util/emb_util.c ****     return i;
+ 569              		.loc 1 161 0
+ 570 00de FB69     		ldr	r3, [r7, #28]
+ 571              	.L31:
+ 162:../Sources/libraries/emb_util/emb_util.c **** }
+ 572              		.loc 1 162 0
+ 573 00e0 181C     		mov	r0, r3
+ 574 00e2 BD46     		mov	sp, r7
+ 575 00e4 08B0     		add	sp, sp, #32
+ 576              		@ sp needed
+ 577 00e6 80BD     		pop	{r7, pc}
+ 578              		.cfi_endproc
+ 579              	.LFE10:
+ 581              		.section	.text.EmbUtil_AtoI,"ax",%progbits
+ 582              		.align	2
+ 583              		.global	EmbUtil_AtoI
+ 584              		.code	16
+ 585              		.thumb_func
+ 587              	EmbUtil_AtoI:
+ 588              	.LFB11:
+ 163:../Sources/libraries/emb_util/emb_util.c **** #endif
+ 164:../Sources/libraries/emb_util/emb_util.c **** 
+ 165:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_ATOI_FUNC
+ 166:../Sources/libraries/emb_util/emb_util.c **** /*------------------------------------------------------------------------/
+ 167:../Sources/libraries/emb_util/emb_util.c **** /  Universal string handler for user console interface
+ 168:../Sources/libraries/emb_util/emb_util.c **** /-------------------------------------------------------------------------/
+ 169:../Sources/libraries/emb_util/emb_util.c **** /
+ 170:../Sources/libraries/emb_util/emb_util.c **** /  Copyright (C) 2010, ChaN, all right reserved.
+ 171:../Sources/libraries/emb_util/emb_util.c **** /
+ 172:../Sources/libraries/emb_util/emb_util.c **** / * This software is a free software and there is NO WARRANTY.
+ 173:../Sources/libraries/emb_util/emb_util.c **** / * No restriction on use. You can use, modify and redistribute it for
+ 174:../Sources/libraries/emb_util/emb_util.c **** /   personal, non-profit or commercial products UNDER YOUR RESPONSIBILITY.
+ 175:../Sources/libraries/emb_util/emb_util.c **** / * Redistributions of source code must retain the above copyright notice.
+ 176:../Sources/libraries/emb_util/emb_util.c **** /
+ 177:../Sources/libraries/emb_util/emb_util.c **** /-------------------------------------------------------------------------*/
+ 178:../Sources/libraries/emb_util/emb_util.c **** bool EmbUtil_AtoI(const unsigned char **str, int32_t *res)
+ 179:../Sources/libraries/emb_util/emb_util.c **** {
+ 589              		.loc 1 179 0
+ 590              		.cfi_startproc
+ 591 0000 80B5     		push	{r7, lr}
+ 592              		.cfi_def_cfa_offset 8
+ 593              		.cfi_offset 7, -8
+ 594              		.cfi_offset 14, -4
+ 595 0002 84B0     		sub	sp, sp, #16
+ 596              		.cfi_def_cfa_offset 24
+ 597 0004 00AF     		add	r7, sp, #0
+ 598              		.cfi_def_cfa_register 7
+ 599 0006 7860     		str	r0, [r7, #4]
+ 600 0008 3960     		str	r1, [r7]
+ 180:../Sources/libraries/emb_util/emb_util.c **** /* 123 -5   0x3ff 0b1111 0377 3.25  w "
+ 181:../Sources/libraries/emb_util/emb_util.c ****       ^                               1st call returns 123 and next ptr
+ 182:../Sources/libraries/emb_util/emb_util.c ****          ^                            2nd call returns -5 and next ptr
+ 183:../Sources/libraries/emb_util/emb_util.c ****                  ^                    3rd call returns 1023 and next ptr
+ 184:../Sources/libraries/emb_util/emb_util.c ****                         ^             4th call returns 15 and next ptr
+ 185:../Sources/libraries/emb_util/emb_util.c ****                              ^        5th call returns 255 and next ptr
+ 186:../Sources/libraries/emb_util/emb_util.c ****                                ^      6th call returns 3 and next ptr, caller needs to read '.'
+ 187:../Sources/libraries/emb_util/emb_util.c ****                                  ^    7th call returns 25 and next ptr
+ 188:../Sources/libraries/emb_util/emb_util.c ****                                     ^ 8th call fails and returns ERR_FAILED
+ 189:../Sources/libraries/emb_util/emb_util.c **** */
+ 190:../Sources/libraries/emb_util/emb_util.c ****   uint32_t val;
+ 191:../Sources/libraries/emb_util/emb_util.c ****   uint8_t c, r, s = 0;
+ 601              		.loc 1 191 0
+ 602 000a 3B1C     		mov	r3, r7
+ 603 000c 0933     		add	r3, r3, #9
+ 604 000e 0022     		mov	r2, #0
+ 605 0010 1A70     		strb	r2, [r3]
+ 192:../Sources/libraries/emb_util/emb_util.c **** 
+ 193:../Sources/libraries/emb_util/emb_util.c ****   *res = 0;
+ 606              		.loc 1 193 0
+ 607 0012 3B68     		ldr	r3, [r7]
+ 608 0014 0022     		mov	r2, #0
+ 609 0016 1A60     		str	r2, [r3]
+ 194:../Sources/libraries/emb_util/emb_util.c ****   while (**str==' ')
+ 610              		.loc 1 194 0
+ 611 0018 04E0     		b	.L39
+ 612              	.L40:
+ 195:../Sources/libraries/emb_util/emb_util.c ****   {
+ 196:../Sources/libraries/emb_util/emb_util.c ****     (*str)++;                          /* Skip leading spaces */
+ 613              		.loc 1 196 0
+ 614 001a 7B68     		ldr	r3, [r7, #4]
+ 615 001c 1B68     		ldr	r3, [r3]
+ 616 001e 5A1C     		add	r2, r3, #1
+ 617 0020 7B68     		ldr	r3, [r7, #4]
+ 618 0022 1A60     		str	r2, [r3]
+ 619              	.L39:
+ 194:../Sources/libraries/emb_util/emb_util.c ****   while (**str==' ')
+ 620              		.loc 1 194 0 discriminator 1
+ 621 0024 7B68     		ldr	r3, [r7, #4]
+ 622 0026 1B68     		ldr	r3, [r3]
+ 623 0028 1B78     		ldrb	r3, [r3]
+ 624 002a 202B     		cmp	r3, #32
+ 625 002c F5D0     		beq	.L40
+ 197:../Sources/libraries/emb_util/emb_util.c ****   }
+ 198:../Sources/libraries/emb_util/emb_util.c ****   c = **str;
+ 626              		.loc 1 198 0
+ 627 002e 7B68     		ldr	r3, [r7, #4]
+ 628 0030 1A68     		ldr	r2, [r3]
+ 629 0032 3B1C     		mov	r3, r7
+ 630 0034 0B33     		add	r3, r3, #11
+ 631 0036 1278     		ldrb	r2, [r2]
+ 632 0038 1A70     		strb	r2, [r3]
+ 199:../Sources/libraries/emb_util/emb_util.c ****   if (c == '-')
+ 633              		.loc 1 199 0
+ 634 003a 3B1C     		mov	r3, r7
+ 635 003c 0B33     		add	r3, r3, #11
+ 636 003e 1B78     		ldrb	r3, [r3]
+ 637 0040 2D2B     		cmp	r3, #45
+ 638 0042 0ED1     		bne	.L41
+ 200:../Sources/libraries/emb_util/emb_util.c ****   {                      /* negative? */
+ 201:../Sources/libraries/emb_util/emb_util.c ****     s = 1;
+ 639              		.loc 1 201 0
+ 640 0044 3B1C     		mov	r3, r7
+ 641 0046 0933     		add	r3, r3, #9
+ 642 0048 0122     		mov	r2, #1
+ 643 004a 1A70     		strb	r2, [r3]
+ 202:../Sources/libraries/emb_util/emb_util.c ****     c = *(++(*str));
+ 644              		.loc 1 202 0
+ 645 004c 7B68     		ldr	r3, [r7, #4]
+ 646 004e 1B68     		ldr	r3, [r3]
+ 647 0050 5A1C     		add	r2, r3, #1
+ 648 0052 7B68     		ldr	r3, [r7, #4]
+ 649 0054 1A60     		str	r2, [r3]
+ 650 0056 7B68     		ldr	r3, [r7, #4]
+ 651 0058 1A68     		ldr	r2, [r3]
+ 652 005a 3B1C     		mov	r3, r7
+ 653 005c 0B33     		add	r3, r3, #11
+ 654 005e 1278     		ldrb	r2, [r2]
+ 655 0060 1A70     		strb	r2, [r3]
+ 656              	.L41:
+ 203:../Sources/libraries/emb_util/emb_util.c ****   }
+ 204:../Sources/libraries/emb_util/emb_util.c ****   if (c == '0')
+ 657              		.loc 1 204 0
+ 658 0062 3B1C     		mov	r3, r7
+ 659 0064 0B33     		add	r3, r3, #11
+ 660 0066 1B78     		ldrb	r3, [r3]
+ 661 0068 302B     		cmp	r3, #48
+ 662 006a 4FD1     		bne	.L42
+ 205:../Sources/libraries/emb_util/emb_util.c ****   {
+ 206:../Sources/libraries/emb_util/emb_util.c ****     c = *(++(*str));
+ 663              		.loc 1 206 0
+ 664 006c 7B68     		ldr	r3, [r7, #4]
+ 665 006e 1B68     		ldr	r3, [r3]
+ 666 0070 5A1C     		add	r2, r3, #1
+ 667 0072 7B68     		ldr	r3, [r7, #4]
+ 668 0074 1A60     		str	r2, [r3]
+ 669 0076 7B68     		ldr	r3, [r7, #4]
+ 670 0078 1A68     		ldr	r2, [r3]
+ 671 007a 3B1C     		mov	r3, r7
+ 672 007c 0B33     		add	r3, r3, #11
+ 673 007e 1278     		ldrb	r2, [r2]
+ 674 0080 1A70     		strb	r2, [r3]
+ 207:../Sources/libraries/emb_util/emb_util.c ****     switch (c)
+ 675              		.loc 1 207 0
+ 676 0082 3B1C     		mov	r3, r7
+ 677 0084 0B33     		add	r3, r3, #11
+ 678 0086 1B78     		ldrb	r3, [r3]
+ 679 0088 622B     		cmp	r3, #98
+ 680 008a 11D0     		beq	.L44
+ 681 008c 782B     		cmp	r3, #120
+ 682 008e 1FD1     		bne	.L62
+ 208:../Sources/libraries/emb_util/emb_util.c ****     {
+ 209:../Sources/libraries/emb_util/emb_util.c ****       case 'x':                        /* hexadecimal */
+ 210:../Sources/libraries/emb_util/emb_util.c ****         r = 16; c = *(++(*str));
+ 683              		.loc 1 210 0
+ 684 0090 3B1C     		mov	r3, r7
+ 685 0092 0A33     		add	r3, r3, #10
+ 686 0094 1022     		mov	r2, #16
+ 687 0096 1A70     		strb	r2, [r3]
+ 688 0098 7B68     		ldr	r3, [r7, #4]
+ 689 009a 1B68     		ldr	r3, [r3]
+ 690 009c 5A1C     		add	r2, r3, #1
+ 691 009e 7B68     		ldr	r3, [r7, #4]
+ 692 00a0 1A60     		str	r2, [r3]
+ 693 00a2 7B68     		ldr	r3, [r7, #4]
+ 694 00a4 1A68     		ldr	r2, [r3]
+ 695 00a6 3B1C     		mov	r3, r7
+ 696 00a8 0B33     		add	r3, r3, #11
+ 697 00aa 1278     		ldrb	r2, [r2]
+ 698 00ac 1A70     		strb	r2, [r3]
+ 211:../Sources/libraries/emb_util/emb_util.c ****         break;
+ 699              		.loc 1 211 0
+ 700 00ae 2CE0     		b	.L46
+ 701              	.L44:
+ 212:../Sources/libraries/emb_util/emb_util.c ****       case 'b':                        /* binary */
+ 213:../Sources/libraries/emb_util/emb_util.c ****         r = 2; c = *(++(*str));
+ 702              		.loc 1 213 0
+ 703 00b0 3B1C     		mov	r3, r7
+ 704 00b2 0A33     		add	r3, r3, #10
+ 705 00b4 0222     		mov	r2, #2
+ 706 00b6 1A70     		strb	r2, [r3]
+ 707 00b8 7B68     		ldr	r3, [r7, #4]
+ 708 00ba 1B68     		ldr	r3, [r3]
+ 709 00bc 5A1C     		add	r2, r3, #1
+ 710 00be 7B68     		ldr	r3, [r7, #4]
+ 711 00c0 1A60     		str	r2, [r3]
+ 712 00c2 7B68     		ldr	r3, [r7, #4]
+ 713 00c4 1A68     		ldr	r2, [r3]
+ 714 00c6 3B1C     		mov	r3, r7
+ 715 00c8 0B33     		add	r3, r3, #11
+ 716 00ca 1278     		ldrb	r2, [r2]
+ 717 00cc 1A70     		strb	r2, [r3]
+ 214:../Sources/libraries/emb_util/emb_util.c ****         break;
+ 718              		.loc 1 214 0
+ 719 00ce 1CE0     		b	.L46
+ 720              	.L62:
+ 215:../Sources/libraries/emb_util/emb_util.c ****       default:
+ 216:../Sources/libraries/emb_util/emb_util.c ****         if (c <= ' ' || c == '.')
+ 721              		.loc 1 216 0
+ 722 00d0 3B1C     		mov	r3, r7
+ 723 00d2 0B33     		add	r3, r3, #11
+ 724 00d4 1B78     		ldrb	r3, [r3]
+ 725 00d6 202B     		cmp	r3, #32
+ 726 00d8 04D9     		bls	.L47
+ 727              		.loc 1 216 0 is_stmt 0 discriminator 1
+ 728 00da 3B1C     		mov	r3, r7
+ 729 00dc 0B33     		add	r3, r3, #11
+ 730 00de 1B78     		ldrb	r3, [r3]
+ 731 00e0 2E2B     		cmp	r3, #46
+ 732 00e2 01D1     		bne	.L48
+ 733              	.L47:
+ 217:../Sources/libraries/emb_util/emb_util.c ****         {
+ 218:../Sources/libraries/emb_util/emb_util.c ****           return true;               /* single zero */
+ 734              		.loc 1 218 0 is_stmt 1
+ 735 00e4 0123     		mov	r3, #1
+ 736 00e6 7FE0     		b	.L49
+ 737              	.L48:
+ 219:../Sources/libraries/emb_util/emb_util.c ****         }
+ 220:../Sources/libraries/emb_util/emb_util.c ****         if (c < '0' || c > '9')
+ 738              		.loc 1 220 0
+ 739 00e8 3B1C     		mov	r3, r7
+ 740 00ea 0B33     		add	r3, r3, #11
+ 741 00ec 1B78     		ldrb	r3, [r3]
+ 742 00ee 2F2B     		cmp	r3, #47
+ 743 00f0 04D9     		bls	.L50
+ 744              		.loc 1 220 0 is_stmt 0 discriminator 1
+ 745 00f2 3B1C     		mov	r3, r7
+ 746 00f4 0B33     		add	r3, r3, #11
+ 747 00f6 1B78     		ldrb	r3, [r3]
+ 748 00f8 392B     		cmp	r3, #57
+ 749 00fa 01D9     		bls	.L51
+ 750              	.L50:
+ 221:../Sources/libraries/emb_util/emb_util.c ****         {
+ 222:../Sources/libraries/emb_util/emb_util.c ****           return false;           /* invalid char */
+ 751              		.loc 1 222 0 is_stmt 1
+ 752 00fc 0023     		mov	r3, #0
+ 753 00fe 73E0     		b	.L49
+ 754              	.L51:
+ 223:../Sources/libraries/emb_util/emb_util.c ****         }
+ 224:../Sources/libraries/emb_util/emb_util.c ****         r = 8;                         /* octal */
+ 755              		.loc 1 224 0
+ 756 0100 3B1C     		mov	r3, r7
+ 757 0102 0A33     		add	r3, r3, #10
+ 758 0104 0822     		mov	r2, #8
+ 759 0106 1A70     		strb	r2, [r3]
+ 225:../Sources/libraries/emb_util/emb_util.c ****         break;
+ 760              		.loc 1 225 0
+ 761 0108 C046     		mov	r8, r8
+ 762              	.L46:
+ 763 010a 0FE0     		b	.L52
+ 764              	.L42:
+ 226:../Sources/libraries/emb_util/emb_util.c ****     } /* switch */
+ 227:../Sources/libraries/emb_util/emb_util.c ****   }
+ 228:../Sources/libraries/emb_util/emb_util.c ****   else
+ 229:../Sources/libraries/emb_util/emb_util.c ****   {
+ 230:../Sources/libraries/emb_util/emb_util.c ****     if (c < '0' || c > '9')
+ 765              		.loc 1 230 0
+ 766 010c 3B1C     		mov	r3, r7
+ 767 010e 0B33     		add	r3, r3, #11
+ 768 0110 1B78     		ldrb	r3, [r3]
+ 769 0112 2F2B     		cmp	r3, #47
+ 770 0114 04D9     		bls	.L53
+ 771              		.loc 1 230 0 is_stmt 0 discriminator 1
+ 772 0116 3B1C     		mov	r3, r7
+ 773 0118 0B33     		add	r3, r3, #11
+ 774 011a 1B78     		ldrb	r3, [r3]
+ 775 011c 392B     		cmp	r3, #57
+ 776 011e 01D9     		bls	.L54
+ 777              	.L53:
+ 231:../Sources/libraries/emb_util/emb_util.c ****     {
+ 232:../Sources/libraries/emb_util/emb_util.c ****       return false;               /* EOL or invalid char */
+ 778              		.loc 1 232 0 is_stmt 1
+ 779 0120 0023     		mov	r3, #0
+ 780 0122 61E0     		b	.L49
+ 781              	.L54:
+ 233:../Sources/libraries/emb_util/emb_util.c ****     }
+ 234:../Sources/libraries/emb_util/emb_util.c ****     r = 10;                            /* decimal */
+ 782              		.loc 1 234 0
+ 783 0124 3B1C     		mov	r3, r7
+ 784 0126 0A33     		add	r3, r3, #10
+ 785 0128 0A22     		mov	r2, #10
+ 786 012a 1A70     		strb	r2, [r3]
+ 787              	.L52:
+ 235:../Sources/libraries/emb_util/emb_util.c ****   }
+ 236:../Sources/libraries/emb_util/emb_util.c ****   val = 0;
+ 788              		.loc 1 236 0
+ 789 012c 0023     		mov	r3, #0
+ 790 012e FB60     		str	r3, [r7, #12]
+ 237:../Sources/libraries/emb_util/emb_util.c ****   while (c > ' ' && c != '.')
+ 791              		.loc 1 237 0
+ 792 0130 44E0     		b	.L55
+ 793              	.L60:
+ 238:../Sources/libraries/emb_util/emb_util.c ****   {
+ 239:../Sources/libraries/emb_util/emb_util.c ****     if (c >= 'a') c -= 0x20;
+ 794              		.loc 1 239 0
+ 795 0132 3B1C     		mov	r3, r7
+ 796 0134 0B33     		add	r3, r3, #11
+ 797 0136 1B78     		ldrb	r3, [r3]
+ 798 0138 602B     		cmp	r3, #96
+ 799 013a 06D9     		bls	.L56
+ 800              		.loc 1 239 0 is_stmt 0 discriminator 1
+ 801 013c 3B1C     		mov	r3, r7
+ 802 013e 0B33     		add	r3, r3, #11
+ 803 0140 3A1C     		mov	r2, r7
+ 804 0142 0B32     		add	r2, r2, #11
+ 805 0144 1278     		ldrb	r2, [r2]
+ 806 0146 203A     		sub	r2, r2, #32
+ 807 0148 1A70     		strb	r2, [r3]
+ 808              	.L56:
+ 240:../Sources/libraries/emb_util/emb_util.c ****     c -= '0';
+ 809              		.loc 1 240 0 is_stmt 1
+ 810 014a 3B1C     		mov	r3, r7
+ 811 014c 0B33     		add	r3, r3, #11
+ 812 014e 3A1C     		mov	r2, r7
+ 813 0150 0B32     		add	r2, r2, #11
+ 814 0152 1278     		ldrb	r2, [r2]
+ 815 0154 303A     		sub	r2, r2, #48
+ 816 0156 1A70     		strb	r2, [r3]
+ 241:../Sources/libraries/emb_util/emb_util.c ****     if (c >= 17)
+ 817              		.loc 1 241 0
+ 818 0158 3B1C     		mov	r3, r7
+ 819 015a 0B33     		add	r3, r3, #11
+ 820 015c 1B78     		ldrb	r3, [r3]
+ 821 015e 102B     		cmp	r3, #16
+ 822 0160 0DD9     		bls	.L57
+ 242:../Sources/libraries/emb_util/emb_util.c ****     {
+ 243:../Sources/libraries/emb_util/emb_util.c ****       c -= 7;
+ 823              		.loc 1 243 0
+ 824 0162 3B1C     		mov	r3, r7
+ 825 0164 0B33     		add	r3, r3, #11
+ 826 0166 3A1C     		mov	r2, r7
+ 827 0168 0B32     		add	r2, r2, #11
+ 828 016a 1278     		ldrb	r2, [r2]
+ 829 016c 073A     		sub	r2, r2, #7
+ 830 016e 1A70     		strb	r2, [r3]
+ 244:../Sources/libraries/emb_util/emb_util.c ****       if (c <= 9) return false;   /* invalid char */
+ 831              		.loc 1 244 0
+ 832 0170 3B1C     		mov	r3, r7
+ 833 0172 0B33     		add	r3, r3, #11
+ 834 0174 1B78     		ldrb	r3, [r3]
+ 835 0176 092B     		cmp	r3, #9
+ 836 0178 01D8     		bhi	.L57
+ 837              		.loc 1 244 0 is_stmt 0 discriminator 1
+ 838 017a 0023     		mov	r3, #0
+ 839 017c 34E0     		b	.L49
+ 840              	.L57:
+ 245:../Sources/libraries/emb_util/emb_util.c ****     }
+ 246:../Sources/libraries/emb_util/emb_util.c ****     if (c >= r) return false;     /* invalid char for current radix */
+ 841              		.loc 1 246 0 is_stmt 1
+ 842 017e 3A1C     		mov	r2, r7
+ 843 0180 0B32     		add	r2, r2, #11
+ 844 0182 3B1C     		mov	r3, r7
+ 845 0184 0A33     		add	r3, r3, #10
+ 846 0186 1278     		ldrb	r2, [r2]
+ 847 0188 1B78     		ldrb	r3, [r3]
+ 848 018a 9A42     		cmp	r2, r3
+ 849 018c 01D3     		bcc	.L58
+ 850              		.loc 1 246 0 is_stmt 0 discriminator 1
+ 851 018e 0023     		mov	r3, #0
+ 852 0190 2AE0     		b	.L49
+ 853              	.L58:
+ 247:../Sources/libraries/emb_util/emb_util.c ****     val = val * r + c;
+ 854              		.loc 1 247 0 is_stmt 1
+ 855 0192 3B1C     		mov	r3, r7
+ 856 0194 0A33     		add	r3, r3, #10
+ 857 0196 1B78     		ldrb	r3, [r3]
+ 858 0198 FA68     		ldr	r2, [r7, #12]
+ 859 019a 5A43     		mul	r2, r3
+ 860 019c 3B1C     		mov	r3, r7
+ 861 019e 0B33     		add	r3, r3, #11
+ 862 01a0 1B78     		ldrb	r3, [r3]
+ 863 01a2 D318     		add	r3, r2, r3
+ 864 01a4 FB60     		str	r3, [r7, #12]
+ 248:../Sources/libraries/emb_util/emb_util.c ****     c = *(++(*str));
+ 865              		.loc 1 248 0
+ 866 01a6 7B68     		ldr	r3, [r7, #4]
+ 867 01a8 1B68     		ldr	r3, [r3]
+ 868 01aa 5A1C     		add	r2, r3, #1
+ 869 01ac 7B68     		ldr	r3, [r7, #4]
+ 870 01ae 1A60     		str	r2, [r3]
+ 871 01b0 7B68     		ldr	r3, [r7, #4]
+ 872 01b2 1A68     		ldr	r2, [r3]
+ 873 01b4 3B1C     		mov	r3, r7
+ 874 01b6 0B33     		add	r3, r3, #11
+ 875 01b8 1278     		ldrb	r2, [r2]
+ 876 01ba 1A70     		strb	r2, [r3]
+ 877              	.L55:
+ 237:../Sources/libraries/emb_util/emb_util.c ****   while (c > ' ' && c != '.')
+ 878              		.loc 1 237 0 discriminator 1
+ 879 01bc 3B1C     		mov	r3, r7
+ 880 01be 0B33     		add	r3, r3, #11
+ 881 01c0 1B78     		ldrb	r3, [r3]
+ 882 01c2 202B     		cmp	r3, #32
+ 883 01c4 04D9     		bls	.L59
+ 237:../Sources/libraries/emb_util/emb_util.c ****   while (c > ' ' && c != '.')
+ 884              		.loc 1 237 0 is_stmt 0 discriminator 2
+ 885 01c6 3B1C     		mov	r3, r7
+ 886 01c8 0B33     		add	r3, r3, #11
+ 887 01ca 1B78     		ldrb	r3, [r3]
+ 888 01cc 2E2B     		cmp	r3, #46
+ 889 01ce B0D1     		bne	.L60
+ 890              	.L59:
+ 249:../Sources/libraries/emb_util/emb_util.c ****   } /* while */
+ 250:../Sources/libraries/emb_util/emb_util.c ****   if (s) val = 0 - val;                /* apply sign if needed */
+ 891              		.loc 1 250 0 is_stmt 1
+ 892 01d0 3B1C     		mov	r3, r7
+ 893 01d2 0933     		add	r3, r3, #9
+ 894 01d4 1B78     		ldrb	r3, [r3]
+ 895 01d6 002B     		cmp	r3, #0
+ 896 01d8 02D0     		beq	.L61
+ 897              		.loc 1 250 0 is_stmt 0 discriminator 1
+ 898 01da FB68     		ldr	r3, [r7, #12]
+ 899 01dc 5B42     		neg	r3, r3
+ 900 01de FB60     		str	r3, [r7, #12]
+ 901              	.L61:
+ 251:../Sources/libraries/emb_util/emb_util.c ****   *res = (long)val;
+ 902              		.loc 1 251 0 is_stmt 1
+ 903 01e0 FA68     		ldr	r2, [r7, #12]
+ 904 01e2 3B68     		ldr	r3, [r7]
+ 905 01e4 1A60     		str	r2, [r3]
+ 252:../Sources/libraries/emb_util/emb_util.c ****   return true;
+ 906              		.loc 1 252 0
+ 907 01e6 0123     		mov	r3, #1
+ 908              	.L49:
+ 253:../Sources/libraries/emb_util/emb_util.c **** }
+ 909              		.loc 1 253 0
+ 910 01e8 181C     		mov	r0, r3
+ 911 01ea BD46     		mov	sp, r7
+ 912 01ec 04B0     		add	sp, sp, #16
+ 913              		@ sp needed
+ 914 01ee 80BD     		pop	{r7, pc}
+ 915              		.cfi_endproc
+ 916              	.LFE11:
+ 918              		.global	__aeabi_f2iz
+ 919              		.global	__aeabi_i2f
+ 920              		.global	__aeabi_fsub
+ 921              		.global	__aeabi_f2d
+ 922              		.global	__aeabi_i2d
+ 923              		.global	__aeabi_dmul
+ 924              		.global	__aeabi_d2f
+ 925              		.global	__aeabi_fcmplt
+ 926              		.section	.text.embUtil_FtoA,"ax",%progbits
+ 927              		.align	2
+ 928              		.global	embUtil_FtoA
+ 929              		.code	16
+ 930              		.thumb_func
+ 932              	embUtil_FtoA:
+ 933              	.LFB12:
+ 254:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMB_ATOI_FUNC */
+ 255:../Sources/libraries/emb_util/emb_util.c **** 
+ 256:../Sources/libraries/emb_util/emb_util.c **** #if defined(EMB_ITOA_FUNC) && defined(EMB_FTOA_FUNC)
+ 257:../Sources/libraries/emb_util/emb_util.c **** 
+ 258:../Sources/libraries/emb_util/emb_util.c **** // Credits: Geeks for geeks https://www.geeksforgeeks.org/convert-floating-point-number-string/
+ 259:../Sources/libraries/emb_util/emb_util.c **** int embUtil_FtoA(float n, uint8_t *res, int afterpoint)
+ 260:../Sources/libraries/emb_util/emb_util.c **** {
+ 934              		.loc 1 260 0
+ 935              		.cfi_startproc
+ 936 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 937              		.cfi_def_cfa_offset 20
+ 938              		.cfi_offset 4, -20
+ 939              		.cfi_offset 5, -16
+ 940              		.cfi_offset 6, -12
+ 941              		.cfi_offset 7, -8
+ 942              		.cfi_offset 14, -4
+ 943 0002 89B0     		sub	sp, sp, #36
+ 944              		.cfi_def_cfa_offset 56
+ 945 0004 00AF     		add	r7, sp, #0
+ 946              		.cfi_def_cfa_register 7
+ 947 0006 F860     		str	r0, [r7, #12]
+ 948 0008 B960     		str	r1, [r7, #8]
+ 949 000a 7A60     		str	r2, [r7, #4]
+ 261:../Sources/libraries/emb_util/emb_util.c ****     // Extract integer part
+ 262:../Sources/libraries/emb_util/emb_util.c ****     int ipart = (int)n;
+ 950              		.loc 1 262 0
+ 951 000c F868     		ldr	r0, [r7, #12]
+ 952 000e FFF7FEFF 		bl	__aeabi_f2iz
+ 953 0012 031C     		mov	r3, r0
+ 954 0014 7B61     		str	r3, [r7, #20]
+ 263:../Sources/libraries/emb_util/emb_util.c **** 
+ 264:../Sources/libraries/emb_util/emb_util.c ****     // Extract floating part
+ 265:../Sources/libraries/emb_util/emb_util.c ****     float fpart = n - (float)ipart;
+ 955              		.loc 1 265 0
+ 956 0016 7869     		ldr	r0, [r7, #20]
+ 957 0018 FFF7FEFF 		bl	__aeabi_i2f
+ 958 001c 031C     		add	r3, r0, #0
+ 959 001e F868     		ldr	r0, [r7, #12]
+ 960 0020 191C     		add	r1, r3, #0
+ 961 0022 FFF7FEFF 		bl	__aeabi_fsub
+ 962 0026 031C     		add	r3, r0, #0
+ 963 0028 FB61     		str	r3, [r7, #28]
+ 266:../Sources/libraries/emb_util/emb_util.c **** 
+ 267:../Sources/libraries/emb_util/emb_util.c ****     // convert integer part to string
+ 268:../Sources/libraries/emb_util/emb_util.c ****     int i = EmbUtil_ItoA(ipart, res, 10);
+ 964              		.loc 1 268 0
+ 965 002a 7A69     		ldr	r2, [r7, #20]
+ 966 002c BB68     		ldr	r3, [r7, #8]
+ 967 002e 101C     		mov	r0, r2
+ 968 0030 191C     		mov	r1, r3
+ 969 0032 0A22     		mov	r2, #10
+ 970 0034 FFF7FEFF 		bl	EmbUtil_ItoA
+ 971 0038 031C     		mov	r3, r0
+ 972 003a BB61     		str	r3, [r7, #24]
+ 269:../Sources/libraries/emb_util/emb_util.c **** 
+ 270:../Sources/libraries/emb_util/emb_util.c ****     // check for display option after point
+ 271:../Sources/libraries/emb_util/emb_util.c ****     if (afterpoint != 0)
+ 973              		.loc 1 271 0
+ 974 003c 7B68     		ldr	r3, [r7, #4]
+ 975 003e 002B     		cmp	r3, #0
+ 976 0040 43D0     		beq	.L64
+ 272:../Sources/libraries/emb_util/emb_util.c ****     {
+ 273:../Sources/libraries/emb_util/emb_util.c ****         res[i] = '.';  // add dot
+ 977              		.loc 1 273 0
+ 978 0042 BB69     		ldr	r3, [r7, #24]
+ 979 0044 BA68     		ldr	r2, [r7, #8]
+ 980 0046 D318     		add	r3, r2, r3
+ 981 0048 2E22     		mov	r2, #46
+ 982 004a 1A70     		strb	r2, [r3]
+ 274:../Sources/libraries/emb_util/emb_util.c **** 
+ 275:../Sources/libraries/emb_util/emb_util.c ****         // Get the value of fraction part upto given no.
+ 276:../Sources/libraries/emb_util/emb_util.c ****         // of points after dot. The third parameter is needed
+ 277:../Sources/libraries/emb_util/emb_util.c ****         // to handle cases like 233.007
+ 278:../Sources/libraries/emb_util/emb_util.c ****         fpart = fpart * pow(10, afterpoint);
+ 983              		.loc 1 278 0
+ 984 004c F869     		ldr	r0, [r7, #28]
+ 985 004e FFF7FEFF 		bl	__aeabi_f2d
+ 986 0052 051C     		mov	r5, r0
+ 987 0054 0E1C     		mov	r6, r1
+ 988 0056 7868     		ldr	r0, [r7, #4]
+ 989 0058 FFF7FEFF 		bl	__aeabi_i2d
+ 990 005c 031C     		mov	r3, r0
+ 991 005e 0C1C     		mov	r4, r1
+ 992 0060 1E4A     		ldr	r2, .L69+4
+ 993 0062 1D49     		ldr	r1, .L69
+ 994 0064 081C     		mov	r0, r1
+ 995 0066 111C     		mov	r1, r2
+ 996 0068 1A1C     		mov	r2, r3
+ 997 006a 231C     		mov	r3, r4
+ 998 006c FFF7FEFF 		bl	pow
+ 999 0070 031C     		mov	r3, r0
+ 1000 0072 0C1C     		mov	r4, r1
+ 1001 0074 281C     		mov	r0, r5
+ 1002 0076 311C     		mov	r1, r6
+ 1003 0078 1A1C     		mov	r2, r3
+ 1004 007a 231C     		mov	r3, r4
+ 1005 007c FFF7FEFF 		bl	__aeabi_dmul
+ 1006 0080 031C     		mov	r3, r0
+ 1007 0082 0C1C     		mov	r4, r1
+ 1008 0084 181C     		mov	r0, r3
+ 1009 0086 211C     		mov	r1, r4
+ 1010 0088 FFF7FEFF 		bl	__aeabi_d2f
+ 1011 008c 031C     		add	r3, r0, #0
+ 1012 008e FB61     		str	r3, [r7, #28]
+ 279:../Sources/libraries/emb_util/emb_util.c ****         if(fpart < 0)
+ 1013              		.loc 1 279 0
+ 1014 0090 F869     		ldr	r0, [r7, #28]
+ 1015 0092 0021     		mov	r1, #0
+ 1016 0094 FFF7FEFF 		bl	__aeabi_fcmplt
+ 1017 0098 031C     		mov	r3, r0
+ 1018 009a 002B     		cmp	r3, #0
+ 1019 009c 04D0     		beq	.L65
+ 280:../Sources/libraries/emb_util/emb_util.c ****         {
+ 281:../Sources/libraries/emb_util/emb_util.c ****         	fpart *= -1;
+ 1020              		.loc 1 281 0
+ 1021 009e FB69     		ldr	r3, [r7, #28]
+ 1022 00a0 8022     		mov	r2, #128
+ 1023 00a2 1206     		lsl	r2, r2, #24
+ 1024 00a4 5340     		eor	r3, r2
+ 1025 00a6 FB61     		str	r3, [r7, #28]
+ 1026              	.L65:
+ 282:../Sources/libraries/emb_util/emb_util.c ****         }
+ 283:../Sources/libraries/emb_util/emb_util.c **** 
+ 284:../Sources/libraries/emb_util/emb_util.c ****         i += EmbUtil_ItoA((int)fpart, res + i + 1, 10);
+ 1027              		.loc 1 284 0
+ 1028 00a8 F869     		ldr	r0, [r7, #28]
+ 1029 00aa FFF7FEFF 		bl	__aeabi_f2iz
+ 1030 00ae 021C     		mov	r2, r0
+ 1031 00b0 BB69     		ldr	r3, [r7, #24]
+ 1032 00b2 0133     		add	r3, r3, #1
+ 1033 00b4 B968     		ldr	r1, [r7, #8]
+ 1034 00b6 CB18     		add	r3, r1, r3
+ 1035 00b8 101C     		mov	r0, r2
+ 1036 00ba 191C     		mov	r1, r3
+ 1037 00bc 0A22     		mov	r2, #10
+ 1038 00be FFF7FEFF 		bl	EmbUtil_ItoA
+ 1039 00c2 031C     		mov	r3, r0
+ 1040 00c4 BA69     		ldr	r2, [r7, #24]
+ 1041 00c6 D318     		add	r3, r2, r3
+ 1042 00c8 BB61     		str	r3, [r7, #24]
+ 1043              	.L64:
+ 285:../Sources/libraries/emb_util/emb_util.c ****     }
+ 286:../Sources/libraries/emb_util/emb_util.c **** 
+ 287:../Sources/libraries/emb_util/emb_util.c ****     return i;
+ 1044              		.loc 1 287 0
+ 1045 00ca BB69     		ldr	r3, [r7, #24]
+ 288:../Sources/libraries/emb_util/emb_util.c **** }
+ 1046              		.loc 1 288 0
+ 1047 00cc 181C     		mov	r0, r3
+ 1048 00ce BD46     		mov	sp, r7
+ 1049 00d0 09B0     		add	sp, sp, #36
+ 1050              		@ sp needed
+ 1051 00d2 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1052              	.L70:
+ 1053 00d4 C046C046 		.align	3
+ 1054              	.L69:
+ 1055 00d8 00000000 		.word	0
+ 1056 00dc 00002440 		.word	1076101120
+ 1057              		.cfi_endproc
+ 1058              	.LFE12:
+ 1060              		.global	__aeabi_fdiv
+ 1061              		.global	__aeabi_fmul
+ 1062              		.global	__aeabi_fadd
+ 1063              		.section	.text.EmbUtil_AtoF,"ax",%progbits
+ 1064              		.align	2
+ 1065              		.global	EmbUtil_AtoF
+ 1066              		.code	16
+ 1067              		.thumb_func
+ 1069              	EmbUtil_AtoF:
+ 1070              	.LFB13:
+ 289:../Sources/libraries/emb_util/emb_util.c **** #endif /* defined(EMB_ITOA) && defined(EMB_FTOA) */
+ 290:../Sources/libraries/emb_util/emb_util.c **** 
+ 291:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_ATOF_FUNC
+ 292:../Sources/libraries/emb_util/emb_util.c **** bool EmbUtil_AtoF(const unsigned char** str, float* res)
+ 293:../Sources/libraries/emb_util/emb_util.c **** {
+ 1071              		.loc 1 293 0
+ 1072              		.cfi_startproc
+ 1073 0000 90B5     		push	{r4, r7, lr}
+ 1074              		.cfi_def_cfa_offset 12
+ 1075              		.cfi_offset 4, -12
+ 1076              		.cfi_offset 7, -8
+ 1077              		.cfi_offset 14, -4
+ 1078 0002 89B0     		sub	sp, sp, #36
+ 1079              		.cfi_def_cfa_offset 48
+ 1080 0004 00AF     		add	r7, sp, #0
+ 1081              		.cfi_def_cfa_register 7
+ 1082 0006 7860     		str	r0, [r7, #4]
+ 1083 0008 3960     		str	r1, [r7]
+ 294:../Sources/libraries/emb_util/emb_util.c ****   float rez = 0, fact = 1;
+ 1084              		.loc 1 294 0
+ 1085 000a 0023     		mov	r3, #0
+ 1086 000c FB61     		str	r3, [r7, #28]
+ 1087 000e FE23     		mov	r3, #254
+ 1088 0010 9B05     		lsl	r3, r3, #22
+ 1089 0012 BB61     		str	r3, [r7, #24]
+ 295:../Sources/libraries/emb_util/emb_util.c ****   uint8_t c;
+ 296:../Sources/libraries/emb_util/emb_util.c **** 
+ 297:../Sources/libraries/emb_util/emb_util.c ****   *res = 0;
+ 1090              		.loc 1 297 0
+ 1091 0014 3B68     		ldr	r3, [r7]
+ 1092 0016 0022     		mov	r2, #0
+ 1093 0018 1A60     		str	r2, [r3]
+ 298:../Sources/libraries/emb_util/emb_util.c ****   while (**str==' ')
+ 1094              		.loc 1 298 0
+ 1095 001a 04E0     		b	.L72
+ 1096              	.L73:
+ 299:../Sources/libraries/emb_util/emb_util.c ****   {
+ 300:../Sources/libraries/emb_util/emb_util.c ****     (*str)++;                          /* Skip leading spaces */
+ 1097              		.loc 1 300 0
+ 1098 001c 7B68     		ldr	r3, [r7, #4]
+ 1099 001e 1B68     		ldr	r3, [r3]
+ 1100 0020 5A1C     		add	r2, r3, #1
+ 1101 0022 7B68     		ldr	r3, [r7, #4]
+ 1102 0024 1A60     		str	r2, [r3]
+ 1103              	.L72:
+ 298:../Sources/libraries/emb_util/emb_util.c ****   while (**str==' ')
+ 1104              		.loc 1 298 0 discriminator 1
+ 1105 0026 7B68     		ldr	r3, [r7, #4]
+ 1106 0028 1B68     		ldr	r3, [r3]
+ 1107 002a 1B78     		ldrb	r3, [r3]
+ 1108 002c 202B     		cmp	r3, #32
+ 1109 002e F5D0     		beq	.L73
+ 301:../Sources/libraries/emb_util/emb_util.c ****   }
+ 302:../Sources/libraries/emb_util/emb_util.c ****   c = **str;
+ 1110              		.loc 1 302 0
+ 1111 0030 7B68     		ldr	r3, [r7, #4]
+ 1112 0032 1A68     		ldr	r2, [r3]
+ 1113 0034 3B1C     		mov	r3, r7
+ 1114 0036 1733     		add	r3, r3, #23
+ 1115 0038 1278     		ldrb	r2, [r2]
+ 1116 003a 1A70     		strb	r2, [r3]
+ 303:../Sources/libraries/emb_util/emb_util.c **** 
+ 304:../Sources/libraries/emb_util/emb_util.c ****   if (c == '-')
+ 1117              		.loc 1 304 0
+ 1118 003c 3B1C     		mov	r3, r7
+ 1119 003e 1733     		add	r3, r3, #23
+ 1120 0040 1B78     		ldrb	r3, [r3]
+ 1121 0042 2D2B     		cmp	r3, #45
+ 1122 0044 0CD1     		bne	.L74
+ 305:../Sources/libraries/emb_util/emb_util.c ****   {
+ 306:../Sources/libraries/emb_util/emb_util.c **** 	  c = *(++(*str));
+ 1123              		.loc 1 306 0
+ 1124 0046 7B68     		ldr	r3, [r7, #4]
+ 1125 0048 1B68     		ldr	r3, [r3]
+ 1126 004a 5A1C     		add	r2, r3, #1
+ 1127 004c 7B68     		ldr	r3, [r7, #4]
+ 1128 004e 1A60     		str	r2, [r3]
+ 1129 0050 7B68     		ldr	r3, [r7, #4]
+ 1130 0052 1A68     		ldr	r2, [r3]
+ 1131 0054 3B1C     		mov	r3, r7
+ 1132 0056 1733     		add	r3, r3, #23
+ 1133 0058 1278     		ldrb	r2, [r2]
+ 1134 005a 1A70     		strb	r2, [r3]
+ 307:../Sources/libraries/emb_util/emb_util.c **** 	  fact = -1;
+ 1135              		.loc 1 307 0
+ 1136 005c 284B     		ldr	r3, .L82
+ 1137 005e BB61     		str	r3, [r7, #24]
+ 1138              	.L74:
+ 1139              	.LBB4:
+ 308:../Sources/libraries/emb_util/emb_util.c ****   };
+ 309:../Sources/libraries/emb_util/emb_util.c ****   for (int point_seen = 0; c;)
+ 1140              		.loc 1 309 0
+ 1141 0060 0023     		mov	r3, #0
+ 1142 0062 3B61     		str	r3, [r7, #16]
+ 1143 0064 39E0     		b	.L75
+ 1144              	.L81:
+ 310:../Sources/libraries/emb_util/emb_util.c ****   {
+ 311:../Sources/libraries/emb_util/emb_util.c ****     if (c == '.')
+ 1145              		.loc 1 311 0
+ 1146 0066 3B1C     		mov	r3, r7
+ 1147 0068 1733     		add	r3, r3, #23
+ 1148 006a 1B78     		ldrb	r3, [r3]
+ 1149 006c 2E2B     		cmp	r3, #46
+ 1150 006e 02D1     		bne	.L76
+ 312:../Sources/libraries/emb_util/emb_util.c ****     {
+ 313:../Sources/libraries/emb_util/emb_util.c ****       point_seen = 1;
+ 1151              		.loc 1 313 0
+ 1152 0070 0123     		mov	r3, #1
+ 1153 0072 3B61     		str	r3, [r7, #16]
+ 1154 0074 26E0     		b	.L77
+ 1155              	.L76:
+ 1156              	.LBB5:
+ 314:../Sources/libraries/emb_util/emb_util.c ****     }
+ 315:../Sources/libraries/emb_util/emb_util.c ****     else
+ 316:../Sources/libraries/emb_util/emb_util.c ****     {
+ 317:../Sources/libraries/emb_util/emb_util.c ****         int d = c - '0';
+ 1157              		.loc 1 317 0
+ 1158 0076 3B1C     		mov	r3, r7
+ 1159 0078 1733     		add	r3, r3, #23
+ 1160 007a 1B78     		ldrb	r3, [r3]
+ 1161 007c 303B     		sub	r3, r3, #48
+ 1162 007e FB60     		str	r3, [r7, #12]
+ 318:../Sources/libraries/emb_util/emb_util.c ****         if (d >= 0 && d <= 9)
+ 1163              		.loc 1 318 0
+ 1164 0080 FB68     		ldr	r3, [r7, #12]
+ 1165 0082 002B     		cmp	r3, #0
+ 1166 0084 1CDB     		blt	.L78
+ 1167              		.loc 1 318 0 is_stmt 0 discriminator 1
+ 1168 0086 FB68     		ldr	r3, [r7, #12]
+ 1169 0088 092B     		cmp	r3, #9
+ 1170 008a 19DC     		bgt	.L78
+ 319:../Sources/libraries/emb_util/emb_util.c ****         {
+ 320:../Sources/libraries/emb_util/emb_util.c ****           if (point_seen)
+ 1171              		.loc 1 320 0 is_stmt 1
+ 1172 008c 3B69     		ldr	r3, [r7, #16]
+ 1173 008e 002B     		cmp	r3, #0
+ 1174 0090 05D0     		beq	.L79
+ 321:../Sources/libraries/emb_util/emb_util.c ****           {
+ 322:../Sources/libraries/emb_util/emb_util.c ****         	  fact /= 10.0f;
+ 1175              		.loc 1 322 0
+ 1176 0092 B869     		ldr	r0, [r7, #24]
+ 1177 0094 1B49     		ldr	r1, .L82+4
+ 1178 0096 FFF7FEFF 		bl	__aeabi_fdiv
+ 1179 009a 031C     		add	r3, r0, #0
+ 1180 009c BB61     		str	r3, [r7, #24]
+ 1181              	.L79:
+ 323:../Sources/libraries/emb_util/emb_util.c ****           }
+ 324:../Sources/libraries/emb_util/emb_util.c ****           rez = rez * 10.0f + (float)d;
+ 1182              		.loc 1 324 0
+ 1183 009e F869     		ldr	r0, [r7, #28]
+ 1184 00a0 1849     		ldr	r1, .L82+4
+ 1185 00a2 FFF7FEFF 		bl	__aeabi_fmul
+ 1186 00a6 031C     		add	r3, r0, #0
+ 1187 00a8 1C1C     		add	r4, r3, #0
+ 1188 00aa F868     		ldr	r0, [r7, #12]
+ 1189 00ac FFF7FEFF 		bl	__aeabi_i2f
+ 1190 00b0 031C     		add	r3, r0, #0
+ 1191 00b2 201C     		add	r0, r4, #0
+ 1192 00b4 191C     		add	r1, r3, #0
+ 1193 00b6 FFF7FEFF 		bl	__aeabi_fadd
+ 1194 00ba 031C     		add	r3, r0, #0
+ 1195 00bc FB61     		str	r3, [r7, #28]
+ 1196 00be 01E0     		b	.L77
+ 1197              	.L78:
+ 325:../Sources/libraries/emb_util/emb_util.c ****         }
+ 326:../Sources/libraries/emb_util/emb_util.c ****         else
+ 327:../Sources/libraries/emb_util/emb_util.c ****         {
+ 328:../Sources/libraries/emb_util/emb_util.c ****         	return false; // invalid char
+ 1198              		.loc 1 328 0
+ 1199 00c0 0023     		mov	r3, #0
+ 1200 00c2 18E0     		b	.L80
+ 1201              	.L77:
+ 1202              	.LBE5:
+ 329:../Sources/libraries/emb_util/emb_util.c ****         }
+ 330:../Sources/libraries/emb_util/emb_util.c ****     }
+ 331:../Sources/libraries/emb_util/emb_util.c ****     c = *(++(*str));
+ 1203              		.loc 1 331 0
+ 1204 00c4 7B68     		ldr	r3, [r7, #4]
+ 1205 00c6 1B68     		ldr	r3, [r3]
+ 1206 00c8 5A1C     		add	r2, r3, #1
+ 1207 00ca 7B68     		ldr	r3, [r7, #4]
+ 1208 00cc 1A60     		str	r2, [r3]
+ 1209 00ce 7B68     		ldr	r3, [r7, #4]
+ 1210 00d0 1A68     		ldr	r2, [r3]
+ 1211 00d2 3B1C     		mov	r3, r7
+ 1212 00d4 1733     		add	r3, r3, #23
+ 1213 00d6 1278     		ldrb	r2, [r2]
+ 1214 00d8 1A70     		strb	r2, [r3]
+ 1215              	.L75:
+ 309:../Sources/libraries/emb_util/emb_util.c ****   for (int point_seen = 0; c;)
+ 1216              		.loc 1 309 0 discriminator 1
+ 1217 00da 3B1C     		mov	r3, r7
+ 1218 00dc 1733     		add	r3, r3, #23
+ 1219 00de 1B78     		ldrb	r3, [r3]
+ 1220 00e0 002B     		cmp	r3, #0
+ 1221 00e2 C0D1     		bne	.L81
+ 1222              	.LBE4:
+ 332:../Sources/libraries/emb_util/emb_util.c ****   }
+ 333:../Sources/libraries/emb_util/emb_util.c ****   *res = rez * fact;
+ 1223              		.loc 1 333 0
+ 1224 00e4 F869     		ldr	r0, [r7, #28]
+ 1225 00e6 B969     		ldr	r1, [r7, #24]
+ 1226 00e8 FFF7FEFF 		bl	__aeabi_fmul
+ 1227 00ec 031C     		add	r3, r0, #0
+ 1228 00ee 1A1C     		add	r2, r3, #0
+ 1229 00f0 3B68     		ldr	r3, [r7]
+ 1230 00f2 1A60     		str	r2, [r3]
+ 334:../Sources/libraries/emb_util/emb_util.c ****   return true;
+ 1231              		.loc 1 334 0
+ 1232 00f4 0123     		mov	r3, #1
+ 1233              	.L80:
+ 335:../Sources/libraries/emb_util/emb_util.c **** }
+ 1234              		.loc 1 335 0
+ 1235 00f6 181C     		mov	r0, r3
+ 1236 00f8 BD46     		mov	sp, r7
+ 1237 00fa 09B0     		add	sp, sp, #36
+ 1238              		@ sp needed
+ 1239 00fc 90BD     		pop	{r4, r7, pc}
+ 1240              	.L83:
+ 1241 00fe C046     		.align	2
+ 1242              	.L82:
+ 1243 0100 000080BF 		.word	-1082130432
+ 1244 0104 00002041 		.word	1092616192
+ 1245              		.cfi_endproc
+ 1246              	.LFE13:
+ 1248              		.section	.text.EmbUtil_Map,"ax",%progbits
+ 1249              		.align	2
+ 1250              		.global	EmbUtil_Map
+ 1251              		.code	16
+ 1252              		.thumb_func
+ 1254              	EmbUtil_Map:
+ 1255              	.LFB14:
+ 336:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMB_ATOF_FUNC */
+ 337:../Sources/libraries/emb_util/emb_util.c **** 
+ 338:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_MAP_FUNC
+ 339:../Sources/libraries/emb_util/emb_util.c **** int32_t EmbUtil_Map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max)
+ 340:../Sources/libraries/emb_util/emb_util.c **** {
+ 1256              		.loc 1 340 0
+ 1257              		.cfi_startproc
+ 1258 0000 80B5     		push	{r7, lr}
+ 1259              		.cfi_def_cfa_offset 8
+ 1260              		.cfi_offset 7, -8
+ 1261              		.cfi_offset 14, -4
+ 1262 0002 84B0     		sub	sp, sp, #16
+ 1263              		.cfi_def_cfa_offset 24
+ 1264 0004 00AF     		add	r7, sp, #0
+ 1265              		.cfi_def_cfa_register 7
+ 1266 0006 F860     		str	r0, [r7, #12]
+ 1267 0008 B960     		str	r1, [r7, #8]
+ 1268 000a 7A60     		str	r2, [r7, #4]
+ 1269 000c 3B60     		str	r3, [r7]
+ 341:../Sources/libraries/emb_util/emb_util.c **** 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+ 1270              		.loc 1 341 0
+ 1271 000e FA68     		ldr	r2, [r7, #12]
+ 1272 0010 BB68     		ldr	r3, [r7, #8]
+ 1273 0012 D31A     		sub	r3, r2, r3
+ 1274 0014 B969     		ldr	r1, [r7, #24]
+ 1275 0016 3A68     		ldr	r2, [r7]
+ 1276 0018 8A1A     		sub	r2, r1, r2
+ 1277 001a 5A43     		mul	r2, r3
+ 1278 001c 7968     		ldr	r1, [r7, #4]
+ 1279 001e BB68     		ldr	r3, [r7, #8]
+ 1280 0020 CB1A     		sub	r3, r1, r3
+ 1281 0022 101C     		mov	r0, r2
+ 1282 0024 191C     		mov	r1, r3
+ 1283 0026 FFF7FEFF 		bl	__aeabi_idiv
+ 1284 002a 031C     		mov	r3, r0
+ 1285 002c 1A1C     		mov	r2, r3
+ 1286 002e 3B68     		ldr	r3, [r7]
+ 1287 0030 D318     		add	r3, r2, r3
+ 342:../Sources/libraries/emb_util/emb_util.c **** }
+ 1288              		.loc 1 342 0
+ 1289 0032 181C     		mov	r0, r3
+ 1290 0034 BD46     		mov	sp, r7
+ 1291 0036 04B0     		add	sp, sp, #16
+ 1292              		@ sp needed
+ 1293 0038 80BD     		pop	{r7, pc}
+ 1294              		.cfi_endproc
+ 1295              	.LFE14:
+ 1297 003a C046     		.section	.text.EmbUtil_FloorSqrt,"ax",%progbits
+ 1298              		.align	2
+ 1299              		.global	EmbUtil_FloorSqrt
+ 1300              		.code	16
+ 1301              		.thumb_func
+ 1303              	EmbUtil_FloorSqrt:
+ 1304              	.LFB15:
+ 343:../Sources/libraries/emb_util/emb_util.c **** #endif
+ 344:../Sources/libraries/emb_util/emb_util.c **** 
+ 345:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_FLOOR_SQRT_FUNC
+ 346:../Sources/libraries/emb_util/emb_util.c **** int EmbUtil_FloorSqrt(int x)
+ 347:../Sources/libraries/emb_util/emb_util.c **** {
+ 1305              		.loc 1 347 0
+ 1306              		.cfi_startproc
+ 1307 0000 80B5     		push	{r7, lr}
+ 1308              		.cfi_def_cfa_offset 8
+ 1309              		.cfi_offset 7, -8
+ 1310              		.cfi_offset 14, -4
+ 1311 0002 84B0     		sub	sp, sp, #16
+ 1312              		.cfi_def_cfa_offset 24
+ 1313 0004 00AF     		add	r7, sp, #0
+ 1314              		.cfi_def_cfa_register 7
+ 1315 0006 7860     		str	r0, [r7, #4]
+ 348:../Sources/libraries/emb_util/emb_util.c ****     // Base cases
+ 349:../Sources/libraries/emb_util/emb_util.c ****     if (x == 0 || x == 1)
+ 1316              		.loc 1 349 0
+ 1317 0008 7B68     		ldr	r3, [r7, #4]
+ 1318 000a 002B     		cmp	r3, #0
+ 1319 000c 02D0     		beq	.L87
+ 1320              		.loc 1 349 0 is_stmt 0 discriminator 1
+ 1321 000e 7B68     		ldr	r3, [r7, #4]
+ 1322 0010 012B     		cmp	r3, #1
+ 1323 0012 01D1     		bne	.L88
+ 1324              	.L87:
+ 350:../Sources/libraries/emb_util/emb_util.c ****     return x;
+ 1325              		.loc 1 350 0 is_stmt 1
+ 1326 0014 7B68     		ldr	r3, [r7, #4]
+ 1327 0016 11E0     		b	.L89
+ 1328              	.L88:
+ 351:../Sources/libraries/emb_util/emb_util.c **** 
+ 352:../Sources/libraries/emb_util/emb_util.c ****     // Staring from 1, try all numbers until
+ 353:../Sources/libraries/emb_util/emb_util.c ****     // i*i is greater than or equal to x.
+ 354:../Sources/libraries/emb_util/emb_util.c ****     int i = 1, result = 1;
+ 1329              		.loc 1 354 0
+ 1330 0018 0123     		mov	r3, #1
+ 1331 001a FB60     		str	r3, [r7, #12]
+ 1332 001c 0123     		mov	r3, #1
+ 1333 001e BB60     		str	r3, [r7, #8]
+ 355:../Sources/libraries/emb_util/emb_util.c ****     while (result <= x)
+ 1334              		.loc 1 355 0
+ 1335 0020 06E0     		b	.L90
+ 1336              	.L91:
+ 356:../Sources/libraries/emb_util/emb_util.c ****     {
+ 357:../Sources/libraries/emb_util/emb_util.c ****       i++;
+ 1337              		.loc 1 357 0
+ 1338 0022 FB68     		ldr	r3, [r7, #12]
+ 1339 0024 0133     		add	r3, r3, #1
+ 1340 0026 FB60     		str	r3, [r7, #12]
+ 358:../Sources/libraries/emb_util/emb_util.c ****       result = i * i;
+ 1341              		.loc 1 358 0
+ 1342 0028 FB68     		ldr	r3, [r7, #12]
+ 1343 002a FA68     		ldr	r2, [r7, #12]
+ 1344 002c 5343     		mul	r3, r2
+ 1345 002e BB60     		str	r3, [r7, #8]
+ 1346              	.L90:
+ 355:../Sources/libraries/emb_util/emb_util.c ****     while (result <= x)
+ 1347              		.loc 1 355 0 discriminator 1
+ 1348 0030 BA68     		ldr	r2, [r7, #8]
+ 1349 0032 7B68     		ldr	r3, [r7, #4]
+ 1350 0034 9A42     		cmp	r2, r3
+ 1351 0036 F4DD     		ble	.L91
+ 359:../Sources/libraries/emb_util/emb_util.c ****     }
+ 360:../Sources/libraries/emb_util/emb_util.c ****     return i - 1;
+ 1352              		.loc 1 360 0
+ 1353 0038 FB68     		ldr	r3, [r7, #12]
+ 1354 003a 013B     		sub	r3, r3, #1
+ 1355              	.L89:
+ 361:../Sources/libraries/emb_util/emb_util.c **** }
+ 1356              		.loc 1 361 0
+ 1357 003c 181C     		mov	r0, r3
+ 1358 003e BD46     		mov	sp, r7
+ 1359 0040 04B0     		add	sp, sp, #16
+ 1360              		@ sp needed
+ 1361 0042 80BD     		pop	{r7, pc}
+ 1362              		.cfi_endproc
+ 1363              	.LFE15:
+ 1365              		.section	.text.EmbUtil_IntPow,"ax",%progbits
+ 1366              		.align	2
+ 1367              		.global	EmbUtil_IntPow
+ 1368              		.code	16
+ 1369              		.thumb_func
+ 1371              	EmbUtil_IntPow:
+ 1372              	.LFB16:
+ 362:../Sources/libraries/emb_util/emb_util.c **** #endif
+ 363:../Sources/libraries/emb_util/emb_util.c **** 
+ 364:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMB_IPOW_FUNC
+ 365:../Sources/libraries/emb_util/emb_util.c **** int EmbUtil_IntPow(int base, int exp)
+ 366:../Sources/libraries/emb_util/emb_util.c **** {
+ 1373              		.loc 1 366 0
+ 1374              		.cfi_startproc
+ 1375 0000 80B5     		push	{r7, lr}
+ 1376              		.cfi_def_cfa_offset 8
+ 1377              		.cfi_offset 7, -8
+ 1378              		.cfi_offset 14, -4
+ 1379 0002 84B0     		sub	sp, sp, #16
+ 1380              		.cfi_def_cfa_offset 24
+ 1381 0004 00AF     		add	r7, sp, #0
+ 1382              		.cfi_def_cfa_register 7
+ 1383 0006 7860     		str	r0, [r7, #4]
+ 1384 0008 3960     		str	r1, [r7]
+ 367:../Sources/libraries/emb_util/emb_util.c ****     int result = 1;
+ 1385              		.loc 1 367 0
+ 1386 000a 0123     		mov	r3, #1
+ 1387 000c FB60     		str	r3, [r7, #12]
+ 1388              	.L96:
+ 368:../Sources/libraries/emb_util/emb_util.c ****     for (;;)
+ 369:../Sources/libraries/emb_util/emb_util.c ****     {
+ 370:../Sources/libraries/emb_util/emb_util.c ****         if (exp & 1)
+ 1389              		.loc 1 370 0
+ 1390 000e 3A68     		ldr	r2, [r7]
+ 1391 0010 0123     		mov	r3, #1
+ 1392 0012 1340     		and	r3, r2
+ 1393 0014 03D0     		beq	.L93
+ 371:../Sources/libraries/emb_util/emb_util.c ****             result *= base;
+ 1394              		.loc 1 371 0
+ 1395 0016 FB68     		ldr	r3, [r7, #12]
+ 1396 0018 7A68     		ldr	r2, [r7, #4]
+ 1397 001a 5343     		mul	r3, r2
+ 1398 001c FB60     		str	r3, [r7, #12]
+ 1399              	.L93:
+ 372:../Sources/libraries/emb_util/emb_util.c ****         exp >>= 1;
+ 1400              		.loc 1 372 0
+ 1401 001e 3B68     		ldr	r3, [r7]
+ 1402 0020 5B10     		asr	r3, r3, #1
+ 1403 0022 3B60     		str	r3, [r7]
+ 373:../Sources/libraries/emb_util/emb_util.c ****         if (!exp)
+ 1404              		.loc 1 373 0
+ 1405 0024 3B68     		ldr	r3, [r7]
+ 1406 0026 002B     		cmp	r3, #0
+ 1407 0028 00D1     		bne	.L94
+ 374:../Sources/libraries/emb_util/emb_util.c ****             break;
+ 1408              		.loc 1 374 0
+ 1409 002a 04E0     		b	.L98
+ 1410              	.L94:
+ 375:../Sources/libraries/emb_util/emb_util.c ****         base *= base;
+ 1411              		.loc 1 375 0
+ 1412 002c 7B68     		ldr	r3, [r7, #4]
+ 1413 002e 7A68     		ldr	r2, [r7, #4]
+ 1414 0030 5343     		mul	r3, r2
+ 1415 0032 7B60     		str	r3, [r7, #4]
+ 376:../Sources/libraries/emb_util/emb_util.c ****     }
+ 1416              		.loc 1 376 0
+ 1417 0034 EBE7     		b	.L96
+ 1418              	.L98:
+ 377:../Sources/libraries/emb_util/emb_util.c **** 
+ 378:../Sources/libraries/emb_util/emb_util.c ****     return result;
+ 1419              		.loc 1 378 0
+ 1420 0036 FB68     		ldr	r3, [r7, #12]
+ 379:../Sources/libraries/emb_util/emb_util.c **** }
+ 1421              		.loc 1 379 0
+ 1422 0038 181C     		mov	r0, r3
+ 1423 003a BD46     		mov	sp, r7
+ 1424 003c 04B0     		add	sp, sp, #16
+ 1425              		@ sp needed
+ 1426 003e 80BD     		pop	{r7, pc}
+ 1427              		.cfi_endproc
+ 1428              	.LFE16:
+ 1430              		.section	.text.EmbUtil_GetValue16LE,"ax",%progbits
+ 1431              		.align	2
+ 1432              		.global	EmbUtil_GetValue16LE
+ 1433              		.code	16
+ 1434              		.thumb_func
+ 1436              	EmbUtil_GetValue16LE:
+ 1437              	.LFB17:
+ 380:../Sources/libraries/emb_util/emb_util.c **** #endif
+ 381:../Sources/libraries/emb_util/emb_util.c **** 
+ 382:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMBUTIL_GETVALUE_16LE
+ 383:../Sources/libraries/emb_util/emb_util.c **** uint16_t EmbUtil_GetValue16LE(uint8_t *dataP)
+ 384:../Sources/libraries/emb_util/emb_util.c **** {
+ 1438              		.loc 1 384 0
+ 1439              		.cfi_startproc
+ 1440 0000 80B5     		push	{r7, lr}
+ 1441              		.cfi_def_cfa_offset 8
+ 1442              		.cfi_offset 7, -8
+ 1443              		.cfi_offset 14, -4
+ 1444 0002 82B0     		sub	sp, sp, #8
+ 1445              		.cfi_def_cfa_offset 16
+ 1446 0004 00AF     		add	r7, sp, #0
+ 1447              		.cfi_def_cfa_register 7
+ 1448 0006 7860     		str	r0, [r7, #4]
+ 385:../Sources/libraries/emb_util/emb_util.c ****   return (uint16_t)((dataP[1]<<8)+(dataP[0]));
+ 1449              		.loc 1 385 0
+ 1450 0008 7B68     		ldr	r3, [r7, #4]
+ 1451 000a 0133     		add	r3, r3, #1
+ 1452 000c 1B78     		ldrb	r3, [r3]
+ 1453 000e 1B02     		lsl	r3, r3, #8
+ 1454 0010 9AB2     		uxth	r2, r3
+ 1455 0012 7B68     		ldr	r3, [r7, #4]
+ 1456 0014 1B78     		ldrb	r3, [r3]
+ 1457 0016 D318     		add	r3, r2, r3
+ 1458 0018 9BB2     		uxth	r3, r3
+ 386:../Sources/libraries/emb_util/emb_util.c **** }
+ 1459              		.loc 1 386 0
+ 1460 001a 181C     		mov	r0, r3
+ 1461 001c BD46     		mov	sp, r7
+ 1462 001e 02B0     		add	sp, sp, #8
+ 1463              		@ sp needed
+ 1464 0020 80BD     		pop	{r7, pc}
+ 1465              		.cfi_endproc
+ 1466              	.LFE17:
+ 1468 0022 C046     		.section	.text.EmbUtil_GetValue24LE,"ax",%progbits
+ 1469              		.align	2
+ 1470              		.global	EmbUtil_GetValue24LE
+ 1471              		.code	16
+ 1472              		.thumb_func
+ 1474              	EmbUtil_GetValue24LE:
+ 1475              	.LFB18:
+ 387:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMBUTIL_GETVALUE_16LE */
+ 388:../Sources/libraries/emb_util/emb_util.c **** 
+ 389:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMBUTIL_GETVALUE_24LE
+ 390:../Sources/libraries/emb_util/emb_util.c **** uint32_t EmbUtil_GetValue24LE(uint8_t *dataP)
+ 391:../Sources/libraries/emb_util/emb_util.c **** {
+ 1476              		.loc 1 391 0
+ 1477              		.cfi_startproc
+ 1478 0000 80B5     		push	{r7, lr}
+ 1479              		.cfi_def_cfa_offset 8
+ 1480              		.cfi_offset 7, -8
+ 1481              		.cfi_offset 14, -4
+ 1482 0002 82B0     		sub	sp, sp, #8
+ 1483              		.cfi_def_cfa_offset 16
+ 1484 0004 00AF     		add	r7, sp, #0
+ 1485              		.cfi_def_cfa_register 7
+ 1486 0006 7860     		str	r0, [r7, #4]
+ 392:../Sources/libraries/emb_util/emb_util.c ****   return (uint32_t)(((uint32_t)dataP[2])<<16)+(dataP[1]<<8)+(dataP[0]);
+ 1487              		.loc 1 392 0
+ 1488 0008 7B68     		ldr	r3, [r7, #4]
+ 1489 000a 0233     		add	r3, r3, #2
+ 1490 000c 1B78     		ldrb	r3, [r3]
+ 1491 000e 1A04     		lsl	r2, r3, #16
+ 1492 0010 7B68     		ldr	r3, [r7, #4]
+ 1493 0012 0133     		add	r3, r3, #1
+ 1494 0014 1B78     		ldrb	r3, [r3]
+ 1495 0016 1B02     		lsl	r3, r3, #8
+ 1496 0018 D218     		add	r2, r2, r3
+ 1497 001a 7B68     		ldr	r3, [r7, #4]
+ 1498 001c 1B78     		ldrb	r3, [r3]
+ 1499 001e D318     		add	r3, r2, r3
+ 393:../Sources/libraries/emb_util/emb_util.c **** }
+ 1500              		.loc 1 393 0
+ 1501 0020 181C     		mov	r0, r3
+ 1502 0022 BD46     		mov	sp, r7
+ 1503 0024 02B0     		add	sp, sp, #8
+ 1504              		@ sp needed
+ 1505 0026 80BD     		pop	{r7, pc}
+ 1506              		.cfi_endproc
+ 1507              	.LFE18:
+ 1509              		.section	.text.EmbUtil_GetValue32LE,"ax",%progbits
+ 1510              		.align	2
+ 1511              		.global	EmbUtil_GetValue32LE
+ 1512              		.code	16
+ 1513              		.thumb_func
+ 1515              	EmbUtil_GetValue32LE:
+ 1516              	.LFB19:
+ 394:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMBUTIL_GETVALUE_24LE */
+ 395:../Sources/libraries/emb_util/emb_util.c **** 
+ 396:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMBUTIL_GETVALUE_32LE
+ 397:../Sources/libraries/emb_util/emb_util.c **** uint32_t EmbUtil_GetValue32LE(uint8_t *dataP)
+ 398:../Sources/libraries/emb_util/emb_util.c **** {
+ 1517              		.loc 1 398 0
+ 1518              		.cfi_startproc
+ 1519 0000 80B5     		push	{r7, lr}
+ 1520              		.cfi_def_cfa_offset 8
+ 1521              		.cfi_offset 7, -8
+ 1522              		.cfi_offset 14, -4
+ 1523 0002 82B0     		sub	sp, sp, #8
+ 1524              		.cfi_def_cfa_offset 16
+ 1525 0004 00AF     		add	r7, sp, #0
+ 1526              		.cfi_def_cfa_register 7
+ 1527 0006 7860     		str	r0, [r7, #4]
+ 399:../Sources/libraries/emb_util/emb_util.c ****   return (uint32_t)(((uint32_t)dataP[3])<<24)+(((uint32_t)dataP[2])<<16)+(dataP[1]<<8)+(dataP[0]);
+ 1528              		.loc 1 399 0
+ 1529 0008 7B68     		ldr	r3, [r7, #4]
+ 1530 000a 0333     		add	r3, r3, #3
+ 1531 000c 1B78     		ldrb	r3, [r3]
+ 1532 000e 1A06     		lsl	r2, r3, #24
+ 1533 0010 7B68     		ldr	r3, [r7, #4]
+ 1534 0012 0233     		add	r3, r3, #2
+ 1535 0014 1B78     		ldrb	r3, [r3]
+ 1536 0016 1B04     		lsl	r3, r3, #16
+ 1537 0018 D218     		add	r2, r2, r3
+ 1538 001a 7B68     		ldr	r3, [r7, #4]
+ 1539 001c 0133     		add	r3, r3, #1
+ 1540 001e 1B78     		ldrb	r3, [r3]
+ 1541 0020 1B02     		lsl	r3, r3, #8
+ 1542 0022 D218     		add	r2, r2, r3
+ 1543 0024 7B68     		ldr	r3, [r7, #4]
+ 1544 0026 1B78     		ldrb	r3, [r3]
+ 1545 0028 D318     		add	r3, r2, r3
+ 400:../Sources/libraries/emb_util/emb_util.c **** }
+ 1546              		.loc 1 400 0
+ 1547 002a 181C     		mov	r0, r3
+ 1548 002c BD46     		mov	sp, r7
+ 1549 002e 02B0     		add	sp, sp, #8
+ 1550              		@ sp needed
+ 1551 0030 80BD     		pop	{r7, pc}
+ 1552              		.cfi_endproc
+ 1553              	.LFE19:
+ 1555 0032 C046     		.section	.text.EmbUtil_SetValue16LE,"ax",%progbits
+ 1556              		.align	2
+ 1557              		.global	EmbUtil_SetValue16LE
+ 1558              		.code	16
+ 1559              		.thumb_func
+ 1561              	EmbUtil_SetValue16LE:
+ 1562              	.LFB20:
+ 401:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMBUTIL_GETVALUE_32LE */
+ 402:../Sources/libraries/emb_util/emb_util.c **** 
+ 403:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMBUTIL_SETVALUE_16LE
+ 404:../Sources/libraries/emb_util/emb_util.c **** void EmbUtil_SetValue16LE(uint16_t data, uint8_t *dataP)
+ 405:../Sources/libraries/emb_util/emb_util.c **** {
+ 1563              		.loc 1 405 0
+ 1564              		.cfi_startproc
+ 1565 0000 80B5     		push	{r7, lr}
+ 1566              		.cfi_def_cfa_offset 8
+ 1567              		.cfi_offset 7, -8
+ 1568              		.cfi_offset 14, -4
+ 1569 0002 82B0     		sub	sp, sp, #8
+ 1570              		.cfi_def_cfa_offset 16
+ 1571 0004 00AF     		add	r7, sp, #0
+ 1572              		.cfi_def_cfa_register 7
+ 1573 0006 021C     		mov	r2, r0
+ 1574 0008 3960     		str	r1, [r7]
+ 1575 000a BB1D     		add	r3, r7, #6
+ 1576 000c 1A80     		strh	r2, [r3]
+ 406:../Sources/libraries/emb_util/emb_util.c ****   dataP[0] = (uint8_t)(data&0xff); /* LSB */
+ 1577              		.loc 1 406 0
+ 1578 000e BB1D     		add	r3, r7, #6
+ 1579 0010 1B88     		ldrh	r3, [r3]
+ 1580 0012 DAB2     		uxtb	r2, r3
+ 1581 0014 3B68     		ldr	r3, [r7]
+ 1582 0016 1A70     		strb	r2, [r3]
+ 407:../Sources/libraries/emb_util/emb_util.c ****   dataP[1] = (uint8_t)((data>>8)&0xff); /* MSB */
+ 1583              		.loc 1 407 0
+ 1584 0018 3B68     		ldr	r3, [r7]
+ 1585 001a 0133     		add	r3, r3, #1
+ 1586 001c BA1D     		add	r2, r7, #6
+ 1587 001e 1288     		ldrh	r2, [r2]
+ 1588 0020 120A     		lsr	r2, r2, #8
+ 1589 0022 92B2     		uxth	r2, r2
+ 1590 0024 D2B2     		uxtb	r2, r2
+ 1591 0026 1A70     		strb	r2, [r3]
+ 408:../Sources/libraries/emb_util/emb_util.c **** }
+ 1592              		.loc 1 408 0
+ 1593 0028 BD46     		mov	sp, r7
+ 1594 002a 02B0     		add	sp, sp, #8
+ 1595              		@ sp needed
+ 1596 002c 80BD     		pop	{r7, pc}
+ 1597              		.cfi_endproc
+ 1598              	.LFE20:
+ 1600 002e C046     		.section	.text.EmbUtil_SetValue24LE,"ax",%progbits
+ 1601              		.align	2
+ 1602              		.global	EmbUtil_SetValue24LE
+ 1603              		.code	16
+ 1604              		.thumb_func
+ 1606              	EmbUtil_SetValue24LE:
+ 1607              	.LFB21:
+ 409:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMBUTIL_SETVALUE_16LE */
+ 410:../Sources/libraries/emb_util/emb_util.c **** 
+ 411:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMBUTIL_SETVALUE_24LE
+ 412:../Sources/libraries/emb_util/emb_util.c **** void EmbUtil_SetValue24LE(uint32_t data, uint8_t *dataP)
+ 413:../Sources/libraries/emb_util/emb_util.c **** {
+ 1608              		.loc 1 413 0
+ 1609              		.cfi_startproc
+ 1610 0000 80B5     		push	{r7, lr}
+ 1611              		.cfi_def_cfa_offset 8
+ 1612              		.cfi_offset 7, -8
+ 1613              		.cfi_offset 14, -4
+ 1614 0002 82B0     		sub	sp, sp, #8
+ 1615              		.cfi_def_cfa_offset 16
+ 1616 0004 00AF     		add	r7, sp, #0
+ 1617              		.cfi_def_cfa_register 7
+ 1618 0006 7860     		str	r0, [r7, #4]
+ 1619 0008 3960     		str	r1, [r7]
+ 414:../Sources/libraries/emb_util/emb_util.c ****   dataP[0] = (uint8_t)(data&0xff); /* LSB */
+ 1620              		.loc 1 414 0
+ 1621 000a 7B68     		ldr	r3, [r7, #4]
+ 1622 000c DAB2     		uxtb	r2, r3
+ 1623 000e 3B68     		ldr	r3, [r7]
+ 1624 0010 1A70     		strb	r2, [r3]
+ 415:../Sources/libraries/emb_util/emb_util.c ****   dataP[1] = (uint8_t)((data>>8)&0xff);
+ 1625              		.loc 1 415 0
+ 1626 0012 3B68     		ldr	r3, [r7]
+ 1627 0014 0133     		add	r3, r3, #1
+ 1628 0016 7A68     		ldr	r2, [r7, #4]
+ 1629 0018 120A     		lsr	r2, r2, #8
+ 1630 001a D2B2     		uxtb	r2, r2
+ 1631 001c 1A70     		strb	r2, [r3]
+ 416:../Sources/libraries/emb_util/emb_util.c ****   dataP[2] = (uint8_t)((data>>16)&0xff);
+ 1632              		.loc 1 416 0
+ 1633 001e 3B68     		ldr	r3, [r7]
+ 1634 0020 0233     		add	r3, r3, #2
+ 1635 0022 7A68     		ldr	r2, [r7, #4]
+ 1636 0024 120C     		lsr	r2, r2, #16
+ 1637 0026 D2B2     		uxtb	r2, r2
+ 1638 0028 1A70     		strb	r2, [r3]
+ 417:../Sources/libraries/emb_util/emb_util.c **** }
+ 1639              		.loc 1 417 0
+ 1640 002a BD46     		mov	sp, r7
+ 1641 002c 02B0     		add	sp, sp, #8
+ 1642              		@ sp needed
+ 1643 002e 80BD     		pop	{r7, pc}
+ 1644              		.cfi_endproc
+ 1645              	.LFE21:
+ 1647              		.section	.text.EmbUtil_SetValue32LE,"ax",%progbits
+ 1648              		.align	2
+ 1649              		.global	EmbUtil_SetValue32LE
+ 1650              		.code	16
+ 1651              		.thumb_func
+ 1653              	EmbUtil_SetValue32LE:
+ 1654              	.LFB22:
+ 418:../Sources/libraries/emb_util/emb_util.c **** #endif /* EMBUTIL_SETVALUE_24LE */
+ 419:../Sources/libraries/emb_util/emb_util.c **** 
+ 420:../Sources/libraries/emb_util/emb_util.c **** #ifdef EMBUTIL_SETVALUE_32LE
+ 421:../Sources/libraries/emb_util/emb_util.c **** void EmbUtil_SetValue32LE(uint32_t data, uint8_t *dataP)
+ 422:../Sources/libraries/emb_util/emb_util.c **** {
+ 1655              		.loc 1 422 0
+ 1656              		.cfi_startproc
+ 1657 0000 80B5     		push	{r7, lr}
+ 1658              		.cfi_def_cfa_offset 8
+ 1659              		.cfi_offset 7, -8
+ 1660              		.cfi_offset 14, -4
+ 1661 0002 82B0     		sub	sp, sp, #8
+ 1662              		.cfi_def_cfa_offset 16
+ 1663 0004 00AF     		add	r7, sp, #0
+ 1664              		.cfi_def_cfa_register 7
+ 1665 0006 7860     		str	r0, [r7, #4]
+ 1666 0008 3960     		str	r1, [r7]
+ 423:../Sources/libraries/emb_util/emb_util.c ****   dataP[0] = (uint8_t)(data&0xff); /* LSB */
+ 1667              		.loc 1 423 0
+ 1668 000a 7B68     		ldr	r3, [r7, #4]
+ 1669 000c DAB2     		uxtb	r2, r3
+ 1670 000e 3B68     		ldr	r3, [r7]
+ 1671 0010 1A70     		strb	r2, [r3]
+ 424:../Sources/libraries/emb_util/emb_util.c ****   dataP[1] = (uint8_t)((data>>8)&0xff);
+ 1672              		.loc 1 424 0
+ 1673 0012 3B68     		ldr	r3, [r7]
+ 1674 0014 0133     		add	r3, r3, #1
+ 1675 0016 7A68     		ldr	r2, [r7, #4]
+ 1676 0018 120A     		lsr	r2, r2, #8
+ 1677 001a D2B2     		uxtb	r2, r2
+ 1678 001c 1A70     		strb	r2, [r3]
+ 425:../Sources/libraries/emb_util/emb_util.c ****   dataP[2] = (uint8_t)((data>>16)&0xff);
+ 1679              		.loc 1 425 0
+ 1680 001e 3B68     		ldr	r3, [r7]
+ 1681 0020 0233     		add	r3, r3, #2
+ 1682 0022 7A68     		ldr	r2, [r7, #4]
+ 1683 0024 120C     		lsr	r2, r2, #16
+ 1684 0026 D2B2     		uxtb	r2, r2
+ 1685 0028 1A70     		strb	r2, [r3]
+ 426:../Sources/libraries/emb_util/emb_util.c ****   dataP[3] = (uint8_t)((data>>24)&0xff);
+ 1686              		.loc 1 426 0
+ 1687 002a 3B68     		ldr	r3, [r7]
+ 1688 002c 0333     		add	r3, r3, #3
+ 1689 002e 7A68     		ldr	r2, [r7, #4]
+ 1690 0030 120E     		lsr	r2, r2, #24
+ 1691 0032 D2B2     		uxtb	r2, r2
+ 1692 0034 1A70     		strb	r2, [r3]
+ 427:../Sources/libraries/emb_util/emb_util.c **** }
+ 1693              		.loc 1 427 0
+ 1694 0036 BD46     		mov	sp, r7
+ 1695 0038 02B0     		add	sp, sp, #8
+ 1696              		@ sp needed
+ 1697 003a 80BD     		pop	{r7, pc}
+ 1698              		.cfi_endproc
+ 1699              	.LFE22:
+ 1701              		.text
+ 1702              	.Letext0:
+ 1703              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1704              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 1705              		.file 4 "c:\\freescale\\kds_v3\\toolchain\\lib\\gcc\\arm-none-eabi\\4.8.4\\include\\stddef.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 emb_util.c
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:18     .text.EmbUtil_StrCopy:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:23     .text.EmbUtil_StrCopy:00000000 EmbUtil_StrCopy
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:84     .text.EmbUtil_StrCat:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:89     .text.EmbUtil_StrCat:00000000 EmbUtil_StrCat
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:170    .text.EmbUtil_CharCat:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:175    .text.EmbUtil_CharCat:00000000 EmbUtil_CharCat
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:242    .text.EmbUtil_ReverseStr:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:247    .text.EmbUtil_ReverseStr:00000000 EmbUtil_ReverseStr
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:321    .text.EmbUtil_StrFind:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:326    .text.EmbUtil_StrFind:00000000 EmbUtil_StrFind
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:405    .text.EmbUtil_StrFind:00000070 $d
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:412    .text.EmbUtil_ItoA:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:417    .text.EmbUtil_ItoA:00000000 EmbUtil_ItoA
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:582    .text.EmbUtil_AtoI:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:587    .text.EmbUtil_AtoI:00000000 EmbUtil_AtoI
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:927    .text.embUtil_FtoA:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:932    .text.embUtil_FtoA:00000000 embUtil_FtoA
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1055   .text.embUtil_FtoA:000000d8 $d
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1064   .text.EmbUtil_AtoF:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1069   .text.EmbUtil_AtoF:00000000 EmbUtil_AtoF
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1243   .text.EmbUtil_AtoF:00000100 $d
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1249   .text.EmbUtil_Map:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1254   .text.EmbUtil_Map:00000000 EmbUtil_Map
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1298   .text.EmbUtil_FloorSqrt:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1303   .text.EmbUtil_FloorSqrt:00000000 EmbUtil_FloorSqrt
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1366   .text.EmbUtil_IntPow:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1371   .text.EmbUtil_IntPow:00000000 EmbUtil_IntPow
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1431   .text.EmbUtil_GetValue16LE:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1436   .text.EmbUtil_GetValue16LE:00000000 EmbUtil_GetValue16LE
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1469   .text.EmbUtil_GetValue24LE:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1474   .text.EmbUtil_GetValue24LE:00000000 EmbUtil_GetValue24LE
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1510   .text.EmbUtil_GetValue32LE:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1515   .text.EmbUtil_GetValue32LE:00000000 EmbUtil_GetValue32LE
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1556   .text.EmbUtil_SetValue16LE:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1561   .text.EmbUtil_SetValue16LE:00000000 EmbUtil_SetValue16LE
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1601   .text.EmbUtil_SetValue24LE:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1606   .text.EmbUtil_SetValue24LE:00000000 EmbUtil_SetValue24LE
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1648   .text.EmbUtil_SetValue32LE:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccv6942c.s:1653   .text.EmbUtil_SetValue32LE:00000000 EmbUtil_SetValue32LE
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.stddef.h.158.a7efb00f6cbc6f43213b50e183c9830c
+                           .group:00000000 wm4.lock.h.2.9bc98482741e5e2a9450b12934a684ea
+                           .group:00000000 wm4._types.h.54.d3d34a3b7f3cc230cd159baf022b4b08
+                           .group:00000000 wm4.stddef.h.158.61317cdbfb4026324507d123a50b0fd6
+                           .group:00000000 wm4.reent.h.17.8bd9e4098e0428508c282cad794fae43
+                           .group:00000000 wm4.stdlib.h.53.a73f7e963d962393b7f9086194931e4a
+                           .group:00000000 wm4.cdefs.h.56.a2d04de9d47039852021e66fca39bb58
+                           .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:00000000 wm4.math.h.35.543015094efee9028e0e4b7949018580
+                           .group:00000000 wm4.emb_util.h.51.8ea7742b72b4040e74b9712312555cf1
+
+UNDEFINED SYMBOLS
+memcpy
+strlen
+strncmp
+__aeabi_idivmod
+__aeabi_idiv
+__aeabi_f2iz
+__aeabi_i2f
+__aeabi_fsub
+__aeabi_f2d
+__aeabi_i2d
+__aeabi_dmul
+__aeabi_d2f
+__aeabi_fcmplt
+pow
+__aeabi_fdiv
+__aeabi_fmul
+__aeabi_fadd

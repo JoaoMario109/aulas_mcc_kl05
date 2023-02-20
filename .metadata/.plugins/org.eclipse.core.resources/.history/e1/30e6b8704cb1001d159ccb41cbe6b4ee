@@ -1,0 +1,64 @@
+#include "mcu_general_config.h"
+#include "generic_drivers/lcd/lcd.h"
+#include "libraries/delay/delay.h"
+#include "libraries/emb_util/emb_util.h"
+#include "drivers/port/port.h"
+#include "drivers/gpio/gpio.h"
+#include "drivers/tpm/tpm.h"
+
+void TPM0_IRQHandler(void)
+{
+	if( TPM_GetIRQFlag( TPM0 ) )
+    {
+        GPIO_TogglePin( GPIOB, 9 );
+    }
+
+	TPM_ClearIRQFlag( TPM0 );
+}
+
+int main(void)
+{
+	const uint16_t tpmPwmModulo = 0xBFFFU;
+
+	/*Define como fonte de clock do contador o FLL que gera 20.971520 MHz.*/
+	TPM_SetCounterClkSrc( TPM0, TPM_CNT_CLOCK_FLL );
+	/*Inicializa TPM0, dividindo clock de entrada por 2, resultando em
+	* um clock do contador de 20.971520 MHz/4 = 10.485760 MHz.
+	* Dessa forma, a frequência do PWM é de 5.242880 MHz/tpmPwmModulo */
+	TPM_Init( TPM0, tpmPwmModulo, TPM_PRESCALER_DIV_2 );
+
+	PORT_Init( PORTB );
+	GPIO_InitOutputPin(GPIOB, 9, 1);
+
+	NVIC_EnableIRQ(TPM0_IRQn);
+
+	Delay_Init( );
+	TPM_InitCounter( TPM0 ); /*Inicializa registrador contador*/
+
+
+    for ( ; ; )
+    {
+        /* Delays to see the change of LED brightness. */
+        Delay_Waitus( 50 );
+        if ( brightnessUp )
+        {
+            /* Increases a duty cycle until it reaches a limited value. */
+            if ( tpmPwmModulo == ++updatedDutycycle )
+            {
+                brightnessUp = false;
+            }
+        }
+        else
+        {
+            /* Decreases a duty cycle until it reaches a limited value. */
+            if ( 0U == --updatedDutycycle )
+            {
+                brightnessUp = true;
+            }
+        }
+
+        TPM_SetChMatch(TPM0, 10, pwmDuty ); /*Configuração do duty cycle (valor de match)*/
+    }
+
+    return 0;
+}

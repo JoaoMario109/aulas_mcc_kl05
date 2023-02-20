@@ -1,0 +1,755 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"system_MKL05Z4.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	SystemCoreClock
+  18              		.section	.data.SystemCoreClock,"aw",%progbits
+  19              		.align	2
+  22              	SystemCoreClock:
+  23 0000 00004001 		.word	20971520
+  24              		.section	.text.SystemInit,"ax",%progbits
+  25              		.align	2
+  26              		.global	SystemInit
+  27              		.code	16
+  28              		.thumb_func
+  30              	SystemInit:
+  31              	.LFB34:
+  32              		.file 1 "../Project_Settings/Startup_Code/system_MKL05Z4.c"
+   1:../Project_Settings/Startup_Code/system_MKL05Z4.c **** /*
+   2:../Project_Settings/Startup_Code/system_MKL05Z4.c **** ** ###################################################################
+   3:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Processors:          MKL05Z32FK4
+   4:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **                          MKL05Z32LC4
+   5:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **                          MKL05Z32VLF4
+   6:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+   7:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Compilers:           Keil ARM C/C++ Compiler
+   8:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **                          Freescale C/C++ for Embedded ARM
+   9:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **                          GNU C Compiler
+  10:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **                          GNU C Compiler - CodeSourcery Sourcery G++
+  11:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **                          IAR ANSI C/C++ Compiler for ARM
+  12:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  13:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Reference manual:    KL05P48M48SF1RM, Rev.3, Sep 2012
+  14:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Version:             rev. 2.3, 2015-02-19
+  15:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Build:               b150220
+  16:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  17:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Abstract:
+  18:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Provides a system configuration function and a global variable that
+  19:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         contains the system frequency. It configures the device and initializes
+  20:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         the oscillator (PLL) that is part of the microcontroller device.
+  21:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  22:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Copyright (c) 2015 Freescale Semiconductor, Inc.
+  23:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     All rights reserved.
+  24:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  25:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Redistribution and use in source and binary forms, with or without modification,
+  26:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     are permitted provided that the following conditions are met:
+  27:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  28:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     o Redistributions of source code must retain the above copyright notice, this list
+  29:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **       of conditions and the following disclaimer.
+  30:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  31:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     o Redistributions in binary form must reproduce the above copyright notice, this
+  32:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **       list of conditions and the following disclaimer in the documentation and/or
+  33:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **       other materials provided with the distribution.
+  34:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  35:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     o Neither the name of Freescale Semiconductor, Inc. nor the names of its
+  36:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **       contributors may be used to endorse or promote products derived from this
+  37:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **       software without specific prior written permission.
+  38:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  39:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  40:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  41:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  42:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  43:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  44:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  45:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  46:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  47:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  48:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  49:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  50:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     http:                 www.freescale.com
+  51:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     mail:                 support@freescale.com
+  52:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  53:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     Revisions:
+  54:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.0 (2012-06-08)
+  55:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Initial version.
+  56:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.1 (2012-06-21)
+  57:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Update according to reference manual rev. 1.
+  58:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.2 (2012-08-01)
+  59:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Device type UARTLP changed to UART0.
+  60:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Missing PORTB_IRQn interrupt number definition added.
+  61:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.3 (2012-10-04)
+  62:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Update according to reference manual rev. 3.
+  63:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.4 (2012-11-22)
+  64:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         MCG module - bit LOLS in MCG_S register renamed to LOLS0.
+  65:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         NV registers - bit EZPORT_DIS in NV_FOPT register removed.
+  66:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.5 (2013-04-05)
+  67:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Changed start of doxygen comment.
+  68:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.6 (2013-04-11)
+  69:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         SystemInit methods updated with predefined initialization sequence.
+  70:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 1.7 (2014-02-10)
+  71:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Access restriction of some registers fixed.
+  72:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Startup file for gcc has been updated according to CMSIS 3.2.
+  73:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         The declaration of clock configurations has been moved to separate header file system_MK
+  74:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 2.0 (2014-08-22)
+  75:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Register accessor macros added to the memory map.
+  76:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Symbols for Processor Expert memory map compatibility added to the memory map.
+  77:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Module access macro module_BASES replaced by module_BASE_PTRS.
+  78:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         System initialization and startup updated.
+  79:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 2.1 (2014-08-28)
+  80:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Update of startup files - possibility to override DefaultISR added.
+  81:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 2.2 (2014-10-14)
+  82:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Interrupt INT_LPTimer renamed to INT_LPTMR0.
+  83:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **     - rev. 2.3 (2015-02-19)
+  84:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **         Renamed interrupt vector LLW to LLWU.
+  85:../Project_Settings/Startup_Code/system_MKL05Z4.c **** **
+  86:../Project_Settings/Startup_Code/system_MKL05Z4.c **** ** ###################################################################
+  87:../Project_Settings/Startup_Code/system_MKL05Z4.c **** */
+  88:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+  89:../Project_Settings/Startup_Code/system_MKL05Z4.c **** /*!
+  90:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  * @file MKL05Z4
+  91:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  * @version 2.3
+  92:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  * @date 2015-02-19
+  93:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  * @brief Device specific configuration file for MKL05Z4 (implementation file)
+  94:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  *
+  95:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  * Provides a system configuration function and a global variable that contains
+  96:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  * the system frequency. It configures the device and initializes the oscillator
+  97:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  * (PLL) that is part of the microcontroller device.
+  98:../Project_Settings/Startup_Code/system_MKL05Z4.c ****  */
+  99:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 100:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #include <stdint.h>
+ 101:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #include "MKL05Z4.h"
+ 102:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 103:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 104:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 105:../Project_Settings/Startup_Code/system_MKL05Z4.c **** /* ----------------------------------------------------------------------------
+ 106:../Project_Settings/Startup_Code/system_MKL05Z4.c ****    -- Core clock
+ 107:../Project_Settings/Startup_Code/system_MKL05Z4.c ****    ---------------------------------------------------------------------------- */
+ 108:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 109:../Project_Settings/Startup_Code/system_MKL05Z4.c **** uint32_t SystemCoreClock = DEFAULT_SYSTEM_CLOCK;
+ 110:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 111:../Project_Settings/Startup_Code/system_MKL05Z4.c **** /* ----------------------------------------------------------------------------
+ 112:../Project_Settings/Startup_Code/system_MKL05Z4.c ****    -- SystemInit()
+ 113:../Project_Settings/Startup_Code/system_MKL05Z4.c ****    ---------------------------------------------------------------------------- */
+ 114:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 115:../Project_Settings/Startup_Code/system_MKL05Z4.c **** void SystemInit (void) {
+  33              		.loc 1 115 0
+  34              		.cfi_startproc
+  35 0000 80B5     		push	{r7, lr}
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 7, -8
+  38              		.cfi_offset 14, -4
+  39 0002 00AF     		add	r7, sp, #0
+  40              		.cfi_def_cfa_register 7
+ 116:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Watchdog disable */
+ 117:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if (DISABLE_WDOG)
+ 118:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* SIM_COPC: COPT=0,COPCLKS=0,COPW=0 */
+ 119:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM->COPC = (uint32_t)0x00u;
+  41              		.loc 1 119 0
+  42 0004 034A     		ldr	r2, .L2
+  43 0006 8823     		mov	r3, #136
+  44 0008 5B01     		lsl	r3, r3, #5
+  45 000a 0021     		mov	r1, #0
+  46 000c D150     		str	r1, [r2, r3]
+ 120:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif /* (DISABLE_WDOG) */
+ 121:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #ifdef CLOCK_SETUP
+ 122:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Wake-up from VLLSx? */
+ 123:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if((RCM->SRS0 & RCM_SRS0_WAKEUP_MASK) != 0x00U)
+ 124:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   {
+ 125:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     /* VLLSx recovery */
+ 126:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     if((PMC->REGSC & PMC_REGSC_ACKISO_MASK) != 0x00U)
+ 127:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     {
+ 128:../Project_Settings/Startup_Code/system_MKL05Z4.c ****        PMC->REGSC |= PMC_REGSC_ACKISO_MASK; /* Release hold with ACKISO: Only has an effect if reco
+ 129:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     }
+ 130:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 131:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 132:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Power mode protection initialization */
+ 133:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #ifdef SYSTEM_SMC_PMPROT_VALUE
+ 134:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SMC->PMPROT = SYSTEM_SMC_PMPROT_VALUE;
+ 135:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 136:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 137:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* System clock initialization */
+ 138:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Internal reference clock trim initialization */
+ 139:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if defined(SLOW_TRIM_ADDRESS)
+ 140:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if ( *((uint8_t*)SLOW_TRIM_ADDRESS) != 0xFFU) {                              /* Skip if non-volat
+ 141:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     MCG->C3 = *((uint8_t*)SLOW_TRIM_ADDRESS);
+ 142:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif /* defined(SLOW_TRIM_ADDRESS) */
+ 143:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if defined(SLOW_FINE_TRIM_ADDRESS)
+ 144:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     MCG->C4 = (MCG->C4 & ~(MCG_C4_SCFTRIM_MASK)) | ((*((uint8_t*) SLOW_FINE_TRIM_ADDRESS)) & MCG_C4
+ 145:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 146:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if defined(FAST_TRIM_ADDRESS)
+ 147:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     MCG->C4 = (MCG->C4 & ~(MCG_C4_FCTRIM_MASK)) |((*((uint8_t*) FAST_TRIM_ADDRESS)) & MCG_C4_FCTRIM
+ 148:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 149:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if defined(SLOW_TRIM_ADDRESS)
+ 150:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 151:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif /* defined(SLOW_TRIM_ADDRESS) */
+ 152:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 153:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Set system prescalers and clock sources */
+ 154:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM->CLKDIV1 = SYSTEM_SIM_CLKDIV1_VALUE; /* Set system prescalers */
+ 155:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM->SOPT1 = ((SIM->SOPT1) & (uint32_t)(~(SIM_SOPT1_OSC32KSEL_MASK))) | ((SYSTEM_SIM_SOPT1_VALUE)
+ 156:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM->SOPT2 = ((SIM->SOPT2) & (uint32_t)(~(SIM_SOPT2_TPMSRC_MASK))) | ((SYSTEM_SIM_SOPT2_VALUE) & 
+ 157:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if ((MCG_MODE == MCG_MODE_FEI) || (MCG_MODE == MCG_MODE_FBI) || (MCG_MODE == MCG_MODE_BLPI))
+ 158:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Set MCG and OSC */
+ 159:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if  (((SYSTEM_OSC0_CR_VALUE) & OSC_CR_ERCLKEN_MASK) != 0x00U)
+ 160:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* SIM_SCGC5: PORTA=1 */
+ 161:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
+ 162:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* PORTA_PCR3: ISF=0,MUX=0 */
+ 163:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   PORTA_PCR3 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
+ 164:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if (((SYSTEM_MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0x00U) {
+ 165:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* PORTA_PCR4: ISF=0,MUX=0 */
+ 166:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   PORTA_PCR4 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
+ 167:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 168:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 169:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->SC = SYSTEM_MCG_SC_VALUE;       /* Set SC (fast clock internal reference divider) */
+ 170:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C1 = SYSTEM_MCG_C1_VALUE;       /* Set C1 (clock source selection, FLL ext. reference divide
+ 171:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Check that the source of the FLL reference clock is the requested one. */
+ 172:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if (((SYSTEM_MCG_C1_VALUE) & MCG_C1_IREFS_MASK) != 0x00U) {
+ 173:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     while((MCG->S & MCG_S_IREFST_MASK) == 0x00U) {
+ 174:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     }
+ 175:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   } else {
+ 176:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     while((MCG->S & MCG_S_IREFST_MASK) != 0x00U) {
+ 177:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     }
+ 178:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 179:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C2 = (SYSTEM_MCG_C2_VALUE) & (uint8_t)(~(MCG_C2_LP_MASK)); /* Set C2 (freq. range, ext. and 
+ 180:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C4 = ((SYSTEM_MCG_C4_VALUE) & (uint8_t)(~(MCG_C4_FCTRIM_MASK | MCG_C4_SCFTRIM_MASK))) | (MCG
+ 181:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   OSC0->CR = SYSTEM_OSC0_CR_VALUE;     /* Set OSC_CR (OSCERCLK enable, oscillator capacitor load) *
+ 182:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 183:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #else /* MCG_MODE */
+ 184:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Set MCG and OSC */
+ 185:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* SIM_SCGC5: PORTA=1 */
+ 186:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
+ 187:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* PORTA_PCR3: ISF=0,MUX=0 */
+ 188:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   PORTA_PCR3 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
+ 189:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if (((SYSTEM_MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0x00U) {
+ 190:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* PORTA_PCR4: ISF=0,MUX=0 */
+ 191:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   PORTA_PCR4 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
+ 192:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 193:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->SC = SYSTEM_MCG_SC_VALUE;       /* Set SC (fast clock internal reference divider) */
+ 194:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C2 = (SYSTEM_MCG_C2_VALUE) & (uint8_t)(~(MCG_C2_LP_MASK)); /* Set C2 (freq. range, ext. and 
+ 195:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   OSC0->CR = SYSTEM_OSC0_CR_VALUE;     /* Set OSC_CR (OSCERCLK enable, oscillator capacitor load) *
+ 196:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C1 = SYSTEM_MCG_C1_VALUE;       /* Set C1 (clock source selection, FLL ext. reference divide
+ 197:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if (((SYSTEM_MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0x00U) {
+ 198:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     while((MCG->S & MCG_S_OSCINIT0_MASK) == 0x00U) { /* Check that the oscillator is running */
+ 199:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     }
+ 200:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 201:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Check that the source of the FLL reference clock is the requested one. */
+ 202:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if (((SYSTEM_MCG_C1_VALUE) & MCG_C1_IREFS_MASK) != 0x00U) {
+ 203:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     while((MCG->S & MCG_S_IREFST_MASK) == 0x00U) {
+ 204:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     }
+ 205:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   } else {
+ 206:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     while((MCG->S & MCG_S_IREFST_MASK) != 0x00U) {
+ 207:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     }
+ 208:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 209:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C4 = ((SYSTEM_MCG_C4_VALUE)  & (uint8_t)(~(MCG_C4_FCTRIM_MASK | MCG_C4_SCFTRIM_MASK))) | (MC
+ 210:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif /* MCG_MODE */
+ 211:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 212:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Common for all MCG modes */
+ 213:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 214:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C6 = SYSTEM_MCG_C6_VALUE;
+ 215:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 216:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* BLPI and BLPE MCG mode specific */
+ 217:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if ((MCG_MODE == MCG_MODE_BLPI) || (MCG_MODE == MCG_MODE_BLPE))
+ 218:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   MCG->C2 |= (MCG_C2_LP_MASK);         /* Disable FLL and PLL in bypass mode */
+ 219:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 220:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 221:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Clock mode status check */
+ 222:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if ((MCG_MODE == MCG_MODE_FEI) || (MCG_MODE == MCG_MODE_FEE))
+ 223:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   while((MCG->S & MCG_S_CLKST_MASK) != 0x00U) { /* Wait until output of the FLL is selected */
+ 224:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 225:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Use LPTMR to wait for 1ms for FLL clock stabilization */
+ 226:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM->SCGC5 |= SIM_SCGC5_LPTMR_MASK;  /* Allow software control of LPMTR */
+ 227:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   LPTMR0->CMR = LPTMR_CMR_COMPARE(0);  /* Default 1 LPO tick */
+ 228:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   LPTMR0->CSR = (LPTMR_CSR_TCF_MASK | LPTMR_CSR_TPS(0x00));
+ 229:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   LPTMR0->PSR = (LPTMR_PSR_PCS(0x01) | LPTMR_PSR_PBYP_MASK); /* Clock source: LPO, Prescaler bypass
+ 230:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   LPTMR0->CSR = LPTMR_CSR_TEN_MASK;    /* LPMTR enable */
+ 231:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   while((LPTMR0->CSR & LPTMR_CSR_TCF_MASK) == 0u) {
+ 232:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 233:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   LPTMR0->CSR = 0x00;                  /* Disable LPTMR */
+ 234:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SIM->SCGC5 &= (uint32_t)~(uint32_t)SIM_SCGC5_LPTMR_MASK;
+ 235:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #elif ((MCG_MODE == MCG_MODE_FBI) || (MCG_MODE == MCG_MODE_BLPI))
+ 236:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   while((MCG->S & MCG_S_CLKST_MASK) != 0x04U) { /* Wait until internal reference clock is selected 
+ 237:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 238:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #elif ((MCG_MODE == MCG_MODE_FBE) || (MCG_MODE == MCG_MODE_BLPE))
+ 239:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   while((MCG->S & MCG_S_CLKST_MASK) != 0x08U) { /* Wait until external reference clock is selected 
+ 240:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 241:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 242:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 243:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   /* Very-low-power run mode enable */
+ 244:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #if (((SYSTEM_SMC_PMCTRL_VALUE) & SMC_PMCTRL_RUNM_MASK) == (0x02U << SMC_PMCTRL_RUNM_SHIFT))
+ 245:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SMC->PMCTRL = (uint8_t)((SYSTEM_SMC_PMCTRL_VALUE) & (SMC_PMCTRL_RUNM_MASK)); /* Enable VLPR mode 
+ 246:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   while(SMC->PMSTAT != 0x04U) {        /* Wait until the system is in VLPR mode */
+ 247:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   }
+ 248:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 249:../Project_Settings/Startup_Code/system_MKL05Z4.c **** #endif
+ 250:../Project_Settings/Startup_Code/system_MKL05Z4.c **** }
+  47              		.loc 1 250 0
+  48 000e BD46     		mov	sp, r7
+  49              		@ sp needed
+  50 0010 80BD     		pop	{r7, pc}
+  51              	.L3:
+  52 0012 C046     		.align	2
+  53              	.L2:
+  54 0014 00700440 		.word	1074032640
+  55              		.cfi_endproc
+  56              	.LFE34:
+  58              		.global	__aeabi_uidiv
+  59              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+  60              		.align	2
+  61              		.global	SystemCoreClockUpdate
+  62              		.code	16
+  63              		.thumb_func
+  65              	SystemCoreClockUpdate:
+  66              	.LFB35:
+ 251:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 252:../Project_Settings/Startup_Code/system_MKL05Z4.c **** /* ----------------------------------------------------------------------------
+ 253:../Project_Settings/Startup_Code/system_MKL05Z4.c ****    -- SystemCoreClockUpdate()
+ 254:../Project_Settings/Startup_Code/system_MKL05Z4.c ****    ---------------------------------------------------------------------------- */
+ 255:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 256:../Project_Settings/Startup_Code/system_MKL05Z4.c **** void SystemCoreClockUpdate (void) {
+  67              		.loc 1 256 0
+  68              		.cfi_startproc
+  69 0000 80B5     		push	{r7, lr}
+  70              		.cfi_def_cfa_offset 8
+  71              		.cfi_offset 7, -8
+  72              		.cfi_offset 14, -4
+  73 0002 82B0     		sub	sp, sp, #8
+  74              		.cfi_def_cfa_offset 16
+  75 0004 00AF     		add	r7, sp, #0
+  76              		.cfi_def_cfa_register 7
+ 257:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   uint32_t MCGOUTClock;                /* Variable to store output clock frequency of the MCG modul
+ 258:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   uint16_t Divider;
+ 259:../Project_Settings/Startup_Code/system_MKL05Z4.c **** 
+ 260:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x00U) {
+  77              		.loc 1 260 0
+  78 0006 714B     		ldr	r3, .L33
+  79 0008 1B78     		ldrb	r3, [r3]
+  80 000a DBB2     		uxtb	r3, r3
+  81 000c 1A1C     		mov	r2, r3
+  82 000e C023     		mov	r3, #192
+  83 0010 1340     		and	r3, r2
+  84 0012 00D0     		beq	.LCB48
+  85 0014 96E0     		b	.L5	@long jump
+  86              	.LCB48:
+ 261:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     /* FLL is selected */
+ 262:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     if ((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U) {
+  87              		.loc 1 262 0
+  88 0016 6D4B     		ldr	r3, .L33
+  89 0018 1B78     		ldrb	r3, [r3]
+  90 001a DBB2     		uxtb	r3, r3
+  91 001c 1A1C     		mov	r2, r3
+  92 001e 0423     		mov	r3, #4
+  93 0020 1340     		and	r3, r2
+  94 0022 3ED1     		bne	.L6
+ 263:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       /* External reference clock is selected */
+ 264:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       MCGOUTClock = CPU_XTAL_CLK_HZ;   /* System oscillator drives MCG clock */
+  95              		.loc 1 264 0
+  96 0024 8023     		mov	r3, #128
+  97 0026 1B02     		lsl	r3, r3, #8
+  98 0028 7B60     		str	r3, [r7, #4]
+ 265:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       if ((MCG->C2 & MCG_C2_RANGE0_MASK) != 0x00U) {
+  99              		.loc 1 265 0
+ 100 002a 684B     		ldr	r3, .L33
+ 101 002c 5B78     		ldrb	r3, [r3, #1]
+ 102 002e DBB2     		uxtb	r3, r3
+ 103 0030 1A1C     		mov	r2, r3
+ 104 0032 3023     		mov	r3, #48
+ 105 0034 1340     		and	r3, r2
+ 106 0036 20D0     		beq	.L7
+ 266:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         switch (MCG->C1 & MCG_C1_FRDIV_MASK) {
+ 107              		.loc 1 266 0
+ 108 0038 644B     		ldr	r3, .L33
+ 109 003a 1B78     		ldrb	r3, [r3]
+ 110 003c DBB2     		uxtb	r3, r3
+ 111 003e 1A1C     		mov	r2, r3
+ 112 0040 3823     		mov	r3, #56
+ 113 0042 1340     		and	r3, r2
+ 114 0044 302B     		cmp	r3, #48
+ 115 0046 06D0     		beq	.L9
+ 116 0048 382B     		cmp	r3, #56
+ 117 004a 09D1     		bne	.L32
+ 267:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         case 0x38U:
+ 268:../Project_Settings/Startup_Code/system_MKL05Z4.c ****           Divider = 1536U;
+ 118              		.loc 1 268 0
+ 119 004c BB1C     		add	r3, r7, #2
+ 120 004e C022     		mov	r2, #192
+ 121 0050 D200     		lsl	r2, r2, #3
+ 122 0052 1A80     		strh	r2, [r3]
+ 269:../Project_Settings/Startup_Code/system_MKL05Z4.c ****           break;
+ 123              		.loc 1 269 0
+ 124 0054 10E0     		b	.L11
+ 125              	.L9:
+ 270:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         case 0x30U:
+ 271:../Project_Settings/Startup_Code/system_MKL05Z4.c ****           Divider = 1280U;
+ 126              		.loc 1 271 0
+ 127 0056 BB1C     		add	r3, r7, #2
+ 128 0058 A022     		mov	r2, #160
+ 129 005a D200     		lsl	r2, r2, #3
+ 130 005c 1A80     		strh	r2, [r3]
+ 272:../Project_Settings/Startup_Code/system_MKL05Z4.c ****           break;
+ 131              		.loc 1 272 0
+ 132 005e 0BE0     		b	.L11
+ 133              	.L32:
+ 273:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         default:
+ 274:../Project_Settings/Startup_Code/system_MKL05Z4.c ****           Divider = (uint16_t)(32LU << ((MCG->C1 & MCG_C1_FRDIV_MASK) >> MCG_C1_FRDIV_SHIFT));
+ 134              		.loc 1 274 0
+ 135 0060 5A4B     		ldr	r3, .L33
+ 136 0062 1B78     		ldrb	r3, [r3]
+ 137 0064 DBB2     		uxtb	r3, r3
+ 138 0066 1A1C     		mov	r2, r3
+ 139 0068 3823     		mov	r3, #56
+ 140 006a 1340     		and	r3, r2
+ 141 006c DB08     		lsr	r3, r3, #3
+ 142 006e 2022     		mov	r2, #32
+ 143 0070 9A40     		lsl	r2, r2, r3
+ 144 0072 BB1C     		add	r3, r7, #2
+ 145 0074 1A80     		strh	r2, [r3]
+ 275:../Project_Settings/Startup_Code/system_MKL05Z4.c ****           break;
+ 146              		.loc 1 275 0
+ 147 0076 C046     		mov	r8, r8
+ 148              	.L11:
+ 149 0078 0AE0     		b	.L12
+ 150              	.L7:
+ 276:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         }
+ 277:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       } else {/* ((MCG->C2 & MCG_C2_RANGE_MASK) != 0x00U) */
+ 278:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         Divider = (uint16_t)(1LU << ((MCG->C1 & MCG_C1_FRDIV_MASK) >> MCG_C1_FRDIV_SHIFT));
+ 151              		.loc 1 278 0
+ 152 007a 544B     		ldr	r3, .L33
+ 153 007c 1B78     		ldrb	r3, [r3]
+ 154 007e DBB2     		uxtb	r3, r3
+ 155 0080 1A1C     		mov	r2, r3
+ 156 0082 3823     		mov	r3, #56
+ 157 0084 1340     		and	r3, r2
+ 158 0086 DB08     		lsr	r3, r3, #3
+ 159 0088 0122     		mov	r2, #1
+ 160 008a 9A40     		lsl	r2, r2, r3
+ 161 008c BB1C     		add	r3, r7, #2
+ 162 008e 1A80     		strh	r2, [r3]
+ 163              	.L12:
+ 279:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       }
+ 280:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       MCGOUTClock = (MCGOUTClock / Divider); /* Calculate the divided FLL reference clock */
+ 164              		.loc 1 280 0 discriminator 1
+ 165 0090 BB1C     		add	r3, r7, #2
+ 166 0092 1B88     		ldrh	r3, [r3]
+ 167 0094 7868     		ldr	r0, [r7, #4]
+ 168 0096 191C     		mov	r1, r3
+ 169 0098 FFF7FEFF 		bl	__aeabi_uidiv
+ 170 009c 031C     		mov	r3, r0
+ 171 009e 7B60     		str	r3, [r7, #4]
+ 172 00a0 02E0     		b	.L13
+ 173              	.L6:
+ 281:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     } else { /* (!((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U)) */
+ 282:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       MCGOUTClock = CPU_INT_SLOW_CLK_HZ; /* The slow internal reference clock is selected */
+ 174              		.loc 1 282 0
+ 175 00a2 8023     		mov	r3, #128
+ 176 00a4 1B02     		lsl	r3, r3, #8
+ 177 00a6 7B60     		str	r3, [r7, #4]
+ 178              	.L13:
+ 283:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     } /* (!((MCG->C1 & MCG_C1_IREFS_MASK) == 0x00U)) */
+ 284:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     /* Select correct multiplier to calculate the MCG output clock  */
+ 285:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     switch (MCG->C4 & (MCG_C4_DMX32_MASK | MCG_C4_DRST_DRS_MASK)) {
+ 179              		.loc 1 285 0
+ 180 00a8 484B     		ldr	r3, .L33
+ 181 00aa DB78     		ldrb	r3, [r3, #3]
+ 182 00ac DBB2     		uxtb	r3, r3
+ 183 00ae 1A1C     		mov	r2, r3
+ 184 00b0 E023     		mov	r3, #224
+ 185 00b2 1340     		and	r3, r2
+ 186 00b4 602B     		cmp	r3, #96
+ 187 00b6 27D0     		beq	.L15
+ 188 00b8 06D8     		bhi	.L16
+ 189 00ba 202B     		cmp	r3, #32
+ 190 00bc 16D0     		beq	.L17
+ 191 00be 402B     		cmp	r3, #64
+ 192 00c0 1BD0     		beq	.L18
+ 193 00c2 002B     		cmp	r3, #0
+ 194 00c4 0BD0     		beq	.L19
+ 286:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0x00U:
+ 287:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 640U;
+ 288:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 289:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0x20U:
+ 290:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 1280U;
+ 291:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 292:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0x40U:
+ 293:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 1920U;
+ 294:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 295:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0x60U:
+ 296:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 2560U;
+ 297:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 298:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0x80U:
+ 299:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 732U;
+ 300:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 301:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0xA0U:
+ 302:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 1464U;
+ 303:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 304:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0xC0U:
+ 305:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 2197U;
+ 306:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 307:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       case 0xE0U:
+ 308:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 2929U;
+ 309:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 310:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       default:
+ 311:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 195              		.loc 1 311 0
+ 196 00c6 3CE0     		b	.L25
+ 197              	.L16:
+ 285:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     switch (MCG->C4 & (MCG_C4_DMX32_MASK | MCG_C4_DRST_DRS_MASK)) {
+ 198              		.loc 1 285 0
+ 199 00c8 A02B     		cmp	r3, #160
+ 200 00ca 2AD0     		beq	.L20
+ 201 00cc 02D8     		bhi	.L21
+ 202 00ce 802B     		cmp	r3, #128
+ 203 00d0 21D0     		beq	.L22
+ 204              		.loc 1 311 0
+ 205 00d2 36E0     		b	.L25
+ 206              	.L21:
+ 285:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     switch (MCG->C4 & (MCG_C4_DMX32_MASK | MCG_C4_DRST_DRS_MASK)) {
+ 207              		.loc 1 285 0
+ 208 00d4 C02B     		cmp	r3, #192
+ 209 00d6 2AD0     		beq	.L23
+ 210 00d8 E02B     		cmp	r3, #224
+ 211 00da 2DD0     		beq	.L24
+ 212              		.loc 1 311 0
+ 213 00dc 31E0     		b	.L25
+ 214              	.L19:
+ 287:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 640U;
+ 215              		.loc 1 287 0
+ 216 00de 7A68     		ldr	r2, [r7, #4]
+ 217 00e0 131C     		mov	r3, r2
+ 218 00e2 9B00     		lsl	r3, r3, #2
+ 219 00e4 9B18     		add	r3, r3, r2
+ 220 00e6 DB01     		lsl	r3, r3, #7
+ 221 00e8 7B60     		str	r3, [r7, #4]
+ 288:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 222              		.loc 1 288 0
+ 223 00ea 2AE0     		b	.L25
+ 224              	.L17:
+ 290:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 1280U;
+ 225              		.loc 1 290 0
+ 226 00ec 7A68     		ldr	r2, [r7, #4]
+ 227 00ee 131C     		mov	r3, r2
+ 228 00f0 9B00     		lsl	r3, r3, #2
+ 229 00f2 9B18     		add	r3, r3, r2
+ 230 00f4 1B02     		lsl	r3, r3, #8
+ 231 00f6 7B60     		str	r3, [r7, #4]
+ 291:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 232              		.loc 1 291 0
+ 233 00f8 23E0     		b	.L25
+ 234              	.L18:
+ 293:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 1920U;
+ 235              		.loc 1 293 0
+ 236 00fa 7A68     		ldr	r2, [r7, #4]
+ 237 00fc 131C     		mov	r3, r2
+ 238 00fe 1B01     		lsl	r3, r3, #4
+ 239 0100 9B1A     		sub	r3, r3, r2
+ 240 0102 DB01     		lsl	r3, r3, #7
+ 241 0104 7B60     		str	r3, [r7, #4]
+ 294:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 242              		.loc 1 294 0
+ 243 0106 1CE0     		b	.L25
+ 244              	.L15:
+ 296:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 2560U;
+ 245              		.loc 1 296 0
+ 246 0108 7A68     		ldr	r2, [r7, #4]
+ 247 010a 131C     		mov	r3, r2
+ 248 010c 9B00     		lsl	r3, r3, #2
+ 249 010e 9B18     		add	r3, r3, r2
+ 250 0110 5B02     		lsl	r3, r3, #9
+ 251 0112 7B60     		str	r3, [r7, #4]
+ 297:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 252              		.loc 1 297 0
+ 253 0114 15E0     		b	.L25
+ 254              	.L22:
+ 299:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 732U;
+ 255              		.loc 1 299 0
+ 256 0116 7B68     		ldr	r3, [r7, #4]
+ 257 0118 B722     		mov	r2, #183
+ 258 011a 9200     		lsl	r2, r2, #2
+ 259 011c 5343     		mul	r3, r2
+ 260 011e 7B60     		str	r3, [r7, #4]
+ 300:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 261              		.loc 1 300 0
+ 262 0120 0FE0     		b	.L25
+ 263              	.L20:
+ 302:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 1464U;
+ 264              		.loc 1 302 0
+ 265 0122 7B68     		ldr	r3, [r7, #4]
+ 266 0124 B722     		mov	r2, #183
+ 267 0126 D200     		lsl	r2, r2, #3
+ 268 0128 5343     		mul	r3, r2
+ 269 012a 7B60     		str	r3, [r7, #4]
+ 303:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 270              		.loc 1 303 0
+ 271 012c 09E0     		b	.L25
+ 272              	.L23:
+ 305:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 2197U;
+ 273              		.loc 1 305 0
+ 274 012e 7B68     		ldr	r3, [r7, #4]
+ 275 0130 274A     		ldr	r2, .L33+4
+ 276 0132 5343     		mul	r3, r2
+ 277 0134 7B60     		str	r3, [r7, #4]
+ 306:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 278              		.loc 1 306 0
+ 279 0136 04E0     		b	.L25
+ 280              	.L24:
+ 308:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         MCGOUTClock *= 2929U;
+ 281              		.loc 1 308 0
+ 282 0138 7B68     		ldr	r3, [r7, #4]
+ 283 013a 264A     		ldr	r2, .L33+8
+ 284 013c 5343     		mul	r3, r2
+ 285 013e 7B60     		str	r3, [r7, #4]
+ 309:../Project_Settings/Startup_Code/system_MKL05Z4.c ****         break;
+ 286              		.loc 1 309 0
+ 287 0140 C046     		mov	r8, r8
+ 288              	.L25:
+ 289 0142 33E0     		b	.L26
+ 290              	.L5:
+ 312:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     }
+ 313:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   } else if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x40U) {
+ 291              		.loc 1 313 0
+ 292 0144 214B     		ldr	r3, .L33
+ 293 0146 1B78     		ldrb	r3, [r3]
+ 294 0148 DBB2     		uxtb	r3, r3
+ 295 014a 1A1C     		mov	r2, r3
+ 296 014c C023     		mov	r3, #192
+ 297 014e 1340     		and	r3, r2
+ 298 0150 402B     		cmp	r3, #64
+ 299 0152 1ED1     		bne	.L27
+ 314:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     /* Internal reference clock is selected */
+ 315:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     if ((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U) {
+ 300              		.loc 1 315 0
+ 301 0154 1D4B     		ldr	r3, .L33
+ 302 0156 5B78     		ldrb	r3, [r3, #1]
+ 303 0158 DBB2     		uxtb	r3, r3
+ 304 015a 1A1C     		mov	r2, r3
+ 305 015c 0123     		mov	r3, #1
+ 306 015e 1340     		and	r3, r2
+ 307 0160 03D1     		bne	.L28
+ 316:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       MCGOUTClock = CPU_INT_SLOW_CLK_HZ; /* Slow internal reference clock selected */
+ 308              		.loc 1 316 0
+ 309 0162 8023     		mov	r3, #128
+ 310 0164 1B02     		lsl	r3, r3, #8
+ 311 0166 7B60     		str	r3, [r7, #4]
+ 312 0168 20E0     		b	.L26
+ 313              	.L28:
+ 317:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     } else { /* (!((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U)) */
+ 318:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       Divider = (uint16_t)(0x01LU << ((MCG->SC & MCG_SC_FCRDIV_MASK) >> MCG_SC_FCRDIV_SHIFT));
+ 314              		.loc 1 318 0
+ 315 016a 184B     		ldr	r3, .L33
+ 316 016c 1B7A     		ldrb	r3, [r3, #8]
+ 317 016e DBB2     		uxtb	r3, r3
+ 318 0170 1A1C     		mov	r2, r3
+ 319 0172 0E23     		mov	r3, #14
+ 320 0174 1340     		and	r3, r2
+ 321 0176 5B08     		lsr	r3, r3, #1
+ 322 0178 0122     		mov	r2, #1
+ 323 017a 9A40     		lsl	r2, r2, r3
+ 324 017c BB1C     		add	r3, r7, #2
+ 325 017e 1A80     		strh	r2, [r3]
+ 319:../Project_Settings/Startup_Code/system_MKL05Z4.c ****       MCGOUTClock = (uint32_t) (CPU_INT_FAST_CLK_HZ / Divider); /* Fast internal reference clock se
+ 326              		.loc 1 319 0
+ 327 0180 BB1C     		add	r3, r7, #2
+ 328 0182 1B88     		ldrh	r3, [r3]
+ 329 0184 1448     		ldr	r0, .L33+12
+ 330 0186 191C     		mov	r1, r3
+ 331 0188 FFF7FEFF 		bl	__aeabi_uidiv
+ 332 018c 031C     		mov	r3, r0
+ 333 018e 7B60     		str	r3, [r7, #4]
+ 334 0190 0CE0     		b	.L26
+ 335              	.L27:
+ 320:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     } /* (!((MCG->C2 & MCG_C2_IRCS_MASK) == 0x00U)) */
+ 321:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   } else if ((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U) {
+ 336              		.loc 1 321 0
+ 337 0192 0E4B     		ldr	r3, .L33
+ 338 0194 1B78     		ldrb	r3, [r3]
+ 339 0196 DBB2     		uxtb	r3, r3
+ 340 0198 1A1C     		mov	r2, r3
+ 341 019a C023     		mov	r3, #192
+ 342 019c 1340     		and	r3, r2
+ 343 019e 802B     		cmp	r3, #128
+ 344 01a0 03D1     		bne	.L30
+ 322:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     /* External reference clock is selected */
+ 323:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     MCGOUTClock = CPU_XTAL_CLK_HZ;     /* System oscillator drives MCG clock */
+ 345              		.loc 1 323 0
+ 346 01a2 8023     		mov	r3, #128
+ 347 01a4 1B02     		lsl	r3, r3, #8
+ 348 01a6 7B60     		str	r3, [r7, #4]
+ 349 01a8 00E0     		b	.L26
+ 350              	.L30:
+ 324:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   } else { /* (!((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U)) */
+ 325:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     /* Reserved value */
+ 326:../Project_Settings/Startup_Code/system_MKL05Z4.c ****     return;
+ 351              		.loc 1 326 0
+ 352 01aa 0CE0     		b	.L4
+ 353              	.L26:
+ 327:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   } /* (!((MCG->C1 & MCG_C1_CLKS_MASK) == 0x80U)) */
+ 328:../Project_Settings/Startup_Code/system_MKL05Z4.c ****   SystemCoreClock = (MCGOUTClock / (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDI
+ 354              		.loc 1 328 0
+ 355 01ac 0B4A     		ldr	r2, .L33+16
+ 356 01ae 0C4B     		ldr	r3, .L33+20
+ 357 01b0 D358     		ldr	r3, [r2, r3]
+ 358 01b2 1B0F     		lsr	r3, r3, #28
+ 359 01b4 0133     		add	r3, r3, #1
+ 360 01b6 7868     		ldr	r0, [r7, #4]
+ 361 01b8 191C     		mov	r1, r3
+ 362 01ba FFF7FEFF 		bl	__aeabi_uidiv
+ 363 01be 031C     		mov	r3, r0
+ 364 01c0 1A1C     		mov	r2, r3
+ 365 01c2 084B     		ldr	r3, .L33+24
+ 366 01c4 1A60     		str	r2, [r3]
+ 367              	.L4:
+ 329:../Project_Settings/Startup_Code/system_MKL05Z4.c **** }
+ 368              		.loc 1 329 0
+ 369 01c6 BD46     		mov	sp, r7
+ 370 01c8 02B0     		add	sp, sp, #8
+ 371              		@ sp needed
+ 372 01ca 80BD     		pop	{r7, pc}
+ 373              	.L34:
+ 374              		.align	2
+ 375              	.L33:
+ 376 01cc 00400640 		.word	1074151424
+ 377 01d0 95080000 		.word	2197
+ 378 01d4 710B0000 		.word	2929
+ 379 01d8 00093D00 		.word	4000000
+ 380 01dc 00700440 		.word	1074032640
+ 381 01e0 44100000 		.word	4164
+ 382 01e4 00000000 		.word	SystemCoreClock
+ 383              		.cfi_endproc
+ 384              	.LFE35:
+ 386              		.text
+ 387              	.Letext0:
+ 388              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 389              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 390              		.file 4 "../Includes/MKL05Z4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 system_MKL05Z4.c
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:22     .data.SystemCoreClock:00000000 SystemCoreClock
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:19     .data.SystemCoreClock:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:25     .text.SystemInit:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:30     .text.SystemInit:00000000 SystemInit
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:54     .text.SystemInit:00000014 $d
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:60     .text.SystemCoreClockUpdate:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:65     .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
+C:\Users\mathe\AppData\Local\Temp\cceYTB47.s:376    .text.SystemCoreClockUpdate:000001cc $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv

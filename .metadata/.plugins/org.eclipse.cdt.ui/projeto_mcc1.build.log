@@ -1,0 +1,428 @@
+16:44:49 **** Incremental Build of configuration Debug for project projeto_mcc1 ****
+make all 
+Building file: ../Sources/libraries/emb_util/emb_util.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/libraries/emb_util/emb_util.o.lst" -v -MMD -MP -MF"Sources/libraries/emb_util/emb_util.d" -MT"Sources/libraries/emb_util/emb_util.o" -c -o "Sources/libraries/emb_util/emb_util.o" "../Sources/libraries/emb_util/emb_util.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/libraries/emb_util/emb_util.d' '-MT' 'Sources/libraries/emb_util/emb_util.o' '-c' '-o' 'Sources/libraries/emb_util/emb_util.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/libraries/emb_util/emb_util.d -MF Sources/libraries/emb_util/emb_util.d -MP -MT Sources/libraries/emb_util/emb_util.o -dD -D__USES_INITFINI__ ../Sources/libraries/emb_util/emb_util.c -quiet -dumpbase emb_util.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/libraries/emb_util/emb_util.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccv6942c.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/libraries/emb_util/emb_util.d' '-MT' 'Sources/libraries/emb_util/emb_util.o' '-c' '-o' 'Sources/libraries/emb_util/emb_util.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/libraries/emb_util/emb_util.o.lst -o Sources/libraries/emb_util/emb_util.o C:\Users\mathe\AppData\Local\Temp\ccv6942c.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/libraries/emb_util/emb_util.d' '-MT' 'Sources/libraries/emb_util/emb_util.o' '-c' '-o' 'Sources/libraries/emb_util/emb_util.o'
+Finished building: ../Sources/libraries/emb_util/emb_util.c
+ 
+Building file: ../Sources/libraries/delay/delay.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/libraries/delay/delay.o.lst" -v -MMD -MP -MF"Sources/libraries/delay/delay.d" -MT"Sources/libraries/delay/delay.o" -c -o "Sources/libraries/delay/delay.o" "../Sources/libraries/delay/delay.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/libraries/delay/delay.d' '-MT' 'Sources/libraries/delay/delay.o' '-c' '-o' 'Sources/libraries/delay/delay.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/libraries/delay/delay.d -MF Sources/libraries/delay/delay.d -MP -MT Sources/libraries/delay/delay.o -dD -D__USES_INITFINI__ ../Sources/libraries/delay/delay.c -quiet -dumpbase delay.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/libraries/delay/delay.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/libraries/delay/delay.d' '-MT' 'Sources/libraries/delay/delay.o' '-c' '-o' 'Sources/libraries/delay/delay.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/libraries/delay/delay.o.lst -o Sources/libraries/delay/delay.o C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/libraries/delay/delay.d' '-MT' 'Sources/libraries/delay/delay.o' '-c' '-o' 'Sources/libraries/delay/delay.o'
+Finished building: ../Sources/libraries/delay/delay.c
+ 
+Building file: ../Sources/generic_drivers/lcd/lcd.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/generic_drivers/lcd/lcd.o.lst" -v -MMD -MP -MF"Sources/generic_drivers/lcd/lcd.d" -MT"Sources/generic_drivers/lcd/lcd.o" -c -o "Sources/generic_drivers/lcd/lcd.o" "../Sources/generic_drivers/lcd/lcd.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/generic_drivers/lcd/lcd.d' '-MT' 'Sources/generic_drivers/lcd/lcd.o' '-c' '-o' 'Sources/generic_drivers/lcd/lcd.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/generic_drivers/lcd/lcd.d -MF Sources/generic_drivers/lcd/lcd.d -MP -MT Sources/generic_drivers/lcd/lcd.o -dD -D__USES_INITFINI__ ../Sources/generic_drivers/lcd/lcd.c -quiet -dumpbase lcd.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/generic_drivers/lcd/lcd.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+../Sources/generic_drivers/lcd/lcd.c: In function 'LCD_CreateBigNumsChars':
+../Sources/generic_drivers/lcd/lcd.c:660:3: warning: passing argument 3 of 'LCD_CreateChar' discards 'const' qualifier from pointer target type [enabled by default]
+   LCD_CreateChar(handle, i, &_bigNumsCodes[j]);
+   ^
+../Sources/generic_drivers/lcd/lcd.c:625:6: note: expected 'uint8_t *' but argument is of type 'const uint8_t *'
+ void LCD_CreateChar(lcdHandle_t handle, uint8_t location, uint8_t charmap[])
+      ^
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/generic_drivers/lcd/lcd.d' '-MT' 'Sources/generic_drivers/lcd/lcd.o' '-c' '-o' 'Sources/generic_drivers/lcd/lcd.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/generic_drivers/lcd/lcd.o.lst -o Sources/generic_drivers/lcd/lcd.o C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/generic_drivers/lcd/lcd.d' '-MT' 'Sources/generic_drivers/lcd/lcd.o' '-c' '-o' 'Sources/generic_drivers/lcd/lcd.o'
+Finished building: ../Sources/generic_drivers/lcd/lcd.c
+ 
+Building file: ../Sources/drivers/uart/uart.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/drivers/uart/uart.o.lst" -v -MMD -MP -MF"Sources/drivers/uart/uart.d" -MT"Sources/drivers/uart/uart.o" -c -o "Sources/drivers/uart/uart.o" "../Sources/drivers/uart/uart.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/uart/uart.d' '-MT' 'Sources/drivers/uart/uart.o' '-c' '-o' 'Sources/drivers/uart/uart.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/drivers/uart/uart.d -MF Sources/drivers/uart/uart.d -MP -MT Sources/drivers/uart/uart.o -dD -D__USES_INITFINI__ ../Sources/drivers/uart/uart.c -quiet -dumpbase uart.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/drivers/uart/uart.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/uart/uart.d' '-MT' 'Sources/drivers/uart/uart.o' '-c' '-o' 'Sources/drivers/uart/uart.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/drivers/uart/uart.o.lst -o Sources/drivers/uart/uart.o C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/uart/uart.d' '-MT' 'Sources/drivers/uart/uart.o' '-c' '-o' 'Sources/drivers/uart/uart.o'
+Finished building: ../Sources/drivers/uart/uart.c
+ 
+Building file: ../Sources/drivers/tpm/tpm.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/drivers/tpm/tpm.o.lst" -v -MMD -MP -MF"Sources/drivers/tpm/tpm.d" -MT"Sources/drivers/tpm/tpm.o" -c -o "Sources/drivers/tpm/tpm.o" "../Sources/drivers/tpm/tpm.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/tpm/tpm.d' '-MT' 'Sources/drivers/tpm/tpm.o' '-c' '-o' 'Sources/drivers/tpm/tpm.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/drivers/tpm/tpm.d -MF Sources/drivers/tpm/tpm.d -MP -MT Sources/drivers/tpm/tpm.o -dD -D__USES_INITFINI__ ../Sources/drivers/tpm/tpm.c -quiet -dumpbase tpm.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/drivers/tpm/tpm.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/tpm/tpm.d' '-MT' 'Sources/drivers/tpm/tpm.o' '-c' '-o' 'Sources/drivers/tpm/tpm.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/drivers/tpm/tpm.o.lst -o Sources/drivers/tpm/tpm.o C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/tpm/tpm.d' '-MT' 'Sources/drivers/tpm/tpm.o' '-c' '-o' 'Sources/drivers/tpm/tpm.o'
+Finished building: ../Sources/drivers/tpm/tpm.c
+ 
+Building file: ../Sources/drivers/port/port.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/drivers/port/port.o.lst" -v -MMD -MP -MF"Sources/drivers/port/port.d" -MT"Sources/drivers/port/port.o" -c -o "Sources/drivers/port/port.o" "../Sources/drivers/port/port.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/port/port.d' '-MT' 'Sources/drivers/port/port.o' '-c' '-o' 'Sources/drivers/port/port.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/drivers/port/port.d -MF Sources/drivers/port/port.d -MP -MT Sources/drivers/port/port.o -dD -D__USES_INITFINI__ ../Sources/drivers/port/port.c -quiet -dumpbase port.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/drivers/port/port.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/port/port.d' '-MT' 'Sources/drivers/port/port.o' '-c' '-o' 'Sources/drivers/port/port.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/drivers/port/port.o.lst -o Sources/drivers/port/port.o C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/port/port.d' '-MT' 'Sources/drivers/port/port.o' '-c' '-o' 'Sources/drivers/port/port.o'
+Finished building: ../Sources/drivers/port/port.c
+ 
+Building file: ../Sources/drivers/gpio/gpio.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/drivers/gpio/gpio.o.lst" -v -MMD -MP -MF"Sources/drivers/gpio/gpio.d" -MT"Sources/drivers/gpio/gpio.o" -c -o "Sources/drivers/gpio/gpio.o" "../Sources/drivers/gpio/gpio.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/gpio/gpio.d' '-MT' 'Sources/drivers/gpio/gpio.o' '-c' '-o' 'Sources/drivers/gpio/gpio.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/drivers/gpio/gpio.d -MF Sources/drivers/gpio/gpio.d -MP -MT Sources/drivers/gpio/gpio.o -dD -D__USES_INITFINI__ ../Sources/drivers/gpio/gpio.c -quiet -dumpbase gpio.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/drivers/gpio/gpio.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccBWsj50.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/gpio/gpio.d' '-MT' 'Sources/drivers/gpio/gpio.o' '-c' '-o' 'Sources/drivers/gpio/gpio.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/drivers/gpio/gpio.o.lst -o Sources/drivers/gpio/gpio.o C:\Users\mathe\AppData\Local\Temp\ccBWsj50.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/gpio/gpio.d' '-MT' 'Sources/drivers/gpio/gpio.o' '-c' '-o' 'Sources/drivers/gpio/gpio.o'
+Finished building: ../Sources/drivers/gpio/gpio.c
+ 
+Building file: ../Sources/drivers/adc/adc.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/drivers/adc/adc.o.lst" -v -MMD -MP -MF"Sources/drivers/adc/adc.d" -MT"Sources/drivers/adc/adc.o" -c -o "Sources/drivers/adc/adc.o" "../Sources/drivers/adc/adc.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/adc/adc.d' '-MT' 'Sources/drivers/adc/adc.o' '-c' '-o' 'Sources/drivers/adc/adc.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/drivers/adc/adc.d -MF Sources/drivers/adc/adc.d -MP -MT Sources/drivers/adc/adc.o -dD -D__USES_INITFINI__ ../Sources/drivers/adc/adc.c -quiet -dumpbase adc.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/drivers/adc/adc.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/adc/adc.d' '-MT' 'Sources/drivers/adc/adc.o' '-c' '-o' 'Sources/drivers/adc/adc.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/drivers/adc/adc.o.lst -o Sources/drivers/adc/adc.o C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/drivers/adc/adc.d' '-MT' 'Sources/drivers/adc/adc.o' '-c' '-o' 'Sources/drivers/adc/adc.o'
+Finished building: ../Sources/drivers/adc/adc.c
+ 
+Building file: ../Sources/main_lcd.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Sources/main_lcd.o.lst" -v -MMD -MP -MF"Sources/main_lcd.d" -MT"Sources/main_lcd.o" -c -o "Sources/main_lcd.o" "../Sources/main_lcd.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/main_lcd.d' '-MT' 'Sources/main_lcd.o' '-c' '-o' 'Sources/main_lcd.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Sources/main_lcd.d -MF Sources/main_lcd.d -MP -MT Sources/main_lcd.o -dD -D__USES_INITFINI__ ../Sources/main_lcd.c -quiet -dumpbase main_lcd.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Sources/main_lcd.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/main_lcd.d' '-MT' 'Sources/main_lcd.o' '-c' '-o' 'Sources/main_lcd.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Sources/main_lcd.o.lst -o Sources/main_lcd.o C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Sources/main_lcd.d' '-MT' 'Sources/main_lcd.o' '-c' '-o' 'Sources/main_lcd.o'
+Finished building: ../Sources/main_lcd.c
+ 
+Building file: ../Project_Settings/Startup_Code/startup_MKL05Z4.S
+Invoking: Cross ARM GNU Assembler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -x assembler-with-cpp -MMD -MP -MF"Project_Settings/Startup_Code/startup_MKL05Z4.d" -MT"Project_Settings/Startup_Code/startup_MKL05Z4.o" -c -o "Project_Settings/Startup_Code/startup_MKL05Z4.o" "../Project_Settings/Startup_Code/startup_MKL05Z4.S"
+Finished building: ../Project_Settings/Startup_Code/startup_MKL05Z4.S
+ 
+Building file: ../Project_Settings/Startup_Code/system_MKL05Z4.c
+Invoking: Cross ARM C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"../Sources" -I"../Includes" -std=c99 -Wa,-adhlns="Project_Settings/Startup_Code/system_MKL05Z4.o.lst" -v -MMD -MP -MF"Project_Settings/Startup_Code/system_MKL05Z4.d" -MT"Project_Settings/Startup_Code/system_MKL05Z4.o" -c -o "Project_Settings/Startup_Code/system_MKL05Z4.o" "../Project_Settings/Startup_Code/system_MKL05Z4.c"
+Using built-in specs.
+COLLECT_GCC=arm-none-eabi-gcc
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Project_Settings/Startup_Code/system_MKL05Z4.d' '-MT' 'Project_Settings/Startup_Code/system_MKL05Z4.o' '-c' '-o' 'Project_Settings/Startup_Code/system_MKL05Z4.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/cc1.exe -quiet -v -I ../Sources -I ../Includes -imultilib armv6-m -iprefix c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/ -isysroot c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -MMD Project_Settings/Startup_Code/system_MKL05Z4.d -MF Project_Settings/Startup_Code/system_MKL05Z4.d -MP -MT Project_Settings/Startup_Code/system_MKL05Z4.o -dD -D__USES_INITFINI__ ../Project_Settings/Startup_Code/system_MKL05Z4.c -quiet -dumpbase system_MKL05Z4.c -mcpu=cortex-m0plus -mthumb -auxbase-strip Project_Settings/Startup_Code/system_MKL05Z4.o -g3 -O0 -std=c99 -version -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -o C:\Users\mathe\AppData\Local\Temp\cceYTB47.s
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/home/build/work/GCC-4-8-build/install-mingw/lib/gcc/arm-none-eabi/4.8.4/../../../../include"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/include-fixed"
+ignoring duplicate directory "c:/freescale/kds_v3/toolchain/lib/gcc/../../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include"
+ignoring nonexistent directory "c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ ../Sources
+ ../Includes
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/include-fixed
+ c:\freescale\kds_v3\toolchain\bin\../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/include
+End of search list.
+GNU C (GNU Tools for ARM Embedded Processors) version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (arm-none-eabi)
+	compiled by GNU C version 4.7.4, GMP version 4.3.2, MPFR version 2.4.2, MPC version 0.8.1
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: d5edaa5584c968721463d588c75db21f
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Project_Settings/Startup_Code/system_MKL05Z4.d' '-MT' 'Project_Settings/Startup_Code/system_MKL05Z4.o' '-c' '-o' 'Project_Settings/Startup_Code/system_MKL05Z4.o'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/as.exe -v -I ../Sources -I ../Includes -mcpu=cortex-m0plus -meabi=5 -adhlns=Project_Settings/Startup_Code/system_MKL05Z4.o.lst -o Project_Settings/Startup_Code/system_MKL05Z4.o C:\Users\mathe\AppData\Local\Temp\cceYTB47.s
+GNU assembler version 2.23.2 (arm-none-eabi) using BFD version (GNU Tools for ARM Embedded Processors) 2.23.2.20140731
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-I' '../Sources' '-I' '../Includes' '-std=c99' '-v' '-MMD' '-MP' '-MF' 'Project_Settings/Startup_Code/system_MKL05Z4.d' '-MT' 'Project_Settings/Startup_Code/system_MKL05Z4.o' '-c' '-o' 'Project_Settings/Startup_Code/system_MKL05Z4.o'
+Finished building: ../Project_Settings/Startup_Code/system_MKL05Z4.c
+ 
+Building target: projeto_mcc1.elf
+Invoking: Cross ARM C++ Linker
+arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -T "MKL05Z32xxx4_flash.ld" -Xlinker --gc-sections -L"C:/Users/mathe/Workspaces/KDS/aulas_mcc/projeto_mcc1/Project_Settings/Linker_Files" -Wl,-Map,"projeto_mcc1.map" -v -specs=nano.specs -specs=nosys.specs -o "projeto_mcc1.elf"  ./Sources/libraries/emb_util/emb_util.o  ./Sources/libraries/delay/delay.o  ./Sources/generic_drivers/lcd/lcd.o  ./Sources/drivers/uart/uart.o  ./Sources/drivers/tpm/tpm.o  ./Sources/drivers/port/port.o  ./Sources/drivers/gpio/gpio.o  ./Sources/drivers/adc/adc.o  ./Sources/main_lcd.o  ./Project_Settings/Startup_Code/startup_MKL05Z4.o ./Project_Settings/Startup_Code/system_MKL05Z4.o   
+Using built-in specs.
+Reading specs from c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/nano.specs
+rename spec link to nano_link
+rename spec link_gcc_c_sequence to nano_link_gcc_c_sequence
+Reading specs from c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/nosys.specs
+rename spec link_gcc_c_sequence to nosys_link_gcc_c_sequence
+COLLECT_GCC=arm-none-eabi-g++
+COLLECT_LTO_WRAPPER=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/lto-wrapper.exe
+Target: arm-none-eabi
+Configured with: /home/build/work/GCC-4-8-build/src/gcc/configure --build=i686-linux-gnu --host=i686-w64-mingw32 --target=arm-none-eabi --prefix=/home/build/work/GCC-4-8-build/install-mingw --libexecdir=/home/build/work/GCC-4-8-build/install-mingw/lib --infodir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/info --mandir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/man --htmldir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/html --pdfdir=/home/build/work/GCC-4-8-build/install-mingw/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-headers=yes --with-newlib --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/home/build/work/GCC-4-8-build/install-mingw/arm-none-eabi --with-libiconv-prefix=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-gmp=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpfr=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-mpc=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-isl=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-cloog=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-libelf=/home/build/work/GCC-4-8-build/build-mingw/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for ARM Embedded Processors' --with-multilib-list=armv6-m,armv7-m,armv7e-m,armv7-r
+Thread model: single
+gcc version 4.8.4 20140725 (release) [ARM/embedded-4_8-branch revision 213147] (GNU Tools for ARM Embedded Processors) 
+COMPILER_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/bin/
+LIBRARY_PATH=c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/;c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/;c:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/
+COLLECT_GCC_OPTIONS='-mcpu=cortex-m0plus' '-mthumb' '-O0' '-fmessage-length=0' '-fsigned-char' '-ffunction-sections' '-fdata-sections' '-g3' '-T' 'MKL05Z32xxx4_flash.ld' '-LC:/Users/mathe/Workspaces/KDS/aulas_mcc/projeto_mcc1/Project_Settings/Linker_Files' '-v' '-specs=nano.specs' '-specs=nosys.specs' '-o' 'projeto_mcc1.elf'
+ c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/collect2.exe --sysroot=c:\freescale\kds_v3\toolchain\bin\../arm-none-eabi -X -o projeto_mcc1.elf c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crti.o c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m/crt0.o -LC:/Users/mathe/Workspaces/KDS/aulas_mcc/projeto_mcc1/Project_Settings/Linker_Files -Lc:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m -Lc:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m -Lc:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib/armv6-m -Lc:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4 -Lc:/freescale/kds_v3/toolchain/bin/../lib/gcc -Lc:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib -Lc:/freescale/kds_v3/toolchain/bin/../arm-none-eabi/lib --gc-sections -Map projeto_mcc1.map ./Sources/libraries/emb_util/emb_util.o ./Sources/libraries/delay/delay.o ./Sources/generic_drivers/lcd/lcd.o ./Sources/drivers/uart/uart.o ./Sources/drivers/tpm/tpm.o ./Sources/drivers/port/port.o ./Sources/drivers/gpio/gpio.o ./Sources/drivers/adc/adc.o ./Sources/main_lcd.o ./Project_Settings/Startup_Code/startup_MKL05Z4.o ./Project_Settings/Startup_Code/system_MKL05Z4.o -lstdc++_s -lm --start-group -lgcc -lg_s -lc_s --end-group --start-group -lgcc -lc_s -lnosys --end-group --start-group -lgcc -lc_s -lnosys --end-group c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtend.o c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtn.o -T MKL05Z32xxx4_flash.ld
+Finished building target: projeto_mcc1.elf
+ 
+
+16:44:53 Build Finished (took 3s.747ms)
+

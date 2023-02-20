@@ -1,0 +1,420 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"port.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata
+  18              		.align	2
+  19              	.LC0:
+  20 0000 2E2E2F53 		.ascii	"../Sources/drivers/port/port.c\000"
+  20      6F757263 
+  20      65732F64 
+  20      72697665 
+  20      72732F70 
+  21 001f 00       		.align	2
+  22              	.LC3:
+  23 0020 62617365 		.ascii	"base\000"
+  23      00
+  24 0025 000000   		.align	2
+  25              	.LC5:
+  26 0028 28207069 		.ascii	"( pin >= 0 ) && ( pin < 32 )\000"
+  26      6E203E3D 
+  26      20302029 
+  26      20262620 
+  26      28207069 
+  27 0045 000000   		.section	.text.PORT_IRQEnable,"ax",%progbits
+  28              		.align	2
+  29              		.global	PORT_IRQEnable
+  30              		.code	16
+  31              		.thumb_func
+  33              	PORT_IRQEnable:
+  34              	.LFB38:
+  35              		.file 1 "../Sources/drivers/port/port.c"
+   1:../Sources/drivers/port/port.c **** /***************************************************************************************
+   2:../Sources/drivers/port/port.c ****  * Módulo      : port.c
+   3:../Sources/drivers/port/port.c ****  * Revisão     : 1.0
+   4:../Sources/drivers/port/port.c ****  * Data        : 16/02/2023
+   5:../Sources/drivers/port/port.c ****  * Descrição   : Arquivo com implementações dos Módulos PORT da Familia Kinetis KL05.
+   6:../Sources/drivers/port/port.c ****  * Comentários : Nenhum.
+   7:../Sources/drivers/port/port.c ****  * Autor(es)   : Matheus Leitzke Pinto
+   8:../Sources/drivers/port/port.c ****  ***************************************************************************************/
+   9:../Sources/drivers/port/port.c **** 
+  10:../Sources/drivers/port/port.c **** /*ARQUIVOS DE CABEÇALHO*/
+  11:../Sources/drivers/port/port.c **** /*=======================================================================================*/
+  12:../Sources/drivers/port/port.c **** 
+  13:../Sources/drivers/port/port.c **** #include "port.h"
+  14:../Sources/drivers/port/port.c **** 
+  15:../Sources/drivers/port/port.c **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  16:../Sources/drivers/port/port.c **** /*=======================================================================================*/
+  17:../Sources/drivers/port/port.c **** 
+  18:../Sources/drivers/port/port.c **** /*FUNÇÕES PÚBLICAS*/
+  19:../Sources/drivers/port/port.c **** /*=======================================================================================*/
+  20:../Sources/drivers/port/port.c **** 
+  21:../Sources/drivers/port/port.c **** /**********************************************************************
+  22:../Sources/drivers/port/port.c ****  * Função		:	PORT_IRQEnable
+  23:../Sources/drivers/port/port.c ****  *
+  24:../Sources/drivers/port/port.c ****  * Descrição	:   Habilita a geração de interrupção pelo pino de
+  25:../Sources/drivers/port/port.c ****  * 					um módulo PORT.
+  26:../Sources/drivers/port/port.c ****  *
+  27:../Sources/drivers/port/port.c ****  * Entradas		:   *base - registrador base do periférico PORT.
+  28:../Sources/drivers/port/port.c ****  *                  pin	- numeração do pino;
+  29:../Sources/drivers/port/port.c ****  * 					irq - uma das alternativas de interrupção do pino.
+  30:../Sources/drivers/port/port.c ****  *
+  31:../Sources/drivers/port/port.c ****  * Saídas		:  Nenhuma.
+  32:../Sources/drivers/port/port.c ****  *
+  33:../Sources/drivers/port/port.c ****  * Comentários 	:  Nenhum.
+  34:../Sources/drivers/port/port.c ****  * ********************************************************************/
+  35:../Sources/drivers/port/port.c **** void PORT_IRQEnable(PORT_Type *base, uint8_t pin, portIRQ_t irq)
+  36:../Sources/drivers/port/port.c **** {
+  36              		.loc 1 36 0
+  37              		.cfi_startproc
+  38 0000 80B5     		push	{r7, lr}
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 7, -8
+  41              		.cfi_offset 14, -4
+  42 0002 82B0     		sub	sp, sp, #8
+  43              		.cfi_def_cfa_offset 16
+  44 0004 00AF     		add	r7, sp, #0
+  45              		.cfi_def_cfa_register 7
+  46 0006 7860     		str	r0, [r7, #4]
+  47 0008 FB1C     		add	r3, r7, #3
+  48 000a 1970     		strb	r1, [r3]
+  49 000c BB1C     		add	r3, r7, #2
+  50 000e 1A70     		strb	r2, [r3]
+  37:../Sources/drivers/port/port.c **** 	assert(base);
+  51              		.loc 1 37 0
+  52 0010 7B68     		ldr	r3, [r7, #4]
+  53 0012 002B     		cmp	r3, #0
+  54 0014 06D1     		bne	.L2
+  55              		.loc 1 37 0 is_stmt 0 discriminator 1
+  56 0016 1949     		ldr	r1, .L4
+  57 0018 194A     		ldr	r2, .L4+4
+  58 001a 1A4B     		ldr	r3, .L4+8
+  59 001c 081C     		mov	r0, r1
+  60 001e 2521     		mov	r1, #37
+  61 0020 FFF7FEFF 		bl	__assert_func
+  62              	.L2:
+  38:../Sources/drivers/port/port.c **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+  63              		.loc 1 38 0 is_stmt 1
+  64 0024 FB1C     		add	r3, r7, #3
+  65 0026 1B78     		ldrb	r3, [r3]
+  66 0028 1F2B     		cmp	r3, #31
+  67 002a 06D9     		bls	.L3
+  68              		.loc 1 38 0 is_stmt 0 discriminator 1
+  69 002c 1349     		ldr	r1, .L4
+  70 002e 144A     		ldr	r2, .L4+4
+  71 0030 154B     		ldr	r3, .L4+12
+  72 0032 081C     		mov	r0, r1
+  73 0034 2621     		mov	r1, #38
+  74 0036 FFF7FEFF 		bl	__assert_func
+  75              	.L3:
+  39:../Sources/drivers/port/port.c **** 
+  40:../Sources/drivers/port/port.c **** 	base->PCR[pin] &= ~PORT_PCR_IRQC_MASK; /*Limpa configurações anteriores*/
+  76              		.loc 1 40 0 is_stmt 1
+  77 003a FB1C     		add	r3, r7, #3
+  78 003c 1A78     		ldrb	r2, [r3]
+  79 003e FB1C     		add	r3, r7, #3
+  80 0040 1978     		ldrb	r1, [r3]
+  81 0042 7B68     		ldr	r3, [r7, #4]
+  82 0044 8900     		lsl	r1, r1, #2
+  83 0046 C958     		ldr	r1, [r1, r3]
+  84 0048 104B     		ldr	r3, .L4+16
+  85 004a 1940     		and	r1, r3
+  86 004c 7B68     		ldr	r3, [r7, #4]
+  87 004e 9200     		lsl	r2, r2, #2
+  88 0050 D150     		str	r1, [r2, r3]
+  41:../Sources/drivers/port/port.c **** 	base->PCR[pin] |= PORT_PCR_IRQC(irq);
+  89              		.loc 1 41 0
+  90 0052 FB1C     		add	r3, r7, #3
+  91 0054 1A78     		ldrb	r2, [r3]
+  92 0056 FB1C     		add	r3, r7, #3
+  93 0058 1978     		ldrb	r1, [r3]
+  94 005a 7B68     		ldr	r3, [r7, #4]
+  95 005c 8900     		lsl	r1, r1, #2
+  96 005e C958     		ldr	r1, [r1, r3]
+  97 0060 BB1C     		add	r3, r7, #2
+  98 0062 1B78     		ldrb	r3, [r3]
+  99 0064 1804     		lsl	r0, r3, #16
+ 100 0066 F023     		mov	r3, #240
+ 101 0068 1B03     		lsl	r3, r3, #12
+ 102 006a 0340     		and	r3, r0
+ 103 006c 1943     		orr	r1, r3
+ 104 006e 7B68     		ldr	r3, [r7, #4]
+ 105 0070 9200     		lsl	r2, r2, #2
+ 106 0072 D150     		str	r1, [r2, r3]
+  42:../Sources/drivers/port/port.c **** }
+ 107              		.loc 1 42 0
+ 108 0074 BD46     		mov	sp, r7
+ 109 0076 02B0     		add	sp, sp, #8
+ 110              		@ sp needed
+ 111 0078 80BD     		pop	{r7, pc}
+ 112              	.L5:
+ 113 007a C046     		.align	2
+ 114              	.L4:
+ 115 007c 00000000 		.word	.LC0
+ 116 0080 00000000 		.word	__func__.4662
+ 117 0084 20000000 		.word	.LC3
+ 118 0088 28000000 		.word	.LC5
+ 119 008c FFFFF0FF 		.word	-983041
+ 120              		.cfi_endproc
+ 121              	.LFE38:
+ 123              		.section	.text.PORT_GetIRQFlag,"ax",%progbits
+ 124              		.align	2
+ 125              		.global	PORT_GetIRQFlag
+ 126              		.code	16
+ 127              		.thumb_func
+ 129              	PORT_GetIRQFlag:
+ 130              	.LFB39:
+  43:../Sources/drivers/port/port.c **** 
+  44:../Sources/drivers/port/port.c **** /**********************************************************************
+  45:../Sources/drivers/port/port.c ****  * Função		:	PORT_GetIRQFlag
+  46:../Sources/drivers/port/port.c ****  *
+  47:../Sources/drivers/port/port.c ****  * Descrição	:   Retorna se a flag de interrupção de pino do PORT foi setada.
+  48:../Sources/drivers/port/port.c ****  *
+  49:../Sources/drivers/port/port.c ****  * Entradas		:   *base - registrador base do periférico PORT.
+  50:../Sources/drivers/port/port.c ****  *                  pin	- numeração do pino;
+  51:../Sources/drivers/port/port.c ****  *
+  52:../Sources/drivers/port/port.c ****  * Saídas		:  0 - se flag não setada;
+  53:../Sources/drivers/port/port.c ****  *                 !0 - se flag setada.
+  54:../Sources/drivers/port/port.c ****  *
+  55:../Sources/drivers/port/port.c ****  * Comentários 	:  Nenhum.
+  56:../Sources/drivers/port/port.c ****  * ********************************************************************/
+  57:../Sources/drivers/port/port.c **** uint32_t PORT_GetIRQFlag(PORT_Type *base, uint8_t pin)
+  58:../Sources/drivers/port/port.c **** {
+ 131              		.loc 1 58 0
+ 132              		.cfi_startproc
+ 133 0000 80B5     		push	{r7, lr}
+ 134              		.cfi_def_cfa_offset 8
+ 135              		.cfi_offset 7, -8
+ 136              		.cfi_offset 14, -4
+ 137 0002 82B0     		sub	sp, sp, #8
+ 138              		.cfi_def_cfa_offset 16
+ 139 0004 00AF     		add	r7, sp, #0
+ 140              		.cfi_def_cfa_register 7
+ 141 0006 7860     		str	r0, [r7, #4]
+ 142 0008 0A1C     		mov	r2, r1
+ 143 000a FB1C     		add	r3, r7, #3
+ 144 000c 1A70     		strb	r2, [r3]
+  59:../Sources/drivers/port/port.c **** 	assert(base);
+ 145              		.loc 1 59 0
+ 146 000e 7B68     		ldr	r3, [r7, #4]
+ 147 0010 002B     		cmp	r3, #0
+ 148 0012 06D1     		bne	.L7
+ 149              		.loc 1 59 0 is_stmt 0 discriminator 1
+ 150 0014 0F49     		ldr	r1, .L10
+ 151 0016 104A     		ldr	r2, .L10+4
+ 152 0018 104B     		ldr	r3, .L10+8
+ 153 001a 081C     		mov	r0, r1
+ 154 001c 3B21     		mov	r1, #59
+ 155 001e FFF7FEFF 		bl	__assert_func
+ 156              	.L7:
+  60:../Sources/drivers/port/port.c **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+ 157              		.loc 1 60 0 is_stmt 1
+ 158 0022 FB1C     		add	r3, r7, #3
+ 159 0024 1B78     		ldrb	r3, [r3]
+ 160 0026 1F2B     		cmp	r3, #31
+ 161 0028 06D9     		bls	.L8
+ 162              		.loc 1 60 0 is_stmt 0 discriminator 1
+ 163 002a 0A49     		ldr	r1, .L10
+ 164 002c 0A4A     		ldr	r2, .L10+4
+ 165 002e 0C4B     		ldr	r3, .L10+12
+ 166 0030 081C     		mov	r0, r1
+ 167 0032 3C21     		mov	r1, #60
+ 168 0034 FFF7FEFF 		bl	__assert_func
+ 169              	.L8:
+  61:../Sources/drivers/port/port.c **** 
+  62:../Sources/drivers/port/port.c **** 	return base->ISFR & ((uint32_t)1 << pin);
+ 170              		.loc 1 62 0 is_stmt 1
+ 171 0038 7A68     		ldr	r2, [r7, #4]
+ 172 003a A023     		mov	r3, #160
+ 173 003c D358     		ldr	r3, [r2, r3]
+ 174 003e FA1C     		add	r2, r7, #3
+ 175 0040 1278     		ldrb	r2, [r2]
+ 176 0042 0121     		mov	r1, #1
+ 177 0044 081C     		mov	r0, r1
+ 178 0046 9040     		lsl	r0, r0, r2
+ 179 0048 021C     		mov	r2, r0
+ 180 004a 1340     		and	r3, r2
+  63:../Sources/drivers/port/port.c **** }
+ 181              		.loc 1 63 0
+ 182 004c 181C     		mov	r0, r3
+ 183 004e BD46     		mov	sp, r7
+ 184 0050 02B0     		add	sp, sp, #8
+ 185              		@ sp needed
+ 186 0052 80BD     		pop	{r7, pc}
+ 187              	.L11:
+ 188              		.align	2
+ 189              	.L10:
+ 190 0054 00000000 		.word	.LC0
+ 191 0058 00000000 		.word	__func__.4667
+ 192 005c 20000000 		.word	.LC3
+ 193 0060 28000000 		.word	.LC5
+ 194              		.cfi_endproc
+ 195              	.LFE39:
+ 197              		.section	.text.PORT_ClearIRQFlag,"ax",%progbits
+ 198              		.align	2
+ 199              		.global	PORT_ClearIRQFlag
+ 200              		.code	16
+ 201              		.thumb_func
+ 203              	PORT_ClearIRQFlag:
+ 204              	.LFB40:
+  64:../Sources/drivers/port/port.c **** 
+  65:../Sources/drivers/port/port.c **** /**********************************************************************
+  66:../Sources/drivers/port/port.c ****  * Função		:	PORT_ClearIRQFlag
+  67:../Sources/drivers/port/port.c ****  *
+  68:../Sources/drivers/port/port.c ****  * Descrição	:   Limpa flag de interrupção do pino de PORT.
+  69:../Sources/drivers/port/port.c ****  *
+  70:../Sources/drivers/port/port.c ****  * Entradas		:   *base - registrador base do periférico PORT.
+  71:../Sources/drivers/port/port.c ****  *                  pin	- numeração do pino;
+  72:../Sources/drivers/port/port.c ****  *
+  73:../Sources/drivers/port/port.c ****  * Saídas		:  Nenhuma.
+  74:../Sources/drivers/port/port.c ****  *
+  75:../Sources/drivers/port/port.c ****  * Comentários 	:  Nenhum.
+  76:../Sources/drivers/port/port.c ****  * ********************************************************************/
+  77:../Sources/drivers/port/port.c **** void PORT_ClearIRQFlag(PORT_Type *base, uint8_t pin)
+  78:../Sources/drivers/port/port.c **** {
+ 205              		.loc 1 78 0
+ 206              		.cfi_startproc
+ 207 0000 80B5     		push	{r7, lr}
+ 208              		.cfi_def_cfa_offset 8
+ 209              		.cfi_offset 7, -8
+ 210              		.cfi_offset 14, -4
+ 211 0002 82B0     		sub	sp, sp, #8
+ 212              		.cfi_def_cfa_offset 16
+ 213 0004 00AF     		add	r7, sp, #0
+ 214              		.cfi_def_cfa_register 7
+ 215 0006 7860     		str	r0, [r7, #4]
+ 216 0008 0A1C     		mov	r2, r1
+ 217 000a FB1C     		add	r3, r7, #3
+ 218 000c 1A70     		strb	r2, [r3]
+  79:../Sources/drivers/port/port.c **** 	assert(base);
+ 219              		.loc 1 79 0
+ 220 000e 7B68     		ldr	r3, [r7, #4]
+ 221 0010 002B     		cmp	r3, #0
+ 222 0012 06D1     		bne	.L13
+ 223              		.loc 1 79 0 is_stmt 0 discriminator 1
+ 224 0014 0E49     		ldr	r1, .L15
+ 225 0016 0F4A     		ldr	r2, .L15+4
+ 226 0018 0F4B     		ldr	r3, .L15+8
+ 227 001a 081C     		mov	r0, r1
+ 228 001c 4F21     		mov	r1, #79
+ 229 001e FFF7FEFF 		bl	__assert_func
+ 230              	.L13:
+  80:../Sources/drivers/port/port.c **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+ 231              		.loc 1 80 0 is_stmt 1
+ 232 0022 FB1C     		add	r3, r7, #3
+ 233 0024 1B78     		ldrb	r3, [r3]
+ 234 0026 1F2B     		cmp	r3, #31
+ 235 0028 06D9     		bls	.L14
+ 236              		.loc 1 80 0 is_stmt 0 discriminator 1
+ 237 002a 0949     		ldr	r1, .L15
+ 238 002c 094A     		ldr	r2, .L15+4
+ 239 002e 0B4B     		ldr	r3, .L15+12
+ 240 0030 081C     		mov	r0, r1
+ 241 0032 5021     		mov	r1, #80
+ 242 0034 FFF7FEFF 		bl	__assert_func
+ 243              	.L14:
+  81:../Sources/drivers/port/port.c **** 
+  82:../Sources/drivers/port/port.c **** 	base->ISFR = ( (uint32_t) 1 << pin );
+ 244              		.loc 1 82 0 is_stmt 1
+ 245 0038 FB1C     		add	r3, r7, #3
+ 246 003a 1B78     		ldrb	r3, [r3]
+ 247 003c 0122     		mov	r2, #1
+ 248 003e 111C     		mov	r1, r2
+ 249 0040 9940     		lsl	r1, r1, r3
+ 250 0042 7A68     		ldr	r2, [r7, #4]
+ 251 0044 A023     		mov	r3, #160
+ 252 0046 D150     		str	r1, [r2, r3]
+  83:../Sources/drivers/port/port.c **** }
+ 253              		.loc 1 83 0
+ 254 0048 BD46     		mov	sp, r7
+ 255 004a 02B0     		add	sp, sp, #8
+ 256              		@ sp needed
+ 257 004c 80BD     		pop	{r7, pc}
+ 258              	.L16:
+ 259 004e C046     		.align	2
+ 260              	.L15:
+ 261 0050 00000000 		.word	.LC0
+ 262 0054 00000000 		.word	__func__.4672
+ 263 0058 20000000 		.word	.LC3
+ 264 005c 28000000 		.word	.LC5
+ 265              		.cfi_endproc
+ 266              	.LFE40:
+ 268              		.section	.rodata.__func__.4662,"a",%progbits
+ 269              		.align	2
+ 272              	__func__.4662:
+ 273 0000 504F5254 		.ascii	"PORT_IRQEnable\000"
+ 273      5F495251 
+ 273      456E6162 
+ 273      6C6500
+ 274 000f 00       		.section	.rodata.__func__.4667,"a",%progbits
+ 275              		.align	2
+ 278              	__func__.4667:
+ 279 0000 504F5254 		.ascii	"PORT_GetIRQFlag\000"
+ 279      5F476574 
+ 279      49525146 
+ 279      6C616700 
+ 280              		.section	.rodata.__func__.4672,"a",%progbits
+ 281              		.align	2
+ 284              	__func__.4672:
+ 285 0000 504F5254 		.ascii	"PORT_ClearIRQFlag\000"
+ 285      5F436C65 
+ 285      61724952 
+ 285      51466C61 
+ 285      6700
+ 286 0012 0000     		.text
+ 287              	.Letext0:
+ 288              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 289              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 290              		.file 4 "../Includes/MKL05Z4.h"
+ 291              		.file 5 "../Sources/drivers/port/port.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 port.c
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:18     .rodata:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:28     .text.PORT_IRQEnable:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:33     .text.PORT_IRQEnable:00000000 PORT_IRQEnable
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:115    .text.PORT_IRQEnable:0000007c $d
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:272    .rodata.__func__.4662:00000000 __func__.4662
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:124    .text.PORT_GetIRQFlag:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:129    .text.PORT_GetIRQFlag:00000000 PORT_GetIRQFlag
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:190    .text.PORT_GetIRQFlag:00000054 $d
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:278    .rodata.__func__.4667:00000000 __func__.4667
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:198    .text.PORT_ClearIRQFlag:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:203    .text.PORT_ClearIRQFlag:00000000 PORT_ClearIRQFlag
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:261    .text.PORT_ClearIRQFlag:00000050 $d
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:284    .rodata.__func__.4672:00000000 __func__.4672
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:269    .rodata.__func__.4662:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:275    .rodata.__func__.4667:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccnVEAgF.s:281    .rodata.__func__.4672:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+
+UNDEFINED SYMBOLS
+__assert_func

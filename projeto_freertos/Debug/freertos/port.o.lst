@@ -1,0 +1,987 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"port.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.data.uxCriticalNesting,"aw",%progbits
+  18              		.align	2
+  21              	uxCriticalNesting:
+  22 0000 AAAAAAAA 		.word	-1431655766
+  23              		.section	.text.pxPortInitialiseStack,"ax",%progbits
+  24              		.align	2
+  25              		.global	pxPortInitialiseStack
+  26              		.code	16
+  27              		.thumb_func
+  29              	pxPortInitialiseStack:
+  30              	.LFB0:
+  31              		.file 1 "../freertos/port.c"
+   1:../freertos/port.c **** /*
+   2:../freertos/port.c ****     FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
+   3:../freertos/port.c ****     All rights reserved
+   4:../freertos/port.c **** 
+   5:../freertos/port.c ****     VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
+   6:../freertos/port.c **** 
+   7:../freertos/port.c ****     This file is part of the FreeRTOS distribution.
+   8:../freertos/port.c **** 
+   9:../freertos/port.c ****     FreeRTOS is free software; you can redistribute it and/or modify it under
+  10:../freertos/port.c ****     the terms of the GNU General Public License (version 2) as published by the
+  11:../freertos/port.c ****     Free Software Foundation >>>> AND MODIFIED BY <<<< the FreeRTOS exception.
+  12:../freertos/port.c **** 
+  13:../freertos/port.c ****     ***************************************************************************
+  14:../freertos/port.c ****     >>!   NOTE: The modification to the GPL is included to allow you to     !<<
+  15:../freertos/port.c ****     >>!   distribute a combined work that includes FreeRTOS without being   !<<
+  16:../freertos/port.c ****     >>!   obliged to provide the source code for proprietary components     !<<
+  17:../freertos/port.c ****     >>!   outside of the FreeRTOS kernel.                                   !<<
+  18:../freertos/port.c ****     ***************************************************************************
+  19:../freertos/port.c **** 
+  20:../freertos/port.c ****     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT ANY
+  21:../freertos/port.c ****     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  22:../freertos/port.c ****     FOR A PARTICULAR PURPOSE.  Full license text is available on the following
+  23:../freertos/port.c ****     link: http://www.freertos.org/a00114.html
+  24:../freertos/port.c **** 
+  25:../freertos/port.c ****     ***************************************************************************
+  26:../freertos/port.c ****      *                                                                       *
+  27:../freertos/port.c ****      *    FreeRTOS provides completely free yet professionally developed,    *
+  28:../freertos/port.c ****      *    robust, strictly quality controlled, supported, and cross          *
+  29:../freertos/port.c ****      *    platform software that is more than just the market leader, it     *
+  30:../freertos/port.c ****      *    is the industry's de facto standard.                               *
+  31:../freertos/port.c ****      *                                                                       *
+  32:../freertos/port.c ****      *    Help yourself get started quickly while simultaneously helping     *
+  33:../freertos/port.c ****      *    to support the FreeRTOS project by purchasing a FreeRTOS           *
+  34:../freertos/port.c ****      *    tutorial book, reference manual, or both:                          *
+  35:../freertos/port.c ****      *    http://www.FreeRTOS.org/Documentation                              *
+  36:../freertos/port.c ****      *                                                                       *
+  37:../freertos/port.c ****     ***************************************************************************
+  38:../freertos/port.c **** 
+  39:../freertos/port.c ****     http://www.FreeRTOS.org/FAQHelp.html - Having a problem?  Start by reading
+  40:../freertos/port.c ****     the FAQ page "My application does not run, what could be wrong?".  Have you
+  41:../freertos/port.c ****     defined configASSERT()?
+  42:../freertos/port.c **** 
+  43:../freertos/port.c ****     http://www.FreeRTOS.org/support - In return for receiving this top quality
+  44:../freertos/port.c ****     embedded software for free we request you assist our global community by
+  45:../freertos/port.c ****     participating in the support forum.
+  46:../freertos/port.c **** 
+  47:../freertos/port.c ****     http://www.FreeRTOS.org/training - Investing in training allows your team to
+  48:../freertos/port.c ****     be as productive as possible as early as possible.  Now you can receive
+  49:../freertos/port.c ****     FreeRTOS training directly from Richard Barry, CEO of Real Time Engineers
+  50:../freertos/port.c ****     Ltd, and the world's leading authority on the world's leading RTOS.
+  51:../freertos/port.c **** 
+  52:../freertos/port.c ****     http://www.FreeRTOS.org/plus - A selection of FreeRTOS ecosystem products,
+  53:../freertos/port.c ****     including FreeRTOS+Trace - an indispensable productivity tool, a DOS
+  54:../freertos/port.c ****     compatible FAT file system, and our tiny thread aware UDP/IP stack.
+  55:../freertos/port.c **** 
+  56:../freertos/port.c ****     http://www.FreeRTOS.org/labs - Where new FreeRTOS products go to incubate.
+  57:../freertos/port.c ****     Come and try FreeRTOS+TCP, our new open source TCP/IP stack for FreeRTOS.
+  58:../freertos/port.c **** 
+  59:../freertos/port.c ****     http://www.OpenRTOS.com - Real Time Engineers ltd. license FreeRTOS to High
+  60:../freertos/port.c ****     Integrity Systems ltd. to sell under the OpenRTOS brand.  Low cost OpenRTOS
+  61:../freertos/port.c ****     licenses offer ticketed support, indemnification and commercial middleware.
+  62:../freertos/port.c **** 
+  63:../freertos/port.c ****     http://www.SafeRTOS.com - High Integrity Systems also provide a safety
+  64:../freertos/port.c ****     engineered and independently SIL3 certified version for use in safety and
+  65:../freertos/port.c ****     mission critical applications that require provable dependability.
+  66:../freertos/port.c **** 
+  67:../freertos/port.c ****     1 tab == 4 spaces!
+  68:../freertos/port.c **** */
+  69:../freertos/port.c **** 
+  70:../freertos/port.c **** /*-----------------------------------------------------------
+  71:../freertos/port.c ****  * Implementation of functions defined in portable.h for the ARM CM0 port.
+  72:../freertos/port.c ****  *----------------------------------------------------------*/
+  73:../freertos/port.c **** 
+  74:../freertos/port.c **** /* Scheduler includes. */
+  75:../freertos/port.c **** #include "FreeRTOS.h"
+  76:../freertos/port.c **** #include "task.h"
+  77:../freertos/port.c **** #include "tickless_generic.h"
+  78:../freertos/port.c **** 
+  79:../freertos/port.c **** extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
+  80:../freertos/port.c **** 
+  81:../freertos/port.c **** /* Constants required to set up the initial stack. */
+  82:../freertos/port.c **** #define portINITIAL_XPSR			( 0x01000000 )
+  83:../freertos/port.c **** 
+  84:../freertos/port.c **** /* For backward compatibility, ensure configKERNEL_INTERRUPT_PRIORITY is
+  85:../freertos/port.c **** defined.  The value 255 should also ensure backward compatibility.
+  86:../freertos/port.c **** FreeRTOS.org versions prior to V4.3.0 did not include this definition. */
+  87:../freertos/port.c **** #ifndef configKERNEL_INTERRUPT_PRIORITY
+  88:../freertos/port.c **** 	#define configKERNEL_INTERRUPT_PRIORITY 0
+  89:../freertos/port.c **** #endif
+  90:../freertos/port.c **** 
+  91:../freertos/port.c **** /* Let the user override the pre-loading of the initial LR with the address of
+  92:../freertos/port.c **** prvTaskExitError() in case it messes up unwinding of the stack in the
+  93:../freertos/port.c **** debugger. */
+  94:../freertos/port.c **** #ifdef configTASK_RETURN_ADDRESS
+  95:../freertos/port.c **** 	#define portTASK_RETURN_ADDRESS	configTASK_RETURN_ADDRESS
+  96:../freertos/port.c **** #else
+  97:../freertos/port.c **** 	#define portTASK_RETURN_ADDRESS	prvTaskExitError
+  98:../freertos/port.c **** #endif
+  99:../freertos/port.c **** /* Each task maintains its own interrupt status in the critical nesting
+ 100:../freertos/port.c **** variable. */
+ 101:../freertos/port.c **** static UBaseType_t uxCriticalNesting = 0xaaaaaaaa;
+ 102:../freertos/port.c **** 
+ 103:../freertos/port.c **** /*
+ 104:../freertos/port.c ****  * Exception handlers.
+ 105:../freertos/port.c ****  */
+ 106:../freertos/port.c **** void xPortPendSVHandler( void ) __attribute__ (( naked ));
+ 107:../freertos/port.c **** void xPortSysTickHandler( void );
+ 108:../freertos/port.c **** void vPortSVCHandler( void );
+ 109:../freertos/port.c **** 
+ 110:../freertos/port.c **** /*
+ 111:../freertos/port.c ****  * Start first task is a separate function so it can be tested in isolation.
+ 112:../freertos/port.c ****  */
+ 113:../freertos/port.c **** static void vPortStartFirstTask( void ) __attribute__ (( naked ));
+ 114:../freertos/port.c **** 
+ 115:../freertos/port.c **** /*
+ 116:../freertos/port.c ****  * Used to catch tasks that attempt to return from their implementing function.
+ 117:../freertos/port.c ****  */
+ 118:../freertos/port.c **** static void prvTaskExitError( void );
+ 119:../freertos/port.c **** 
+ 120:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 121:../freertos/port.c **** 
+ 122:../freertos/port.c **** /*
+ 123:../freertos/port.c ****  * See header file for description.
+ 124:../freertos/port.c ****  */
+ 125:../freertos/port.c **** StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParam
+ 126:../freertos/port.c **** {
+  32              		.loc 1 126 0
+  33              		.cfi_startproc
+  34 0000 80B5     		push	{r7, lr}
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+  38 0002 84B0     		sub	sp, sp, #16
+  39              		.cfi_def_cfa_offset 24
+  40 0004 00AF     		add	r7, sp, #0
+  41              		.cfi_def_cfa_register 7
+  42 0006 F860     		str	r0, [r7, #12]
+  43 0008 B960     		str	r1, [r7, #8]
+  44 000a 7A60     		str	r2, [r7, #4]
+ 127:../freertos/port.c **** 	/* Simulate the stack frame as it would be created by a context switch
+ 128:../freertos/port.c **** 	interrupt. */
+ 129:../freertos/port.c **** 	pxTopOfStack--; /* Offset added to account for the way the MCU uses the stack on entry/exit of int
+  45              		.loc 1 129 0
+  46 000c FB68     		ldr	r3, [r7, #12]
+  47 000e 043B     		sub	r3, r3, #4
+  48 0010 FB60     		str	r3, [r7, #12]
+ 130:../freertos/port.c **** 	*pxTopOfStack = portINITIAL_XPSR;	/* xPSR */
+  49              		.loc 1 130 0
+  50 0012 FB68     		ldr	r3, [r7, #12]
+  51 0014 8022     		mov	r2, #128
+  52 0016 5204     		lsl	r2, r2, #17
+  53 0018 1A60     		str	r2, [r3]
+ 131:../freertos/port.c **** 	pxTopOfStack--;
+  54              		.loc 1 131 0
+  55 001a FB68     		ldr	r3, [r7, #12]
+  56 001c 043B     		sub	r3, r3, #4
+  57 001e FB60     		str	r3, [r7, #12]
+ 132:../freertos/port.c **** 	*pxTopOfStack = ( StackType_t ) pxCode;	/* PC */
+  58              		.loc 1 132 0
+  59 0020 BA68     		ldr	r2, [r7, #8]
+  60 0022 FB68     		ldr	r3, [r7, #12]
+  61 0024 1A60     		str	r2, [r3]
+ 133:../freertos/port.c **** 	pxTopOfStack--;
+  62              		.loc 1 133 0
+  63 0026 FB68     		ldr	r3, [r7, #12]
+  64 0028 043B     		sub	r3, r3, #4
+  65 002a FB60     		str	r3, [r7, #12]
+ 134:../freertos/port.c **** 	*pxTopOfStack = ( StackType_t ) portTASK_RETURN_ADDRESS;	/* LR */
+  66              		.loc 1 134 0
+  67 002c 084A     		ldr	r2, .L3
+  68 002e FB68     		ldr	r3, [r7, #12]
+  69 0030 1A60     		str	r2, [r3]
+ 135:../freertos/port.c **** 	pxTopOfStack -= 5;	/* R12, R3, R2 and R1. */
+  70              		.loc 1 135 0
+  71 0032 FB68     		ldr	r3, [r7, #12]
+  72 0034 143B     		sub	r3, r3, #20
+  73 0036 FB60     		str	r3, [r7, #12]
+ 136:../freertos/port.c **** 	*pxTopOfStack = ( StackType_t ) pvParameters;	/* R0 */
+  74              		.loc 1 136 0
+  75 0038 7A68     		ldr	r2, [r7, #4]
+  76 003a FB68     		ldr	r3, [r7, #12]
+  77 003c 1A60     		str	r2, [r3]
+ 137:../freertos/port.c **** 	pxTopOfStack -= 8; /* R11..R4. */
+  78              		.loc 1 137 0
+  79 003e FB68     		ldr	r3, [r7, #12]
+  80 0040 203B     		sub	r3, r3, #32
+  81 0042 FB60     		str	r3, [r7, #12]
+ 138:../freertos/port.c **** 
+ 139:../freertos/port.c **** 	return pxTopOfStack;
+  82              		.loc 1 139 0
+  83 0044 FB68     		ldr	r3, [r7, #12]
+ 140:../freertos/port.c **** }
+  84              		.loc 1 140 0
+  85 0046 181C     		mov	r0, r3
+  86 0048 BD46     		mov	sp, r7
+  87 004a 04B0     		add	sp, sp, #16
+  88              		@ sp needed
+  89 004c 80BD     		pop	{r7, pc}
+  90              	.L4:
+  91 004e C046     		.align	2
+  92              	.L3:
+  93 0050 00000000 		.word	prvTaskExitError
+  94              		.cfi_endproc
+  95              	.LFE0:
+  97              		.section	.text.prvTaskExitError,"ax",%progbits
+  98              		.align	2
+  99              		.code	16
+ 100              		.thumb_func
+ 102              	prvTaskExitError:
+ 103              	.LFB1:
+ 141:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 142:../freertos/port.c **** 
+ 143:../freertos/port.c **** static void prvTaskExitError( void )
+ 144:../freertos/port.c **** {
+ 104              		.loc 1 144 0
+ 105              		.cfi_startproc
+ 106 0000 80B5     		push	{r7, lr}
+ 107              		.cfi_def_cfa_offset 8
+ 108              		.cfi_offset 7, -8
+ 109              		.cfi_offset 14, -4
+ 110 0002 00AF     		add	r7, sp, #0
+ 111              		.cfi_def_cfa_register 7
+ 145:../freertos/port.c **** 	/* A function that implements a task must not exit or attempt to return to
+ 146:../freertos/port.c **** 	its caller as there is nothing to return to.  If a task wants to exit it
+ 147:../freertos/port.c **** 	should instead call vTaskDelete( NULL ).
+ 148:../freertos/port.c **** 
+ 149:../freertos/port.c **** 	Artificially force an assert() to be triggered if configASSERT() is
+ 150:../freertos/port.c **** 	defined, then stop here so application writers can catch the error. */
+ 151:../freertos/port.c **** 	configASSERT( uxCriticalNesting == ~0UL );
+ 112              		.loc 1 151 0
+ 113 0004 034B     		ldr	r3, .L9
+ 114 0006 1B68     		ldr	r3, [r3]
+ 115 0008 0133     		add	r3, r3, #1
+ 116 000a 01D0     		beq	.L6
+ 117              		.loc 1 151 0 is_stmt 0 discriminator 1
+ 118              	@ 151 "../freertos/port.c" 1
+ 119 000c 72B6     		 cpsid i 
+ 120              	@ 0 "" 2
+ 121              		.code	16
+ 122              	.L7:
+ 123 000e FEE7     		b	.L7
+ 124              	.L6:
+ 152:../freertos/port.c **** 	portDISABLE_INTERRUPTS();
+ 125              		.loc 1 152 0 is_stmt 1
+ 126              	@ 152 "../freertos/port.c" 1
+ 127 0010 72B6     		 cpsid i 
+ 128              	@ 0 "" 2
+ 129              		.code	16
+ 130              	.L8:
+ 153:../freertos/port.c **** 	for( ;; );
+ 131              		.loc 1 153 0 discriminator 1
+ 132 0012 FEE7     		b	.L8
+ 133              	.L10:
+ 134              		.align	2
+ 135              	.L9:
+ 136 0014 00000000 		.word	uxCriticalNesting
+ 137              		.cfi_endproc
+ 138              	.LFE1:
+ 140              		.section	.text.SVC_Handler,"ax",%progbits
+ 141              		.align	2
+ 142              		.global	SVC_Handler
+ 143              		.code	16
+ 144              		.thumb_func
+ 146              	SVC_Handler:
+ 147              	.LFB2:
+ 154:../freertos/port.c **** }
+ 155:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 156:../freertos/port.c **** 
+ 157:../freertos/port.c **** void vPortSVCHandler( void )
+ 158:../freertos/port.c **** {
+ 148              		.loc 1 158 0
+ 149              		.cfi_startproc
+ 150 0000 80B5     		push	{r7, lr}
+ 151              		.cfi_def_cfa_offset 8
+ 152              		.cfi_offset 7, -8
+ 153              		.cfi_offset 14, -4
+ 154 0002 00AF     		add	r7, sp, #0
+ 155              		.cfi_def_cfa_register 7
+ 159:../freertos/port.c **** 	/* This function is no longer used, but retained for backward
+ 160:../freertos/port.c **** 	compatibility. */
+ 161:../freertos/port.c **** }
+ 156              		.loc 1 161 0
+ 157 0004 BD46     		mov	sp, r7
+ 158              		@ sp needed
+ 159 0006 80BD     		pop	{r7, pc}
+ 160              		.cfi_endproc
+ 161              	.LFE2:
+ 163              		.section	.text.vPortStartFirstTask,"ax",%progbits
+ 164              		.align	2
+ 165              		.code	16
+ 166              		.thumb_func
+ 168              	vPortStartFirstTask:
+ 169              	.LFB3:
+ 162:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 163:../freertos/port.c **** 
+ 164:../freertos/port.c **** void vPortStartFirstTask( void )
+ 165:../freertos/port.c **** {
+ 170              		.loc 1 165 0
+ 171              		.cfi_startproc
+ 166:../freertos/port.c **** 	/* The MSP stack is not reset as, unlike on M3/4 parts, there is no vector
+ 167:../freertos/port.c **** 	table offset register that can be used to locate the initial stack value.
+ 168:../freertos/port.c **** 	Not all M0 parts have the application vector table at address 0. */
+ 169:../freertos/port.c **** 	__asm volatile(
+ 172              		.loc 1 169 0
+ 173              	@ 169 "../freertos/port.c" 1
+ 174 0000 0B4A     			ldr	r2, pxCurrentTCBConst2	
+ 175 0002 1368     		ldr r3, [r2]				
+ 176 0004 1868     		ldr r0, [r3]				
+ 177 0006 2030     		add r0, #32					
+ 178 0008 80F30988 		msr psp, r0					
+ 179 000c 0220     		movs r0, #2					
+ 180 000e 80F31488 		msr CONTROL, r0				
+ 181 0012 BFF36F8F 		isb							
+ 182 0016 3FBC     		pop {r0-r5}					
+ 183 0018 AE46     		mov lr, r5					
+ 184 001a 08BC     		pop {r3}					
+ 185 001c 04BC     		pop {r2}					
+ 186 001e 62B6     		cpsie i						
+ 187 0020 1847     		bx r3						
+ 188              									
+ 189 0022 C046C046 		.align 4					
+ 189      C046C046 
+ 189      C046C046 
+ 189      C046
+ 190 0030 00000000 	pxCurrentTCBConst2: .word pxCurrentTCB	  
+ 191              	@ 0 "" 2
+ 170:../freertos/port.c **** 	"	ldr	r2, pxCurrentTCBConst2	\n" /* Obtain location of pxCurrentTCB. */
+ 171:../freertos/port.c **** 	"	ldr r3, [r2]				\n"
+ 172:../freertos/port.c **** 	"	ldr r0, [r3]				\n" /* The first item in pxCurrentTCB is the task top of stack. */
+ 173:../freertos/port.c **** 	"	add r0, #32					\n" /* Discard everything up to r0. */
+ 174:../freertos/port.c **** 	"	msr psp, r0					\n" /* This is now the new top of stack to use in the task. */
+ 175:../freertos/port.c **** 	"	movs r0, #2					\n" /* Switch to the psp stack. */
+ 176:../freertos/port.c **** 	"	msr CONTROL, r0				\n"
+ 177:../freertos/port.c **** 	"	isb							\n"
+ 178:../freertos/port.c **** 	"	pop {r0-r5}					\n" /* Pop the registers that are saved automatically. */
+ 179:../freertos/port.c **** 	"	mov lr, r5					\n" /* lr is now in r5. */
+ 180:../freertos/port.c **** 	"	pop {r3}					\n" /* Return address is now in r3. */
+ 181:../freertos/port.c **** 	"	pop {r2}					\n" /* Pop and discard XPSR. */
+ 182:../freertos/port.c **** 	"	cpsie i						\n" /* The first task has its context and interrupts can be enabled. */
+ 183:../freertos/port.c **** 	"	bx r3						\n" /* Finally, jump to the user defined task code. */
+ 184:../freertos/port.c **** 	"								\n"
+ 185:../freertos/port.c **** 	"	.align 4					\n"
+ 186:../freertos/port.c **** 	"pxCurrentTCBConst2: .word pxCurrentTCB	  "
+ 187:../freertos/port.c **** 				  );
+ 188:../freertos/port.c **** }
+ 192              		.loc 1 188 0
+ 193              		.code	16
+ 194              		.cfi_endproc
+ 195              	.LFE3:
+ 197 0034 C046C046 		.section	.text.xPortStartScheduler,"ax",%progbits
+ 197      C046C046 
+ 197      C046C046 
+ 198              		.align	2
+ 199              		.global	xPortStartScheduler
+ 200              		.code	16
+ 201              		.thumb_func
+ 203              	xPortStartScheduler:
+ 204              	.LFB4:
+ 189:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 190:../freertos/port.c **** 
+ 191:../freertos/port.c **** /*
+ 192:../freertos/port.c ****  * See header file for description.
+ 193:../freertos/port.c ****  */
+ 194:../freertos/port.c **** BaseType_t xPortStartScheduler( void )
+ 195:../freertos/port.c **** {
+ 205              		.loc 1 195 0
+ 206              		.cfi_startproc
+ 207 0000 80B5     		push	{r7, lr}
+ 208              		.cfi_def_cfa_offset 8
+ 209              		.cfi_offset 7, -8
+ 210              		.cfi_offset 14, -4
+ 211 0002 00AF     		add	r7, sp, #0
+ 212              		.cfi_def_cfa_register 7
+ 196:../freertos/port.c **** 	/* Make PendSV, CallSV and SysTick the same priroity as the kernel. */
+ 197:../freertos/port.c **** 	*(portNVIC_SYSPRI2) |= portNVIC_PENDSV_PRI;
+ 213              		.loc 1 197 0
+ 214 0004 0D4B     		ldr	r3, .L15
+ 215 0006 0D4A     		ldr	r2, .L15
+ 216 0008 1268     		ldr	r2, [r2]
+ 217 000a FF21     		mov	r1, #255
+ 218 000c 0904     		lsl	r1, r1, #16
+ 219 000e 0A43     		orr	r2, r1
+ 220 0010 1A60     		str	r2, [r3]
+ 198:../freertos/port.c **** 	*(portNVIC_SYSPRI2) |= portNVIC_SYSTICK_PRI;
+ 221              		.loc 1 198 0
+ 222 0012 0A4B     		ldr	r3, .L15
+ 223 0014 094A     		ldr	r2, .L15
+ 224 0016 1268     		ldr	r2, [r2]
+ 225 0018 FF21     		mov	r1, #255
+ 226 001a 0906     		lsl	r1, r1, #24
+ 227 001c 0A43     		orr	r2, r1
+ 228 001e 1A60     		str	r2, [r3]
+ 199:../freertos/port.c **** 
+ 200:../freertos/port.c **** 	/* Start the timer that generates the tick ISR.  Interrupts are disabled
+ 201:../freertos/port.c **** 	here already. */
+ 202:../freertos/port.c **** 	prvSetupTimerInterrupt();
+ 229              		.loc 1 202 0
+ 230 0020 FFF7FEFF 		bl	prvSetupTimerInterrupt
+ 203:../freertos/port.c **** 
+ 204:../freertos/port.c **** 	/* Initialise the critical nesting count ready for the first task. */
+ 205:../freertos/port.c **** 	uxCriticalNesting = 0;
+ 231              		.loc 1 205 0
+ 232 0024 064B     		ldr	r3, .L15+4
+ 233 0026 0022     		mov	r2, #0
+ 234 0028 1A60     		str	r2, [r3]
+ 206:../freertos/port.c **** 
+ 207:../freertos/port.c **** 	/* Start the first task. */
+ 208:../freertos/port.c **** 	vPortStartFirstTask();
+ 235              		.loc 1 208 0
+ 236 002a FFF7FEFF 		bl	vPortStartFirstTask
+ 209:../freertos/port.c **** 
+ 210:../freertos/port.c **** 	/* Should never get here as the tasks will now be executing!  Call the task
+ 211:../freertos/port.c **** 	exit error function to prevent compiler warnings about a static function
+ 212:../freertos/port.c **** 	not being called in the case that the application writer overrides this
+ 213:../freertos/port.c **** 	functionality by defining configTASK_RETURN_ADDRESS. */
+ 214:../freertos/port.c **** 	prvTaskExitError();
+ 237              		.loc 1 214 0
+ 238 002e FFF7FEFF 		bl	prvTaskExitError
+ 215:../freertos/port.c **** 
+ 216:../freertos/port.c **** 	/* Should not get here! */
+ 217:../freertos/port.c **** 	return 0;
+ 239              		.loc 1 217 0
+ 240 0032 0023     		mov	r3, #0
+ 218:../freertos/port.c **** }
+ 241              		.loc 1 218 0
+ 242 0034 181C     		mov	r0, r3
+ 243 0036 BD46     		mov	sp, r7
+ 244              		@ sp needed
+ 245 0038 80BD     		pop	{r7, pc}
+ 246              	.L16:
+ 247 003a C046     		.align	2
+ 248              	.L15:
+ 249 003c 20ED00E0 		.word	-536810208
+ 250 0040 00000000 		.word	uxCriticalNesting
+ 251              		.cfi_endproc
+ 252              	.LFE4:
+ 254              		.section	.text.vPortEndScheduler,"ax",%progbits
+ 255              		.align	2
+ 256              		.global	vPortEndScheduler
+ 257              		.code	16
+ 258              		.thumb_func
+ 260              	vPortEndScheduler:
+ 261              	.LFB5:
+ 219:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 220:../freertos/port.c **** 
+ 221:../freertos/port.c **** void vPortEndScheduler( void )
+ 222:../freertos/port.c **** {
+ 262              		.loc 1 222 0
+ 263              		.cfi_startproc
+ 264 0000 80B5     		push	{r7, lr}
+ 265              		.cfi_def_cfa_offset 8
+ 266              		.cfi_offset 7, -8
+ 267              		.cfi_offset 14, -4
+ 268 0002 00AF     		add	r7, sp, #0
+ 269              		.cfi_def_cfa_register 7
+ 223:../freertos/port.c **** 	/* Not implemented in ports where there is nothing to return to.
+ 224:../freertos/port.c **** 	Artificially force an assert. */
+ 225:../freertos/port.c **** 	configASSERT( uxCriticalNesting == 1000UL );
+ 270              		.loc 1 225 0
+ 271 0004 044B     		ldr	r3, .L20
+ 272 0006 1A68     		ldr	r2, [r3]
+ 273 0008 FA23     		mov	r3, #250
+ 274 000a 9B00     		lsl	r3, r3, #2
+ 275 000c 9A42     		cmp	r2, r3
+ 276 000e 01D0     		beq	.L17
+ 277              		.loc 1 225 0 is_stmt 0 discriminator 1
+ 278              	@ 225 "../freertos/port.c" 1
+ 279 0010 72B6     		 cpsid i 
+ 280              	@ 0 "" 2
+ 281              		.code	16
+ 282              	.L19:
+ 283 0012 FEE7     		b	.L19
+ 284              	.L17:
+ 226:../freertos/port.c **** }
+ 285              		.loc 1 226 0 is_stmt 1
+ 286 0014 BD46     		mov	sp, r7
+ 287              		@ sp needed
+ 288 0016 80BD     		pop	{r7, pc}
+ 289              	.L21:
+ 290              		.align	2
+ 291              	.L20:
+ 292 0018 00000000 		.word	uxCriticalNesting
+ 293              		.cfi_endproc
+ 294              	.LFE5:
+ 296              		.section	.text.vPortYield,"ax",%progbits
+ 297              		.align	2
+ 298              		.global	vPortYield
+ 299              		.code	16
+ 300              		.thumb_func
+ 302              	vPortYield:
+ 303              	.LFB6:
+ 227:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 228:../freertos/port.c **** 
+ 229:../freertos/port.c **** void vPortYield( void )
+ 230:../freertos/port.c **** {
+ 304              		.loc 1 230 0
+ 305              		.cfi_startproc
+ 306 0000 80B5     		push	{r7, lr}
+ 307              		.cfi_def_cfa_offset 8
+ 308              		.cfi_offset 7, -8
+ 309              		.cfi_offset 14, -4
+ 310 0002 00AF     		add	r7, sp, #0
+ 311              		.cfi_def_cfa_register 7
+ 231:../freertos/port.c **** 	/* Set a PendSV to request a context switch. */
+ 232:../freertos/port.c **** 	*( portNVIC_INT_CTRL ) = portNVIC_PENDSVSET;
+ 312              		.loc 1 232 0
+ 313 0004 044B     		ldr	r3, .L23
+ 314 0006 8022     		mov	r2, #128
+ 315 0008 5205     		lsl	r2, r2, #21
+ 316 000a 1A60     		str	r2, [r3]
+ 233:../freertos/port.c **** 
+ 234:../freertos/port.c **** 	/* Barriers are normally not required but do ensure the code is completely
+ 235:../freertos/port.c **** 	within the specified behaviour for the architecture. */
+ 236:../freertos/port.c **** 	__asm volatile( "dsb" );
+ 317              		.loc 1 236 0
+ 318              	@ 236 "../freertos/port.c" 1
+ 319 000c BFF34F8F 		dsb
+ 320              	@ 0 "" 2
+ 237:../freertos/port.c **** 	__asm volatile( "isb" );
+ 321              		.loc 1 237 0
+ 322              	@ 237 "../freertos/port.c" 1
+ 323 0010 BFF36F8F 		isb
+ 324              	@ 0 "" 2
+ 238:../freertos/port.c **** }
+ 325              		.loc 1 238 0
+ 326              		.code	16
+ 327 0014 BD46     		mov	sp, r7
+ 328              		@ sp needed
+ 329 0016 80BD     		pop	{r7, pc}
+ 330              	.L24:
+ 331              		.align	2
+ 332              	.L23:
+ 333 0018 04ED00E0 		.word	-536810236
+ 334              		.cfi_endproc
+ 335              	.LFE6:
+ 337              		.section	.text.vPortEnterCritical,"ax",%progbits
+ 338              		.align	2
+ 339              		.global	vPortEnterCritical
+ 340              		.code	16
+ 341              		.thumb_func
+ 343              	vPortEnterCritical:
+ 344              	.LFB7:
+ 239:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 240:../freertos/port.c **** 
+ 241:../freertos/port.c **** void vPortEnterCritical( void )
+ 242:../freertos/port.c **** {
+ 345              		.loc 1 242 0
+ 346              		.cfi_startproc
+ 347 0000 80B5     		push	{r7, lr}
+ 348              		.cfi_def_cfa_offset 8
+ 349              		.cfi_offset 7, -8
+ 350              		.cfi_offset 14, -4
+ 351 0002 00AF     		add	r7, sp, #0
+ 352              		.cfi_def_cfa_register 7
+ 243:../freertos/port.c ****     portDISABLE_INTERRUPTS();
+ 353              		.loc 1 243 0
+ 354              	@ 243 "../freertos/port.c" 1
+ 355 0004 72B6     		 cpsid i 
+ 356              	@ 0 "" 2
+ 244:../freertos/port.c ****     uxCriticalNesting++;
+ 357              		.loc 1 244 0
+ 358              		.code	16
+ 359 0006 054B     		ldr	r3, .L26
+ 360 0008 1B68     		ldr	r3, [r3]
+ 361 000a 5A1C     		add	r2, r3, #1
+ 362 000c 034B     		ldr	r3, .L26
+ 363 000e 1A60     		str	r2, [r3]
+ 245:../freertos/port.c **** 	__asm volatile( "dsb" );
+ 364              		.loc 1 245 0
+ 365              	@ 245 "../freertos/port.c" 1
+ 366 0010 BFF34F8F 		dsb
+ 367              	@ 0 "" 2
+ 246:../freertos/port.c **** 	__asm volatile( "isb" );
+ 368              		.loc 1 246 0
+ 369              	@ 246 "../freertos/port.c" 1
+ 370 0014 BFF36F8F 		isb
+ 371              	@ 0 "" 2
+ 247:../freertos/port.c **** }
+ 372              		.loc 1 247 0
+ 373              		.code	16
+ 374 0018 BD46     		mov	sp, r7
+ 375              		@ sp needed
+ 376 001a 80BD     		pop	{r7, pc}
+ 377              	.L27:
+ 378              		.align	2
+ 379              	.L26:
+ 380 001c 00000000 		.word	uxCriticalNesting
+ 381              		.cfi_endproc
+ 382              	.LFE7:
+ 384              		.section	.text.vPortExitCritical,"ax",%progbits
+ 385              		.align	2
+ 386              		.global	vPortExitCritical
+ 387              		.code	16
+ 388              		.thumb_func
+ 390              	vPortExitCritical:
+ 391              	.LFB8:
+ 248:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 249:../freertos/port.c **** 
+ 250:../freertos/port.c **** void vPortExitCritical( void )
+ 251:../freertos/port.c **** {
+ 392              		.loc 1 251 0
+ 393              		.cfi_startproc
+ 394 0000 80B5     		push	{r7, lr}
+ 395              		.cfi_def_cfa_offset 8
+ 396              		.cfi_offset 7, -8
+ 397              		.cfi_offset 14, -4
+ 398 0002 00AF     		add	r7, sp, #0
+ 399              		.cfi_def_cfa_register 7
+ 252:../freertos/port.c **** 	configASSERT( uxCriticalNesting );
+ 400              		.loc 1 252 0
+ 401 0004 084B     		ldr	r3, .L32
+ 402 0006 1B68     		ldr	r3, [r3]
+ 403 0008 002B     		cmp	r3, #0
+ 404 000a 01D1     		bne	.L29
+ 405              		.loc 1 252 0 is_stmt 0 discriminator 1
+ 406              	@ 252 "../freertos/port.c" 1
+ 407 000c 72B6     		 cpsid i 
+ 408              	@ 0 "" 2
+ 409              		.code	16
+ 410              	.L30:
+ 411 000e FEE7     		b	.L30
+ 412              	.L29:
+ 253:../freertos/port.c ****     uxCriticalNesting--;
+ 413              		.loc 1 253 0 is_stmt 1
+ 414 0010 054B     		ldr	r3, .L32
+ 415 0012 1B68     		ldr	r3, [r3]
+ 416 0014 5A1E     		sub	r2, r3, #1
+ 417 0016 044B     		ldr	r3, .L32
+ 418 0018 1A60     		str	r2, [r3]
+ 254:../freertos/port.c ****     if( uxCriticalNesting == 0 )
+ 419              		.loc 1 254 0
+ 420 001a 034B     		ldr	r3, .L32
+ 421 001c 1B68     		ldr	r3, [r3]
+ 422 001e 002B     		cmp	r3, #0
+ 423 0020 00D1     		bne	.L28
+ 255:../freertos/port.c ****     {
+ 256:../freertos/port.c ****         portENABLE_INTERRUPTS();
+ 424              		.loc 1 256 0
+ 425              	@ 256 "../freertos/port.c" 1
+ 426 0022 62B6     		 cpsie i 
+ 427              	@ 0 "" 2
+ 428              		.code	16
+ 429              	.L28:
+ 257:../freertos/port.c ****     }
+ 258:../freertos/port.c **** }
+ 430              		.loc 1 258 0
+ 431 0024 BD46     		mov	sp, r7
+ 432              		@ sp needed
+ 433 0026 80BD     		pop	{r7, pc}
+ 434              	.L33:
+ 435              		.align	2
+ 436              	.L32:
+ 437 0028 00000000 		.word	uxCriticalNesting
+ 438              		.cfi_endproc
+ 439              	.LFE8:
+ 441              		.section	.text.ulSetInterruptMaskFromISR,"ax",%progbits
+ 442              		.align	2
+ 443              		.global	ulSetInterruptMaskFromISR
+ 444              		.code	16
+ 445              		.thumb_func
+ 447              	ulSetInterruptMaskFromISR:
+ 448              	.LFB9:
+ 259:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 260:../freertos/port.c **** 
+ 261:../freertos/port.c **** uint32_t ulSetInterruptMaskFromISR( void )
+ 262:../freertos/port.c **** {
+ 449              		.loc 1 262 0
+ 450              		.cfi_startproc
+ 263:../freertos/port.c **** 	__asm volatile(
+ 451              		.loc 1 263 0
+ 452              	@ 263 "../freertos/port.c" 1
+ 453 0000 EFF31080 		 mrs r0, PRIMASK	
+ 454 0004 72B6     	 cpsid i			
+ 455 0006 7047     	 bx lr				  
+ 456              	@ 0 "" 2
+ 264:../freertos/port.c **** 					" mrs r0, PRIMASK	\n"
+ 265:../freertos/port.c **** 					" cpsid i			\n"
+ 266:../freertos/port.c **** 					" bx lr				  "
+ 267:../freertos/port.c **** 				  );
+ 268:../freertos/port.c **** 
+ 269:../freertos/port.c **** 	/* To avoid compiler warnings.  This line will never be reached. */
+ 270:../freertos/port.c **** 	return 0;
+ 457              		.loc 1 270 0
+ 458              		.code	16
+ 459 0008 0023     		mov	r3, #0
+ 271:../freertos/port.c **** }
+ 460              		.loc 1 271 0
+ 461 000a 181C     		mov	r0, r3
+ 462              		.cfi_endproc
+ 463              	.LFE9:
+ 465              		.section	.text.vClearInterruptMaskFromISR,"ax",%progbits
+ 466              		.align	2
+ 467              		.global	vClearInterruptMaskFromISR
+ 468              		.code	16
+ 469              		.thumb_func
+ 471              	vClearInterruptMaskFromISR:
+ 472              	.LFB10:
+ 272:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 273:../freertos/port.c **** 
+ 274:../freertos/port.c **** void vClearInterruptMaskFromISR( uint32_t ulMask )
+ 275:../freertos/port.c **** {
+ 473              		.loc 1 275 0
+ 474              		.cfi_startproc
+ 276:../freertos/port.c **** 	__asm volatile(
+ 475              		.loc 1 276 0
+ 476              	@ 276 "../freertos/port.c" 1
+ 477 0000 80F31088 		 msr PRIMASK, r0	
+ 478 0004 7047     	 bx lr				  
+ 479              	@ 0 "" 2
+ 277:../freertos/port.c **** 					" msr PRIMASK, r0	\n"
+ 278:../freertos/port.c **** 					" bx lr				  "
+ 279:../freertos/port.c **** 				  );
+ 280:../freertos/port.c **** 
+ 281:../freertos/port.c **** 	/* Just to avoid compiler warning. */
+ 282:../freertos/port.c **** 	( void ) ulMask;
+ 283:../freertos/port.c **** }
+ 480              		.loc 1 283 0
+ 481              		.code	16
+ 482              		.cfi_endproc
+ 483              	.LFE10:
+ 485 0006 C046     		.section	.text.PendSV_Handler,"ax",%progbits
+ 486              		.align	2
+ 487              		.global	PendSV_Handler
+ 488              		.code	16
+ 489              		.thumb_func
+ 491              	PendSV_Handler:
+ 492              	.LFB11:
+ 284:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 285:../freertos/port.c **** 
+ 286:../freertos/port.c **** void xPortPendSVHandler( void )
+ 287:../freertos/port.c **** {
+ 493              		.loc 1 287 0
+ 494              		.cfi_startproc
+ 288:../freertos/port.c **** 	/* This is a naked function. */
+ 289:../freertos/port.c **** 
+ 290:../freertos/port.c **** 	__asm volatile
+ 495              		.loc 1 290 0
+ 496              	@ 290 "../freertos/port.c" 1
+ 497 0000 EFF30980 			mrs r0, psp							
+ 498              											
+ 499 0004 0E4B     		ldr	r3, pxCurrentTCBConst			
+ 500 0006 1A68     		ldr	r2, [r3]						
+ 501              											
+ 502 0008 2038     		sub r0, r0, #32						
+ 503 000a 1060     		str r0, [r2]						
+ 504 000c F0C0     		stmia r0!, {r4-r7}					
+ 505 000e 4446     	 	mov r4, r8							
+ 506 0010 4D46     	 	mov r5, r9							
+ 507 0012 5646     	 	mov r6, r10							
+ 508 0014 5F46     	 	mov r7, r11							
+ 509 0016 F0C0     	 	stmia r0!, {r4-r7}              	
+ 510              											
+ 511 0018 08B5     		push {r3, r14}						
+ 512 001a 72B6     		cpsid i								
+ 513 001c FFF7FEFF 		bl vTaskSwitchContext				
+ 514 0020 62B6     		cpsie i								
+ 515 0022 0CBC     		pop {r2, r3}						
+ 516              											
+ 517 0024 1168     		ldr r1, [r2]						
+ 518 0026 0868     		ldr r0, [r1]						
+ 519 0028 1030     		add r0, r0, #16						
+ 520 002a F0C8     		ldmia r0!, {r4-r7}					
+ 521 002c A046     	 	mov r8, r4							
+ 522 002e A946     	 	mov r9, r5							
+ 523 0030 B246     	 	mov r10, r6							
+ 524 0032 BB46     	 	mov r11, r7							
+ 525              											
+ 526 0034 80F30988 		msr psp, r0							
+ 527              											
+ 528 0038 2038     		sub r0, r0, #32						
+ 529 003a F0C8     	 	ldmia r0!, {r4-r7}              	
+ 530              											
+ 531 003c 1847     		bx r3								
+ 532              											
+ 533 003e C046     		.align 4							
+ 534 0040 00000000 	pxCurrentTCBConst: .word pxCurrentTCB	  
+ 535              	@ 0 "" 2
+ 291:../freertos/port.c **** 	(
+ 292:../freertos/port.c **** 	"	mrs r0, psp							\n"
+ 293:../freertos/port.c **** 	"										\n"
+ 294:../freertos/port.c **** 	"	ldr	r3, pxCurrentTCBConst			\n" /* Get the location of the current TCB. */
+ 295:../freertos/port.c **** 	"	ldr	r2, [r3]						\n"
+ 296:../freertos/port.c **** 	"										\n"
+ 297:../freertos/port.c **** 	"	sub r0, r0, #32						\n" /* Make space for the remaining low registers. */
+ 298:../freertos/port.c **** 	"	str r0, [r2]						\n" /* Save the new top of stack. */
+ 299:../freertos/port.c **** 	"	stmia r0!, {r4-r7}					\n" /* Store the low registers that are not saved automatically. */
+ 300:../freertos/port.c **** 	" 	mov r4, r8							\n" /* Store the high registers. */
+ 301:../freertos/port.c **** 	" 	mov r5, r9							\n"
+ 302:../freertos/port.c **** 	" 	mov r6, r10							\n"
+ 303:../freertos/port.c **** 	" 	mov r7, r11							\n"
+ 304:../freertos/port.c **** 	" 	stmia r0!, {r4-r7}              	\n"
+ 305:../freertos/port.c **** 	"										\n"
+ 306:../freertos/port.c **** 	"	push {r3, r14}						\n"
+ 307:../freertos/port.c **** 	"	cpsid i								\n"
+ 308:../freertos/port.c **** 	"	bl vTaskSwitchContext				\n"
+ 309:../freertos/port.c **** 	"	cpsie i								\n"
+ 310:../freertos/port.c **** 	"	pop {r2, r3}						\n" /* lr goes in r3. r2 now holds tcb pointer. */
+ 311:../freertos/port.c **** 	"										\n"
+ 312:../freertos/port.c **** 	"	ldr r1, [r2]						\n"
+ 313:../freertos/port.c **** 	"	ldr r0, [r1]						\n" /* The first item in pxCurrentTCB is the task top of stack. */
+ 314:../freertos/port.c **** 	"	add r0, r0, #16						\n" /* Move to the high registers. */
+ 315:../freertos/port.c **** 	"	ldmia r0!, {r4-r7}					\n" /* Pop the high registers. */
+ 316:../freertos/port.c **** 	" 	mov r8, r4							\n"
+ 317:../freertos/port.c **** 	" 	mov r9, r5							\n"
+ 318:../freertos/port.c **** 	" 	mov r10, r6							\n"
+ 319:../freertos/port.c **** 	" 	mov r11, r7							\n"
+ 320:../freertos/port.c **** 	"										\n"
+ 321:../freertos/port.c **** 	"	msr psp, r0							\n" /* Remember the new top of stack for the task. */
+ 322:../freertos/port.c **** 	"										\n"
+ 323:../freertos/port.c **** 	"	sub r0, r0, #32						\n" /* Go back for the low registers that are not automatically restored. *
+ 324:../freertos/port.c **** 	" 	ldmia r0!, {r4-r7}              	\n" /* Pop low registers.  */
+ 325:../freertos/port.c **** 	"										\n"
+ 326:../freertos/port.c **** 	"	bx r3								\n"
+ 327:../freertos/port.c **** 	"										\n"
+ 328:../freertos/port.c **** 	"	.align 4							\n"
+ 329:../freertos/port.c **** 	"pxCurrentTCBConst: .word pxCurrentTCB	  "
+ 330:../freertos/port.c **** 	);
+ 331:../freertos/port.c **** }
+ 536              		.loc 1 331 0
+ 537              		.code	16
+ 538              		.cfi_endproc
+ 539              	.LFE11:
+ 541 0044 C046C046 		.section	.text.SysTick_Handler,"ax",%progbits
+ 541      C046C046 
+ 541      C046C046 
+ 542              		.align	2
+ 543              		.global	SysTick_Handler
+ 544              		.code	16
+ 545              		.thumb_func
+ 547              	SysTick_Handler:
+ 548              	.LFB12:
+ 332:../freertos/port.c **** /*-----------------------------------------------------------*/
+ 333:../freertos/port.c **** 
+ 334:../freertos/port.c **** void xPortSysTickHandler( void )
+ 335:../freertos/port.c **** {
+ 549              		.loc 1 335 0
+ 550              		.cfi_startproc
+ 551 0000 80B5     		push	{r7, lr}
+ 552              		.cfi_def_cfa_offset 8
+ 553              		.cfi_offset 7, -8
+ 554              		.cfi_offset 14, -4
+ 555 0002 82B0     		sub	sp, sp, #8
+ 556              		.cfi_def_cfa_offset 16
+ 557 0004 00AF     		add	r7, sp, #0
+ 558              		.cfi_def_cfa_register 7
+ 336:../freertos/port.c **** uint32_t ulPreviousMask;
+ 337:../freertos/port.c **** 
+ 338:../freertos/port.c **** 	ulPreviousMask = portSET_INTERRUPT_MASK_FROM_ISR();
+ 559              		.loc 1 338 0
+ 560 0006 FFF7FEFF 		bl	ulSetInterruptMaskFromISR
+ 561 000a 031C     		mov	r3, r0
+ 562 000c 7B60     		str	r3, [r7, #4]
+ 339:../freertos/port.c **** 	{
+ 340:../freertos/port.c **** 		/* Increment the RTOS tick. */
+ 341:../freertos/port.c **** 		if( xTaskIncrementTick() != pdFALSE )
+ 563              		.loc 1 341 0
+ 564 000e FFF7FEFF 		bl	xTaskIncrementTick
+ 565 0012 031C     		mov	r3, r0
+ 566 0014 002B     		cmp	r3, #0
+ 567 0016 03D0     		beq	.L39
+ 342:../freertos/port.c **** 		{
+ 343:../freertos/port.c **** 			/* Pend a context switch. */
+ 344:../freertos/port.c **** 			*(portNVIC_INT_CTRL) = portNVIC_PENDSVSET;
+ 568              		.loc 1 344 0
+ 569 0018 054B     		ldr	r3, .L40
+ 570 001a 8022     		mov	r2, #128
+ 571 001c 5205     		lsl	r2, r2, #21
+ 572 001e 1A60     		str	r2, [r3]
+ 573              	.L39:
+ 345:../freertos/port.c **** 		}
+ 346:../freertos/port.c **** 	}
+ 347:../freertos/port.c **** 	portCLEAR_INTERRUPT_MASK_FROM_ISR( ulPreviousMask );
+ 574              		.loc 1 347 0
+ 575 0020 7B68     		ldr	r3, [r7, #4]
+ 576 0022 181C     		mov	r0, r3
+ 577 0024 FFF7FEFF 		bl	vClearInterruptMaskFromISR
+ 348:../freertos/port.c **** }
+ 578              		.loc 1 348 0
+ 579 0028 BD46     		mov	sp, r7
+ 580 002a 02B0     		add	sp, sp, #8
+ 581              		@ sp needed
+ 582 002c 80BD     		pop	{r7, pc}
+ 583              	.L41:
+ 584 002e C046     		.align	2
+ 585              	.L40:
+ 586 0030 04ED00E0 		.word	-536810236
+ 587              		.cfi_endproc
+ 588              	.LFE12:
+ 590              		.text
+ 591              	.Letext0:
+ 592              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 593              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 594              		.file 4 "../freertos/projdefs.h"
+ 595              		.file 5 "../freertos/portmacro.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 port.c
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:18     .data.uxCriticalNesting:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:21     .data.uxCriticalNesting:00000000 uxCriticalNesting
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:24     .text.pxPortInitialiseStack:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:29     .text.pxPortInitialiseStack:00000000 pxPortInitialiseStack
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:93     .text.pxPortInitialiseStack:00000050 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:102    .text.prvTaskExitError:00000000 prvTaskExitError
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:98     .text.prvTaskExitError:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:136    .text.prvTaskExitError:00000014 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:141    .text.SVC_Handler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:146    .text.SVC_Handler:00000000 SVC_Handler
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:164    .text.vPortStartFirstTask:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:168    .text.vPortStartFirstTask:00000000 vPortStartFirstTask
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:190    .text.vPortStartFirstTask:00000030 pxCurrentTCBConst2
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:190    .text.vPortStartFirstTask:00000030 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:198    .text.xPortStartScheduler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:203    .text.xPortStartScheduler:00000000 xPortStartScheduler
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:249    .text.xPortStartScheduler:0000003c $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:255    .text.vPortEndScheduler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:260    .text.vPortEndScheduler:00000000 vPortEndScheduler
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:292    .text.vPortEndScheduler:00000018 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:297    .text.vPortYield:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:302    .text.vPortYield:00000000 vPortYield
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:333    .text.vPortYield:00000018 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:338    .text.vPortEnterCritical:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:343    .text.vPortEnterCritical:00000000 vPortEnterCritical
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:380    .text.vPortEnterCritical:0000001c $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:385    .text.vPortExitCritical:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:390    .text.vPortExitCritical:00000000 vPortExitCritical
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:437    .text.vPortExitCritical:00000028 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:442    .text.ulSetInterruptMaskFromISR:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:447    .text.ulSetInterruptMaskFromISR:00000000 ulSetInterruptMaskFromISR
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:466    .text.vClearInterruptMaskFromISR:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:471    .text.vClearInterruptMaskFromISR:00000000 vClearInterruptMaskFromISR
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:486    .text.PendSV_Handler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:491    .text.PendSV_Handler:00000000 PendSV_Handler
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:534    .text.PendSV_Handler:00000040 pxCurrentTCBConst
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:534    .text.PendSV_Handler:00000040 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:542    .text.SysTick_Handler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:547    .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:586    .text.SysTick_Handler:00000030 $d
+                     .debug_frame:00000010 $d
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:197    .text.vPortStartFirstTask:00000034 $t
+C:\Users\mathe\AppData\Local\Temp\cciV3uRP.s:541    .text.PendSV_Handler:00000044 $t
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.FreeRTOSConfig.h.71.9ce5dd93bb084cb2714008d9030c087d
+                           .group:00000000 wm4.projdefs.h.71.6ed2b4e07820ea275c61d78138cfae10
+                           .group:00000000 wm4.portmacro.h.72.32efb3512b0394b29d8211ba7ab279d9
+                           .group:00000000 wm4.portable.h.106.61ffdda1afafb5a5e1f7197ade95b43a
+                           .group:00000000 wm4.mpu_wrappers.h.71.c0872672d360e197b5a999335351843d
+                           .group:00000000 wm4.FreeRTOS.h.186.2e14eee2d995e9702d028b4adcebc296
+                           .group:00000000 wm4.list.h.103.6a12b7b9a7a136c3cca0ee53675c5498
+                           .group:00000000 wm4.task.h.88.c21feabc7be8ca1396f9c7c7a7eaee9b
+                           .group:00000000 wm4.tickless_generic.h.73.ad75429969dd12079da634c8da54311d
+
+UNDEFINED SYMBOLS
+pxCurrentTCB
+prvSetupTimerInterrupt
+vTaskSwitchContext
+xTaskIncrementTick

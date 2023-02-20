@@ -1,0 +1,1045 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"adc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.ADC_ConfigTriggerSource,"ax",%progbits
+  18              		.align	2
+  19              		.global	ADC_ConfigTriggerSource
+  20              		.code	16
+  21              		.thumb_func
+  23              	ADC_ConfigTriggerSource:
+  24              	.LFB53:
+  25              		.file 1 "../Sources/drivers/adc/adc.c"
+   1:../Sources/drivers/adc/adc.c **** /*
+   2:../Sources/drivers/adc/adc.c ****  * Copyright (c) 2015, Freescale Semiconductor, Inc.
+   3:../Sources/drivers/adc/adc.c ****  * Copyright 2016-2017 NXP
+   4:../Sources/drivers/adc/adc.c ****  *
+   5:../Sources/drivers/adc/adc.c ****  * Redistribution and use in source and binary forms, with or without modification,
+   6:../Sources/drivers/adc/adc.c ****  * are permitted provided that the following conditions are met:
+   7:../Sources/drivers/adc/adc.c ****  *
+   8:../Sources/drivers/adc/adc.c ****  * o Redistributions of source code must retain the above copyright notice, this list
+   9:../Sources/drivers/adc/adc.c ****  *   of conditions and the following disclaimer.
+  10:../Sources/drivers/adc/adc.c ****  *
+  11:../Sources/drivers/adc/adc.c ****  * o Redistributions in binary form must reproduce the above copyright notice, this
+  12:../Sources/drivers/adc/adc.c ****  *   list of conditions and the following disclaimer in the documentation and/or
+  13:../Sources/drivers/adc/adc.c ****  *   other materials provided with the distribution.
+  14:../Sources/drivers/adc/adc.c ****  *
+  15:../Sources/drivers/adc/adc.c ****  * o Neither the name of the copyright holder nor the names of its
+  16:../Sources/drivers/adc/adc.c ****  *   contributors may be used to endorse or promote products derived from this
+  17:../Sources/drivers/adc/adc.c ****  *   software without specific prior written permission.
+  18:../Sources/drivers/adc/adc.c ****  *
+  19:../Sources/drivers/adc/adc.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  20:../Sources/drivers/adc/adc.c ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  21:../Sources/drivers/adc/adc.c ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  22:../Sources/drivers/adc/adc.c ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  23:../Sources/drivers/adc/adc.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  24:../Sources/drivers/adc/adc.c ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  25:../Sources/drivers/adc/adc.c ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  26:../Sources/drivers/adc/adc.c ****  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  27:../Sources/drivers/adc/adc.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  28:../Sources/drivers/adc/adc.c ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  29:../Sources/drivers/adc/adc.c ****  */
+  30:../Sources/drivers/adc/adc.c **** 
+  31:../Sources/drivers/adc/adc.c **** #include "adc.h"
+  32:../Sources/drivers/adc/adc.c **** 
+  33:../Sources/drivers/adc/adc.c **** /*******************************************************************************
+  34:../Sources/drivers/adc/adc.c ****  * Prototypes
+  35:../Sources/drivers/adc/adc.c ****  ******************************************************************************/
+  36:../Sources/drivers/adc/adc.c **** 
+  37:../Sources/drivers/adc/adc.c **** /*******************************************************************************
+  38:../Sources/drivers/adc/adc.c ****  * Variables
+  39:../Sources/drivers/adc/adc.c ****  ******************************************************************************/
+  40:../Sources/drivers/adc/adc.c **** 
+  41:../Sources/drivers/adc/adc.c **** /*******************************************************************************
+  42:../Sources/drivers/adc/adc.c ****  * Code
+  43:../Sources/drivers/adc/adc.c ****  ******************************************************************************/
+  44:../Sources/drivers/adc/adc.c **** 
+  45:../Sources/drivers/adc/adc.c **** 
+  46:../Sources/drivers/adc/adc.c **** /*
+  47:../Sources/drivers/adc/adc.c ****  * ADC0 trigger select
+  48:../Sources/drivers/adc/adc.c **** Selects the ADC0 trigger source when alternative triggers are functional in stop and VLPS modes. .
+  49:../Sources/drivers/adc/adc.c **** 0x0 External trigger pin input (EXTRG_IN)
+  50:../Sources/drivers/adc/adc.c **** 0x1 CMP0 output
+  51:../Sources/drivers/adc/adc.c **** 0x4 PIT trigger 0
+  52:../Sources/drivers/adc/adc.c **** 0x5 PIT trigger 1
+  53:../Sources/drivers/adc/adc.c **** 0x8 TPM0 overflow
+  54:../Sources/drivers/adc/adc.c **** 0x9 TPM1 overflow
+  55:../Sources/drivers/adc/adc.c **** 0xA TPM2 overflow
+  56:../Sources/drivers/adc/adc.c **** 0xC RTC alarm
+  57:../Sources/drivers/adc/adc.c **** 0xD RTC seconds
+  58:../Sources/drivers/adc/adc.c **** 0xE LPTMR0 trigger*/
+  59:../Sources/drivers/adc/adc.c **** void ADC_ConfigTriggerSource(uint8_t hwTrigger)
+  60:../Sources/drivers/adc/adc.c **** {
+  26              		.loc 1 60 0
+  27              		.cfi_startproc
+  28 0000 80B5     		push	{r7, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 7, -8
+  31              		.cfi_offset 14, -4
+  32 0002 82B0     		sub	sp, sp, #8
+  33              		.cfi_def_cfa_offset 16
+  34 0004 00AF     		add	r7, sp, #0
+  35              		.cfi_def_cfa_register 7
+  36 0006 021C     		mov	r2, r0
+  37 0008 FB1D     		add	r3, r7, #7
+  38 000a 1A70     		strb	r2, [r3]
+  61:../Sources/drivers/adc/adc.c ****     /* Configure SIM for ADC hw trigger source selection */
+  62:../Sources/drivers/adc/adc.c ****     SIM->SOPT7 |= (0x00000080U | hwTrigger);
+  39              		.loc 1 62 0
+  40 000c 074A     		ldr	r2, .L2
+  41 000e 0749     		ldr	r1, .L2
+  42 0010 074B     		ldr	r3, .L2+4
+  43 0012 C958     		ldr	r1, [r1, r3]
+  44 0014 FB1D     		add	r3, r7, #7
+  45 0016 1B78     		ldrb	r3, [r3]
+  46 0018 8020     		mov	r0, #128
+  47 001a 4042     		neg	r0, r0
+  48 001c 0343     		orr	r3, r0
+  49 001e DBB2     		uxtb	r3, r3
+  50 0020 1943     		orr	r1, r3
+  51 0022 034B     		ldr	r3, .L2+4
+  52 0024 D150     		str	r1, [r2, r3]
+  63:../Sources/drivers/adc/adc.c **** }
+  53              		.loc 1 63 0
+  54 0026 BD46     		mov	sp, r7
+  55 0028 02B0     		add	sp, sp, #8
+  56              		@ sp needed
+  57 002a 80BD     		pop	{r7, pc}
+  58              	.L3:
+  59              		.align	2
+  60              	.L2:
+  61 002c 00700440 		.word	1074032640
+  62 0030 18100000 		.word	4120
+  63              		.cfi_endproc
+  64              	.LFE53:
+  66              		.section	.rodata
+  67              		.align	2
+  68              	.LC0:
+  69 0000 2E2E2F53 		.ascii	"../Sources/drivers/adc/adc.c\000"
+  69      6F757263 
+  69      65732F64 
+  69      72697665 
+  69      72732F61 
+  70 001d 000000   		.align	2
+  71              	.LC3:
+  72 0020 62617365 		.ascii	"base\000"
+  72      00
+  73              		.section	.text.ADC_SetLongSampleTimeMode,"ax",%progbits
+  74              		.align	2
+  75              		.global	ADC_SetLongSampleTimeMode
+  76              		.code	16
+  77              		.thumb_func
+  79              	ADC_SetLongSampleTimeMode:
+  80              	.LFB54:
+  64:../Sources/drivers/adc/adc.c **** 
+  65:../Sources/drivers/adc/adc.c **** void ADC_SetLongSampleTimeMode( ADC_Type *base, adcLongSampleMode_t mode )
+  66:../Sources/drivers/adc/adc.c **** {
+  81              		.loc 1 66 0
+  82              		.cfi_startproc
+  83 0000 80B5     		push	{r7, lr}
+  84              		.cfi_def_cfa_offset 8
+  85              		.cfi_offset 7, -8
+  86              		.cfi_offset 14, -4
+  87 0002 82B0     		sub	sp, sp, #8
+  88              		.cfi_def_cfa_offset 16
+  89 0004 00AF     		add	r7, sp, #0
+  90              		.cfi_def_cfa_register 7
+  91 0006 7860     		str	r0, [r7, #4]
+  92 0008 0A1C     		mov	r2, r1
+  93 000a FB1C     		add	r3, r7, #3
+  94 000c 1A70     		strb	r2, [r3]
+  67:../Sources/drivers/adc/adc.c **** 	assert(base);
+  95              		.loc 1 67 0
+  96 000e 7B68     		ldr	r3, [r7, #4]
+  97 0010 002B     		cmp	r3, #0
+  98 0012 06D1     		bne	.L5
+  99              		.loc 1 67 0 is_stmt 0 discriminator 1
+ 100 0014 1649     		ldr	r1, .L7
+ 101 0016 174A     		ldr	r2, .L7+4
+ 102 0018 174B     		ldr	r3, .L7+8
+ 103 001a 081C     		mov	r0, r1
+ 104 001c 4321     		mov	r1, #67
+ 105 001e FFF7FEFF 		bl	__assert_func
+ 106              	.L5:
+  68:../Sources/drivers/adc/adc.c **** 
+  69:../Sources/drivers/adc/adc.c **** 	base->CFG1 &= ~ADC_CFG1_ADLSMP_MASK; /*Limpa configurações anteriores*/
+ 107              		.loc 1 69 0 is_stmt 1
+ 108 0022 7B68     		ldr	r3, [r7, #4]
+ 109 0024 9B68     		ldr	r3, [r3, #8]
+ 110 0026 1022     		mov	r2, #16
+ 111 0028 191C     		mov	r1, r3
+ 112 002a 9143     		bic	r1, r2
+ 113 002c 0A1C     		mov	r2, r1
+ 114 002e 7B68     		ldr	r3, [r7, #4]
+ 115 0030 9A60     		str	r2, [r3, #8]
+  70:../Sources/drivers/adc/adc.c **** 	if ( ADC_LONG_SAMPLE_DISABLE != mode )
+ 116              		.loc 1 70 0
+ 117 0032 FB1C     		add	r3, r7, #3
+ 118 0034 1B78     		ldrb	r3, [r3]
+ 119 0036 042B     		cmp	r3, #4
+ 120 0038 16D0     		beq	.L4
+  71:../Sources/drivers/adc/adc.c **** 	{
+  72:../Sources/drivers/adc/adc.c **** 		base->CFG1 |= ADC_CFG1_ADLSMP(1U);
+ 121              		.loc 1 72 0
+ 122 003a 7B68     		ldr	r3, [r7, #4]
+ 123 003c 9B68     		ldr	r3, [r3, #8]
+ 124 003e 1022     		mov	r2, #16
+ 125 0040 1A43     		orr	r2, r3
+ 126 0042 7B68     		ldr	r3, [r7, #4]
+ 127 0044 9A60     		str	r2, [r3, #8]
+  73:../Sources/drivers/adc/adc.c **** 
+  74:../Sources/drivers/adc/adc.c **** 		base->CFG2 &= ~ADC_CFG2_ADLSTS_MASK;
+ 128              		.loc 1 74 0
+ 129 0046 7B68     		ldr	r3, [r7, #4]
+ 130 0048 DB68     		ldr	r3, [r3, #12]
+ 131 004a 0322     		mov	r2, #3
+ 132 004c 191C     		mov	r1, r3
+ 133 004e 9143     		bic	r1, r2
+ 134 0050 0A1C     		mov	r2, r1
+ 135 0052 7B68     		ldr	r3, [r7, #4]
+ 136 0054 DA60     		str	r2, [r3, #12]
+  75:../Sources/drivers/adc/adc.c **** 		base->CFG2 |= ADC_CFG2_ADLSTS(mode);
+ 137              		.loc 1 75 0
+ 138 0056 7B68     		ldr	r3, [r7, #4]
+ 139 0058 DA68     		ldr	r2, [r3, #12]
+ 140 005a FB1C     		add	r3, r7, #3
+ 141 005c 1978     		ldrb	r1, [r3]
+ 142 005e 0323     		mov	r3, #3
+ 143 0060 0B40     		and	r3, r1
+ 144 0062 1A43     		orr	r2, r3
+ 145 0064 7B68     		ldr	r3, [r7, #4]
+ 146 0066 DA60     		str	r2, [r3, #12]
+ 147              	.L4:
+  76:../Sources/drivers/adc/adc.c **** 	}
+  77:../Sources/drivers/adc/adc.c **** }
+ 148              		.loc 1 77 0
+ 149 0068 BD46     		mov	sp, r7
+ 150 006a 02B0     		add	sp, sp, #8
+ 151              		@ sp needed
+ 152 006c 80BD     		pop	{r7, pc}
+ 153              	.L8:
+ 154 006e C046     		.align	2
+ 155              	.L7:
+ 156 0070 00000000 		.word	.LC0
+ 157 0074 00000000 		.word	__func__.4769
+ 158 0078 20000000 		.word	.LC3
+ 159              		.cfi_endproc
+ 160              	.LFE54:
+ 162              		.section	.text.ADC_DoAutoCalibration,"ax",%progbits
+ 163              		.align	2
+ 164              		.global	ADC_DoAutoCalibration
+ 165              		.code	16
+ 166              		.thumb_func
+ 168              	ADC_DoAutoCalibration:
+ 169              	.LFB55:
+  78:../Sources/drivers/adc/adc.c **** 
+  79:../Sources/drivers/adc/adc.c **** uint8_t ADC_DoAutoCalibration(ADC_Type *base)
+  80:../Sources/drivers/adc/adc.c **** {
+ 170              		.loc 1 80 0
+ 171              		.cfi_startproc
+ 172 0000 80B5     		push	{r7, lr}
+ 173              		.cfi_def_cfa_offset 8
+ 174              		.cfi_offset 7, -8
+ 175              		.cfi_offset 14, -4
+ 176 0002 84B0     		sub	sp, sp, #16
+ 177              		.cfi_def_cfa_offset 24
+ 178 0004 00AF     		add	r7, sp, #0
+ 179              		.cfi_def_cfa_register 7
+ 180 0006 7860     		str	r0, [r7, #4]
+  81:../Sources/drivers/adc/adc.c ****     bool bHWTrigger = false;
+ 181              		.loc 1 81 0
+ 182 0008 3B1C     		mov	r3, r7
+ 183 000a 0F33     		add	r3, r3, #15
+ 184 000c 0022     		mov	r2, #0
+ 185 000e 1A70     		strb	r2, [r3]
+  82:../Sources/drivers/adc/adc.c ****     volatile uint32_t tmp32; /* 'volatile' here is for the dummy read of ADCx_R[0] register. */
+  83:../Sources/drivers/adc/adc.c ****     uint8_t status = STATUS_SUCCESS;
+ 186              		.loc 1 83 0
+ 187 0010 3B1C     		mov	r3, r7
+ 188 0012 0E33     		add	r3, r3, #14
+ 189 0014 0022     		mov	r2, #0
+ 190 0016 1A70     		strb	r2, [r3]
+  84:../Sources/drivers/adc/adc.c **** 
+  85:../Sources/drivers/adc/adc.c ****     /* The calibration would be failed when in hardware mode.
+  86:../Sources/drivers/adc/adc.c ****      * Remember the hardware trigger state here and restore it later if the hardware trigger is ena
+  87:../Sources/drivers/adc/adc.c ****     if (0U != (ADC_SC2_ADTRG_MASK & base->SC2))
+ 191              		.loc 1 87 0
+ 192 0018 7B68     		ldr	r3, [r7, #4]
+ 193 001a 1A6A     		ldr	r2, [r3, #32]
+ 194 001c 4023     		mov	r3, #64
+ 195 001e 1340     		and	r3, r2
+ 196 0020 0BD0     		beq	.L10
+  88:../Sources/drivers/adc/adc.c ****     {
+  89:../Sources/drivers/adc/adc.c ****         bHWTrigger = true;
+ 197              		.loc 1 89 0
+ 198 0022 3B1C     		mov	r3, r7
+ 199 0024 0F33     		add	r3, r3, #15
+ 200 0026 0122     		mov	r2, #1
+ 201 0028 1A70     		strb	r2, [r3]
+  90:../Sources/drivers/adc/adc.c ****         base->SC2 &= ~ADC_SC2_ADTRG_MASK;
+ 202              		.loc 1 90 0
+ 203 002a 7B68     		ldr	r3, [r7, #4]
+ 204 002c 1B6A     		ldr	r3, [r3, #32]
+ 205 002e 4022     		mov	r2, #64
+ 206 0030 191C     		mov	r1, r3
+ 207 0032 9143     		bic	r1, r2
+ 208 0034 0A1C     		mov	r2, r1
+ 209 0036 7B68     		ldr	r3, [r7, #4]
+ 210 0038 1A62     		str	r2, [r3, #32]
+ 211              	.L10:
+  91:../Sources/drivers/adc/adc.c ****     }
+  92:../Sources/drivers/adc/adc.c **** 
+  93:../Sources/drivers/adc/adc.c ****     /* Clear the CALF and launch the calibration. */
+  94:../Sources/drivers/adc/adc.c ****     base->SC3 |= ADC_SC3_CAL_MASK | ADC_SC3_CALF_MASK;
+ 212              		.loc 1 94 0
+ 213 003a 7B68     		ldr	r3, [r7, #4]
+ 214 003c 5B6A     		ldr	r3, [r3, #36]
+ 215 003e C022     		mov	r2, #192
+ 216 0040 1A43     		orr	r2, r3
+ 217 0042 7B68     		ldr	r3, [r7, #4]
+ 218 0044 5A62     		str	r2, [r3, #36]
+  95:../Sources/drivers/adc/adc.c **** 
+  96:../Sources/drivers/adc/adc.c ****     while (false == ADC_IsConversionDone(base, 0U))
+ 219              		.loc 1 96 0
+ 220 0046 0CE0     		b	.L11
+ 221              	.L13:
+  97:../Sources/drivers/adc/adc.c ****     {
+  98:../Sources/drivers/adc/adc.c ****         /* Check the CALF when the calibration is active. */
+  99:../Sources/drivers/adc/adc.c ****         if (0U != (ADC_CALIBRATION_FAILED_FLAG & ADC_GetStatusFlags(base)))
+ 222              		.loc 1 99 0
+ 223 0048 7B68     		ldr	r3, [r7, #4]
+ 224 004a 181C     		mov	r0, r3
+ 225 004c FFF7FEFF 		bl	ADC_GetStatusFlags
+ 226 0050 021C     		mov	r2, r0
+ 227 0052 4023     		mov	r3, #64
+ 228 0054 1340     		and	r3, r2
+ 229 0056 04D0     		beq	.L11
+ 100:../Sources/drivers/adc/adc.c ****         {
+ 101:../Sources/drivers/adc/adc.c ****             status = STATUS_FAIL;
+ 230              		.loc 1 101 0
+ 231 0058 3B1C     		mov	r3, r7
+ 232 005a 0E33     		add	r3, r3, #14
+ 233 005c 0122     		mov	r2, #1
+ 234 005e 1A70     		strb	r2, [r3]
+ 102:../Sources/drivers/adc/adc.c ****             break;
+ 235              		.loc 1 102 0
+ 236 0060 0AE0     		b	.L12
+ 237              	.L11:
+  96:../Sources/drivers/adc/adc.c ****     while (false == ADC_IsConversionDone(base, 0U))
+ 238              		.loc 1 96 0 discriminator 1
+ 239 0062 7B68     		ldr	r3, [r7, #4]
+ 240 0064 181C     		mov	r0, r3
+ 241 0066 0021     		mov	r1, #0
+ 242 0068 FFF7FEFF 		bl	ADC_IsConversionDone
+ 243 006c 031C     		mov	r3, r0
+ 244 006e 0122     		mov	r2, #1
+ 245 0070 5340     		eor	r3, r2
+ 246 0072 DBB2     		uxtb	r3, r3
+ 247 0074 002B     		cmp	r3, #0
+ 248 0076 E7D1     		bne	.L13
+ 249              	.L12:
+ 103:../Sources/drivers/adc/adc.c ****         }
+ 104:../Sources/drivers/adc/adc.c ****     }
+ 105:../Sources/drivers/adc/adc.c ****     tmp32 = base->R[0]; /* Dummy read to clear COCO caused by calibration. */
+ 250              		.loc 1 105 0
+ 251 0078 7B68     		ldr	r3, [r7, #4]
+ 252 007a 1B69     		ldr	r3, [r3, #16]
+ 253 007c BB60     		str	r3, [r7, #8]
+ 106:../Sources/drivers/adc/adc.c **** 
+ 107:../Sources/drivers/adc/adc.c ****     /* Restore the hardware trigger setting if it was enabled before. */
+ 108:../Sources/drivers/adc/adc.c ****     if (bHWTrigger)
+ 254              		.loc 1 108 0
+ 255 007e 3B1C     		mov	r3, r7
+ 256 0080 0F33     		add	r3, r3, #15
+ 257 0082 1B78     		ldrb	r3, [r3]
+ 258 0084 002B     		cmp	r3, #0
+ 259 0086 05D0     		beq	.L14
+ 109:../Sources/drivers/adc/adc.c ****     {
+ 110:../Sources/drivers/adc/adc.c ****         base->SC2 |= ADC_SC2_ADTRG_MASK;
+ 260              		.loc 1 110 0
+ 261 0088 7B68     		ldr	r3, [r7, #4]
+ 262 008a 1B6A     		ldr	r3, [r3, #32]
+ 263 008c 4022     		mov	r2, #64
+ 264 008e 1A43     		orr	r2, r3
+ 265 0090 7B68     		ldr	r3, [r7, #4]
+ 266 0092 1A62     		str	r2, [r3, #32]
+ 267              	.L14:
+ 111:../Sources/drivers/adc/adc.c ****     }
+ 112:../Sources/drivers/adc/adc.c ****     /* Check the CALF at the end of calibration. */
+ 113:../Sources/drivers/adc/adc.c ****     if (0U != (ADC_CALIBRATION_FAILED_FLAG & ADC_GetStatusFlags(base)))
+ 268              		.loc 1 113 0
+ 269 0094 7B68     		ldr	r3, [r7, #4]
+ 270 0096 181C     		mov	r0, r3
+ 271 0098 FFF7FEFF 		bl	ADC_GetStatusFlags
+ 272 009c 021C     		mov	r2, r0
+ 273 009e 4023     		mov	r3, #64
+ 274 00a0 1340     		and	r3, r2
+ 275 00a2 03D0     		beq	.L15
+ 114:../Sources/drivers/adc/adc.c ****     {
+ 115:../Sources/drivers/adc/adc.c ****         status = STATUS_FAIL;
+ 276              		.loc 1 115 0
+ 277 00a4 3B1C     		mov	r3, r7
+ 278 00a6 0E33     		add	r3, r3, #14
+ 279 00a8 0122     		mov	r2, #1
+ 280 00aa 1A70     		strb	r2, [r3]
+ 281              	.L15:
+ 116:../Sources/drivers/adc/adc.c ****     }
+ 117:../Sources/drivers/adc/adc.c ****     if (STATUS_SUCCESS != status) /* Check if the calibration process is succeed. */
+ 282              		.loc 1 117 0
+ 283 00ac 3B1C     		mov	r3, r7
+ 284 00ae 0E33     		add	r3, r3, #14
+ 285 00b0 1B78     		ldrb	r3, [r3]
+ 286 00b2 002B     		cmp	r3, #0
+ 287 00b4 03D0     		beq	.L16
+ 118:../Sources/drivers/adc/adc.c ****     {
+ 119:../Sources/drivers/adc/adc.c ****         return status;
+ 288              		.loc 1 119 0
+ 289 00b6 3B1C     		mov	r3, r7
+ 290 00b8 0E33     		add	r3, r3, #14
+ 291 00ba 1B78     		ldrb	r3, [r3]
+ 292 00bc 1BE0     		b	.L17
+ 293              	.L16:
+ 120:../Sources/drivers/adc/adc.c ****     }
+ 121:../Sources/drivers/adc/adc.c **** 
+ 122:../Sources/drivers/adc/adc.c ****     /* Calculate the calibration values. */
+ 123:../Sources/drivers/adc/adc.c ****     tmp32 = base->CLP0 + base->CLP1 + base->CLP2 + base->CLP3 + base->CLP4 + base->CLPS;
+ 294              		.loc 1 123 0
+ 295 00be 7B68     		ldr	r3, [r7, #4]
+ 296 00c0 DA6C     		ldr	r2, [r3, #76]
+ 297 00c2 7B68     		ldr	r3, [r7, #4]
+ 298 00c4 9B6C     		ldr	r3, [r3, #72]
+ 299 00c6 D218     		add	r2, r2, r3
+ 300 00c8 7B68     		ldr	r3, [r7, #4]
+ 301 00ca 5B6C     		ldr	r3, [r3, #68]
+ 302 00cc D218     		add	r2, r2, r3
+ 303 00ce 7B68     		ldr	r3, [r7, #4]
+ 304 00d0 1B6C     		ldr	r3, [r3, #64]
+ 305 00d2 D218     		add	r2, r2, r3
+ 306 00d4 7B68     		ldr	r3, [r7, #4]
+ 307 00d6 DB6B     		ldr	r3, [r3, #60]
+ 308 00d8 D218     		add	r2, r2, r3
+ 309 00da 7B68     		ldr	r3, [r7, #4]
+ 310 00dc 9B6B     		ldr	r3, [r3, #56]
+ 311 00de D318     		add	r3, r2, r3
+ 312 00e0 BB60     		str	r3, [r7, #8]
+ 124:../Sources/drivers/adc/adc.c ****     tmp32 = 0x8000U | (tmp32 >> 1U);
+ 313              		.loc 1 124 0
+ 314 00e2 BB68     		ldr	r3, [r7, #8]
+ 315 00e4 5B08     		lsr	r3, r3, #1
+ 316 00e6 8022     		mov	r2, #128
+ 317 00e8 1202     		lsl	r2, r2, #8
+ 318 00ea 1343     		orr	r3, r2
+ 319 00ec BB60     		str	r3, [r7, #8]
+ 125:../Sources/drivers/adc/adc.c ****     base->PG = tmp32;
+ 320              		.loc 1 125 0
+ 321 00ee BA68     		ldr	r2, [r7, #8]
+ 322 00f0 7B68     		ldr	r3, [r7, #4]
+ 323 00f2 DA62     		str	r2, [r3, #44]
+ 126:../Sources/drivers/adc/adc.c **** 
+ 127:../Sources/drivers/adc/adc.c ****     return STATUS_SUCCESS;
+ 324              		.loc 1 127 0
+ 325 00f4 0023     		mov	r3, #0
+ 326              	.L17:
+ 128:../Sources/drivers/adc/adc.c **** }
+ 327              		.loc 1 128 0
+ 328 00f6 181C     		mov	r0, r3
+ 329 00f8 BD46     		mov	sp, r7
+ 330 00fa 04B0     		add	sp, sp, #16
+ 331              		@ sp needed
+ 332 00fc 80BD     		pop	{r7, pc}
+ 333              		.cfi_endproc
+ 334              	.LFE55:
+ 336 00fe C046     		.section	.text.ADC_SetHardwareCompareConfig,"ax",%progbits
+ 337              		.align	2
+ 338              		.global	ADC_SetHardwareCompareConfig
+ 339              		.code	16
+ 340              		.thumb_func
+ 342              	ADC_SetHardwareCompareConfig:
+ 343              	.LFB56:
+ 129:../Sources/drivers/adc/adc.c **** 
+ 130:../Sources/drivers/adc/adc.c **** void ADC_SetHardwareCompareConfig(ADC_Type *base, adcHardwareCompareMode_t hardwareCompareMode, int
+ 131:../Sources/drivers/adc/adc.c **** {
+ 344              		.loc 1 131 0
+ 345              		.cfi_startproc
+ 346 0000 80B5     		push	{r7, lr}
+ 347              		.cfi_def_cfa_offset 8
+ 348              		.cfi_offset 7, -8
+ 349              		.cfi_offset 14, -4
+ 350 0002 86B0     		sub	sp, sp, #24
+ 351              		.cfi_def_cfa_offset 32
+ 352 0004 00AF     		add	r7, sp, #0
+ 353              		.cfi_def_cfa_register 7
+ 354 0006 F860     		str	r0, [r7, #12]
+ 355 0008 081C     		mov	r0, r1
+ 356 000a 111C     		mov	r1, r2
+ 357 000c 1A1C     		mov	r2, r3
+ 358 000e 3B1C     		mov	r3, r7
+ 359 0010 0B33     		add	r3, r3, #11
+ 360 0012 1870     		strb	r0, [r3]
+ 361 0014 3B1C     		mov	r3, r7
+ 362 0016 0833     		add	r3, r3, #8
+ 363 0018 1980     		strh	r1, [r3]
+ 364 001a BB1D     		add	r3, r7, #6
+ 365 001c 1A80     		strh	r2, [r3]
+ 132:../Sources/drivers/adc/adc.c ****     uint32_t tmp32 = base->SC2 & ~(ADC_SC2_ACFE_MASK | ADC_SC2_ACFGT_MASK | ADC_SC2_ACREN_MASK);
+ 366              		.loc 1 132 0
+ 367 001e FB68     		ldr	r3, [r7, #12]
+ 368 0020 1B6A     		ldr	r3, [r3, #32]
+ 369 0022 3822     		mov	r2, #56
+ 370 0024 9343     		bic	r3, r2
+ 371 0026 7B61     		str	r3, [r7, #20]
+ 133:../Sources/drivers/adc/adc.c **** 
+ 134:../Sources/drivers/adc/adc.c ****     /* Enable the feature. */
+ 135:../Sources/drivers/adc/adc.c ****     tmp32 |= ADC_SC2_ACFE_MASK;
+ 372              		.loc 1 135 0
+ 373 0028 7B69     		ldr	r3, [r7, #20]
+ 374 002a 2022     		mov	r2, #32
+ 375 002c 1343     		orr	r3, r2
+ 376 002e 7B61     		str	r3, [r7, #20]
+ 136:../Sources/drivers/adc/adc.c **** 
+ 137:../Sources/drivers/adc/adc.c ****     /* Select the hardware compare working mode. */
+ 138:../Sources/drivers/adc/adc.c ****     switch (hardwareCompareMode)
+ 377              		.loc 1 138 0
+ 378 0030 3B1C     		mov	r3, r7
+ 379 0032 0B33     		add	r3, r3, #11
+ 380 0034 1B78     		ldrb	r3, [r3]
+ 381 0036 012B     		cmp	r3, #1
+ 382 0038 08D0     		beq	.L20
+ 383 003a 02DC     		bgt	.L21
+ 384 003c 002B     		cmp	r3, #0
+ 385 003e 14D0     		beq	.L26
+ 139:../Sources/drivers/adc/adc.c ****     {
+ 140:../Sources/drivers/adc/adc.c ****         case ADC_HARDWARE_COMPARE_MODE_0:
+ 141:../Sources/drivers/adc/adc.c ****             break;
+ 142:../Sources/drivers/adc/adc.c ****         case ADC_HARDWARE_COMPARE_MODE_1:
+ 143:../Sources/drivers/adc/adc.c ****             tmp32 |= ADC_SC2_ACFGT_MASK;
+ 144:../Sources/drivers/adc/adc.c ****             break;
+ 145:../Sources/drivers/adc/adc.c ****         case ADC_HARDWARE_COMPARE_MODE_2:
+ 146:../Sources/drivers/adc/adc.c ****             tmp32 |= ADC_SC2_ACREN_MASK;
+ 147:../Sources/drivers/adc/adc.c ****             break;
+ 148:../Sources/drivers/adc/adc.c ****         case ADC_HARDWARE_COMPARE_MODE_3:
+ 149:../Sources/drivers/adc/adc.c ****             tmp32 |= ADC_SC2_ACFGT_MASK | ADC_SC2_ACREN_MASK;
+ 150:../Sources/drivers/adc/adc.c ****             break;
+ 151:../Sources/drivers/adc/adc.c ****         default:
+ 152:../Sources/drivers/adc/adc.c ****             break;
+ 386              		.loc 1 152 0
+ 387 0040 14E0     		b	.L25
+ 388              	.L21:
+ 138:../Sources/drivers/adc/adc.c ****     switch (hardwareCompareMode)
+ 389              		.loc 1 138 0
+ 390 0042 022B     		cmp	r3, #2
+ 391 0044 07D0     		beq	.L23
+ 392 0046 032B     		cmp	r3, #3
+ 393 0048 0AD0     		beq	.L24
+ 394              		.loc 1 152 0
+ 395 004a 0FE0     		b	.L25
+ 396              	.L20:
+ 143:../Sources/drivers/adc/adc.c ****             tmp32 |= ADC_SC2_ACFGT_MASK;
+ 397              		.loc 1 143 0
+ 398 004c 7B69     		ldr	r3, [r7, #20]
+ 399 004e 1022     		mov	r2, #16
+ 400 0050 1343     		orr	r3, r2
+ 401 0052 7B61     		str	r3, [r7, #20]
+ 144:../Sources/drivers/adc/adc.c ****             break;
+ 402              		.loc 1 144 0
+ 403 0054 0AE0     		b	.L25
+ 404              	.L23:
+ 146:../Sources/drivers/adc/adc.c ****             tmp32 |= ADC_SC2_ACREN_MASK;
+ 405              		.loc 1 146 0
+ 406 0056 7B69     		ldr	r3, [r7, #20]
+ 407 0058 0822     		mov	r2, #8
+ 408 005a 1343     		orr	r3, r2
+ 409 005c 7B61     		str	r3, [r7, #20]
+ 147:../Sources/drivers/adc/adc.c ****             break;
+ 410              		.loc 1 147 0
+ 411 005e 05E0     		b	.L25
+ 412              	.L24:
+ 149:../Sources/drivers/adc/adc.c ****             tmp32 |= ADC_SC2_ACFGT_MASK | ADC_SC2_ACREN_MASK;
+ 413              		.loc 1 149 0
+ 414 0060 7B69     		ldr	r3, [r7, #20]
+ 415 0062 1822     		mov	r2, #24
+ 416 0064 1343     		orr	r3, r2
+ 417 0066 7B61     		str	r3, [r7, #20]
+ 150:../Sources/drivers/adc/adc.c ****             break;
+ 418              		.loc 1 150 0
+ 419 0068 00E0     		b	.L25
+ 420              	.L26:
+ 141:../Sources/drivers/adc/adc.c ****             break;
+ 421              		.loc 1 141 0
+ 422 006a C046     		mov	r8, r8
+ 423              	.L25:
+ 153:../Sources/drivers/adc/adc.c ****     }
+ 154:../Sources/drivers/adc/adc.c ****     base->SC2 = tmp32;
+ 424              		.loc 1 154 0
+ 425 006c FB68     		ldr	r3, [r7, #12]
+ 426 006e 7A69     		ldr	r2, [r7, #20]
+ 427 0070 1A62     		str	r2, [r3, #32]
+ 155:../Sources/drivers/adc/adc.c **** 
+ 156:../Sources/drivers/adc/adc.c ****     /* Load the compare values. */
+ 157:../Sources/drivers/adc/adc.c ****     base->CV1 = ADC_CV1_CV(value1);
+ 428              		.loc 1 157 0
+ 429 0072 3B1C     		mov	r3, r7
+ 430 0074 0833     		add	r3, r3, #8
+ 431 0076 0022     		mov	r2, #0
+ 432 0078 9B5E     		ldrsh	r3, [r3, r2]
+ 433 007a 1B04     		lsl	r3, r3, #16
+ 434 007c 1A0C     		lsr	r2, r3, #16
+ 435 007e FB68     		ldr	r3, [r7, #12]
+ 436 0080 9A61     		str	r2, [r3, #24]
+ 158:../Sources/drivers/adc/adc.c ****     base->CV2 = ADC_CV2_CV(value2);
+ 437              		.loc 1 158 0
+ 438 0082 BB1D     		add	r3, r7, #6
+ 439 0084 0022     		mov	r2, #0
+ 440 0086 9B5E     		ldrsh	r3, [r3, r2]
+ 441 0088 1B04     		lsl	r3, r3, #16
+ 442 008a 1A0C     		lsr	r2, r3, #16
+ 443 008c FB68     		ldr	r3, [r7, #12]
+ 444 008e DA61     		str	r2, [r3, #28]
+ 159:../Sources/drivers/adc/adc.c **** }
+ 445              		.loc 1 159 0
+ 446 0090 BD46     		mov	sp, r7
+ 447 0092 06B0     		add	sp, sp, #24
+ 448              		@ sp needed
+ 449 0094 80BD     		pop	{r7, pc}
+ 450              		.cfi_endproc
+ 451              	.LFE56:
+ 453 0096 C046     		.section	.text.ADC_SetHardwareAverage,"ax",%progbits
+ 454              		.align	2
+ 455              		.global	ADC_SetHardwareAverage
+ 456              		.code	16
+ 457              		.thumb_func
+ 459              	ADC_SetHardwareAverage:
+ 460              	.LFB57:
+ 160:../Sources/drivers/adc/adc.c **** 
+ 161:../Sources/drivers/adc/adc.c **** 
+ 162:../Sources/drivers/adc/adc.c **** void ADC_SetHardwareAverage(ADC_Type *base, adcHardwareAverageMode_t mode)
+ 163:../Sources/drivers/adc/adc.c **** {
+ 461              		.loc 1 163 0
+ 462              		.cfi_startproc
+ 463 0000 80B5     		push	{r7, lr}
+ 464              		.cfi_def_cfa_offset 8
+ 465              		.cfi_offset 7, -8
+ 466              		.cfi_offset 14, -4
+ 467 0002 84B0     		sub	sp, sp, #16
+ 468              		.cfi_def_cfa_offset 24
+ 469 0004 00AF     		add	r7, sp, #0
+ 470              		.cfi_def_cfa_register 7
+ 471 0006 7860     		str	r0, [r7, #4]
+ 472 0008 0A1C     		mov	r2, r1
+ 473 000a FB1C     		add	r3, r7, #3
+ 474 000c 1A70     		strb	r2, [r3]
+ 164:../Sources/drivers/adc/adc.c ****     uint32_t tmp32 = base->SC3 & ~(ADC_SC3_AVGE_MASK | ADC_SC3_AVGS_MASK);
+ 475              		.loc 1 164 0
+ 476 000e 7B68     		ldr	r3, [r7, #4]
+ 477 0010 5B6A     		ldr	r3, [r3, #36]
+ 478 0012 0722     		mov	r2, #7
+ 479 0014 9343     		bic	r3, r2
+ 480 0016 FB60     		str	r3, [r7, #12]
+ 165:../Sources/drivers/adc/adc.c **** 
+ 166:../Sources/drivers/adc/adc.c ****     if (ADC_HARDWARE_AVG_DISABLE != mode)
+ 481              		.loc 1 166 0
+ 482 0018 FB1C     		add	r3, r7, #3
+ 483 001a 1B78     		ldrb	r3, [r3]
+ 484 001c 042B     		cmp	r3, #4
+ 485 001e 08D0     		beq	.L28
+ 167:../Sources/drivers/adc/adc.c ****     {
+ 168:../Sources/drivers/adc/adc.c ****         tmp32 |= ADC_SC3_AVGE_MASK | ADC_SC3_AVGS(mode);
+ 486              		.loc 1 168 0
+ 487 0020 FB1C     		add	r3, r7, #3
+ 488 0022 1A78     		ldrb	r2, [r3]
+ 489 0024 0323     		mov	r3, #3
+ 490 0026 1A40     		and	r2, r3
+ 491 0028 FB68     		ldr	r3, [r7, #12]
+ 492 002a 1343     		orr	r3, r2
+ 493 002c 0422     		mov	r2, #4
+ 494 002e 1343     		orr	r3, r2
+ 495 0030 FB60     		str	r3, [r7, #12]
+ 496              	.L28:
+ 169:../Sources/drivers/adc/adc.c ****     }
+ 170:../Sources/drivers/adc/adc.c ****     base->SC3 = tmp32;
+ 497              		.loc 1 170 0
+ 498 0032 7B68     		ldr	r3, [r7, #4]
+ 499 0034 FA68     		ldr	r2, [r7, #12]
+ 500 0036 5A62     		str	r2, [r3, #36]
+ 171:../Sources/drivers/adc/adc.c **** }
+ 501              		.loc 1 171 0
+ 502 0038 BD46     		mov	sp, r7
+ 503 003a 04B0     		add	sp, sp, #16
+ 504              		@ sp needed
+ 505 003c 80BD     		pop	{r7, pc}
+ 506              		.cfi_endproc
+ 507              	.LFE57:
+ 509 003e C046     		.section	.text.ADC_GetStatusFlags,"ax",%progbits
+ 510              		.align	2
+ 511              		.global	ADC_GetStatusFlags
+ 512              		.code	16
+ 513              		.thumb_func
+ 515              	ADC_GetStatusFlags:
+ 516              	.LFB58:
+ 172:../Sources/drivers/adc/adc.c **** 
+ 173:../Sources/drivers/adc/adc.c **** 
+ 174:../Sources/drivers/adc/adc.c **** uint32_t ADC_GetStatusFlags(ADC_Type *base)
+ 175:../Sources/drivers/adc/adc.c **** {
+ 517              		.loc 1 175 0
+ 518              		.cfi_startproc
+ 519 0000 80B5     		push	{r7, lr}
+ 520              		.cfi_def_cfa_offset 8
+ 521              		.cfi_offset 7, -8
+ 522              		.cfi_offset 14, -4
+ 523 0002 84B0     		sub	sp, sp, #16
+ 524              		.cfi_def_cfa_offset 24
+ 525 0004 00AF     		add	r7, sp, #0
+ 526              		.cfi_def_cfa_register 7
+ 527 0006 7860     		str	r0, [r7, #4]
+ 176:../Sources/drivers/adc/adc.c ****     uint32_t ret = 0;
+ 528              		.loc 1 176 0
+ 529 0008 0023     		mov	r3, #0
+ 530 000a FB60     		str	r3, [r7, #12]
+ 177:../Sources/drivers/adc/adc.c **** 
+ 178:../Sources/drivers/adc/adc.c ****     if (0U != (base->SC2 & ADC_SC2_ADACT_MASK))
+ 531              		.loc 1 178 0
+ 532 000c 7B68     		ldr	r3, [r7, #4]
+ 533 000e 1A6A     		ldr	r2, [r3, #32]
+ 534 0010 8023     		mov	r3, #128
+ 535 0012 1340     		and	r3, r2
+ 536 0014 03D0     		beq	.L30
+ 179:../Sources/drivers/adc/adc.c ****     {
+ 180:../Sources/drivers/adc/adc.c ****         ret |= ADC_ACTIVE_FLAG;
+ 537              		.loc 1 180 0
+ 538 0016 FB68     		ldr	r3, [r7, #12]
+ 539 0018 8022     		mov	r2, #128
+ 540 001a 1343     		orr	r3, r2
+ 541 001c FB60     		str	r3, [r7, #12]
+ 542              	.L30:
+ 181:../Sources/drivers/adc/adc.c ****     }
+ 182:../Sources/drivers/adc/adc.c ****     if (0U != (base->SC3 & ADC_SC3_CALF_MASK))
+ 543              		.loc 1 182 0
+ 544 001e 7B68     		ldr	r3, [r7, #4]
+ 545 0020 5A6A     		ldr	r2, [r3, #36]
+ 546 0022 4023     		mov	r3, #64
+ 547 0024 1340     		and	r3, r2
+ 548 0026 03D0     		beq	.L31
+ 183:../Sources/drivers/adc/adc.c ****     {
+ 184:../Sources/drivers/adc/adc.c ****         ret |= ADC_CALIBRATION_FAILED_FLAG;
+ 549              		.loc 1 184 0
+ 550 0028 FB68     		ldr	r3, [r7, #12]
+ 551 002a 4022     		mov	r2, #64
+ 552 002c 1343     		orr	r3, r2
+ 553 002e FB60     		str	r3, [r7, #12]
+ 554              	.L31:
+ 185:../Sources/drivers/adc/adc.c ****     }
+ 186:../Sources/drivers/adc/adc.c ****     return ret;
+ 555              		.loc 1 186 0
+ 556 0030 FB68     		ldr	r3, [r7, #12]
+ 187:../Sources/drivers/adc/adc.c **** }
+ 557              		.loc 1 187 0
+ 558 0032 181C     		mov	r0, r3
+ 559 0034 BD46     		mov	sp, r7
+ 560 0036 04B0     		add	sp, sp, #16
+ 561              		@ sp needed
+ 562 0038 80BD     		pop	{r7, pc}
+ 563              		.cfi_endproc
+ 564              	.LFE58:
+ 566 003a C046     		.section	.text.ADC_ClearCalibStatusFlags,"ax",%progbits
+ 567              		.align	2
+ 568              		.global	ADC_ClearCalibStatusFlags
+ 569              		.code	16
+ 570              		.thumb_func
+ 572              	ADC_ClearCalibStatusFlags:
+ 573              	.LFB59:
+ 188:../Sources/drivers/adc/adc.c **** 
+ 189:../Sources/drivers/adc/adc.c **** void ADC_ClearCalibStatusFlags(ADC_Type *base)
+ 190:../Sources/drivers/adc/adc.c **** {
+ 574              		.loc 1 190 0
+ 575              		.cfi_startproc
+ 576 0000 80B5     		push	{r7, lr}
+ 577              		.cfi_def_cfa_offset 8
+ 578              		.cfi_offset 7, -8
+ 579              		.cfi_offset 14, -4
+ 580 0002 82B0     		sub	sp, sp, #8
+ 581              		.cfi_def_cfa_offset 16
+ 582 0004 00AF     		add	r7, sp, #0
+ 583              		.cfi_def_cfa_register 7
+ 584 0006 7860     		str	r0, [r7, #4]
+ 191:../Sources/drivers/adc/adc.c **** 	base->SC3 |= ADC_SC3_CALF_MASK;
+ 585              		.loc 1 191 0
+ 586 0008 7B68     		ldr	r3, [r7, #4]
+ 587 000a 5B6A     		ldr	r3, [r3, #36]
+ 588 000c 4022     		mov	r2, #64
+ 589 000e 1A43     		orr	r2, r3
+ 590 0010 7B68     		ldr	r3, [r7, #4]
+ 591 0012 5A62     		str	r2, [r3, #36]
+ 192:../Sources/drivers/adc/adc.c **** }
+ 592              		.loc 1 192 0
+ 593 0014 BD46     		mov	sp, r7
+ 594 0016 02B0     		add	sp, sp, #8
+ 595              		@ sp needed
+ 596 0018 80BD     		pop	{r7, pc}
+ 597              		.cfi_endproc
+ 598              	.LFE59:
+ 600 001a C046     		.section	.rodata
+ 601 0025 000000   		.align	2
+ 602              	.LC7:
+ 603 0028 6368616E 		.ascii	"channelGroup < ADC_SC1_COUNT\000"
+ 603      6E656C47 
+ 603      726F7570 
+ 603      203C2041 
+ 603      44435F53 
+ 604 0045 000000   		.section	.text.ADC_SetChConfig,"ax",%progbits
+ 605              		.align	2
+ 606              		.global	ADC_SetChConfig
+ 607              		.code	16
+ 608              		.thumb_func
+ 610              	ADC_SetChConfig:
+ 611              	.LFB60:
+ 193:../Sources/drivers/adc/adc.c **** 
+ 194:../Sources/drivers/adc/adc.c **** void ADC_SetChConfig(ADC_Type *base, uint32_t channelGroup, uint32_t channelNumber, bool enableIRQ)
+ 195:../Sources/drivers/adc/adc.c **** {
+ 612              		.loc 1 195 0
+ 613              		.cfi_startproc
+ 614 0000 80B5     		push	{r7, lr}
+ 615              		.cfi_def_cfa_offset 8
+ 616              		.cfi_offset 7, -8
+ 617              		.cfi_offset 14, -4
+ 618 0002 86B0     		sub	sp, sp, #24
+ 619              		.cfi_def_cfa_offset 32
+ 620 0004 00AF     		add	r7, sp, #0
+ 621              		.cfi_def_cfa_register 7
+ 622 0006 F860     		str	r0, [r7, #12]
+ 623 0008 B960     		str	r1, [r7, #8]
+ 624 000a 7A60     		str	r2, [r7, #4]
+ 625 000c 1A1C     		mov	r2, r3
+ 626 000e FB1C     		add	r3, r7, #3
+ 627 0010 1A70     		strb	r2, [r3]
+ 196:../Sources/drivers/adc/adc.c ****     assert(channelGroup < ADC_SC1_COUNT);
+ 628              		.loc 1 196 0
+ 629 0012 BB68     		ldr	r3, [r7, #8]
+ 630 0014 012B     		cmp	r3, #1
+ 631 0016 06D9     		bls	.L35
+ 632              		.loc 1 196 0 is_stmt 0 discriminator 1
+ 633 0018 0D49     		ldr	r1, .L37
+ 634 001a 0E4A     		ldr	r2, .L37+4
+ 635 001c 0E4B     		ldr	r3, .L37+8
+ 636 001e 081C     		mov	r0, r1
+ 637 0020 C421     		mov	r1, #196
+ 638 0022 FFF7FEFF 		bl	__assert_func
+ 639              	.L35:
+ 197:../Sources/drivers/adc/adc.c **** 
+ 198:../Sources/drivers/adc/adc.c ****     uint32_t sc1 = ADC_SC1_ADCH(channelNumber); /* Set the channel number. */
+ 640              		.loc 1 198 0 is_stmt 1
+ 641 0026 7A68     		ldr	r2, [r7, #4]
+ 642 0028 1F23     		mov	r3, #31
+ 643 002a 1340     		and	r3, r2
+ 644 002c 7B61     		str	r3, [r7, #20]
+ 199:../Sources/drivers/adc/adc.c **** 
+ 200:../Sources/drivers/adc/adc.c ****     /* Enable the interrupt when the conversion is done. */
+ 201:../Sources/drivers/adc/adc.c ****     if (enableIRQ)
+ 645              		.loc 1 201 0
+ 646 002e FB1C     		add	r3, r7, #3
+ 647 0030 1B78     		ldrb	r3, [r3]
+ 648 0032 002B     		cmp	r3, #0
+ 649 0034 03D0     		beq	.L36
+ 202:../Sources/drivers/adc/adc.c ****     {
+ 203:../Sources/drivers/adc/adc.c ****         sc1 |= ADC_SC1_AIEN_MASK;
+ 650              		.loc 1 203 0
+ 651 0036 7B69     		ldr	r3, [r7, #20]
+ 652 0038 4022     		mov	r2, #64
+ 653 003a 1343     		orr	r3, r2
+ 654 003c 7B61     		str	r3, [r7, #20]
+ 655              	.L36:
+ 204:../Sources/drivers/adc/adc.c ****     }
+ 205:../Sources/drivers/adc/adc.c ****     base->SC1[channelGroup] = sc1;
+ 656              		.loc 1 205 0
+ 657 003e FB68     		ldr	r3, [r7, #12]
+ 658 0040 BA68     		ldr	r2, [r7, #8]
+ 659 0042 9200     		lsl	r2, r2, #2
+ 660 0044 7969     		ldr	r1, [r7, #20]
+ 661 0046 D150     		str	r1, [r2, r3]
+ 206:../Sources/drivers/adc/adc.c **** }
+ 662              		.loc 1 206 0
+ 663 0048 BD46     		mov	sp, r7
+ 664 004a 06B0     		add	sp, sp, #24
+ 665              		@ sp needed
+ 666 004c 80BD     		pop	{r7, pc}
+ 667              	.L38:
+ 668 004e C046     		.align	2
+ 669              	.L37:
+ 670 0050 00000000 		.word	.LC0
+ 671 0054 00000000 		.word	__func__.4810
+ 672 0058 28000000 		.word	.LC7
+ 673              		.cfi_endproc
+ 674              	.LFE60:
+ 676              		.section	.text.ADC_IsConversionDone,"ax",%progbits
+ 677              		.align	2
+ 678              		.global	ADC_IsConversionDone
+ 679              		.code	16
+ 680              		.thumb_func
+ 682              	ADC_IsConversionDone:
+ 683              	.LFB61:
+ 207:../Sources/drivers/adc/adc.c **** 
+ 208:../Sources/drivers/adc/adc.c **** bool ADC_IsConversionDone(ADC_Type *base, uint32_t channelGroup)
+ 209:../Sources/drivers/adc/adc.c **** {
+ 684              		.loc 1 209 0
+ 685              		.cfi_startproc
+ 686 0000 80B5     		push	{r7, lr}
+ 687              		.cfi_def_cfa_offset 8
+ 688              		.cfi_offset 7, -8
+ 689              		.cfi_offset 14, -4
+ 690 0002 84B0     		sub	sp, sp, #16
+ 691              		.cfi_def_cfa_offset 24
+ 692 0004 00AF     		add	r7, sp, #0
+ 693              		.cfi_def_cfa_register 7
+ 694 0006 7860     		str	r0, [r7, #4]
+ 695 0008 3960     		str	r1, [r7]
+ 210:../Sources/drivers/adc/adc.c ****     assert(channelGroup < ADC_SC1_COUNT);
+ 696              		.loc 1 210 0
+ 697 000a 3B68     		ldr	r3, [r7]
+ 698 000c 012B     		cmp	r3, #1
+ 699 000e 06D9     		bls	.L40
+ 700              		.loc 1 210 0 is_stmt 0 discriminator 1
+ 701 0010 0E49     		ldr	r1, .L43
+ 702 0012 0F4A     		ldr	r2, .L43+4
+ 703 0014 0F4B     		ldr	r3, .L43+8
+ 704 0016 081C     		mov	r0, r1
+ 705 0018 D221     		mov	r1, #210
+ 706 001a FFF7FEFF 		bl	__assert_func
+ 707              	.L40:
+ 211:../Sources/drivers/adc/adc.c **** 
+ 212:../Sources/drivers/adc/adc.c ****     bool ret = false;
+ 708              		.loc 1 212 0 is_stmt 1
+ 709 001e 3B1C     		mov	r3, r7
+ 710 0020 0F33     		add	r3, r3, #15
+ 711 0022 0022     		mov	r2, #0
+ 712 0024 1A70     		strb	r2, [r3]
+ 213:../Sources/drivers/adc/adc.c **** 
+ 214:../Sources/drivers/adc/adc.c ****     if (0U != (base->SC1[channelGroup] & ADC_SC1_COCO_MASK))
+ 713              		.loc 1 214 0
+ 714 0026 7B68     		ldr	r3, [r7, #4]
+ 715 0028 3A68     		ldr	r2, [r7]
+ 716 002a 9200     		lsl	r2, r2, #2
+ 717 002c D258     		ldr	r2, [r2, r3]
+ 718 002e 8023     		mov	r3, #128
+ 719 0030 1340     		and	r3, r2
+ 720 0032 03D0     		beq	.L41
+ 215:../Sources/drivers/adc/adc.c ****     {
+ 216:../Sources/drivers/adc/adc.c ****         ret = true;
+ 721              		.loc 1 216 0
+ 722 0034 3B1C     		mov	r3, r7
+ 723 0036 0F33     		add	r3, r3, #15
+ 724 0038 0122     		mov	r2, #1
+ 725 003a 1A70     		strb	r2, [r3]
+ 726              	.L41:
+ 217:../Sources/drivers/adc/adc.c ****     }
+ 218:../Sources/drivers/adc/adc.c ****     return ret;
+ 727              		.loc 1 218 0
+ 728 003c 3B1C     		mov	r3, r7
+ 729 003e 0F33     		add	r3, r3, #15
+ 730 0040 1B78     		ldrb	r3, [r3]
+ 219:../Sources/drivers/adc/adc.c **** }
+ 731              		.loc 1 219 0
+ 732 0042 181C     		mov	r0, r3
+ 733 0044 BD46     		mov	sp, r7
+ 734 0046 04B0     		add	sp, sp, #16
+ 735              		@ sp needed
+ 736 0048 80BD     		pop	{r7, pc}
+ 737              	.L44:
+ 738 004a C046     		.align	2
+ 739              	.L43:
+ 740 004c 00000000 		.word	.LC0
+ 741 0050 00000000 		.word	__func__.4816
+ 742 0054 28000000 		.word	.LC7
+ 743              		.cfi_endproc
+ 744              	.LFE61:
+ 746              		.section	.rodata.__func__.4769,"a",%progbits
+ 747              		.align	2
+ 750              	__func__.4769:
+ 751 0000 4144435F 		.ascii	"ADC_SetLongSampleTimeMode\000"
+ 751      5365744C 
+ 751      6F6E6753 
+ 751      616D706C 
+ 751      6554696D 
+ 752 001a 0000     		.section	.rodata.__func__.4810,"a",%progbits
+ 753              		.align	2
+ 756              	__func__.4810:
+ 757 0000 4144435F 		.ascii	"ADC_SetChConfig\000"
+ 757      53657443 
+ 757      68436F6E 
+ 757      66696700 
+ 758              		.section	.rodata.__func__.4816,"a",%progbits
+ 759              		.align	2
+ 762              	__func__.4816:
+ 763 0000 4144435F 		.ascii	"ADC_IsConversionDone\000"
+ 763      4973436F 
+ 763      6E766572 
+ 763      73696F6E 
+ 763      446F6E65 
+ 764 0015 000000   		.text
+ 765              	.Letext0:
+ 766              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 767              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 768              		.file 4 "../Includes/MKL05Z4.h"
+ 769              		.file 5 "../Sources/drivers/adc/adc.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 adc.c
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:18     .text.ADC_ConfigTriggerSource:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:23     .text.ADC_ConfigTriggerSource:00000000 ADC_ConfigTriggerSource
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:61     .text.ADC_ConfigTriggerSource:0000002c $d
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:67     .rodata:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:74     .text.ADC_SetLongSampleTimeMode:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:79     .text.ADC_SetLongSampleTimeMode:00000000 ADC_SetLongSampleTimeMode
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:156    .text.ADC_SetLongSampleTimeMode:00000070 $d
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:750    .rodata.__func__.4769:00000000 __func__.4769
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:163    .text.ADC_DoAutoCalibration:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:168    .text.ADC_DoAutoCalibration:00000000 ADC_DoAutoCalibration
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:515    .text.ADC_GetStatusFlags:00000000 ADC_GetStatusFlags
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:682    .text.ADC_IsConversionDone:00000000 ADC_IsConversionDone
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:337    .text.ADC_SetHardwareCompareConfig:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:342    .text.ADC_SetHardwareCompareConfig:00000000 ADC_SetHardwareCompareConfig
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:454    .text.ADC_SetHardwareAverage:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:459    .text.ADC_SetHardwareAverage:00000000 ADC_SetHardwareAverage
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:510    .text.ADC_GetStatusFlags:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:567    .text.ADC_ClearCalibStatusFlags:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:572    .text.ADC_ClearCalibStatusFlags:00000000 ADC_ClearCalibStatusFlags
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:605    .text.ADC_SetChConfig:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:610    .text.ADC_SetChConfig:00000000 ADC_SetChConfig
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:670    .text.ADC_SetChConfig:00000050 $d
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:756    .rodata.__func__.4810:00000000 __func__.4810
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:677    .text.ADC_IsConversionDone:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:740    .text.ADC_IsConversionDone:0000004c $d
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:762    .rodata.__func__.4816:00000000 __func__.4816
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:747    .rodata.__func__.4769:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:753    .rodata.__func__.4810:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccO6DOJa.s:759    .rodata.__func__.4816:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+
+UNDEFINED SYMBOLS
+__assert_func

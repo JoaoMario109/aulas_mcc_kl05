@@ -1,0 +1,53 @@
+#include "mcu_general_config.h"
+#include "generic_drivers/lcd/lcd.h"
+#include "libraries/delay/delay.h"
+#include "libraries/emb_util/emb_util.h"
+#include "drivers/port/port.h"
+#include "drivers/gpio/gpio.h"
+#include "drivers/tpm/tpm.h"
+
+int main(void)
+{
+	const uint16_t tpmPwmModulo = 65535U;
+
+	TPM_SetCounterClkSrc(TPM0, TPM_CNT_CLOCK_FLL);
+	TPM_Init(TPM0, tpmPwmModulo, TPM_PRESCALER_DIV_2); /*Inicializa TPM0*/
+
+	PORT_Init(PORTB);
+	PORT_SetMux(PORTB, 9, PORT_MUX_ALT2);
+
+	/* O canal que controla o pino PTB13 é o TPM1_Ch1
+	 * Irá ser utilizado o PWM alinhado a borda, com o duty cycle em nível alto*/
+	TPM_InitChannel(TPM0, 2, TPM_EDGE_PWM_MODE, TPM_PWM_HIGH_TRUE_CONFIG);
+	TPM_SetChMatch(TPM0, 2, 0); /*Configuração do duty cycle (valor de match)*/
+
+	TPM_InitCounter(TPM0); /*Inicializa registrador contador*/
+
+	Delay_Init();
+
+    for ( ; ; )
+    {
+        /* Delays to see the change of LED brightness. */
+        Delay_Waitus( 50 );
+        if ( brightnessUp )
+        {
+            /* Increases a duty cycle until it reaches a limited value. */
+            if ( ++updatedDutycycle == 65535U )
+            {
+                brightnessUp = false;
+            }
+        }
+        else
+        {
+            /* Decreases a duty cycle until it reaches a limited value. */
+            if ( 0U == --updatedDutycycle )
+            {
+                brightnessUp = true;
+            }
+        }
+
+        TPM_SetChMatch( TPM0, 2, tpmPwmModulo  ); /*Configuração do duty cycle (valor de match)*/
+    }
+
+    return 0;
+}

@@ -1,0 +1,818 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"uart.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.UART_CleanRxBuffer,"ax",%progbits
+  18              		.align	2
+  19              		.code	16
+  20              		.thumb_func
+  22              	UART_CleanRxBuffer:
+  23              	.LFB37:
+  24              		.file 1 "../Sources/drivers/uart/uart.h"
+   1:../Sources/drivers/uart/uart.h **** /***************************************************************************************
+   2:../Sources/drivers/uart/uart.h ****  * Módulo      : uart.h
+   3:../Sources/drivers/uart/uart.h ****  *
+   4:../Sources/drivers/uart/uart.h ****  * Revisão     : 1.0
+   5:../Sources/drivers/uart/uart.h ****  *
+   6:../Sources/drivers/uart/uart.h ****  * Data        : 16/02/2023
+   7:../Sources/drivers/uart/uart.h ****  *
+   8:../Sources/drivers/uart/uart.h ****  * Descrição   : Arquivo com implementações dos Módulos UART da Familia Kinetis KL05.
+   9:../Sources/drivers/uart/uart.h ****  *
+  10:../Sources/drivers/uart/uart.h ****  * Comentários : Nenhum.
+  11:../Sources/drivers/uart/uart.h ****  *
+  12:../Sources/drivers/uart/uart.h ****  * Autor(es)   : Matheus Leitzke Pinto
+  13:../Sources/drivers/uart/uart.h ****  ***************************************************************************************/
+  14:../Sources/drivers/uart/uart.h **** 
+  15:../Sources/drivers/uart/uart.h **** #ifndef UART_DRV_H_
+  16:../Sources/drivers/uart/uart.h **** #define UART_DRV_H_
+  17:../Sources/drivers/uart/uart.h **** 
+  18:../Sources/drivers/uart/uart.h **** /*ARQUIVOS DE CABEÇALHO*/
+  19:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+  20:../Sources/drivers/uart/uart.h **** 
+  21:../Sources/drivers/uart/uart.h **** #include "drivers/common_driver.h"
+  22:../Sources/drivers/uart/uart.h **** 
+  23:../Sources/drivers/uart/uart.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  24:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+  25:../Sources/drivers/uart/uart.h **** 
+  26:../Sources/drivers/uart/uart.h **** 
+  27:../Sources/drivers/uart/uart.h **** /*TIPOS ENUMERADOS*/
+  28:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+  29:../Sources/drivers/uart/uart.h **** 
+  30:../Sources/drivers/uart/uart.h **** /*Possíveis combinações para habilitar Tx e Rx*/
+  31:../Sources/drivers/uart/uart.h **** typedef enum{
+  32:../Sources/drivers/uart/uart.h **** 	UART_TX_RX_DISABLE = 0U, 					/* Desabilita Tx e Rx*/
+  33:../Sources/drivers/uart/uart.h **** 	UART_TX_ENABLE = UART0_C2_TE_MASK,			/* Habilita Tx*/
+  34:../Sources/drivers/uart/uart.h **** 	UART_RX_ENABLE = UART0_C2_RE_MASK,			/* Habilita Rx*/
+  35:../Sources/drivers/uart/uart.h **** 	UART_TX_RX_ENABLE =
+  36:../Sources/drivers/uart/uart.h **** 			UART0_C2_TE_MASK | UART0_C2_RE_MASK	/* Habilita Tx e Rx*/
+  37:../Sources/drivers/uart/uart.h **** }uartTxRxEnabling_t;
+  38:../Sources/drivers/uart/uart.h **** 
+  39:../Sources/drivers/uart/uart.h **** /*Possíveis métodos de paridade*/
+  40:../Sources/drivers/uart/uart.h **** typedef enum{
+  41:../Sources/drivers/uart/uart.h **** 	UART_NO_PARITY = 0U, 						 /* Desabilita Tx e Rx*/
+  42:../Sources/drivers/uart/uart.h **** 	UART_PARITY_EVEN =
+  43:../Sources/drivers/uart/uart.h **** 			UART0_C1_PE_MASK | UART0_C2_TE_MASK, /* Habilita Tx*/
+  44:../Sources/drivers/uart/uart.h **** 	UART_PARITY_ODD =
+  45:../Sources/drivers/uart/uart.h **** 			UART0_C1_PE_MASK | UART0_C2_RE_MASK, /* Habilita Rx*/
+  46:../Sources/drivers/uart/uart.h **** }uartParity_t;
+  47:../Sources/drivers/uart/uart.h **** 
+  48:../Sources/drivers/uart/uart.h **** /*Possíveis fontes de clock para o módulo UART*/
+  49:../Sources/drivers/uart/uart.h **** typedef enum{
+  50:../Sources/drivers/uart/uart.h **** 	UART_CLOCK_DISABLE = 0U,
+  51:../Sources/drivers/uart/uart.h **** 	UART_CLOCK_FLL = 1U,
+  52:../Sources/drivers/uart/uart.h **** 	UART_CLOCK_OSC = 2U,
+  53:../Sources/drivers/uart/uart.h **** 	UART_CLOCK_IRC = 3U
+  54:../Sources/drivers/uart/uart.h **** }uartClkSrc_t;
+  55:../Sources/drivers/uart/uart.h **** 
+  56:../Sources/drivers/uart/uart.h **** /*FIM: TIPOS ENUMERADOS*/
+  57:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+  58:../Sources/drivers/uart/uart.h **** 
+  59:../Sources/drivers/uart/uart.h **** 
+  60:../Sources/drivers/uart/uart.h **** /*PROTOTIPOS - FUNÇÕES INLINE*/
+  61:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+  62:../Sources/drivers/uart/uart.h **** 
+  63:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsRxAvailable(UART0_Type * base);
+  64:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsTxAvailable(UART0_Type * base);
+  65:../Sources/drivers/uart/uart.h **** static inline void UART_Write(UART0_Type * base, uint8_t data);
+  66:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_Read(UART0_Type * base);
+  67:../Sources/drivers/uart/uart.h **** static inline void UART_EnableRxIRQ(UART0_Type * base);
+  68:../Sources/drivers/uart/uart.h **** static inline void UART_DisableTxIRQ(UART0_Type * base);
+  69:../Sources/drivers/uart/uart.h **** static inline void UART_CleanRxBuffer(UART0_Type * base);
+  70:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsRxOverrun(UART0_Type * base);
+  71:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsFramingError(UART0_Type * base);
+  72:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsParityError(UART0_Type * base);
+  73:../Sources/drivers/uart/uart.h **** 
+  74:../Sources/drivers/uart/uart.h **** /*FIM: PROTOTIPOS - FUNÇÕES INLINE*/
+  75:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+  76:../Sources/drivers/uart/uart.h **** 
+  77:../Sources/drivers/uart/uart.h **** 
+  78:../Sources/drivers/uart/uart.h **** /*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  79:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+  80:../Sources/drivers/uart/uart.h **** 
+  81:../Sources/drivers/uart/uart.h **** /**********************************************************************
+  82:../Sources/drivers/uart/uart.h ****  * Função		:	UART_SetClkSrc
+  83:../Sources/drivers/uart/uart.h ****  *
+  84:../Sources/drivers/uart/uart.h ****  * Descrição	:   Define a fonte de clock utilizada pelo UART.
+  85:../Sources/drivers/uart/uart.h ****  *
+  86:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART;
+  87:../Sources/drivers/uart/uart.h ****  * 					src   - fonte do clock definido em tipo
+  88:../Sources/drivers/uart/uart.h ****  * 					        enumerado.
+  89:../Sources/drivers/uart/uart.h ****  *
+  90:../Sources/drivers/uart/uart.h ****  * Saídas		:   STATUS_SUCCESS, se configuração ocorreu corretamente;
+  91:../Sources/drivers/uart/uart.h ****  *                  STATUS_FAIL, caso contrário.
+  92:../Sources/drivers/uart/uart.h ****  *
+  93:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Deve ser chamada antes da função UART_Init.
+  94:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+  95:../Sources/drivers/uart/uart.h **** uint8_t UART_SetClkSrc(UART0_Type * base, uartClkSrc_t src);
+  96:../Sources/drivers/uart/uart.h **** 
+  97:../Sources/drivers/uart/uart.h **** /**********************************************************************
+  98:../Sources/drivers/uart/uart.h ****  * Função		:	UART_Init
+  99:../Sources/drivers/uart/uart.h ****  *
+ 100:../Sources/drivers/uart/uart.h ****  * Descrição	:   Inicializa o pino do módulo UART.
+ 101:../Sources/drivers/uart/uart.h ****  *
+ 102:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART;
+ 103:../Sources/drivers/uart/uart.h ****  * 					baudrate - o baudarate;
+ 104:../Sources/drivers/uart/uart.h ****  * 					enTxRx - Desabilita ou habilita Tx, Rx ou ambos;
+ 105:../Sources/drivers/uart/uart.h ****  * 					parity - paridade par ou ímpar;
+ 106:../Sources/drivers/uart/uart.h ****  * 					stopBitsN - número de bits de parada (1U ou 2U).
+ 107:../Sources/drivers/uart/uart.h ****  *
+ 108:../Sources/drivers/uart/uart.h ****  * Saídas		:   Nenhuma.
+ 109:../Sources/drivers/uart/uart.h ****  *
+ 110:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Deve ser chamada após a função UART_SetClkSrc.
+ 111:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 112:../Sources/drivers/uart/uart.h **** void UART_Init( UART0_Type * base,
+ 113:../Sources/drivers/uart/uart.h **** 		        uint16_t baudRate,
+ 114:../Sources/drivers/uart/uart.h **** 				uartTxRxEnabling_t enTxRx,
+ 115:../Sources/drivers/uart/uart.h **** 				uartParity_t parity,
+ 116:../Sources/drivers/uart/uart.h **** 				uint8_t stopBitsN);
+ 117:../Sources/drivers/uart/uart.h **** 
+ 118:../Sources/drivers/uart/uart.h **** /*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+ 119:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+ 120:../Sources/drivers/uart/uart.h **** 
+ 121:../Sources/drivers/uart/uart.h **** 
+ 122:../Sources/drivers/uart/uart.h **** /*FUNÇÕES INLINE*/
+ 123:../Sources/drivers/uart/uart.h **** /*=======================================================================================*/
+ 124:../Sources/drivers/uart/uart.h **** 
+ 125:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 126:../Sources/drivers/uart/uart.h ****  * Função		:	UART_IsRxOverrun
+ 127:../Sources/drivers/uart/uart.h ****  *
+ 128:../Sources/drivers/uart/uart.h ****  * Descrição	:   Verifica se houve erro de Overrun na recepção dos dados.
+ 129:../Sources/drivers/uart/uart.h ****  *
+ 130:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 131:../Sources/drivers/uart/uart.h ****  *
+ 132:../Sources/drivers/uart/uart.h ****  * Saídas		:   0 : não houve Overrun;
+ 133:../Sources/drivers/uart/uart.h ****  * 					1: houve Overrun.
+ 134:../Sources/drivers/uart/uart.h ****  *
+ 135:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 136:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 137:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsRxOverrun(UART0_Type * base)
+ 138:../Sources/drivers/uart/uart.h **** {
+ 139:../Sources/drivers/uart/uart.h **** 	return (uint8_t)((base->S1 & UART0_S1_OR_MASK) != 0);
+ 140:../Sources/drivers/uart/uart.h **** }
+ 141:../Sources/drivers/uart/uart.h **** 
+ 142:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 143:../Sources/drivers/uart/uart.h ****  * Função		:	UART_IsFramingError
+ 144:../Sources/drivers/uart/uart.h ****  *
+ 145:../Sources/drivers/uart/uart.h ****  * Descrição	:   Verifica se houve erro de Framing na recepção dos dados.
+ 146:../Sources/drivers/uart/uart.h ****  *
+ 147:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 148:../Sources/drivers/uart/uart.h ****  *
+ 149:../Sources/drivers/uart/uart.h ****  * Saídas		:   0 : não houve erro;
+ 150:../Sources/drivers/uart/uart.h ****  * 					1 : houve erro.
+ 151:../Sources/drivers/uart/uart.h ****  *
+ 152:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 153:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 154:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsFramingError(UART0_Type * base)
+ 155:../Sources/drivers/uart/uart.h **** {
+ 156:../Sources/drivers/uart/uart.h **** 	return (uint8_t)((UART0_S1 & UART0_S1_FE_MASK) != 0);
+ 157:../Sources/drivers/uart/uart.h **** }
+ 158:../Sources/drivers/uart/uart.h **** 
+ 159:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 160:../Sources/drivers/uart/uart.h ****  * Função		:	UART_IsParityError
+ 161:../Sources/drivers/uart/uart.h ****  *
+ 162:../Sources/drivers/uart/uart.h ****  * Descrição	:   Verifica se houve erro de paridade na recepção dos dados.
+ 163:../Sources/drivers/uart/uart.h ****  *
+ 164:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 165:../Sources/drivers/uart/uart.h ****  *
+ 166:../Sources/drivers/uart/uart.h ****  * Saídas		:   0 : não houve erro;
+ 167:../Sources/drivers/uart/uart.h ****  * 					1 : houve erro.
+ 168:../Sources/drivers/uart/uart.h ****  *
+ 169:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 170:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 171:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsParityError(UART0_Type * base)
+ 172:../Sources/drivers/uart/uart.h **** {
+ 173:../Sources/drivers/uart/uart.h **** 	return (uint8_t)((UART0_S1 & UART0_S1_PF_MASK) != 0);
+ 174:../Sources/drivers/uart/uart.h **** }
+ 175:../Sources/drivers/uart/uart.h **** 
+ 176:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 177:../Sources/drivers/uart/uart.h ****  * Função		:	UART_CleanRxBuffer
+ 178:../Sources/drivers/uart/uart.h ****  *
+ 179:../Sources/drivers/uart/uart.h ****  * Descrição	:   Limpa flags de erro e buffer de recepção.
+ 180:../Sources/drivers/uart/uart.h ****  *
+ 181:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 182:../Sources/drivers/uart/uart.h ****  *
+ 183:../Sources/drivers/uart/uart.h ****  * Saídas		:   Nenhuma.
+ 184:../Sources/drivers/uart/uart.h ****  *
+ 185:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 186:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 187:../Sources/drivers/uart/uart.h **** static inline void UART_CleanRxBuffer(UART0_Type * base)
+ 188:../Sources/drivers/uart/uart.h **** {
+  25              		.loc 1 188 0
+  26              		.cfi_startproc
+  27 0000 80B5     		push	{r7, lr}
+  28              		.cfi_def_cfa_offset 8
+  29              		.cfi_offset 7, -8
+  30              		.cfi_offset 14, -4
+  31 0002 82B0     		sub	sp, sp, #8
+  32              		.cfi_def_cfa_offset 16
+  33 0004 00AF     		add	r7, sp, #0
+  34              		.cfi_def_cfa_register 7
+  35 0006 7860     		str	r0, [r7, #4]
+ 189:../Sources/drivers/uart/uart.h **** 	UART_IsRxAvailable(base);  /*Lê o registrador UART_S1*/
+  36              		.loc 1 189 0
+  37 0008 7B68     		ldr	r3, [r7, #4]
+  38 000a 181C     		mov	r0, r3
+  39 000c FFF7FEFF 		bl	UART_IsRxAvailable
+ 190:../Sources/drivers/uart/uart.h **** 	UART_Read(base);
+  40              		.loc 1 190 0
+  41 0010 7B68     		ldr	r3, [r7, #4]
+  42 0012 181C     		mov	r0, r3
+  43 0014 FFF7FEFF 		bl	UART_Read
+ 191:../Sources/drivers/uart/uart.h **** }
+  44              		.loc 1 191 0
+  45 0018 BD46     		mov	sp, r7
+  46 001a 02B0     		add	sp, sp, #8
+  47              		@ sp needed
+  48 001c 80BD     		pop	{r7, pc}
+  49              		.cfi_endproc
+  50              	.LFE37:
+  52 001e C046     		.section	.text.UART_IsRxAvailable,"ax",%progbits
+  53              		.align	2
+  54              		.code	16
+  55              		.thumb_func
+  57              	UART_IsRxAvailable:
+  58              	.LFB39:
+ 192:../Sources/drivers/uart/uart.h **** 
+ 193:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 194:../Sources/drivers/uart/uart.h ****  * Função		:	UART_Deinit
+ 195:../Sources/drivers/uart/uart.h ****  *
+ 196:../Sources/drivers/uart/uart.h ****  * Descrição	:   Desabilita o módulo UART.
+ 197:../Sources/drivers/uart/uart.h ****  *
+ 198:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 199:../Sources/drivers/uart/uart.h ****  *
+ 200:../Sources/drivers/uart/uart.h ****  * Saídas		:   Nenhuma.
+ 201:../Sources/drivers/uart/uart.h ****  *
+ 202:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 203:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 204:../Sources/drivers/uart/uart.h **** static inline void UART_Deinit(UART0_Type * base)
+ 205:../Sources/drivers/uart/uart.h **** {
+ 206:../Sources/drivers/uart/uart.h **** 	SIM_SCGC4 &= ~SIM_SCGC4_UART0_MASK;
+ 207:../Sources/drivers/uart/uart.h **** 
+ 208:../Sources/drivers/uart/uart.h **** 	NVIC_DisableIRQ(UART0_IRQn);
+ 209:../Sources/drivers/uart/uart.h **** }
+ 210:../Sources/drivers/uart/uart.h **** 
+ 211:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 212:../Sources/drivers/uart/uart.h ****  * Função		:	UART_IsRxAvailable
+ 213:../Sources/drivers/uart/uart.h ****  *
+ 214:../Sources/drivers/uart/uart.h ****  * Descrição	:   Verifica se há dados para serem lidos do buffer Rx.
+ 215:../Sources/drivers/uart/uart.h ****  *
+ 216:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 217:../Sources/drivers/uart/uart.h ****  *
+ 218:../Sources/drivers/uart/uart.h ****  * Saídas		:   0: não há dados para serem lidos;
+ 219:../Sources/drivers/uart/uart.h ****  * 					1: existem dados não lidos no buffer.
+ 220:../Sources/drivers/uart/uart.h ****  *
+ 221:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 222:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 223:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsRxAvailable(UART0_Type * base)
+ 224:../Sources/drivers/uart/uart.h **** {
+  59              		.loc 1 224 0
+  60              		.cfi_startproc
+  61 0000 80B5     		push	{r7, lr}
+  62              		.cfi_def_cfa_offset 8
+  63              		.cfi_offset 7, -8
+  64              		.cfi_offset 14, -4
+  65 0002 82B0     		sub	sp, sp, #8
+  66              		.cfi_def_cfa_offset 16
+  67 0004 00AF     		add	r7, sp, #0
+  68              		.cfi_def_cfa_register 7
+  69 0006 7860     		str	r0, [r7, #4]
+ 225:../Sources/drivers/uart/uart.h **** 	return (uint8_t)((UART0_S1 & UART0_S1_RDRF_MASK) != 0);
+  70              		.loc 1 225 0
+  71 0008 064B     		ldr	r3, .L4
+  72 000a 1B79     		ldrb	r3, [r3, #4]
+  73 000c DBB2     		uxtb	r3, r3
+  74 000e 1A1C     		mov	r2, r3
+  75 0010 2023     		mov	r3, #32
+  76 0012 1340     		and	r3, r2
+  77 0014 5A1E     		sub	r2, r3, #1
+  78 0016 9341     		sbc	r3, r3, r2
+  79 0018 DBB2     		uxtb	r3, r3
+ 226:../Sources/drivers/uart/uart.h **** }
+  80              		.loc 1 226 0
+  81 001a 181C     		mov	r0, r3
+  82 001c BD46     		mov	sp, r7
+  83 001e 02B0     		add	sp, sp, #8
+  84              		@ sp needed
+  85 0020 80BD     		pop	{r7, pc}
+  86              	.L5:
+  87 0022 C046     		.align	2
+  88              	.L4:
+  89 0024 00A00640 		.word	1074176000
+  90              		.cfi_endproc
+  91              	.LFE39:
+  93              		.section	.text.UART_Read,"ax",%progbits
+  94              		.align	2
+  95              		.code	16
+  96              		.thumb_func
+  98              	UART_Read:
+  99              	.LFB42:
+ 227:../Sources/drivers/uart/uart.h **** 
+ 228:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 229:../Sources/drivers/uart/uart.h ****  * Função		:	UART_IsTxAvailable
+ 230:../Sources/drivers/uart/uart.h ****  *
+ 231:../Sources/drivers/uart/uart.h ****  * Descrição	:   Verifica se o buffer Tx está disponível para escrita.
+ 232:../Sources/drivers/uart/uart.h ****  *
+ 233:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 234:../Sources/drivers/uart/uart.h ****  *
+ 235:../Sources/drivers/uart/uart.h ****  * Saídas		:   0: buffer Tx não disponível;
+ 236:../Sources/drivers/uart/uart.h ****  * 					1: buffer Tx disponível para escrita.
+ 237:../Sources/drivers/uart/uart.h ****  *
+ 238:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 239:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 240:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_IsTxAvailable(UART0_Type * base)
+ 241:../Sources/drivers/uart/uart.h **** {
+ 242:../Sources/drivers/uart/uart.h **** 	return (uint8_t)((UART0_S1 & UART0_S1_TDRE_MASK) != 0);
+ 243:../Sources/drivers/uart/uart.h **** }
+ 244:../Sources/drivers/uart/uart.h **** 
+ 245:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 246:../Sources/drivers/uart/uart.h ****  * Função		:	UART_Write
+ 247:../Sources/drivers/uart/uart.h ****  *
+ 248:../Sources/drivers/uart/uart.h ****  * Descrição	:   Envia um dado de 8 bits pelo módulo UART0.
+ 249:../Sources/drivers/uart/uart.h ****  *
+ 250:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART;
+ 251:../Sources/drivers/uart/uart.h ****  * 					data  - valor de 8 bits.
+ 252:../Sources/drivers/uart/uart.h ****  *
+ 253:../Sources/drivers/uart/uart.h ****  * Saídas		:   Nenhuma.
+ 254:../Sources/drivers/uart/uart.h ****  *
+ 255:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	Nenhum.
+ 256:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 257:../Sources/drivers/uart/uart.h **** static inline void UART_Write(UART0_Type * base, uint8_t data)
+ 258:../Sources/drivers/uart/uart.h **** {
+ 259:../Sources/drivers/uart/uart.h **** 	UART0_D = data;
+ 260:../Sources/drivers/uart/uart.h **** }
+ 261:../Sources/drivers/uart/uart.h **** 
+ 262:../Sources/drivers/uart/uart.h **** /**********************************************************************
+ 263:../Sources/drivers/uart/uart.h ****  * Função		:	UART_Read
+ 264:../Sources/drivers/uart/uart.h ****  *
+ 265:../Sources/drivers/uart/uart.h ****  * Descrição	:   Retorna um dado de 8 bits pelo módulo UART.
+ 266:../Sources/drivers/uart/uart.h ****  *
+ 267:../Sources/drivers/uart/uart.h ****  * Entradas		:   *base - registrador base do periférico UART.
+ 268:../Sources/drivers/uart/uart.h ****  *
+ 269:../Sources/drivers/uart/uart.h ****  * Saídas		:   valor de 8 bits.
+ 270:../Sources/drivers/uart/uart.h ****  *
+ 271:../Sources/drivers/uart/uart.h ****  * Comentários 	: 	- Se não foi enviado valor novo para o RX, será lido o último
+ 272:../Sources/drivers/uart/uart.h ****  * 					  valor recebido.
+ 273:../Sources/drivers/uart/uart.h ****  * 					- Utilizar a função UART0_IsRxAvailable para
+ 274:../Sources/drivers/uart/uart.h ****  * 					  verificar se foi enviado novo dado.
+ 275:../Sources/drivers/uart/uart.h ****  * ********************************************************************/
+ 276:../Sources/drivers/uart/uart.h **** static inline uint8_t UART_Read(UART0_Type * base)
+ 277:../Sources/drivers/uart/uart.h **** {
+ 100              		.loc 1 277 0
+ 101              		.cfi_startproc
+ 102 0000 80B5     		push	{r7, lr}
+ 103              		.cfi_def_cfa_offset 8
+ 104              		.cfi_offset 7, -8
+ 105              		.cfi_offset 14, -4
+ 106 0002 82B0     		sub	sp, sp, #8
+ 107              		.cfi_def_cfa_offset 16
+ 108 0004 00AF     		add	r7, sp, #0
+ 109              		.cfi_def_cfa_register 7
+ 110 0006 7860     		str	r0, [r7, #4]
+ 278:../Sources/drivers/uart/uart.h **** 	return (uint8_t)UART0_D;
+ 111              		.loc 1 278 0
+ 112 0008 034B     		ldr	r3, .L8
+ 113 000a DB79     		ldrb	r3, [r3, #7]
+ 114 000c DBB2     		uxtb	r3, r3
+ 279:../Sources/drivers/uart/uart.h **** }
+ 115              		.loc 1 279 0
+ 116 000e 181C     		mov	r0, r3
+ 117 0010 BD46     		mov	sp, r7
+ 118 0012 02B0     		add	sp, sp, #8
+ 119              		@ sp needed
+ 120 0014 80BD     		pop	{r7, pc}
+ 121              	.L9:
+ 122 0016 C046     		.align	2
+ 123              	.L8:
+ 124 0018 00A00640 		.word	1074176000
+ 125              		.cfi_endproc
+ 126              	.LFE42:
+ 128              		.section	.bss.g_uartClkSrc,"aw",%nobits
+ 129              		.align	2
+ 132              	g_uartClkSrc:
+ 133 0000 00000000 		.space	4
+ 134              		.section	.text.UART_SetClkSrc,"ax",%progbits
+ 135              		.align	2
+ 136              		.global	UART_SetClkSrc
+ 137              		.code	16
+ 138              		.thumb_func
+ 140              	UART_SetClkSrc:
+ 141              	.LFB47:
+ 142              		.file 2 "../Sources/drivers/uart/uart.c"
+   1:../Sources/drivers/uart/uart.c **** /***************************************************************************************
+   2:../Sources/drivers/uart/uart.c ****  * Módulo      : uart.c
+   3:../Sources/drivers/uart/uart.c ****  *
+   4:../Sources/drivers/uart/uart.c ****  * Revisão     : 1.0
+   5:../Sources/drivers/uart/uart.c ****  *
+   6:../Sources/drivers/uart/uart.c ****  * Data        : 16/02/2023
+   7:../Sources/drivers/uart/uart.c ****  *
+   8:../Sources/drivers/uart/uart.c ****  * Descrição   : Arquivo com implementações dos Módulos UART da Familia Kinetis KL05.
+   9:../Sources/drivers/uart/uart.c ****  *
+  10:../Sources/drivers/uart/uart.c ****  * Comentários : Nenhum.
+  11:../Sources/drivers/uart/uart.c ****  *
+  12:../Sources/drivers/uart/uart.c ****  * Autor(es)   : Matheus Leitzke Pinto
+  13:../Sources/drivers/uart/uart.c ****  ***************************************************************************************/
+  14:../Sources/drivers/uart/uart.c **** 
+  15:../Sources/drivers/uart/uart.c **** 
+  16:../Sources/drivers/uart/uart.c **** /*ARQUIVOS DE CABEÇALHO*/
+  17:../Sources/drivers/uart/uart.c **** /*=======================================================================================*/
+  18:../Sources/drivers/uart/uart.c **** 
+  19:../Sources/drivers/uart/uart.c **** #include "uart.h"
+  20:../Sources/drivers/uart/uart.c **** 
+  21:../Sources/drivers/uart/uart.c **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  22:../Sources/drivers/uart/uart.c **** /*=======================================================================================*/
+  23:../Sources/drivers/uart/uart.c **** 
+  24:../Sources/drivers/uart/uart.c **** /*VÁRIAVEIS GLOBAIS PRIVADAS*/
+  25:../Sources/drivers/uart/uart.c **** /*=======================================================================================*/
+  26:../Sources/drivers/uart/uart.c **** 
+  27:../Sources/drivers/uart/uart.c **** static moduleClock_t g_uartClkSrc;
+  28:../Sources/drivers/uart/uart.c **** 
+  29:../Sources/drivers/uart/uart.c **** /*FIM: VÁRIAVEIS GLOBAIS PRIVADAS*/
+  30:../Sources/drivers/uart/uart.c **** /*=======================================================================================*/
+  31:../Sources/drivers/uart/uart.c **** 
+  32:../Sources/drivers/uart/uart.c **** 
+  33:../Sources/drivers/uart/uart.c **** /*FUNÇÕES PÚBLICAS*/
+  34:../Sources/drivers/uart/uart.c **** /*=======================================================================================*/
+  35:../Sources/drivers/uart/uart.c **** 
+  36:../Sources/drivers/uart/uart.c **** /**********************************************************************
+  37:../Sources/drivers/uart/uart.c ****  * Função		:	UART_SetClkSrc
+  38:../Sources/drivers/uart/uart.c ****  *
+  39:../Sources/drivers/uart/uart.c ****  * Descrição	:   Define a fonte de clock utilizada pelo UART.
+  40:../Sources/drivers/uart/uart.c ****  *
+  41:../Sources/drivers/uart/uart.c ****  * Entradas		:   *base - registrador base do periférico UART;
+  42:../Sources/drivers/uart/uart.c ****  * 					src   - fonte do clock definido em tipo
+  43:../Sources/drivers/uart/uart.c ****  * 					        enumerado.
+  44:../Sources/drivers/uart/uart.c ****  *
+  45:../Sources/drivers/uart/uart.c ****  * Saídas		:   STATUS_SUCCESS, se configuração ocorreu corretamente;
+  46:../Sources/drivers/uart/uart.c ****  *                  STATUS_FAIL, caso contrário.
+  47:../Sources/drivers/uart/uart.c ****  *
+  48:../Sources/drivers/uart/uart.c ****  * Comentários 	: 	Deve ser chamada antes da função UART_Init.
+  49:../Sources/drivers/uart/uart.c ****  * ********************************************************************/
+  50:../Sources/drivers/uart/uart.c **** uint8_t UART_SetClkSrc(UART0_Type * base, uartClkSrc_t src)
+  51:../Sources/drivers/uart/uart.c **** {
+ 143              		.loc 2 51 0
+ 144              		.cfi_startproc
+ 145 0000 80B5     		push	{r7, lr}
+ 146              		.cfi_def_cfa_offset 8
+ 147              		.cfi_offset 7, -8
+ 148              		.cfi_offset 14, -4
+ 149 0002 82B0     		sub	sp, sp, #8
+ 150              		.cfi_def_cfa_offset 16
+ 151 0004 00AF     		add	r7, sp, #0
+ 152              		.cfi_def_cfa_register 7
+ 153 0006 7860     		str	r0, [r7, #4]
+ 154 0008 0A1C     		mov	r2, r1
+ 155 000a FB1C     		add	r3, r7, #3
+ 156 000c 1A70     		strb	r2, [r3]
+  52:../Sources/drivers/uart/uart.c **** 	switch(src)
+ 157              		.loc 2 52 0
+ 158 000e FB1C     		add	r3, r7, #3
+ 159 0010 1B78     		ldrb	r3, [r3]
+ 160 0012 012B     		cmp	r3, #1
+ 161 0014 0CD0     		beq	.L12
+ 162 0016 02DC     		bgt	.L13
+ 163 0018 002B     		cmp	r3, #0
+ 164 001a 05D0     		beq	.L14
+ 165 001c 17E0     		b	.L11
+ 166              	.L13:
+ 167 001e 022B     		cmp	r3, #2
+ 168 0020 10D0     		beq	.L15
+ 169 0022 032B     		cmp	r3, #3
+ 170 0024 09D0     		beq	.L16
+ 171 0026 12E0     		b	.L11
+ 172              	.L14:
+  53:../Sources/drivers/uart/uart.c **** 	{
+  54:../Sources/drivers/uart/uart.c **** 	case UART_CLOCK_DISABLE:
+  55:../Sources/drivers/uart/uart.c **** 		g_uartClkSrc = 0U;
+ 173              		.loc 2 55 0
+ 174 0028 174B     		ldr	r3, .L19
+ 175 002a 0022     		mov	r2, #0
+ 176 002c 1A60     		str	r2, [r3]
+  56:../Sources/drivers/uart/uart.c **** 		break;
+ 177              		.loc 2 56 0
+ 178 002e 10E0     		b	.L17
+ 179              	.L12:
+  57:../Sources/drivers/uart/uart.c **** 	case UART_CLOCK_FLL:
+  58:../Sources/drivers/uart/uart.c **** 		g_uartClkSrc = MCG_FLL_CLK_FREQ;
+ 180              		.loc 2 58 0
+ 181 0030 154B     		ldr	r3, .L19
+ 182 0032 A022     		mov	r2, #160
+ 183 0034 5204     		lsl	r2, r2, #17
+ 184 0036 1A60     		str	r2, [r3]
+  59:../Sources/drivers/uart/uart.c **** 		break;
+ 185              		.loc 2 59 0
+ 186 0038 0BE0     		b	.L17
+ 187              	.L16:
+  60:../Sources/drivers/uart/uart.c **** 	case UART_CLOCK_IRC:
+  61:../Sources/drivers/uart/uart.c **** 		g_uartClkSrc = MCG_IRC_CLK_FREQ;
+ 188              		.loc 2 61 0
+ 189 003a 134B     		ldr	r3, .L19
+ 190 003c 8022     		mov	r2, #128
+ 191 003e 1202     		lsl	r2, r2, #8
+ 192 0040 1A60     		str	r2, [r3]
+  62:../Sources/drivers/uart/uart.c **** 		break;
+ 193              		.loc 2 62 0
+ 194 0042 06E0     		b	.L17
+ 195              	.L15:
+  63:../Sources/drivers/uart/uart.c **** 	case UART_CLOCK_OSC:
+  64:../Sources/drivers/uart/uart.c **** 		g_uartClkSrc = OSC_ER_CLK_FREQ;
+ 196              		.loc 2 64 0
+ 197 0044 104B     		ldr	r3, .L19
+ 198 0046 8022     		mov	r2, #128
+ 199 0048 1202     		lsl	r2, r2, #8
+ 200 004a 1A60     		str	r2, [r3]
+  65:../Sources/drivers/uart/uart.c **** 		break;
+ 201              		.loc 2 65 0
+ 202 004c 01E0     		b	.L17
+ 203              	.L11:
+  66:../Sources/drivers/uart/uart.c **** 	default:
+  67:../Sources/drivers/uart/uart.c **** 		return STATUS_FAIL;
+ 204              		.loc 2 67 0
+ 205 004e 0123     		mov	r3, #1
+ 206 0050 15E0     		b	.L18
+ 207              	.L17:
+  68:../Sources/drivers/uart/uart.c **** 		break;
+  69:../Sources/drivers/uart/uart.c **** 	}
+  70:../Sources/drivers/uart/uart.c **** 
+  71:../Sources/drivers/uart/uart.c **** 	SIM->SOPT2 &= ~SIM_SOPT2_UART0SRC_MASK;
+ 208              		.loc 2 71 0
+ 209 0052 0E4A     		ldr	r2, .L19+4
+ 210 0054 0D49     		ldr	r1, .L19+4
+ 211 0056 0E4B     		ldr	r3, .L19+8
+ 212 0058 C958     		ldr	r1, [r1, r3]
+ 213 005a 0E4B     		ldr	r3, .L19+12
+ 214 005c 1940     		and	r1, r3
+ 215 005e 0C4B     		ldr	r3, .L19+8
+ 216 0060 D150     		str	r1, [r2, r3]
+  72:../Sources/drivers/uart/uart.c **** 	SIM->SOPT2 |= SIM_SOPT2_UART0SRC(src);
+ 217              		.loc 2 72 0
+ 218 0062 0A4A     		ldr	r2, .L19+4
+ 219 0064 0949     		ldr	r1, .L19+4
+ 220 0066 0A4B     		ldr	r3, .L19+8
+ 221 0068 C958     		ldr	r1, [r1, r3]
+ 222 006a FB1C     		add	r3, r7, #3
+ 223 006c 1B78     		ldrb	r3, [r3]
+ 224 006e 9806     		lsl	r0, r3, #26
+ 225 0070 C023     		mov	r3, #192
+ 226 0072 1B05     		lsl	r3, r3, #20
+ 227 0074 0340     		and	r3, r0
+ 228 0076 1943     		orr	r1, r3
+ 229 0078 054B     		ldr	r3, .L19+8
+ 230 007a D150     		str	r1, [r2, r3]
+  73:../Sources/drivers/uart/uart.c **** 
+  74:../Sources/drivers/uart/uart.c **** 	return STATUS_SUCCESS;
+ 231              		.loc 2 74 0
+ 232 007c 0023     		mov	r3, #0
+ 233              	.L18:
+  75:../Sources/drivers/uart/uart.c **** }
+ 234              		.loc 2 75 0
+ 235 007e 181C     		mov	r0, r3
+ 236 0080 BD46     		mov	sp, r7
+ 237 0082 02B0     		add	sp, sp, #8
+ 238              		@ sp needed
+ 239 0084 80BD     		pop	{r7, pc}
+ 240              	.L20:
+ 241 0086 C046     		.align	2
+ 242              	.L19:
+ 243 0088 00000000 		.word	g_uartClkSrc
+ 244 008c 00700440 		.word	1074032640
+ 245 0090 04100000 		.word	4100
+ 246 0094 FFFFFFF3 		.word	-201326593
+ 247              		.cfi_endproc
+ 248              	.LFE47:
+ 250              		.global	__aeabi_uidiv
+ 251              		.section	.text.UART_Init,"ax",%progbits
+ 252              		.align	2
+ 253              		.global	UART_Init
+ 254              		.code	16
+ 255              		.thumb_func
+ 257              	UART_Init:
+ 258              	.LFB48:
+  76:../Sources/drivers/uart/uart.c **** 
+  77:../Sources/drivers/uart/uart.c **** /**********************************************************************
+  78:../Sources/drivers/uart/uart.c ****  * Função		:	UART_Init
+  79:../Sources/drivers/uart/uart.c ****  *
+  80:../Sources/drivers/uart/uart.c ****  * Descrição	:   Inicializa o pino do módulo UART.
+  81:../Sources/drivers/uart/uart.c ****  *
+  82:../Sources/drivers/uart/uart.c ****  * Entradas		:   *base - registrador base do periférico UART;
+  83:../Sources/drivers/uart/uart.c ****  * 					baudrate - o baudarate;
+  84:../Sources/drivers/uart/uart.c ****  * 					enTxRx - Desabilita ou habilita Tx, Rx ou ambos;
+  85:../Sources/drivers/uart/uart.c ****  * 					parity - paridade par ou ímpar;
+  86:../Sources/drivers/uart/uart.c ****  * 					stopBitsN - número de bits de parada (1U ou 2U).
+  87:../Sources/drivers/uart/uart.c ****  *
+  88:../Sources/drivers/uart/uart.c ****  * Saídas		:   Nenhuma.
+  89:../Sources/drivers/uart/uart.c ****  *
+  90:../Sources/drivers/uart/uart.c ****  * Comentários 	: 	Deve ser chamada após a função UART_SetClkSrc.
+  91:../Sources/drivers/uart/uart.c ****  * ********************************************************************/
+  92:../Sources/drivers/uart/uart.c **** void UART_Init( UART0_Type * base,
+  93:../Sources/drivers/uart/uart.c **** 		        uint16_t baudRate,
+  94:../Sources/drivers/uart/uart.c **** 				uartTxRxEnabling_t enTxRx,
+  95:../Sources/drivers/uart/uart.c **** 				uartParity_t parity,
+  96:../Sources/drivers/uart/uart.c **** 				uint8_t stopBitsN)
+  97:../Sources/drivers/uart/uart.c **** {
+ 259              		.loc 2 97 0
+ 260              		.cfi_startproc
+ 261 0000 80B5     		push	{r7, lr}
+ 262              		.cfi_def_cfa_offset 8
+ 263              		.cfi_offset 7, -8
+ 264              		.cfi_offset 14, -4
+ 265 0002 84B0     		sub	sp, sp, #16
+ 266              		.cfi_def_cfa_offset 24
+ 267 0004 00AF     		add	r7, sp, #0
+ 268              		.cfi_def_cfa_register 7
+ 269 0006 7860     		str	r0, [r7, #4]
+ 270 0008 081C     		mov	r0, r1
+ 271 000a 111C     		mov	r1, r2
+ 272 000c 1A1C     		mov	r2, r3
+ 273 000e BB1C     		add	r3, r7, #2
+ 274 0010 1880     		strh	r0, [r3]
+ 275 0012 7B1C     		add	r3, r7, #1
+ 276 0014 1970     		strb	r1, [r3]
+ 277 0016 3B1C     		mov	r3, r7
+ 278 0018 1A70     		strb	r2, [r3]
+  98:../Sources/drivers/uart/uart.c **** 	uint16_t sbr_field;
+  99:../Sources/drivers/uart/uart.c **** 
+ 100:../Sources/drivers/uart/uart.c **** 	SIM->SCGC4 |= SIM_SCGC4_UART0_MASK;
+ 279              		.loc 2 100 0
+ 280 001a 2D4A     		ldr	r2, .L22
+ 281 001c 2C49     		ldr	r1, .L22
+ 282 001e 2D4B     		ldr	r3, .L22+4
+ 283 0020 CB58     		ldr	r3, [r1, r3]
+ 284 0022 8021     		mov	r1, #128
+ 285 0024 C900     		lsl	r1, r1, #3
+ 286 0026 1943     		orr	r1, r3
+ 287 0028 2A4B     		ldr	r3, .L22+4
+ 288 002a D150     		str	r1, [r2, r3]
+ 101:../Sources/drivers/uart/uart.c **** 	/*Limpa configurações iniciais*/
+ 102:../Sources/drivers/uart/uart.c **** 	base->C1 = 0x00U;
+ 289              		.loc 2 102 0
+ 290 002c 7B68     		ldr	r3, [r7, #4]
+ 291 002e 0022     		mov	r2, #0
+ 292 0030 9A70     		strb	r2, [r3, #2]
+ 103:../Sources/drivers/uart/uart.c **** 	base->C2 = 0x00U;
+ 293              		.loc 2 103 0
+ 294 0032 7B68     		ldr	r3, [r7, #4]
+ 295 0034 0022     		mov	r2, #0
+ 296 0036 DA70     		strb	r2, [r3, #3]
+ 104:../Sources/drivers/uart/uart.c **** 	base->C3 = 0x00U;
+ 297              		.loc 2 104 0
+ 298 0038 7B68     		ldr	r3, [r7, #4]
+ 299 003a 0022     		mov	r2, #0
+ 300 003c 9A71     		strb	r2, [r3, #6]
+ 105:../Sources/drivers/uart/uart.c **** 	base->S2 = 0x00U;
+ 301              		.loc 2 105 0
+ 302 003e 7B68     		ldr	r3, [r7, #4]
+ 303 0040 0022     		mov	r2, #0
+ 304 0042 5A71     		strb	r2, [r3, #5]
+ 106:../Sources/drivers/uart/uart.c **** 
+ 107:../Sources/drivers/uart/uart.c **** 	sbr_field  = g_uartClkSrc/(baudRate*16); 		/*Define o valor do campo SBR*/
+ 305              		.loc 2 107 0
+ 306 0044 244B     		ldr	r3, .L22+8
+ 307 0046 1A68     		ldr	r2, [r3]
+ 308 0048 BB1C     		add	r3, r7, #2
+ 309 004a 1B88     		ldrh	r3, [r3]
+ 310 004c 1B01     		lsl	r3, r3, #4
+ 311 004e 101C     		mov	r0, r2
+ 312 0050 191C     		mov	r1, r3
+ 313 0052 FFF7FEFF 		bl	__aeabi_uidiv
+ 314 0056 031C     		mov	r3, r0
+ 315 0058 1A1C     		mov	r2, r3
+ 316 005a 3B1C     		mov	r3, r7
+ 317 005c 0E33     		add	r3, r3, #14
+ 318 005e 1A80     		strh	r2, [r3]
+ 108:../Sources/drivers/uart/uart.c **** 	base->BDH |= UART0_BDH_SBR((sbr_field >> 8)); 		/*Coloca os MSB de SBR em UART0_BDH*/
+ 319              		.loc 2 108 0
+ 320 0060 7B68     		ldr	r3, [r7, #4]
+ 321 0062 1B78     		ldrb	r3, [r3]
+ 322 0064 DAB2     		uxtb	r2, r3
+ 323 0066 3B1C     		mov	r3, r7
+ 324 0068 0E33     		add	r3, r3, #14
+ 325 006a 1B88     		ldrh	r3, [r3]
+ 326 006c 1B0A     		lsr	r3, r3, #8
+ 327 006e 9BB2     		uxth	r3, r3
+ 328 0070 D9B2     		uxtb	r1, r3
+ 329 0072 1F23     		mov	r3, #31
+ 330 0074 0B40     		and	r3, r1
+ 331 0076 DBB2     		uxtb	r3, r3
+ 332 0078 1343     		orr	r3, r2
+ 333 007a DAB2     		uxtb	r2, r3
+ 334 007c 7B68     		ldr	r3, [r7, #4]
+ 335 007e 1A70     		strb	r2, [r3]
+ 109:../Sources/drivers/uart/uart.c **** 	base->BDL  = UART0_BDL_SBR(sbr_field); 				/*Coloca os LSB de SBR em UART0_BDL*/
+ 336              		.loc 2 109 0
+ 337 0080 3B1C     		mov	r3, r7
+ 338 0082 0E33     		add	r3, r3, #14
+ 339 0084 1B88     		ldrh	r3, [r3]
+ 340 0086 DAB2     		uxtb	r2, r3
+ 341 0088 7B68     		ldr	r3, [r7, #4]
+ 342 008a 5A70     		strb	r2, [r3, #1]
+ 110:../Sources/drivers/uart/uart.c **** 
+ 111:../Sources/drivers/uart/uart.c **** 	base->C2 |= enTxRx;
+ 343              		.loc 2 111 0
+ 344 008c 7B68     		ldr	r3, [r7, #4]
+ 345 008e DB78     		ldrb	r3, [r3, #3]
+ 346 0090 DAB2     		uxtb	r2, r3
+ 347 0092 7B1C     		add	r3, r7, #1
+ 348 0094 1B78     		ldrb	r3, [r3]
+ 349 0096 1343     		orr	r3, r2
+ 350 0098 DAB2     		uxtb	r2, r3
+ 351 009a 7B68     		ldr	r3, [r7, #4]
+ 352 009c DA70     		strb	r2, [r3, #3]
+ 112:../Sources/drivers/uart/uart.c **** 
+ 113:../Sources/drivers/uart/uart.c **** 	UART_CleanRxBuffer(base); /*Limpa flags de inicialização de Rx*/
+ 353              		.loc 2 113 0
+ 354 009e 7B68     		ldr	r3, [r7, #4]
+ 355 00a0 181C     		mov	r0, r3
+ 356 00a2 FFF7FEFF 		bl	UART_CleanRxBuffer
+ 114:../Sources/drivers/uart/uart.c **** 
+ 115:../Sources/drivers/uart/uart.c **** 	base->C1 &= ~UART0_C1_PT_MASK; /*limpa configuração anterior de paridade*/
+ 357              		.loc 2 115 0
+ 358 00a6 7B68     		ldr	r3, [r7, #4]
+ 359 00a8 9B78     		ldrb	r3, [r3, #2]
+ 360 00aa DBB2     		uxtb	r3, r3
+ 361 00ac 0122     		mov	r2, #1
+ 362 00ae 9343     		bic	r3, r2
+ 363 00b0 DAB2     		uxtb	r2, r3
+ 364 00b2 7B68     		ldr	r3, [r7, #4]
+ 365 00b4 9A70     		strb	r2, [r3, #2]
+ 116:../Sources/drivers/uart/uart.c **** 	base->C1 |= parity; /*Habilita paridade*/
+ 366              		.loc 2 116 0
+ 367 00b6 7B68     		ldr	r3, [r7, #4]
+ 368 00b8 9B78     		ldrb	r3, [r3, #2]
+ 369 00ba DAB2     		uxtb	r2, r3
+ 370 00bc 3B1C     		mov	r3, r7
+ 371 00be 1B78     		ldrb	r3, [r3]
+ 372 00c0 1343     		orr	r3, r2
+ 373 00c2 DAB2     		uxtb	r2, r3
+ 374 00c4 7B68     		ldr	r3, [r7, #4]
+ 375 00c6 9A70     		strb	r2, [r3, #2]
+ 117:../Sources/drivers/uart/uart.c **** }
+ 376              		.loc 2 117 0
+ 377 00c8 BD46     		mov	sp, r7
+ 378 00ca 04B0     		add	sp, sp, #16
+ 379              		@ sp needed
+ 380 00cc 80BD     		pop	{r7, pc}
+ 381              	.L23:
+ 382 00ce C046     		.align	2
+ 383              	.L22:
+ 384 00d0 00700440 		.word	1074032640
+ 385 00d4 34100000 		.word	4148
+ 386 00d8 00000000 		.word	g_uartClkSrc
+ 387              		.cfi_endproc
+ 388              	.LFE48:
+ 390              		.text
+ 391              	.Letext0:
+ 392              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 393              		.file 4 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 394              		.file 5 "../Includes/MKL05Z4.h"
+ 395              		.file 6 "../Sources/drivers/common_driver.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart.c
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:18     .text.UART_CleanRxBuffer:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:22     .text.UART_CleanRxBuffer:00000000 UART_CleanRxBuffer
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:57     .text.UART_IsRxAvailable:00000000 UART_IsRxAvailable
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:98     .text.UART_Read:00000000 UART_Read
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:53     .text.UART_IsRxAvailable:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:89     .text.UART_IsRxAvailable:00000024 $d
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:94     .text.UART_Read:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:124    .text.UART_Read:00000018 $d
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:129    .bss.g_uartClkSrc:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:132    .bss.g_uartClkSrc:00000000 g_uartClkSrc
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:135    .text.UART_SetClkSrc:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:140    .text.UART_SetClkSrc:00000000 UART_SetClkSrc
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:243    .text.UART_SetClkSrc:00000088 $d
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:252    .text.UART_Init:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:257    .text.UART_Init:00000000 UART_Init
+C:\Users\mathe\AppData\Local\Temp\cc6gJXG4.s:384    .text.UART_Init:000000d0 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv

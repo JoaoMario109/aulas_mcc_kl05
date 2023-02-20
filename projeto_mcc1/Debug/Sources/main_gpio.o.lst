@@ -1,0 +1,622 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main_gpio.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata
+  18              		.align	2
+  19              	.LC0:
+  20 0000 2E2E2F53 		.ascii	"../Sources/drivers/port/port.h\000"
+  20      6F757263 
+  20      65732F64 
+  20      72697665 
+  20      72732F70 
+  21 001f 00       		.align	2
+  22              	.LC3:
+  23 0020 62617365 		.ascii	"base\000"
+  23      00
+  24              		.section	.text.PORT_Init,"ax",%progbits
+  25              		.align	2
+  26              		.code	16
+  27              		.thumb_func
+  29              	PORT_Init:
+  30              	.LFB39:
+  31              		.file 1 "../Sources/drivers/port/port.h"
+   1:../Sources/drivers/port/port.h **** /***************************************************************************************
+   2:../Sources/drivers/port/port.h ****  * Módulo      : port.h
+   3:../Sources/drivers/port/port.h ****  * Revisão     : 1.0
+   4:../Sources/drivers/port/port.h ****  * Data        : 09/02/2023
+   5:../Sources/drivers/port/port.h ****  * Descrição   : Arquivo com implementações dos Módulos PORT da Familia Kinetis KL05.
+   6:../Sources/drivers/port/port.h ****  * Comentários : Nenhum.
+   7:../Sources/drivers/port/port.h ****  * Autor(es)   : Matheus Leitzke Pinto
+   8:../Sources/drivers/port/port.h ****  ***************************************************************************************/
+   9:../Sources/drivers/port/port.h **** 
+  10:../Sources/drivers/port/port.h **** #ifndef PORT_DRV_H_
+  11:../Sources/drivers/port/port.h **** #define PORT_DRV_H_
+  12:../Sources/drivers/port/port.h **** 
+  13:../Sources/drivers/port/port.h **** /*ARQUIVOS DE CABEÇALHO*/
+  14:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  15:../Sources/drivers/port/port.h **** 
+  16:../Sources/drivers/port/port.h **** #include "drivers/common_driver.h"
+  17:../Sources/drivers/port/port.h **** 
+  18:../Sources/drivers/port/port.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  19:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  20:../Sources/drivers/port/port.h **** 
+  21:../Sources/drivers/port/port.h **** /*TIPOS ENUMERADOS*/
+  22:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  23:../Sources/drivers/port/port.h **** 
+  24:../Sources/drivers/port/port.h **** /*Possíveis alternativas de multiplexação dos pinos das PORTs*/
+  25:../Sources/drivers/port/port.h **** typedef enum{
+  26:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT0 		= 0x0u,
+  27:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT1 		= 0x1u,
+  28:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT2 		= 0x2u,
+  29:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT3 		= 0x3u,
+  30:../Sources/drivers/port/port.h **** 	PORT_MUX_DISABLE 	= PORT_MUX_ALT0
+  31:../Sources/drivers/port/port.h **** }portMux_t;
+  32:../Sources/drivers/port/port.h **** 
+  33:../Sources/drivers/port/port.h **** /*Possíveis alternativas de interrupção dos pinos das PORTs*/
+  34:../Sources/drivers/port/port.h **** typedef enum{
+  35:../Sources/drivers/port/port.h **** 	PORT_IRQ_DISABLE 		 	 = 0x0U,
+  36:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_RISING_EDGE  = 0x1U,
+  37:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_FALLING_EDGE = 0x2U,
+  38:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_EITHER_EDGE  = 0x3U,
+  39:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_lOW_LEVEL		 = 0x8U,
+  40:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_RISING_EDGE 	 = 0x9U,
+  41:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_FALLING_EDGE 	 = 0xAU,
+  42:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_EITHER_EDGE 	 = 0xBU,
+  43:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_HIGH_LEVEL 	 	 = 0xCU
+  44:../Sources/drivers/port/port.h **** }portIRQ_t;
+  45:../Sources/drivers/port/port.h **** 
+  46:../Sources/drivers/port/port.h **** /*FIM: TIPOS ENUMERADOS*/
+  47:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  48:../Sources/drivers/port/port.h **** 
+  49:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  50:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  51:../Sources/drivers/port/port.h **** 
+  52:../Sources/drivers/port/port.h **** /**********************************************************************
+  53:../Sources/drivers/port/port.h ****  * Função		:	PORT_IRQEnable
+  54:../Sources/drivers/port/port.h ****  *
+  55:../Sources/drivers/port/port.h ****  * Descrição	:   Habilita a geração de interrupção pelo pino de
+  56:../Sources/drivers/port/port.h ****  * 					um módulo PORT.
+  57:../Sources/drivers/port/port.h ****  *
+  58:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  59:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  60:../Sources/drivers/port/port.h ****  * 					irq - uma das alternativas de interrupção do pino.
+  61:../Sources/drivers/port/port.h ****  *
+  62:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  63:../Sources/drivers/port/port.h ****  *
+  64:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  65:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  66:../Sources/drivers/port/port.h **** void PORT_IRQEnable(PORT_Type *base, uint8_t pin, portIRQ_t irq);
+  67:../Sources/drivers/port/port.h **** 
+  68:../Sources/drivers/port/port.h **** /**********************************************************************
+  69:../Sources/drivers/port/port.h ****  * Função		:	PORT_GetIRQFlag
+  70:../Sources/drivers/port/port.h ****  *
+  71:../Sources/drivers/port/port.h ****  * Descrição	:   Retorna se a flag de interrupção de pino do PORT foi setada.
+  72:../Sources/drivers/port/port.h ****  *
+  73:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  74:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  75:../Sources/drivers/port/port.h ****  *
+  76:../Sources/drivers/port/port.h ****  * Saídas		:  0 - se flag não setada;
+  77:../Sources/drivers/port/port.h ****  *                 !0 - se flag setada.
+  78:../Sources/drivers/port/port.h ****  *
+  79:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  80:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  81:../Sources/drivers/port/port.h **** uint8_t PORT_GetIRQFlag(PORT_Type *base, uint8_t pin);
+  82:../Sources/drivers/port/port.h **** 
+  83:../Sources/drivers/port/port.h **** /**********************************************************************
+  84:../Sources/drivers/port/port.h ****  * Função		:	PORT_ClearIRQFlag
+  85:../Sources/drivers/port/port.h ****  *
+  86:../Sources/drivers/port/port.h ****  * Descrição	:   Limpa flag de interrupção do pino de PORT.
+  87:../Sources/drivers/port/port.h ****  *
+  88:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  89:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  90:../Sources/drivers/port/port.h ****  *
+  91:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  92:../Sources/drivers/port/port.h ****  *
+  93:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  94:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  95:../Sources/drivers/port/port.h **** void PORT_ClearIRQFlag(PORT_Type *base, uint8_t pin);
+  96:../Sources/drivers/port/port.h **** 
+  97:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  98:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  99:../Sources/drivers/port/port.h **** 
+ 100:../Sources/drivers/port/port.h **** 
+ 101:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES INLINE*/
+ 102:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 103:../Sources/drivers/port/port.h **** 
+ 104:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base);
+ 105:../Sources/drivers/port/port.h **** static inline void PORT_SetMux(PORT_Type *base, uint8_t pin, portMux_t mux);
+ 106:../Sources/drivers/port/port.h **** static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin);
+ 107:../Sources/drivers/port/port.h **** static inline void PORT_HighStrengthEnable(PORT_Type *base, uint8_t pin);
+ 108:../Sources/drivers/port/port.h **** 
+ 109:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES INLINE*/
+ 110:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 111:../Sources/drivers/port/port.h **** 
+ 112:../Sources/drivers/port/port.h **** /*FUNÇÕES INLINE*/
+ 113:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 114:../Sources/drivers/port/port.h **** 
+ 115:../Sources/drivers/port/port.h **** /**********************************************************************
+ 116:../Sources/drivers/port/port.h ****  * Função		:	PORT_Init
+ 117:../Sources/drivers/port/port.h ****  *
+ 118:../Sources/drivers/port/port.h ****  * Descrição	:   Deve ser chamado antes de utilizar um módulo PORT.
+ 119:../Sources/drivers/port/port.h ****  *
+ 120:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+ 121:../Sources/drivers/port/port.h ****  *
+ 122:../Sources/drivers/port/port.h ****  * Saídas 		:   Nenhuma.
+ 123:../Sources/drivers/port/port.h ****  *
+ 124:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 125:../Sources/drivers/port/port.h ****  * ********************************************************************/
+ 126:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base)
+ 127:../Sources/drivers/port/port.h **** {
+  32              		.loc 1 127 0
+  33              		.cfi_startproc
+  34 0000 80B5     		push	{r7, lr}
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+  38 0002 82B0     		sub	sp, sp, #8
+  39              		.cfi_def_cfa_offset 16
+  40 0004 00AF     		add	r7, sp, #0
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+ 128:../Sources/drivers/port/port.h **** 	assert(base);
+  43              		.loc 1 128 0
+  44 0008 7B68     		ldr	r3, [r7, #4]
+  45 000a 002B     		cmp	r3, #0
+  46 000c 06D1     		bne	.L2
+  47              		.loc 1 128 0 is_stmt 0 discriminator 1
+  48 000e 1949     		ldr	r1, .L5
+  49 0010 194A     		ldr	r2, .L5+4
+  50 0012 1A4B     		ldr	r3, .L5+8
+  51 0014 081C     		mov	r0, r1
+  52 0016 8021     		mov	r1, #128
+  53 0018 FFF7FEFF 		bl	__assert_func
+  54              	.L2:
+ 129:../Sources/drivers/port/port.h **** 
+ 130:../Sources/drivers/port/port.h **** 	if( PORTA == base )
+  55              		.loc 1 130 0 is_stmt 1
+  56 001c 7A68     		ldr	r2, [r7, #4]
+  57 001e 184B     		ldr	r3, .L5+12
+  58 0020 9A42     		cmp	r2, r3
+  59 0022 09D1     		bne	.L3
+ 131:../Sources/drivers/port/port.h **** 	{
+ 132:../Sources/drivers/port/port.h **** 		   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK; /* Ativa o clock do periférico da porta A*/
+  60              		.loc 1 132 0
+  61 0024 174A     		ldr	r2, .L5+16
+  62 0026 1749     		ldr	r1, .L5+16
+  63 0028 174B     		ldr	r3, .L5+20
+  64 002a CB58     		ldr	r3, [r1, r3]
+  65 002c 8021     		mov	r1, #128
+  66 002e 8900     		lsl	r1, r1, #2
+  67 0030 1943     		orr	r1, r3
+  68 0032 154B     		ldr	r3, .L5+20
+  69 0034 D150     		str	r1, [r2, r3]
+  70 0036 19E0     		b	.L1
+  71              	.L3:
+ 133:../Sources/drivers/port/port.h **** 	}
+ 134:../Sources/drivers/port/port.h **** 	else
+ 135:../Sources/drivers/port/port.h **** 	{
+ 136:../Sources/drivers/port/port.h **** 		if( PORTB == base )
+  72              		.loc 1 136 0
+  73 0038 7A68     		ldr	r2, [r7, #4]
+  74 003a 144B     		ldr	r3, .L5+24
+  75 003c 9A42     		cmp	r2, r3
+  76 003e 15D1     		bne	.L1
+ 137:../Sources/drivers/port/port.h **** 		{
+ 138:../Sources/drivers/port/port.h **** 			SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; /* Ativa o clock do periférico da porta B*/
+  77              		.loc 1 138 0
+  78 0040 104A     		ldr	r2, .L5+16
+  79 0042 1049     		ldr	r1, .L5+16
+  80 0044 104B     		ldr	r3, .L5+20
+  81 0046 CB58     		ldr	r3, [r1, r3]
+  82 0048 8021     		mov	r1, #128
+  83 004a C900     		lsl	r1, r1, #3
+  84 004c 1943     		orr	r1, r3
+  85 004e 0E4B     		ldr	r3, .L5+20
+  86 0050 D150     		str	r1, [r2, r3]
+ 139:../Sources/drivers/port/port.h **** 			/*Desabilita NMI em PTB5 e habilita como GPIO*/
+ 140:../Sources/drivers/port/port.h **** 			base->PCR[5] &= ~PORT_PCR_MUX_MASK; /*Limpa configurações anteriores*/
+  87              		.loc 1 140 0
+  88 0052 7B68     		ldr	r3, [r7, #4]
+  89 0054 5A69     		ldr	r2, [r3, #20]
+  90 0056 0E4B     		ldr	r3, .L5+28
+  91 0058 1A40     		and	r2, r3
+  92 005a 7B68     		ldr	r3, [r7, #4]
+  93 005c 5A61     		str	r2, [r3, #20]
+ 141:../Sources/drivers/port/port.h **** 			base->PCR[5] |= PORT_PCR_MUX(PORT_MUX_ALT1);
+  94              		.loc 1 141 0
+  95 005e 7B68     		ldr	r3, [r7, #4]
+  96 0060 5B69     		ldr	r3, [r3, #20]
+  97 0062 8022     		mov	r2, #128
+  98 0064 5200     		lsl	r2, r2, #1
+  99 0066 1A43     		orr	r2, r3
+ 100 0068 7B68     		ldr	r3, [r7, #4]
+ 101 006a 5A61     		str	r2, [r3, #20]
+ 102              	.L1:
+ 142:../Sources/drivers/port/port.h **** 		}
+ 143:../Sources/drivers/port/port.h **** 	}
+ 144:../Sources/drivers/port/port.h **** }
+ 103              		.loc 1 144 0
+ 104 006c BD46     		mov	sp, r7
+ 105 006e 02B0     		add	sp, sp, #8
+ 106              		@ sp needed
+ 107 0070 80BD     		pop	{r7, pc}
+ 108              	.L6:
+ 109 0072 C046     		.align	2
+ 110              	.L5:
+ 111 0074 00000000 		.word	.LC0
+ 112 0078 00000000 		.word	__func__.5584
+ 113 007c 20000000 		.word	.LC3
+ 114 0080 00900440 		.word	1074040832
+ 115 0084 00700440 		.word	1074032640
+ 116 0088 38100000 		.word	4152
+ 117 008c 00A00440 		.word	1074044928
+ 118 0090 FFF8FFFF 		.word	-1793
+ 119              		.cfi_endproc
+ 120              	.LFE39:
+ 122              		.section	.rodata
+ 123 0025 000000   		.align	2
+ 124              	.LC5:
+ 125 0028 2E2E2F53 		.ascii	"../Sources/drivers/gpio/gpio.h\000"
+ 125      6F757263 
+ 125      65732F64 
+ 125      72697665 
+ 125      72732F67 
+ 126 0047 00       		.align	2
+ 127              	.LC9:
+ 128 0048 28207069 		.ascii	"( pin >= 0 ) && ( pin < 32 )\000"
+ 128      6E203E3D 
+ 128      20302029 
+ 128      20262620 
+ 128      28207069 
+ 129 0065 000000   		.section	.text.GPIO_TogglePin,"ax",%progbits
+ 130              		.align	2
+ 131              		.code	16
+ 132              		.thumb_func
+ 134              	GPIO_TogglePin:
+ 135              	.LFB45:
+ 136              		.file 2 "../Sources/drivers/gpio/gpio.h"
+   1:../Sources/drivers/gpio/gpio.h **** /***************************************************************************************
+   2:../Sources/drivers/gpio/gpio.h ****  * Módulo      : gpio.h
+   3:../Sources/drivers/gpio/gpio.h ****  * Revisão     : 1.0
+   4:../Sources/drivers/gpio/gpio.h ****  * Data        : 16/02/2023
+   5:../Sources/drivers/gpio/gpio.h ****  * Descrição   : Arquivo com implementações dos Módulos GPIO da Familia Kinetis KL05.
+   6:../Sources/drivers/gpio/gpio.h ****  * Comentários : Nenhum.
+   7:../Sources/drivers/gpio/gpio.h ****  * Autor(es)   : Matheus Leitzke Pinto
+   8:../Sources/drivers/gpio/gpio.h ****  ***************************************************************************************/
+   9:../Sources/drivers/gpio/gpio.h **** 
+  10:../Sources/drivers/gpio/gpio.h **** #ifndef GPIO_DRV_H_
+  11:../Sources/drivers/gpio/gpio.h **** #define GPIO_DRV_H_
+  12:../Sources/drivers/gpio/gpio.h **** 
+  13:../Sources/drivers/gpio/gpio.h **** /*ARQUIVOS DE CABEÇALHO*/
+  14:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  15:../Sources/drivers/gpio/gpio.h **** 
+  16:../Sources/drivers/gpio/gpio.h **** #include "drivers/common_driver.h"
+  17:../Sources/drivers/gpio/gpio.h **** #include "drivers/port/port.h"
+  18:../Sources/drivers/gpio/gpio.h **** 
+  19:../Sources/drivers/gpio/gpio.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  20:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  21:../Sources/drivers/gpio/gpio.h **** 
+  22:../Sources/drivers/gpio/gpio.h **** /*PROTÓTIPOS - FUNÇÕES INLINE*/
+  23:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  24:../Sources/drivers/gpio/gpio.h **** 
+  25:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_SetPin(GPIO_Type *base, uint8_t pin);
+  26:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_ClearPin(GPIO_Type *base, uint8_t pin);
+  27:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_TogglePin(GPIO_Type *base, uint8_t pin);
+  28:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_WritePin(GPIO_Type *base, uint8_t pin, uint8_t value);
+  29:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_SetPinsMask(GPIO_Type *base, uint32_t mask);
+  30:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_ClearPinsMask(GPIO_Type *base, uint32_t mask);
+  31:../Sources/drivers/gpio/gpio.h **** static inline uint8_t GPIO_ReadPin(GPIO_Type *base, uint8_t pin);
+  32:../Sources/drivers/gpio/gpio.h **** 
+  33:../Sources/drivers/gpio/gpio.h **** /*FIM: PROTÓTIPOS - FUNÇÕES INLINE*/
+  34:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  35:../Sources/drivers/gpio/gpio.h **** 
+  36:../Sources/drivers/gpio/gpio.h **** /*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  37:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  38:../Sources/drivers/gpio/gpio.h **** 
+  39:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  40:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_InitInputPin
+  41:../Sources/drivers/gpio/gpio.h ****  *
+  42:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Inicializa pino de módulo GPIO como entrada.
+  43:../Sources/drivers/gpio/gpio.h ****  *
+  44:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+  45:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+  46:../Sources/drivers/gpio/gpio.h ****  *
+  47:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+  48:../Sources/drivers/gpio/gpio.h ****  *
+  49:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Essa função também realiza a multiplexação do
+  50:../Sources/drivers/gpio/gpio.h ****  *                  do pino do PORT relacionado ao GPIO.
+  51:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+  52:../Sources/drivers/gpio/gpio.h **** void GPIO_InitInputPin(GPIO_Type *base, uint8_t pin);
+  53:../Sources/drivers/gpio/gpio.h **** 
+  54:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  55:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_InitOutputPin
+  56:../Sources/drivers/gpio/gpio.h ****  *
+  57:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Inicializa pino de módulo GPIO como saída.
+  58:../Sources/drivers/gpio/gpio.h ****  *
+  59:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+  60:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino;
+  61:../Sources/drivers/gpio/gpio.h ****  *                  initVal - valor lógico inicial do pino (0 ou !0).
+  62:../Sources/drivers/gpio/gpio.h ****  *
+  63:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+  64:../Sources/drivers/gpio/gpio.h ****  *
+  65:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Essa função também realiza a multiplexação do
+  66:../Sources/drivers/gpio/gpio.h ****  *                  do pino do PORT relacionado ao GPIO.
+  67:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+  68:../Sources/drivers/gpio/gpio.h **** void GPIO_InitOutputPin(GPIO_Type *base, uint8_t pin, uint8_t initVal);
+  69:../Sources/drivers/gpio/gpio.h **** 
+  70:../Sources/drivers/gpio/gpio.h **** /*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  71:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  72:../Sources/drivers/gpio/gpio.h **** 
+  73:../Sources/drivers/gpio/gpio.h **** /*FUNÇÕES INLINE*/
+  74:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  75:../Sources/drivers/gpio/gpio.h **** 
+  76:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  77:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_SetPinValue
+  78:../Sources/drivers/gpio/gpio.h ****  *
+  79:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Coloca o valor lógico 1 no pino do módulo GPIO.
+  80:../Sources/drivers/gpio/gpio.h ****  *
+  81:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+  82:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+  83:../Sources/drivers/gpio/gpio.h ****  *
+  84:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+  85:../Sources/drivers/gpio/gpio.h ****  *
+  86:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Nenhum.
+  87:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+  88:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_SetPin(GPIO_Type *base, uint8_t pin)
+  89:../Sources/drivers/gpio/gpio.h **** {
+  90:../Sources/drivers/gpio/gpio.h **** 	assert(base);
+  91:../Sources/drivers/gpio/gpio.h **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+  92:../Sources/drivers/gpio/gpio.h **** 
+  93:../Sources/drivers/gpio/gpio.h **** 	base->PSOR = (1 << pin);
+  94:../Sources/drivers/gpio/gpio.h **** }
+  95:../Sources/drivers/gpio/gpio.h **** 
+  96:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  97:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_ClearPinValue
+  98:../Sources/drivers/gpio/gpio.h ****  *
+  99:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Coloca o valor lógico 0 no pino do módulo GPIO.
+ 100:../Sources/drivers/gpio/gpio.h ****  *
+ 101:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+ 102:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+ 103:../Sources/drivers/gpio/gpio.h ****  *
+ 104:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+ 105:../Sources/drivers/gpio/gpio.h ****  *
+ 106:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Nenhum.
+ 107:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+ 108:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_ClearPin(GPIO_Type *base, uint8_t pin)
+ 109:../Sources/drivers/gpio/gpio.h **** {
+ 110:../Sources/drivers/gpio/gpio.h **** 	assert(base);
+ 111:../Sources/drivers/gpio/gpio.h **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+ 112:../Sources/drivers/gpio/gpio.h **** 
+ 113:../Sources/drivers/gpio/gpio.h **** 	base->PCOR = (1 << pin);
+ 114:../Sources/drivers/gpio/gpio.h **** }
+ 115:../Sources/drivers/gpio/gpio.h **** 
+ 116:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+ 117:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_TogglePin
+ 118:../Sources/drivers/gpio/gpio.h ****  *
+ 119:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Inverte o valor lógico no pino do módulo GPIO.
+ 120:../Sources/drivers/gpio/gpio.h ****  *
+ 121:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+ 122:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+ 123:../Sources/drivers/gpio/gpio.h ****  *
+ 124:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+ 125:../Sources/drivers/gpio/gpio.h ****  *
+ 126:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Nenhum.
+ 127:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+ 128:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_TogglePin(GPIO_Type *base, uint8_t pin)
+ 129:../Sources/drivers/gpio/gpio.h **** {
+ 137              		.loc 2 129 0
+ 138              		.cfi_startproc
+ 139 0000 80B5     		push	{r7, lr}
+ 140              		.cfi_def_cfa_offset 8
+ 141              		.cfi_offset 7, -8
+ 142              		.cfi_offset 14, -4
+ 143 0002 82B0     		sub	sp, sp, #8
+ 144              		.cfi_def_cfa_offset 16
+ 145 0004 00AF     		add	r7, sp, #0
+ 146              		.cfi_def_cfa_register 7
+ 147 0006 7860     		str	r0, [r7, #4]
+ 148 0008 0A1C     		mov	r2, r1
+ 149 000a FB1C     		add	r3, r7, #3
+ 150 000c 1A70     		strb	r2, [r3]
+ 130:../Sources/drivers/gpio/gpio.h **** 	assert(base);
+ 151              		.loc 2 130 0
+ 152 000e 7B68     		ldr	r3, [r7, #4]
+ 153 0010 002B     		cmp	r3, #0
+ 154 0012 06D1     		bne	.L8
+ 155              		.loc 2 130 0 is_stmt 0 discriminator 1
+ 156 0014 0E49     		ldr	r1, .L10
+ 157 0016 0F4A     		ldr	r2, .L10+4
+ 158 0018 0F4B     		ldr	r3, .L10+8
+ 159 001a 081C     		mov	r0, r1
+ 160 001c 8221     		mov	r1, #130
+ 161 001e FFF7FEFF 		bl	__assert_func
+ 162              	.L8:
+ 131:../Sources/drivers/gpio/gpio.h **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+ 163              		.loc 2 131 0 is_stmt 1
+ 164 0022 FB1C     		add	r3, r7, #3
+ 165 0024 1B78     		ldrb	r3, [r3]
+ 166 0026 1F2B     		cmp	r3, #31
+ 167 0028 06D9     		bls	.L9
+ 168              		.loc 2 131 0 is_stmt 0 discriminator 1
+ 169 002a 0949     		ldr	r1, .L10
+ 170 002c 094A     		ldr	r2, .L10+4
+ 171 002e 0B4B     		ldr	r3, .L10+12
+ 172 0030 081C     		mov	r0, r1
+ 173 0032 8321     		mov	r1, #131
+ 174 0034 FFF7FEFF 		bl	__assert_func
+ 175              	.L9:
+ 132:../Sources/drivers/gpio/gpio.h **** 
+ 133:../Sources/drivers/gpio/gpio.h **** 	base->PTOR = (1 << pin);
+ 176              		.loc 2 133 0 is_stmt 1
+ 177 0038 FB1C     		add	r3, r7, #3
+ 178 003a 1B78     		ldrb	r3, [r3]
+ 179 003c 0122     		mov	r2, #1
+ 180 003e 111C     		mov	r1, r2
+ 181 0040 9940     		lsl	r1, r1, r3
+ 182 0042 0B1C     		mov	r3, r1
+ 183 0044 1A1C     		mov	r2, r3
+ 184 0046 7B68     		ldr	r3, [r7, #4]
+ 185 0048 DA60     		str	r2, [r3, #12]
+ 134:../Sources/drivers/gpio/gpio.h **** }
+ 186              		.loc 2 134 0
+ 187 004a BD46     		mov	sp, r7
+ 188 004c 02B0     		add	sp, sp, #8
+ 189              		@ sp needed
+ 190 004e 80BD     		pop	{r7, pc}
+ 191              	.L11:
+ 192              		.align	2
+ 193              	.L10:
+ 194 0050 28000000 		.word	.LC5
+ 195 0054 00000000 		.word	__func__.5644
+ 196 0058 20000000 		.word	.LC3
+ 197 005c 48000000 		.word	.LC9
+ 198              		.cfi_endproc
+ 199              	.LFE45:
+ 201              		.section	.text.main,"ax",%progbits
+ 202              		.align	2
+ 203              		.global	main
+ 204              		.code	16
+ 205              		.thumb_func
+ 207              	main:
+ 208              	.LFB50:
+ 209              		.file 3 "../Sources/main_gpio.c"
+   1:../Sources/main_gpio.c **** #include "mcu_general_config.h"
+   2:../Sources/main_gpio.c **** #include "libraries/delay/delay.h"
+   3:../Sources/main_gpio.c **** #include "libraries/emb_util/emb_util.h"
+   4:../Sources/main_gpio.c **** #include "drivers/port/port.h"
+   5:../Sources/main_gpio.c **** #include "drivers/gpio/gpio.h"
+   6:../Sources/main_gpio.c **** 
+   7:../Sources/main_gpio.c **** int main(void)
+   8:../Sources/main_gpio.c **** {
+ 210              		.loc 3 8 0
+ 211              		.cfi_startproc
+ 212 0000 80B5     		push	{r7, lr}
+ 213              		.cfi_def_cfa_offset 8
+ 214              		.cfi_offset 7, -8
+ 215              		.cfi_offset 14, -4
+ 216 0002 00AF     		add	r7, sp, #0
+ 217              		.cfi_def_cfa_register 7
+   9:../Sources/main_gpio.c **** 	PORT_Init( PORTB );
+ 218              		.loc 3 9 0
+ 219 0004 0B4B     		ldr	r3, .L14
+ 220 0006 181C     		mov	r0, r3
+ 221 0008 FFF7FEFF 		bl	PORT_Init
+  10:../Sources/main_gpio.c **** 	GPIO_InitOutputPin( GPIOB, 9, 1 );
+ 222              		.loc 3 10 0
+ 223 000c 0A4B     		ldr	r3, .L14+4
+ 224 000e 181C     		mov	r0, r3
+ 225 0010 0921     		mov	r1, #9
+ 226 0012 0122     		mov	r2, #1
+ 227 0014 FFF7FEFF 		bl	GPIO_InitOutputPin
+  11:../Sources/main_gpio.c **** 	Delay_Init();
+ 228              		.loc 3 11 0
+ 229 0018 FFF7FEFF 		bl	Delay_Init
+ 230              	.L13:
+  12:../Sources/main_gpio.c **** 
+  13:../Sources/main_gpio.c ****     for (;;)
+  14:../Sources/main_gpio.c ****     {
+  15:../Sources/main_gpio.c ****     	Delay_Waitms(1000);
+ 231              		.loc 3 15 0 discriminator 1
+ 232 001c FA23     		mov	r3, #250
+ 233 001e 9B00     		lsl	r3, r3, #2
+ 234 0020 181C     		mov	r0, r3
+ 235 0022 FFF7FEFF 		bl	Delay_Waitms
+  16:../Sources/main_gpio.c ****     	GPIO_TogglePin( GPIOB, 9 );
+ 236              		.loc 3 16 0 discriminator 1
+ 237 0026 044B     		ldr	r3, .L14+4
+ 238 0028 181C     		mov	r0, r3
+ 239 002a 0921     		mov	r1, #9
+ 240 002c FFF7FEFF 		bl	GPIO_TogglePin
+  17:../Sources/main_gpio.c ****     }
+ 241              		.loc 3 17 0 discriminator 1
+ 242 0030 F4E7     		b	.L13
+ 243              	.L15:
+ 244 0032 C046     		.align	2
+ 245              	.L14:
+ 246 0034 00A00440 		.word	1074044928
+ 247 0038 40F00F40 		.word	1074786368
+ 248              		.cfi_endproc
+ 249              	.LFE50:
+ 251              		.section	.rodata.__func__.5584,"a",%progbits
+ 252              		.align	2
+ 255              	__func__.5584:
+ 256 0000 504F5254 		.ascii	"PORT_Init\000"
+ 256      5F496E69 
+ 256      7400
+ 257 000a 0000     		.section	.rodata.__func__.5644,"a",%progbits
+ 258              		.align	2
+ 261              	__func__.5644:
+ 262 0000 4750494F 		.ascii	"GPIO_TogglePin\000"
+ 262      5F546F67 
+ 262      676C6550 
+ 262      696E00
+ 263 000f 00       		.text
+ 264              	.Letext0:
+ 265              		.file 4 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 266              		.file 5 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 267              		.file 6 "../Includes/MKL05Z4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main_gpio.c
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:18     .rodata:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:25     .text.PORT_Init:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:29     .text.PORT_Init:00000000 PORT_Init
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:111    .text.PORT_Init:00000074 $d
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:255    .rodata.__func__.5584:00000000 __func__.5584
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:130    .text.GPIO_TogglePin:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:134    .text.GPIO_TogglePin:00000000 GPIO_TogglePin
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:194    .text.GPIO_TogglePin:00000050 $d
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:261    .rodata.__func__.5644:00000000 __func__.5644
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:202    .text.main:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:207    .text.main:00000000 main
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:246    .text.main:00000034 $d
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:252    .rodata.__func__.5584:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\cc07M3fN.s:258    .rodata.__func__.5644:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+                           .group:00000000 wm4.delay.h.63.166aa2b883bf66328fbc7fa736ae3d6f
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.stddef.h.158.a7efb00f6cbc6f43213b50e183c9830c
+                           .group:00000000 wm4.lock.h.2.9bc98482741e5e2a9450b12934a684ea
+                           .group:00000000 wm4._types.h.54.d3d34a3b7f3cc230cd159baf022b4b08
+                           .group:00000000 wm4.stddef.h.158.61317cdbfb4026324507d123a50b0fd6
+                           .group:00000000 wm4.reent.h.17.8bd9e4098e0428508c282cad794fae43
+                           .group:00000000 wm4.stdlib.h.53.a73f7e963d962393b7f9086194931e4a
+                           .group:00000000 wm4.cdefs.h.56.a2d04de9d47039852021e66fca39bb58
+                           .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:00000000 wm4.math.h.35.543015094efee9028e0e4b7949018580
+                           .group:00000000 wm4.emb_util.h.51.8ea7742b72b4040e74b9712312555cf1
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+
+UNDEFINED SYMBOLS
+__assert_func
+GPIO_InitOutputPin
+Delay_Init
+Delay_Waitms

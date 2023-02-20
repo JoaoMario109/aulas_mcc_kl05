@@ -1,0 +1,2767 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"lcd.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	_bigNumsCodes
+  18              		.section	.rodata._bigNumsCodes,"a",%progbits
+  19              		.align	2
+  22              	_bigNumsCodes:
+  23 0000 01       		.byte	1
+  24 0001 01       		.byte	1
+  25 0002 01       		.byte	1
+  26 0003 01       		.byte	1
+  27 0004 01       		.byte	1
+  28 0005 01       		.byte	1
+  29 0006 1F       		.byte	31
+  30 0007 00       		.byte	0
+  31 0008 1F       		.byte	31
+  32 0009 10       		.byte	16
+  33 000a 10       		.byte	16
+  34 000b 10       		.byte	16
+  35 000c 10       		.byte	16
+  36 000d 10       		.byte	16
+  37 000e 10       		.byte	16
+  38 000f 00       		.byte	0
+  39 0010 1F       		.byte	31
+  40 0011 01       		.byte	1
+  41 0012 01       		.byte	1
+  42 0013 01       		.byte	1
+  43 0014 01       		.byte	1
+  44 0015 01       		.byte	1
+  45 0016 01       		.byte	1
+  46 0017 00       		.byte	0
+  47 0018 01       		.byte	1
+  48 0019 01       		.byte	1
+  49 001a 01       		.byte	1
+  50 001b 01       		.byte	1
+  51 001c 01       		.byte	1
+  52 001d 01       		.byte	1
+  53 001e 01       		.byte	1
+  54 001f 00       		.byte	0
+  55 0020 1F       		.byte	31
+  56 0021 00       		.byte	0
+  57 0022 00       		.byte	0
+  58 0023 00       		.byte	0
+  59 0024 00       		.byte	0
+  60 0025 00       		.byte	0
+  61 0026 1F       		.byte	31
+  62 0027 00       		.byte	0
+  63 0028 1F       		.byte	31
+  64 0029 01       		.byte	1
+  65 002a 01       		.byte	1
+  66 002b 01       		.byte	1
+  67 002c 01       		.byte	1
+  68 002d 01       		.byte	1
+  69 002e 1F       		.byte	31
+  70 002f 00       		.byte	0
+  71 0030 1F       		.byte	31
+  72 0031 00       		.byte	0
+  73 0032 00       		.byte	0
+  74 0033 00       		.byte	0
+  75 0034 00       		.byte	0
+  76 0035 00       		.byte	0
+  77 0036 00       		.byte	0
+  78 0037 00       		.byte	0
+  79 0038 1F       		.byte	31
+  80 0039 10       		.byte	16
+  81 003a 10       		.byte	16
+  82 003b 10       		.byte	16
+  83 003c 10       		.byte	16
+  84 003d 10       		.byte	16
+  85 003e 1F       		.byte	31
+  86 003f 00       		.byte	0
+  87              		.section	.rodata._bigNumCommands,"a",%progbits
+  88              		.align	2
+  91              	_bigNumCommands:
+  92 0000 01       		.byte	1
+  93 0001 02       		.byte	2
+  94 0002 4C       		.byte	76
+  95 0003 00       		.byte	0
+  96 0004 20       		.byte	32
+  97 0005 7C       		.byte	124
+  98 0006 20       		.byte	32
+  99 0007 7C       		.byte	124
+ 100 0008 04       		.byte	4
+ 101 0009 05       		.byte	5
+ 102 000a 4C       		.byte	76
+ 103 000b 5F       		.byte	95
+ 104 000c 06       		.byte	6
+ 105 000d 05       		.byte	5
+ 106 000e 5F       		.byte	95
+ 107 000f 00       		.byte	0
+ 108 0010 4C       		.byte	76
+ 109 0011 00       		.byte	0
+ 110 0012 20       		.byte	32
+ 111 0013 03       		.byte	3
+ 112 0014 07       		.byte	7
+ 113 0015 04       		.byte	4
+ 114 0016 5F       		.byte	95
+ 115 0017 00       		.byte	0
+ 116 0018 07       		.byte	7
+ 117 0019 04       		.byte	4
+ 118 001a 4C       		.byte	76
+ 119 001b 00       		.byte	0
+ 120 001c 06       		.byte	6
+ 121 001d 02       		.byte	2
+ 122 001e 20       		.byte	32
+ 123 001f 03       		.byte	3
+ 124 0020 07       		.byte	7
+ 125 0021 05       		.byte	5
+ 126 0022 4C       		.byte	76
+ 127 0023 00       		.byte	0
+ 128 0024 07       		.byte	7
+ 129 0025 05       		.byte	5
+ 130 0026 20       		.byte	32
+ 131 0027 03       		.byte	3
+ 132              		.section	.bss.g_lcdConfigList,"aw",%nobits
+ 133              		.align	2
+ 136              	g_lcdConfigList:
+ 137 0000 00000000 		.space	52
+ 137      00000000 
+ 137      00000000 
+ 137      00000000 
+ 137      00000000 
+ 138              		.section	.bss.g_lcdHandleList,"aw",%nobits
+ 139              		.align	2
+ 142              	g_lcdHandleList:
+ 143 0000 00000000 		.space	12
+ 143      00000000 
+ 143      00000000 
+ 144              		.section	.bss.g_staticConfigsCreated,"aw",%nobits
+ 147              	g_staticConfigsCreated:
+ 148 0000 00       		.space	1
+ 149              		.section	.bss.g_staticHandlesCreated,"aw",%nobits
+ 152              	g_staticHandlesCreated:
+ 153 0000 00       		.space	1
+ 154              		.section	.text.CreateObject,"ax",%progbits
+ 155              		.align	2
+ 156              		.code	16
+ 157              		.thumb_func
+ 159              	CreateObject:
+ 160              	.LFB39:
+ 161              		.file 1 "../Sources/generic_drivers/lcd/lcd.c"
+   1:../Sources/generic_drivers/lcd/lcd.c **** /**
+   2:../Sources/generic_drivers/lcd/lcd.c ****  * @file	lcd.h
+   3:../Sources/generic_drivers/lcd/lcd.c ****  * @author  Matheus Leitzke Pinto <matheus.pinto@ifsc.edu.br>
+   4:../Sources/generic_drivers/lcd/lcd.c ****  * @version 1.0
+   5:../Sources/generic_drivers/lcd/lcd.c ****  * @date    2021
+   6:../Sources/generic_drivers/lcd/lcd.c ****  *
+   7:../Sources/generic_drivers/lcd/lcd.c ****  * @section LICENSE
+   8:../Sources/generic_drivers/lcd/lcd.c ****  *
+   9:../Sources/generic_drivers/lcd/lcd.c ****  * This program is free software; you can redistribute it and/or
+  10:../Sources/generic_drivers/lcd/lcd.c ****  * modify it under the terms of the GNU General Public License as
+  11:../Sources/generic_drivers/lcd/lcd.c ****  * published by the Free Software Foundation; either version 2 of
+  12:../Sources/generic_drivers/lcd/lcd.c ****  * the License, or (at your option) any later version.
+  13:../Sources/generic_drivers/lcd/lcd.c ****  *
+  14:../Sources/generic_drivers/lcd/lcd.c ****  * This program is distributed in the hope that it will be useful, but
+  15:../Sources/generic_drivers/lcd/lcd.c ****  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:../Sources/generic_drivers/lcd/lcd.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  17:../Sources/generic_drivers/lcd/lcd.c ****  * General Public License for more details at
+  18:../Sources/generic_drivers/lcd/lcd.c ****  * http://www.gnu.org/copyleft/gpl.html
+  19:../Sources/generic_drivers/lcd/lcd.c ****  *
+  20:../Sources/generic_drivers/lcd/lcd.c ****  * @section DESCRIPTION
+  21:../Sources/generic_drivers/lcd/lcd.c ****  *
+  22:../Sources/generic_drivers/lcd/lcd.c ****  * A generic driver for LCD with HD44780 controller.
+  23:../Sources/generic_drivers/lcd/lcd.c ****  * It is necessary to include the "mcu_general_config.h" file with
+  24:../Sources/generic_drivers/lcd/lcd.c ****  * specific implementations of:
+  25:../Sources/generic_drivers/lcd/lcd.c ****  *     - MCU_PortSet(portPinsRegister, portPinMask) and
+  26:../Sources/generic_drivers/lcd/lcd.c ****  *     - MCU_PortClear(portPinsRegister, portPinMask).
+  27:../Sources/generic_drivers/lcd/lcd.c ****  * It is also necessary the definition of types:
+  28:../Sources/generic_drivers/lcd/lcd.c ****  *     - portPinsRegister_t - the register type used by "MCU_PortSet"
+  29:../Sources/generic_drivers/lcd/lcd.c ****  *                            and "MCU_PortClear";
+  30:../Sources/generic_drivers/lcd/lcd.c ****  *     - portPinMask_t - the mask type used by "MCU_PortSet"
+  31:../Sources/generic_drivers/lcd/lcd.c ****  *                       and "MCU_PortClear" to indicate the pin
+  32:../Sources/generic_drivers/lcd/lcd.c ****  *                       position to be referred.
+  33:../Sources/generic_drivers/lcd/lcd.c ****  *
+  34:../Sources/generic_drivers/lcd/lcd.c ****  * Supported OSes:
+  35:../Sources/generic_drivers/lcd/lcd.c ****  *
+  36:../Sources/generic_drivers/lcd/lcd.c ****  *   - FreeRTOS.
+  37:../Sources/generic_drivers/lcd/lcd.c ****  *
+  38:../Sources/generic_drivers/lcd/lcd.c ****  */
+  39:../Sources/generic_drivers/lcd/lcd.c **** 
+  40:../Sources/generic_drivers/lcd/lcd.c **** #include "generic_drivers/lcd/lcd.h"
+  41:../Sources/generic_drivers/lcd/lcd.c **** #include "libraries/delay/delay.h"
+  42:../Sources/generic_drivers/lcd/lcd.c **** #include "libraries/emb_util/emb_util.h"
+  43:../Sources/generic_drivers/lcd/lcd.c **** #ifdef __FREERTOS_H
+  44:../Sources/generic_drivers/lcd/lcd.c **** #include "FreeRTOS.h"
+  45:../Sources/generic_drivers/lcd/lcd.c **** #include "semphr.h"
+  46:../Sources/generic_drivers/lcd/lcd.c **** #endif /* __FREERTOS_H */
+  47:../Sources/generic_drivers/lcd/lcd.c **** 
+  48:../Sources/generic_drivers/lcd/lcd.c **** 
+  49:../Sources/generic_drivers/lcd/lcd.c **** /*******************************************************************************
+  50:../Sources/generic_drivers/lcd/lcd.c ****  * Definitions
+  51:../Sources/generic_drivers/lcd/lcd.c ****  ******************************************************************************/
+  52:../Sources/generic_drivers/lcd/lcd.c **** 
+  53:../Sources/generic_drivers/lcd/lcd.c **** /*!< Information to create new big number characters, stored in non-volatile memory.*/
+  54:../Sources/generic_drivers/lcd/lcd.c **** const uint8_t _bigNumsCodes[] = {0b00000001,//0
+  55:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  56:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  57:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  58:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  59:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  60:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,
+  61:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  62:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,//1
+  63:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+  64:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+  65:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+  66:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+  67:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+  68:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+  69:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  70:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,//2
+  71:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  72:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  73:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  74:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  75:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  76:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  77:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  78:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,//3
+  79:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  80:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  81:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  82:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  83:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  84:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  85:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  86:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,//4
+  87:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  88:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  89:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  90:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  91:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  92:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,
+  93:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+  94:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,//5
+  95:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  96:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  97:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  98:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+  99:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000001,
+ 100:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,
+ 101:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 102:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,//6
+ 103:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 104:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 105:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 106:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 107:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 108:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 109:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000,
+ 110:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,//7
+ 111:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+ 112:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+ 113:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+ 114:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+ 115:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00010000,
+ 116:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00011111,
+ 117:../Sources/generic_drivers/lcd/lcd.c **** 								 0b00000000};
+ 118:../Sources/generic_drivers/lcd/lcd.c **** 
+ 119:../Sources/generic_drivers/lcd/lcd.c **** /*!< Commands to print big numbers in screen.*/
+ 120:../Sources/generic_drivers/lcd/lcd.c **** static const uint8_t _bigNumCommands[10][4] =
+ 121:../Sources/generic_drivers/lcd/lcd.c **** {
+ 122:../Sources/generic_drivers/lcd/lcd.c **** 		{0x01, 0x02, 0x4C, 0x00}, //nr. 0
+ 123:../Sources/generic_drivers/lcd/lcd.c **** 		{0x20, 0x7C, 0x20, 0x7C}, //nr. 1
+ 124:../Sources/generic_drivers/lcd/lcd.c **** 		{0x04, 0x05, 0x4C, 0x5F}, //nr. 2
+ 125:../Sources/generic_drivers/lcd/lcd.c **** 		{0x06, 0x05, 0x5F, 0x00}, //nr. 3
+ 126:../Sources/generic_drivers/lcd/lcd.c **** 		{0x4C, 0x00, 0x20, 0x03}, //nr. 4
+ 127:../Sources/generic_drivers/lcd/lcd.c **** 		{0x07, 0x04, 0x5F, 0x00}, //nr. 5
+ 128:../Sources/generic_drivers/lcd/lcd.c **** 		{0x07, 0x04, 0x4C, 0x00}, //nr. 5
+ 129:../Sources/generic_drivers/lcd/lcd.c **** 		{0x06, 0x02, 0x20, 0x03}, //nr. 7
+ 130:../Sources/generic_drivers/lcd/lcd.c **** 		{0x07, 0x05, 0x4C, 0x00}, //nr. 8
+ 131:../Sources/generic_drivers/lcd/lcd.c **** 		{0x07, 0x05, 0x20, 0x03}  //nr. 9
+ 132:../Sources/generic_drivers/lcd/lcd.c **** };
+ 133:../Sources/generic_drivers/lcd/lcd.c **** 
+ 134:../Sources/generic_drivers/lcd/lcd.c **** 
+ 135:../Sources/generic_drivers/lcd/lcd.c **** 
+ 136:../Sources/generic_drivers/lcd/lcd.c **** /*!< Enumeration to identify objects creation.*/
+ 137:../Sources/generic_drivers/lcd/lcd.c **** enum{
+ 138:../Sources/generic_drivers/lcd/lcd.c **** 	kLcdObjectIsHandle,
+ 139:../Sources/generic_drivers/lcd/lcd.c **** 	kLcdObjectIsConfig,
+ 140:../Sources/generic_drivers/lcd/lcd.c **** };
+ 141:../Sources/generic_drivers/lcd/lcd.c **** 
+ 142:../Sources/generic_drivers/lcd/lcd.c **** 
+ 143:../Sources/generic_drivers/lcd/lcd.c **** /*!
+ 144:../Sources/generic_drivers/lcd/lcd.c ****  * @brief LCD handle structure used internally
+ 145:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 146:../Sources/generic_drivers/lcd/lcd.c ****  */
+ 147:../Sources/generic_drivers/lcd/lcd.c **** struct lcdHandle_s{
+ 148:../Sources/generic_drivers/lcd/lcd.c **** 	/*!< The pointer to the configuration structure passed by the user.*/
+ 149:../Sources/generic_drivers/lcd/lcd.c **** 	lcdConfig_t* config;
+ 150:../Sources/generic_drivers/lcd/lcd.c **** 	/*!< The display function command that will be send to the LCD controller.*/
+ 151:../Sources/generic_drivers/lcd/lcd.c **** 	uint8_t displayfunction;
+ 152:../Sources/generic_drivers/lcd/lcd.c **** 	/*!< The display control command that will be send to the LCD controller.*/
+ 153:../Sources/generic_drivers/lcd/lcd.c **** 	uint8_t displaycontrol;
+ 154:../Sources/generic_drivers/lcd/lcd.c **** 	/*!< The display mode command that will be send to the LCD controller.*/
+ 155:../Sources/generic_drivers/lcd/lcd.c **** 	uint8_t displaymode;
+ 156:../Sources/generic_drivers/lcd/lcd.c **** 	/*!< The row offsets list determined by the number of LCD rows and columns.*/
+ 157:../Sources/generic_drivers/lcd/lcd.c **** 	uint8_t row_offsets[4];
+ 158:../Sources/generic_drivers/lcd/lcd.c **** #ifdef __FREERTOS_H
+ 159:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_REENTRANT_ACCESS
+ 160:../Sources/generic_drivers/lcd/lcd.c **** 	/*!< The mutex used for mutual exclusion in API calls.*/
+ 161:../Sources/generic_drivers/lcd/lcd.c **** 	xSemaphoreHandle lcdAccessMutex;
+ 162:../Sources/generic_drivers/lcd/lcd.c **** #endif /* LCD_REENTRANT_ACCESS */
+ 163:../Sources/generic_drivers/lcd/lcd.c **** #endif /* __FREERTOS_H */
+ 164:../Sources/generic_drivers/lcd/lcd.c **** };
+ 165:../Sources/generic_drivers/lcd/lcd.c **** 
+ 166:../Sources/generic_drivers/lcd/lcd.c **** 
+ 167:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_STATIC_OBJECTS_CREATION
+ 168:../Sources/generic_drivers/lcd/lcd.c **** /*!< The static list of configuration structures that is returned to the LCD API.*/
+ 169:../Sources/generic_drivers/lcd/lcd.c **** static lcdConfig_t g_lcdConfigList[LCD_MAX_STATIC_OBJECTS];
+ 170:../Sources/generic_drivers/lcd/lcd.c **** /*!< The static list of handle structures that is returned to the LCD API.*/
+ 171:../Sources/generic_drivers/lcd/lcd.c **** static struct lcdHandle_s g_lcdHandleList[LCD_MAX_STATIC_OBJECTS];
+ 172:../Sources/generic_drivers/lcd/lcd.c **** /*!< The number of configuration and handle structures created using the LCD API.*/
+ 173:../Sources/generic_drivers/lcd/lcd.c **** static uint8_t g_staticConfigsCreated, g_staticHandlesCreated;
+ 174:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 175:../Sources/generic_drivers/lcd/lcd.c **** 
+ 176:../Sources/generic_drivers/lcd/lcd.c **** 
+ 177:../Sources/generic_drivers/lcd/lcd.c **** /* waiting macros */
+ 178:../Sources/generic_drivers/lcd/lcd.c **** #define Waitns(x) \
+ 179:../Sources/generic_drivers/lcd/lcd.c ****         Delay_Waitns(x)                 /* Wait x ns */
+ 180:../Sources/generic_drivers/lcd/lcd.c **** #define Waitus(x) \
+ 181:../Sources/generic_drivers/lcd/lcd.c ****         Delay_Waitus(x)                 /* Wait x us */
+ 182:../Sources/generic_drivers/lcd/lcd.c **** #define Waitms(x) \
+ 183:../Sources/generic_drivers/lcd/lcd.c ****         Delay_Waitms(x)                 /* Wait x ms */
+ 184:../Sources/generic_drivers/lcd/lcd.c **** 
+ 185:../Sources/generic_drivers/lcd/lcd.c **** /* macros for the RS pin */
+ 186:../Sources/generic_drivers/lcd/lcd.c **** #define ClrRS(handle) \
+ 187:../Sources/generic_drivers/lcd/lcd.c **** 	    MCU_PortClear(handle->config->bus.rs.portRegister, handle->config->bus.rs.pinMask)  /* RS=0: c
+ 188:../Sources/generic_drivers/lcd/lcd.c **** #define SetRS(handle) \
+ 189:../Sources/generic_drivers/lcd/lcd.c **** 	    MCU_PortSet(handle->config->bus.rs.portRegister, handle->config->bus.rs.pinMask)    /* RS=1: d
+ 190:../Sources/generic_drivers/lcd/lcd.c **** 
+ 191:../Sources/generic_drivers/lcd/lcd.c **** /* macros for the EN pin */
+ 192:../Sources/generic_drivers/lcd/lcd.c **** #define ClrEN(handle) \
+ 193:../Sources/generic_drivers/lcd/lcd.c **** 	    MCU_PortClear(handle->config->bus.en.portRegister, handle->config->bus.en.pinMask)   /* EN=0 *
+ 194:../Sources/generic_drivers/lcd/lcd.c **** #define SetEN(handle) \
+ 195:../Sources/generic_drivers/lcd/lcd.c **** 	    MCU_PortSet(handle->config->bus.en.portRegister, handle->config->bus.en.pinMask)              
+ 196:../Sources/generic_drivers/lcd/lcd.c **** 
+ 197:../Sources/generic_drivers/lcd/lcd.c **** 
+ 198:../Sources/generic_drivers/lcd/lcd.c **** #ifndef __FREERTOS_H
+ 199:../Sources/generic_drivers/lcd/lcd.c **** #define LcdEnterMutex(x) (void)0
+ 200:../Sources/generic_drivers/lcd/lcd.c **** #define LcdExitMutex(x) (void)0
+ 201:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 202:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_REENTRANT_ACCESS
+ 203:../Sources/generic_drivers/lcd/lcd.c **** /* macros for mutex access and release */
+ 204:../Sources/generic_drivers/lcd/lcd.c **** #define LcdEnterMutex(x) xSemaphoreTake(x->lcdAccessMutex, portMAX_DELAY)
+ 205:../Sources/generic_drivers/lcd/lcd.c **** #define LcdExitMutex(x) xSemaphoreGive(x->lcdAccessMutex)
+ 206:../Sources/generic_drivers/lcd/lcd.c **** #endif /* LCD_REENTRANT_ACCESS */
+ 207:../Sources/generic_drivers/lcd/lcd.c **** #endif /* __FREERTOS_H */
+ 208:../Sources/generic_drivers/lcd/lcd.c **** 
+ 209:../Sources/generic_drivers/lcd/lcd.c **** /*******************************************************************************
+ 210:../Sources/generic_drivers/lcd/lcd.c ****  * Private Prototypes
+ 211:../Sources/generic_drivers/lcd/lcd.c ****  ******************************************************************************/
+ 212:../Sources/generic_drivers/lcd/lcd.c **** 
+ 213:../Sources/generic_drivers/lcd/lcd.c **** /**
+ 214:../Sources/generic_drivers/lcd/lcd.c ****  * @brief Creates a pulse to transfer data and/or commands.
+ 215:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 216:../Sources/generic_drivers/lcd/lcd.c ****  * @param handle - the specific LCD handle.
+ 217:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 218:../Sources/generic_drivers/lcd/lcd.c ****  */
+ 219:../Sources/generic_drivers/lcd/lcd.c **** static void EnablePulse(struct lcdHandle_s* handle);
+ 220:../Sources/generic_drivers/lcd/lcd.c **** 
+ 221:../Sources/generic_drivers/lcd/lcd.c **** /**
+ 222:../Sources/generic_drivers/lcd/lcd.c ****  * @brief Write a 8 bits value to the LCD data bus.
+ 223:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 224:../Sources/generic_drivers/lcd/lcd.c ****  * @param handle - the specific LCD handle.
+ 225:../Sources/generic_drivers/lcd/lcd.c ****  * @param value  - the 8 bits value.
+ 226:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 227:../Sources/generic_drivers/lcd/lcd.c ****  */
+ 228:../Sources/generic_drivers/lcd/lcd.c **** static void WriteBits(struct lcdHandle_s* handle, uint8_t value);
+ 229:../Sources/generic_drivers/lcd/lcd.c **** 
+ 230:../Sources/generic_drivers/lcd/lcd.c **** /**
+ 231:../Sources/generic_drivers/lcd/lcd.c ****  * @brief Set the row offset, which is based from the LCD module used.
+ 232:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 233:../Sources/generic_drivers/lcd/lcd.c ****  * @param handle - the specific LCD handle.
+ 234:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 235:../Sources/generic_drivers/lcd/lcd.c ****  */
+ 236:../Sources/generic_drivers/lcd/lcd.c **** static void SetRowOffsets(struct lcdHandle_s* handle);
+ 237:../Sources/generic_drivers/lcd/lcd.c **** 
+ 238:../Sources/generic_drivers/lcd/lcd.c **** /**
+ 239:../Sources/generic_drivers/lcd/lcd.c ****  * @brief Create an specific object used by an LCD instance.
+ 240:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 241:../Sources/generic_drivers/lcd/lcd.c ****  * @param objectType - \a kLcdObjectIsHandle, if want to create a LCD handle;
+ 242:../Sources/generic_drivers/lcd/lcd.c ****  * 	                   \a kLcdObjectIsConfig, if want to create a LCD configuration structure.
+ 243:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 244:../Sources/generic_drivers/lcd/lcd.c ****  */
+ 245:../Sources/generic_drivers/lcd/lcd.c **** static void* CreateObject(uint8_t objectType);
+ 246:../Sources/generic_drivers/lcd/lcd.c **** 
+ 247:../Sources/generic_drivers/lcd/lcd.c **** /**
+ 248:../Sources/generic_drivers/lcd/lcd.c ****  * @brief Destroy an specific object used by an LCD instance.
+ 249:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 250:../Sources/generic_drivers/lcd/lcd.c ****  * @param obj        - The object pointer.
+ 251:../Sources/generic_drivers/lcd/lcd.c ****  * @param objectType - \a kLcdObjectIsHandle, if want to destroy a LCD handle;
+ 252:../Sources/generic_drivers/lcd/lcd.c ****  * 	                   \a kLcdObjectIsConfig, if want to destroy a LCD configuration structure.
+ 253:../Sources/generic_drivers/lcd/lcd.c ****  *
+ 254:../Sources/generic_drivers/lcd/lcd.c ****  */
+ 255:../Sources/generic_drivers/lcd/lcd.c **** static void DestroyObject(void* obj, uint8_t objectType);
+ 256:../Sources/generic_drivers/lcd/lcd.c **** 
+ 257:../Sources/generic_drivers/lcd/lcd.c **** 
+ 258:../Sources/generic_drivers/lcd/lcd.c **** /*******************************************************************************
+ 259:../Sources/generic_drivers/lcd/lcd.c ****  * Code
+ 260:../Sources/generic_drivers/lcd/lcd.c ****  ******************************************************************************/
+ 261:../Sources/generic_drivers/lcd/lcd.c **** 
+ 262:../Sources/generic_drivers/lcd/lcd.c **** static void* CreateObject(uint8_t objectType)
+ 263:../Sources/generic_drivers/lcd/lcd.c **** {
+ 162              		.loc 1 263 0
+ 163              		.cfi_startproc
+ 164 0000 80B5     		push	{r7, lr}
+ 165              		.cfi_def_cfa_offset 8
+ 166              		.cfi_offset 7, -8
+ 167              		.cfi_offset 14, -4
+ 168 0002 84B0     		sub	sp, sp, #16
+ 169              		.cfi_def_cfa_offset 24
+ 170 0004 00AF     		add	r7, sp, #0
+ 171              		.cfi_def_cfa_register 7
+ 172 0006 021C     		mov	r2, r0
+ 173 0008 FB1D     		add	r3, r7, #7
+ 174 000a 1A70     		strb	r2, [r3]
+ 264:../Sources/generic_drivers/lcd/lcd.c **** 	void* objectCreated = NULL;
+ 175              		.loc 1 264 0
+ 176 000c 0023     		mov	r3, #0
+ 177 000e FB60     		str	r3, [r7, #12]
+ 265:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_STATIC_OBJECTS_CREATION
+ 266:../Sources/generic_drivers/lcd/lcd.c **** 	switch (objectType)
+ 178              		.loc 1 266 0
+ 179 0010 FB1D     		add	r3, r7, #7
+ 180 0012 1B78     		ldrb	r3, [r3]
+ 181 0014 002B     		cmp	r3, #0
+ 182 0016 02D0     		beq	.L3
+ 183 0018 012B     		cmp	r3, #1
+ 184 001a 14D0     		beq	.L4
+ 185 001c 24E0     		b	.L2
+ 186              	.L3:
+ 267:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 268:../Sources/generic_drivers/lcd/lcd.c **** 	case kLcdObjectIsHandle:
+ 269:../Sources/generic_drivers/lcd/lcd.c **** 		if(g_staticHandlesCreated < LCD_MAX_STATIC_OBJECTS)
+ 187              		.loc 1 269 0
+ 188 001e 154B     		ldr	r3, .L9
+ 189 0020 1B78     		ldrb	r3, [r3]
+ 190 0022 002B     		cmp	r3, #0
+ 191 0024 0ED1     		bne	.L5
+ 270:../Sources/generic_drivers/lcd/lcd.c **** 		{
+ 271:../Sources/generic_drivers/lcd/lcd.c **** 			objectCreated = (void*)&g_lcdHandleList[g_staticHandlesCreated++];
+ 192              		.loc 1 271 0
+ 193 0026 134B     		ldr	r3, .L9
+ 194 0028 1B78     		ldrb	r3, [r3]
+ 195 002a 5A1C     		add	r2, r3, #1
+ 196 002c D1B2     		uxtb	r1, r2
+ 197 002e 114A     		ldr	r2, .L9
+ 198 0030 1170     		strb	r1, [r2]
+ 199 0032 1A1C     		mov	r2, r3
+ 200 0034 131C     		mov	r3, r2
+ 201 0036 5B00     		lsl	r3, r3, #1
+ 202 0038 9B18     		add	r3, r3, r2
+ 203 003a 9B00     		lsl	r3, r3, #2
+ 204 003c 0E4A     		ldr	r2, .L9+4
+ 205 003e 9B18     		add	r3, r3, r2
+ 206 0040 FB60     		str	r3, [r7, #12]
+ 272:../Sources/generic_drivers/lcd/lcd.c **** 		}
+ 273:../Sources/generic_drivers/lcd/lcd.c **** 		break;
+ 207              		.loc 1 273 0
+ 208 0042 11E0     		b	.L2
+ 209              	.L5:
+ 210 0044 10E0     		b	.L2
+ 211              	.L4:
+ 274:../Sources/generic_drivers/lcd/lcd.c **** 	case kLcdObjectIsConfig:
+ 275:../Sources/generic_drivers/lcd/lcd.c **** 		if(g_staticConfigsCreated < LCD_MAX_STATIC_OBJECTS)
+ 212              		.loc 1 275 0
+ 213 0046 0D4B     		ldr	r3, .L9+8
+ 214 0048 1B78     		ldrb	r3, [r3]
+ 215 004a 002B     		cmp	r3, #0
+ 216 004c 0BD1     		bne	.L6
+ 276:../Sources/generic_drivers/lcd/lcd.c **** 		{
+ 277:../Sources/generic_drivers/lcd/lcd.c **** 			objectCreated = (void*)&g_lcdConfigList[g_staticConfigsCreated++];
+ 217              		.loc 1 277 0
+ 218 004e 0B4B     		ldr	r3, .L9+8
+ 219 0050 1B78     		ldrb	r3, [r3]
+ 220 0052 5A1C     		add	r2, r3, #1
+ 221 0054 D1B2     		uxtb	r1, r2
+ 222 0056 094A     		ldr	r2, .L9+8
+ 223 0058 1170     		strb	r1, [r2]
+ 224 005a 3422     		mov	r2, #52
+ 225 005c 5A43     		mul	r2, r3
+ 226 005e 084B     		ldr	r3, .L9+12
+ 227 0060 D318     		add	r3, r2, r3
+ 228 0062 FB60     		str	r3, [r7, #12]
+ 278:../Sources/generic_drivers/lcd/lcd.c **** 		}
+ 279:../Sources/generic_drivers/lcd/lcd.c **** 		break;
+ 229              		.loc 1 279 0
+ 230 0064 FFE7     		b	.L8
+ 231              	.L6:
+ 232              	.L8:
+ 233 0066 C046     		mov	r8, r8
+ 234              	.L2:
+ 280:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 281:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 282:../Sources/generic_drivers/lcd/lcd.c **** 	objectCreated = embUtil_Malloc(sizeof(lcdConfig_t));
+ 283:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 284:../Sources/generic_drivers/lcd/lcd.c **** 	return objectCreated;
+ 235              		.loc 1 284 0
+ 236 0068 FB68     		ldr	r3, [r7, #12]
+ 285:../Sources/generic_drivers/lcd/lcd.c **** }
+ 237              		.loc 1 285 0
+ 238 006a 181C     		mov	r0, r3
+ 239 006c BD46     		mov	sp, r7
+ 240 006e 04B0     		add	sp, sp, #16
+ 241              		@ sp needed
+ 242 0070 80BD     		pop	{r7, pc}
+ 243              	.L10:
+ 244 0072 C046     		.align	2
+ 245              	.L9:
+ 246 0074 00000000 		.word	g_staticHandlesCreated
+ 247 0078 00000000 		.word	g_lcdHandleList
+ 248 007c 00000000 		.word	g_staticConfigsCreated
+ 249 0080 00000000 		.word	g_lcdConfigList
+ 250              		.cfi_endproc
+ 251              	.LFE39:
+ 253              		.section	.text.LCD_CreateConfig,"ax",%progbits
+ 254              		.align	2
+ 255              		.global	LCD_CreateConfig
+ 256              		.code	16
+ 257              		.thumb_func
+ 259              	LCD_CreateConfig:
+ 260              	.LFB40:
+ 286:../Sources/generic_drivers/lcd/lcd.c **** 
+ 287:../Sources/generic_drivers/lcd/lcd.c **** /*
+ 288:../Sources/generic_drivers/lcd/lcd.c **** static void DestroyObject(void* obj, uint8_t objectType)
+ 289:../Sources/generic_drivers/lcd/lcd.c **** {
+ 290:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_STATIC_OBJECTS_CREATION
+ 291:../Sources/generic_drivers/lcd/lcd.c **** 	switch (objectType)
+ 292:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 293:../Sources/generic_drivers/lcd/lcd.c **** 	case kLcdObjectIsHandle:
+ 294:../Sources/generic_drivers/lcd/lcd.c **** 		if(g_staticHandlesCreated)
+ 295:../Sources/generic_drivers/lcd/lcd.c **** 			--g_staticHandlesCreated;
+ 296:../Sources/generic_drivers/lcd/lcd.c **** 		break;
+ 297:../Sources/generic_drivers/lcd/lcd.c **** 	case kLcdObjectIsConfig:
+ 298:../Sources/generic_drivers/lcd/lcd.c **** 		if(g_staticConfigsCreated)
+ 299:../Sources/generic_drivers/lcd/lcd.c **** 			--g_staticConfigsCreated;
+ 300:../Sources/generic_drivers/lcd/lcd.c **** 		break;
+ 301:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 302:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 303:../Sources/generic_drivers/lcd/lcd.c **** 	embUtil_Free(obj);
+ 304:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 305:../Sources/generic_drivers/lcd/lcd.c **** 	obj = NULL;
+ 306:../Sources/generic_drivers/lcd/lcd.c **** }
+ 307:../Sources/generic_drivers/lcd/lcd.c **** */
+ 308:../Sources/generic_drivers/lcd/lcd.c **** 
+ 309:../Sources/generic_drivers/lcd/lcd.c **** lcdConfig_t* LCD_CreateConfig(void)
+ 310:../Sources/generic_drivers/lcd/lcd.c **** {
+ 261              		.loc 1 310 0
+ 262              		.cfi_startproc
+ 263 0000 80B5     		push	{r7, lr}
+ 264              		.cfi_def_cfa_offset 8
+ 265              		.cfi_offset 7, -8
+ 266              		.cfi_offset 14, -4
+ 267 0002 00AF     		add	r7, sp, #0
+ 268              		.cfi_def_cfa_register 7
+ 311:../Sources/generic_drivers/lcd/lcd.c **** 	return CreateObject(kLcdObjectIsConfig);
+ 269              		.loc 1 311 0
+ 270 0004 0120     		mov	r0, #1
+ 271 0006 FFF7FEFF 		bl	CreateObject
+ 272 000a 031C     		mov	r3, r0
+ 312:../Sources/generic_drivers/lcd/lcd.c **** }
+ 273              		.loc 1 312 0
+ 274 000c 181C     		mov	r0, r3
+ 275 000e BD46     		mov	sp, r7
+ 276              		@ sp needed
+ 277 0010 80BD     		pop	{r7, pc}
+ 278              		.cfi_endproc
+ 279              	.LFE40:
+ 281 0012 C046     		.section	.text.EnablePulse,"ax",%progbits
+ 282              		.align	2
+ 283              		.code	16
+ 284              		.thumb_func
+ 286              	EnablePulse:
+ 287              	.LFB41:
+ 313:../Sources/generic_drivers/lcd/lcd.c **** 
+ 314:../Sources/generic_drivers/lcd/lcd.c **** 
+ 315:../Sources/generic_drivers/lcd/lcd.c **** static void EnablePulse(struct lcdHandle_s* handle)
+ 316:../Sources/generic_drivers/lcd/lcd.c **** {
+ 288              		.loc 1 316 0
+ 289              		.cfi_startproc
+ 290 0000 80B5     		push	{r7, lr}
+ 291              		.cfi_def_cfa_offset 8
+ 292              		.cfi_offset 7, -8
+ 293              		.cfi_offset 14, -4
+ 294 0002 82B0     		sub	sp, sp, #8
+ 295              		.cfi_def_cfa_offset 16
+ 296 0004 00AF     		add	r7, sp, #0
+ 297              		.cfi_def_cfa_register 7
+ 298 0006 7860     		str	r0, [r7, #4]
+ 317:../Sources/generic_drivers/lcd/lcd.c **** 	ClrEN(handle);
+ 299              		.loc 1 317 0
+ 300 0008 7B68     		ldr	r3, [r7, #4]
+ 301 000a 1B68     		ldr	r3, [r3]
+ 302 000c DB6A     		ldr	r3, [r3, #44]
+ 303 000e 7A68     		ldr	r2, [r7, #4]
+ 304 0010 1268     		ldr	r2, [r2]
+ 305 0012 126B     		ldr	r2, [r2, #48]
+ 306 0014 9A60     		str	r2, [r3, #8]
+ 318:../Sources/generic_drivers/lcd/lcd.c **** 	Waitus(1);
+ 307              		.loc 1 318 0
+ 308 0016 114B     		ldr	r3, .L14
+ 309 0018 1B68     		ldr	r3, [r3]
+ 310 001a 181C     		mov	r0, r3
+ 311 001c FFF7FEFF 		bl	Delay_WaitCycles
+ 319:../Sources/generic_drivers/lcd/lcd.c **** 	SetEN(handle);
+ 312              		.loc 1 319 0
+ 313 0020 7B68     		ldr	r3, [r7, #4]
+ 314 0022 1B68     		ldr	r3, [r3]
+ 315 0024 DB6A     		ldr	r3, [r3, #44]
+ 316 0026 7A68     		ldr	r2, [r7, #4]
+ 317 0028 1268     		ldr	r2, [r2]
+ 318 002a 126B     		ldr	r2, [r2, #48]
+ 319 002c 5A60     		str	r2, [r3, #4]
+ 320:../Sources/generic_drivers/lcd/lcd.c **** 	Waitus(1);    // enable pulse must be >450ns
+ 320              		.loc 1 320 0
+ 321 002e 0B4B     		ldr	r3, .L14
+ 322 0030 1B68     		ldr	r3, [r3]
+ 323 0032 181C     		mov	r0, r3
+ 324 0034 FFF7FEFF 		bl	Delay_WaitCycles
+ 321:../Sources/generic_drivers/lcd/lcd.c **** 	ClrEN(handle);
+ 325              		.loc 1 321 0
+ 326 0038 7B68     		ldr	r3, [r7, #4]
+ 327 003a 1B68     		ldr	r3, [r3]
+ 328 003c DB6A     		ldr	r3, [r3, #44]
+ 329 003e 7A68     		ldr	r2, [r7, #4]
+ 330 0040 1268     		ldr	r2, [r2]
+ 331 0042 126B     		ldr	r2, [r2, #48]
+ 332 0044 9A60     		str	r2, [r3, #8]
+ 322:../Sources/generic_drivers/lcd/lcd.c **** 	Waitus(100);   // commands need > 37us to settle
+ 333              		.loc 1 322 0
+ 334 0046 054B     		ldr	r3, .L14
+ 335 0048 1B68     		ldr	r3, [r3]
+ 336 004a 6422     		mov	r2, #100
+ 337 004c 5343     		mul	r3, r2
+ 338 004e 181C     		mov	r0, r3
+ 339 0050 FFF7FEFF 		bl	Delay_WaitCycles
+ 323:../Sources/generic_drivers/lcd/lcd.c **** }
+ 340              		.loc 1 323 0
+ 341 0054 BD46     		mov	sp, r7
+ 342 0056 02B0     		add	sp, sp, #8
+ 343              		@ sp needed
+ 344 0058 80BD     		pop	{r7, pc}
+ 345              	.L15:
+ 346 005a C046     		.align	2
+ 347              	.L14:
+ 348 005c 00000000 		.word	g_mcuCyclesForUs
+ 349              		.cfi_endproc
+ 350              	.LFE41:
+ 352              		.section	.text.SetRowOffsets,"ax",%progbits
+ 353              		.align	2
+ 354              		.code	16
+ 355              		.thumb_func
+ 357              	SetRowOffsets:
+ 358              	.LFB42:
+ 324:../Sources/generic_drivers/lcd/lcd.c **** 
+ 325:../Sources/generic_drivers/lcd/lcd.c **** 
+ 326:../Sources/generic_drivers/lcd/lcd.c **** static void SetRowOffsets(struct lcdHandle_s* handle)
+ 327:../Sources/generic_drivers/lcd/lcd.c **** {
+ 359              		.loc 1 327 0
+ 360              		.cfi_startproc
+ 361 0000 80B5     		push	{r7, lr}
+ 362              		.cfi_def_cfa_offset 8
+ 363              		.cfi_offset 7, -8
+ 364              		.cfi_offset 14, -4
+ 365 0002 82B0     		sub	sp, sp, #8
+ 366              		.cfi_def_cfa_offset 16
+ 367 0004 00AF     		add	r7, sp, #0
+ 368              		.cfi_def_cfa_register 7
+ 369 0006 7860     		str	r0, [r7, #4]
+ 328:../Sources/generic_drivers/lcd/lcd.c **** 	handle->row_offsets[0] = 0x00;
+ 370              		.loc 1 328 0
+ 371 0008 7B68     		ldr	r3, [r7, #4]
+ 372 000a 0022     		mov	r2, #0
+ 373 000c DA71     		strb	r2, [r3, #7]
+ 329:../Sources/generic_drivers/lcd/lcd.c **** 	handle->row_offsets[1] = 0x40;
+ 374              		.loc 1 329 0
+ 375 000e 7B68     		ldr	r3, [r7, #4]
+ 376 0010 4022     		mov	r2, #64
+ 377 0012 1A72     		strb	r2, [r3, #8]
+ 330:../Sources/generic_drivers/lcd/lcd.c **** 	handle->row_offsets[2] = 0x00 + handle->config->cols;
+ 378              		.loc 1 330 0
+ 379 0014 7B68     		ldr	r3, [r7, #4]
+ 380 0016 1B68     		ldr	r3, [r3]
+ 381 0018 1A78     		ldrb	r2, [r3]
+ 382 001a 7B68     		ldr	r3, [r7, #4]
+ 383 001c 5A72     		strb	r2, [r3, #9]
+ 331:../Sources/generic_drivers/lcd/lcd.c **** 	handle->row_offsets[3] = 0x40 + handle->config->cols;
+ 384              		.loc 1 331 0
+ 385 001e 7B68     		ldr	r3, [r7, #4]
+ 386 0020 1B68     		ldr	r3, [r3]
+ 387 0022 1B78     		ldrb	r3, [r3]
+ 388 0024 4033     		add	r3, r3, #64
+ 389 0026 DAB2     		uxtb	r2, r3
+ 390 0028 7B68     		ldr	r3, [r7, #4]
+ 391 002a 9A72     		strb	r2, [r3, #10]
+ 332:../Sources/generic_drivers/lcd/lcd.c **** }
+ 392              		.loc 1 332 0
+ 393 002c BD46     		mov	sp, r7
+ 394 002e 02B0     		add	sp, sp, #8
+ 395              		@ sp needed
+ 396 0030 80BD     		pop	{r7, pc}
+ 397              		.cfi_endproc
+ 398              	.LFE42:
+ 400 0032 C046     		.section	.text.LCD_Init,"ax",%progbits
+ 401              		.align	2
+ 402              		.global	LCD_Init
+ 403              		.code	16
+ 404              		.thumb_func
+ 406              	LCD_Init:
+ 407              	.LFB43:
+ 333:../Sources/generic_drivers/lcd/lcd.c **** 
+ 334:../Sources/generic_drivers/lcd/lcd.c **** 
+ 335:../Sources/generic_drivers/lcd/lcd.c **** lcdHandle_t LCD_Init(lcdConfig_t *config)
+ 336:../Sources/generic_drivers/lcd/lcd.c **** {
+ 408              		.loc 1 336 0
+ 409              		.cfi_startproc
+ 410 0000 80B5     		push	{r7, lr}
+ 411              		.cfi_def_cfa_offset 8
+ 412              		.cfi_offset 7, -8
+ 413              		.cfi_offset 14, -4
+ 414 0002 84B0     		sub	sp, sp, #16
+ 415              		.cfi_def_cfa_offset 24
+ 416 0004 00AF     		add	r7, sp, #0
+ 417              		.cfi_def_cfa_register 7
+ 418 0006 7860     		str	r0, [r7, #4]
+ 337:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(config);
+ 419              		.loc 1 337 0
+ 420 0008 7B68     		ldr	r3, [r7, #4]
+ 421 000a 002B     		cmp	r3, #0
+ 422 000c 00D1     		bne	.L18
+ 423              	.L19:
+ 424              		.loc 1 337 0 is_stmt 0 discriminator 1
+ 425 000e FEE7     		b	.L19
+ 426              	.L18:
+ 338:../Sources/generic_drivers/lcd/lcd.c **** 
+ 339:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* handle = (struct lcdHandle_s*)CreateObject(kLcdObjectIsHandle);
+ 427              		.loc 1 339 0 is_stmt 1
+ 428 0010 0020     		mov	r0, #0
+ 429 0012 FFF7FEFF 		bl	CreateObject
+ 430 0016 031C     		mov	r3, r0
+ 431 0018 FB60     		str	r3, [r7, #12]
+ 340:../Sources/generic_drivers/lcd/lcd.c **** 	if(!handle)
+ 432              		.loc 1 340 0
+ 433 001a FB68     		ldr	r3, [r7, #12]
+ 434 001c 002B     		cmp	r3, #0
+ 435 001e 01D1     		bne	.L20
+ 341:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 342:../Sources/generic_drivers/lcd/lcd.c **** 		return NULL;
+ 436              		.loc 1 342 0
+ 437 0020 0023     		mov	r3, #0
+ 438 0022 88E0     		b	.L21
+ 439              	.L20:
+ 343:../Sources/generic_drivers/lcd/lcd.c **** #ifdef __FREERTOS_H
+ 344:../Sources/generic_drivers/lcd/lcd.c **** 		handle->lcdAccessMutex = xSemaphoreCreateMutex();
+ 345:../Sources/generic_drivers/lcd/lcd.c **** 		if(!handle->lcdAccessMutex)
+ 346:../Sources/generic_drivers/lcd/lcd.c **** 		{
+ 347:../Sources/generic_drivers/lcd/lcd.c **** 			DestroyObject(handle, kLcdObjectIsHandle);
+ 348:../Sources/generic_drivers/lcd/lcd.c **** 		}
+ 349:../Sources/generic_drivers/lcd/lcd.c **** #endif /* __FREERTOS_H */
+ 350:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 351:../Sources/generic_drivers/lcd/lcd.c **** 	handle->config = config;
+ 440              		.loc 1 351 0
+ 441 0024 FB68     		ldr	r3, [r7, #12]
+ 442 0026 7A68     		ldr	r2, [r7, #4]
+ 443 0028 1A60     		str	r2, [r3]
+ 352:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_4BITMODE
+ 353:../Sources/generic_drivers/lcd/lcd.c **** 	handle->displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+ 444              		.loc 1 353 0
+ 445 002a FB68     		ldr	r3, [r7, #12]
+ 446 002c 0022     		mov	r2, #0
+ 447 002e 1A71     		strb	r2, [r3, #4]
+ 354:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 355:../Sources/generic_drivers/lcd/lcd.c **** 	handle->displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
+ 356:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 357:../Sources/generic_drivers/lcd/lcd.c **** 
+ 358:../Sources/generic_drivers/lcd/lcd.c ****     if (config->lines > 1)
+ 448              		.loc 1 358 0
+ 449 0030 7B68     		ldr	r3, [r7, #4]
+ 450 0032 5B78     		ldrb	r3, [r3, #1]
+ 451 0034 012B     		cmp	r3, #1
+ 452 0036 06D9     		bls	.L22
+ 359:../Sources/generic_drivers/lcd/lcd.c ****     {
+ 360:../Sources/generic_drivers/lcd/lcd.c ****     	handle->displayfunction |= LCD_2LINE;
+ 453              		.loc 1 360 0
+ 454 0038 FB68     		ldr	r3, [r7, #12]
+ 455 003a 1B79     		ldrb	r3, [r3, #4]
+ 456 003c 0822     		mov	r2, #8
+ 457 003e 1343     		orr	r3, r2
+ 458 0040 DAB2     		uxtb	r2, r3
+ 459 0042 FB68     		ldr	r3, [r7, #12]
+ 460 0044 1A71     		strb	r2, [r3, #4]
+ 461              	.L22:
+ 361:../Sources/generic_drivers/lcd/lcd.c ****     }
+ 362:../Sources/generic_drivers/lcd/lcd.c **** 
+ 363:../Sources/generic_drivers/lcd/lcd.c ****     SetRowOffsets(handle);
+ 462              		.loc 1 363 0
+ 463 0046 FB68     		ldr	r3, [r7, #12]
+ 464 0048 181C     		mov	r0, r3
+ 465 004a FFF7FEFF 		bl	SetRowOffsets
+ 364:../Sources/generic_drivers/lcd/lcd.c **** 
+ 365:../Sources/generic_drivers/lcd/lcd.c ****     // for some 1 line displays you can select a 10 pixel high font
+ 366:../Sources/generic_drivers/lcd/lcd.c ****     if ((config->charsize != LCD_5x8DOTS) && (config->lines == 1)) {
+ 466              		.loc 1 366 0
+ 467 004e 7B68     		ldr	r3, [r7, #4]
+ 468 0050 9B78     		ldrb	r3, [r3, #2]
+ 469 0052 002B     		cmp	r3, #0
+ 470 0054 0AD0     		beq	.L23
+ 471              		.loc 1 366 0 is_stmt 0 discriminator 1
+ 472 0056 7B68     		ldr	r3, [r7, #4]
+ 473 0058 5B78     		ldrb	r3, [r3, #1]
+ 474 005a 012B     		cmp	r3, #1
+ 475 005c 06D1     		bne	.L23
+ 367:../Sources/generic_drivers/lcd/lcd.c ****     	handle->displayfunction |= LCD_5x10DOTS;
+ 476              		.loc 1 367 0 is_stmt 1
+ 477 005e FB68     		ldr	r3, [r7, #12]
+ 478 0060 1B79     		ldrb	r3, [r3, #4]
+ 479 0062 0422     		mov	r2, #4
+ 480 0064 1343     		orr	r3, r2
+ 481 0066 DAB2     		uxtb	r2, r3
+ 482 0068 FB68     		ldr	r3, [r7, #12]
+ 483 006a 1A71     		strb	r2, [r3, #4]
+ 484              	.L23:
+ 368:../Sources/generic_drivers/lcd/lcd.c ****     }
+ 369:../Sources/generic_drivers/lcd/lcd.c **** 
+ 370:../Sources/generic_drivers/lcd/lcd.c ****     // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
+ 371:../Sources/generic_drivers/lcd/lcd.c ****     // according to datasheet, we need at least 40ms after power rises above 2.7V
+ 372:../Sources/generic_drivers/lcd/lcd.c ****     // before sending commands. So we'll wait 50ms.
+ 373:../Sources/generic_drivers/lcd/lcd.c ****     Waitms(50);
+ 485              		.loc 1 373 0
+ 486 006c 3220     		mov	r0, #50
+ 487 006e FFF7FEFF 		bl	Delay_Waitms
+ 374:../Sources/generic_drivers/lcd/lcd.c ****     ClrRS(handle);
+ 488              		.loc 1 374 0
+ 489 0072 FB68     		ldr	r3, [r7, #12]
+ 490 0074 1B68     		ldr	r3, [r3]
+ 491 0076 5B6A     		ldr	r3, [r3, #36]
+ 492 0078 FA68     		ldr	r2, [r7, #12]
+ 493 007a 1268     		ldr	r2, [r2]
+ 494 007c 926A     		ldr	r2, [r2, #40]
+ 495 007e 9A60     		str	r2, [r3, #8]
+ 375:../Sources/generic_drivers/lcd/lcd.c ****     ClrEN(handle);
+ 496              		.loc 1 375 0
+ 497 0080 FB68     		ldr	r3, [r7, #12]
+ 498 0082 1B68     		ldr	r3, [r3]
+ 499 0084 DB6A     		ldr	r3, [r3, #44]
+ 500 0086 FA68     		ldr	r2, [r7, #12]
+ 501 0088 1268     		ldr	r2, [r2]
+ 502 008a 126B     		ldr	r2, [r2, #48]
+ 503 008c 9A60     		str	r2, [r3, #8]
+ 376:../Sources/generic_drivers/lcd/lcd.c **** 
+ 377:../Sources/generic_drivers/lcd/lcd.c ****     //put the LCD into 4 bit or 8 bit mode
+ 378:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_4BITMODE
+ 379:../Sources/generic_drivers/lcd/lcd.c ****     // this is according to the hitachi HD44780 datasheet
+ 380:../Sources/generic_drivers/lcd/lcd.c ****     // figure 24, pg 46
+ 381:../Sources/generic_drivers/lcd/lcd.c ****     // we start in 8bit mode, try to set 4 bit mode
+ 382:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(handle, 0x03);
+ 504              		.loc 1 382 0
+ 505 008e FB68     		ldr	r3, [r7, #12]
+ 506 0090 181C     		mov	r0, r3
+ 507 0092 0321     		mov	r1, #3
+ 508 0094 FFF7FEFF 		bl	WriteBits
+ 383:../Sources/generic_drivers/lcd/lcd.c ****     Waitus(4500); // wait min 4.1ms
+ 509              		.loc 1 383 0
+ 510 0098 294B     		ldr	r3, .L24
+ 511 009a 1B68     		ldr	r3, [r3]
+ 512 009c 294A     		ldr	r2, .L24+4
+ 513 009e 5343     		mul	r3, r2
+ 514 00a0 181C     		mov	r0, r3
+ 515 00a2 FFF7FEFF 		bl	Delay_WaitCycles
+ 384:../Sources/generic_drivers/lcd/lcd.c ****     // second try
+ 385:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(handle, 0x03);
+ 516              		.loc 1 385 0
+ 517 00a6 FB68     		ldr	r3, [r7, #12]
+ 518 00a8 181C     		mov	r0, r3
+ 519 00aa 0321     		mov	r1, #3
+ 520 00ac FFF7FEFF 		bl	WriteBits
+ 386:../Sources/generic_drivers/lcd/lcd.c ****     Waitus(4500); // wait min 4.1ms
+ 521              		.loc 1 386 0
+ 522 00b0 234B     		ldr	r3, .L24
+ 523 00b2 1B68     		ldr	r3, [r3]
+ 524 00b4 234A     		ldr	r2, .L24+4
+ 525 00b6 5343     		mul	r3, r2
+ 526 00b8 181C     		mov	r0, r3
+ 527 00ba FFF7FEFF 		bl	Delay_WaitCycles
+ 387:../Sources/generic_drivers/lcd/lcd.c ****     // third go!
+ 388:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(handle, 0x03);
+ 528              		.loc 1 388 0
+ 529 00be FB68     		ldr	r3, [r7, #12]
+ 530 00c0 181C     		mov	r0, r3
+ 531 00c2 0321     		mov	r1, #3
+ 532 00c4 FFF7FEFF 		bl	WriteBits
+ 389:../Sources/generic_drivers/lcd/lcd.c ****     Waitus(150);
+ 533              		.loc 1 389 0
+ 534 00c8 1D4B     		ldr	r3, .L24
+ 535 00ca 1B68     		ldr	r3, [r3]
+ 536 00cc 9622     		mov	r2, #150
+ 537 00ce 5343     		mul	r3, r2
+ 538 00d0 181C     		mov	r0, r3
+ 539 00d2 FFF7FEFF 		bl	Delay_WaitCycles
+ 390:../Sources/generic_drivers/lcd/lcd.c ****     // finally, set to 4-bit interface
+ 391:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(handle, 0x02);
+ 540              		.loc 1 391 0
+ 541 00d6 FB68     		ldr	r3, [r7, #12]
+ 542 00d8 181C     		mov	r0, r3
+ 543 00da 0221     		mov	r1, #2
+ 544 00dc FFF7FEFF 		bl	WriteBits
+ 392:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 393:../Sources/generic_drivers/lcd/lcd.c ****     // this is according to the hitachi HD44780 datasheet
+ 394:../Sources/generic_drivers/lcd/lcd.c ****     // page 45 figure 23
+ 395:../Sources/generic_drivers/lcd/lcd.c **** 
+ 396:../Sources/generic_drivers/lcd/lcd.c ****     // Send function set command sequence
+ 397:../Sources/generic_drivers/lcd/lcd.c ****     LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | displayfunction);
+ 398:../Sources/generic_drivers/lcd/lcd.c ****     Waitus(4500); // wait min 4.1ms
+ 399:../Sources/generic_drivers/lcd/lcd.c **** 
+ 400:../Sources/generic_drivers/lcd/lcd.c ****     // second try
+ 401:../Sources/generic_drivers/lcd/lcd.c ****     LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | displayfunction);
+ 402:../Sources/generic_drivers/lcd/lcd.c ****     Waitus(150);
+ 403:../Sources/generic_drivers/lcd/lcd.c **** 
+ 404:../Sources/generic_drivers/lcd/lcd.c ****     // third go
+ 405:../Sources/generic_drivers/lcd/lcd.c ****     LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | displayfunction);
+ 406:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 407:../Sources/generic_drivers/lcd/lcd.c ****     // finally, set # lines, font size, etc.
+ 408:../Sources/generic_drivers/lcd/lcd.c ****     LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | handle->displayfunction);
+ 545              		.loc 1 408 0
+ 546 00e0 FB68     		ldr	r3, [r7, #12]
+ 547 00e2 1B79     		ldrb	r3, [r3, #4]
+ 548 00e4 2022     		mov	r2, #32
+ 549 00e6 1343     		orr	r3, r2
+ 550 00e8 DBB2     		uxtb	r3, r3
+ 551 00ea FA68     		ldr	r2, [r7, #12]
+ 552 00ec 101C     		mov	r0, r2
+ 553 00ee 191C     		mov	r1, r3
+ 554 00f0 FFF7FEFF 		bl	LCD_Command
+ 409:../Sources/generic_drivers/lcd/lcd.c **** 
+ 410:../Sources/generic_drivers/lcd/lcd.c ****     // turn the display on with no cursor or blinking default
+ 411:../Sources/generic_drivers/lcd/lcd.c ****     handle->displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
+ 555              		.loc 1 411 0
+ 556 00f4 FB68     		ldr	r3, [r7, #12]
+ 557 00f6 0422     		mov	r2, #4
+ 558 00f8 5A71     		strb	r2, [r3, #5]
+ 412:../Sources/generic_drivers/lcd/lcd.c ****     LCD_Display((lcdHandle_t)handle);
+ 559              		.loc 1 412 0
+ 560 00fa FB68     		ldr	r3, [r7, #12]
+ 561 00fc 181C     		mov	r0, r3
+ 562 00fe FFF7FEFF 		bl	LCD_Display
+ 413:../Sources/generic_drivers/lcd/lcd.c **** 
+ 414:../Sources/generic_drivers/lcd/lcd.c ****     // clear it off
+ 415:../Sources/generic_drivers/lcd/lcd.c ****     LCD_Clear((lcdHandle_t)handle);
+ 563              		.loc 1 415 0
+ 564 0102 FB68     		ldr	r3, [r7, #12]
+ 565 0104 181C     		mov	r0, r3
+ 566 0106 FFF7FEFF 		bl	LCD_Clear
+ 416:../Sources/generic_drivers/lcd/lcd.c **** 
+ 417:../Sources/generic_drivers/lcd/lcd.c ****     // Initialize to default text direction (for romance languages)
+ 418:../Sources/generic_drivers/lcd/lcd.c ****     handle->displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+ 567              		.loc 1 418 0
+ 568 010a FB68     		ldr	r3, [r7, #12]
+ 569 010c 0222     		mov	r2, #2
+ 570 010e 9A71     		strb	r2, [r3, #6]
+ 419:../Sources/generic_drivers/lcd/lcd.c ****     // set the entry mode
+ 420:../Sources/generic_drivers/lcd/lcd.c ****     LCD_Command((lcdHandle_t)handle, LCD_ENTRYMODESET | handle->displaymode);
+ 571              		.loc 1 420 0
+ 572 0110 FB68     		ldr	r3, [r7, #12]
+ 573 0112 9B79     		ldrb	r3, [r3, #6]
+ 574 0114 0422     		mov	r2, #4
+ 575 0116 1343     		orr	r3, r2
+ 576 0118 DBB2     		uxtb	r3, r3
+ 577 011a FA68     		ldr	r2, [r7, #12]
+ 578 011c 101C     		mov	r0, r2
+ 579 011e 191C     		mov	r1, r3
+ 580 0120 FFF7FEFF 		bl	LCD_Command
+ 421:../Sources/generic_drivers/lcd/lcd.c **** 
+ 422:../Sources/generic_drivers/lcd/lcd.c ****     Waitus(400);
+ 581              		.loc 1 422 0
+ 582 0124 064B     		ldr	r3, .L24
+ 583 0126 1B68     		ldr	r3, [r3]
+ 584 0128 C822     		mov	r2, #200
+ 585 012a 5200     		lsl	r2, r2, #1
+ 586 012c 5343     		mul	r3, r2
+ 587 012e 181C     		mov	r0, r3
+ 588 0130 FFF7FEFF 		bl	Delay_WaitCycles
+ 423:../Sources/generic_drivers/lcd/lcd.c **** 
+ 424:../Sources/generic_drivers/lcd/lcd.c ****     return (lcdHandle_t)handle;
+ 589              		.loc 1 424 0
+ 590 0134 FB68     		ldr	r3, [r7, #12]
+ 591              	.L21:
+ 425:../Sources/generic_drivers/lcd/lcd.c **** }
+ 592              		.loc 1 425 0
+ 593 0136 181C     		mov	r0, r3
+ 594 0138 BD46     		mov	sp, r7
+ 595 013a 04B0     		add	sp, sp, #16
+ 596              		@ sp needed
+ 597 013c 80BD     		pop	{r7, pc}
+ 598              	.L25:
+ 599 013e C046     		.align	2
+ 600              	.L24:
+ 601 0140 00000000 		.word	g_mcuCyclesForUs
+ 602 0144 94110000 		.word	4500
+ 603              		.cfi_endproc
+ 604              	.LFE43:
+ 606              		.section	.text.LCD_Clear,"ax",%progbits
+ 607              		.align	2
+ 608              		.global	LCD_Clear
+ 609              		.code	16
+ 610              		.thumb_func
+ 612              	LCD_Clear:
+ 613              	.LFB44:
+ 426:../Sources/generic_drivers/lcd/lcd.c **** 
+ 427:../Sources/generic_drivers/lcd/lcd.c **** 
+ 428:../Sources/generic_drivers/lcd/lcd.c **** /********** high level commands, for the user! */
+ 429:../Sources/generic_drivers/lcd/lcd.c **** void LCD_Clear(lcdHandle_t handle)
+ 430:../Sources/generic_drivers/lcd/lcd.c **** {
+ 614              		.loc 1 430 0
+ 615              		.cfi_startproc
+ 616 0000 80B5     		push	{r7, lr}
+ 617              		.cfi_def_cfa_offset 8
+ 618              		.cfi_offset 7, -8
+ 619              		.cfi_offset 14, -4
+ 620 0002 82B0     		sub	sp, sp, #8
+ 621              		.cfi_def_cfa_offset 16
+ 622 0004 00AF     		add	r7, sp, #0
+ 623              		.cfi_def_cfa_register 7
+ 624 0006 7860     		str	r0, [r7, #4]
+ 431:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 625              		.loc 1 431 0
+ 626 0008 7B68     		ldr	r3, [r7, #4]
+ 627 000a 002B     		cmp	r3, #0
+ 628 000c 00D1     		bne	.L27
+ 629              	.L28:
+ 630              		.loc 1 431 0 is_stmt 0 discriminator 1
+ 631 000e FEE7     		b	.L28
+ 632              	.L27:
+ 432:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 433:../Sources/generic_drivers/lcd/lcd.c **** 
+ 434:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_CLEARDISPLAY);  // clear display, set cursor position to zero
+ 633              		.loc 1 434 0 is_stmt 1
+ 634 0010 7B68     		ldr	r3, [r7, #4]
+ 635 0012 181C     		mov	r0, r3
+ 636 0014 0121     		mov	r1, #1
+ 637 0016 FFF7FEFF 		bl	LCD_Command
+ 435:../Sources/generic_drivers/lcd/lcd.c **** 	Waitus(2000);  // this command takes a long time!
+ 638              		.loc 1 435 0
+ 639 001a 054B     		ldr	r3, .L29
+ 640 001c 1B68     		ldr	r3, [r3]
+ 641 001e FA22     		mov	r2, #250
+ 642 0020 D200     		lsl	r2, r2, #3
+ 643 0022 5343     		mul	r3, r2
+ 644 0024 181C     		mov	r0, r3
+ 645 0026 FFF7FEFF 		bl	Delay_WaitCycles
+ 436:../Sources/generic_drivers/lcd/lcd.c **** 
+ 437:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 438:../Sources/generic_drivers/lcd/lcd.c **** }
+ 646              		.loc 1 438 0
+ 647 002a BD46     		mov	sp, r7
+ 648 002c 02B0     		add	sp, sp, #8
+ 649              		@ sp needed
+ 650 002e 80BD     		pop	{r7, pc}
+ 651              	.L30:
+ 652              		.align	2
+ 653              	.L29:
+ 654 0030 00000000 		.word	g_mcuCyclesForUs
+ 655              		.cfi_endproc
+ 656              	.LFE44:
+ 658              		.section	.text.LCD_Home,"ax",%progbits
+ 659              		.align	2
+ 660              		.global	LCD_Home
+ 661              		.code	16
+ 662              		.thumb_func
+ 664              	LCD_Home:
+ 665              	.LFB45:
+ 439:../Sources/generic_drivers/lcd/lcd.c **** 
+ 440:../Sources/generic_drivers/lcd/lcd.c **** void LCD_Home(lcdHandle_t handle)
+ 441:../Sources/generic_drivers/lcd/lcd.c **** {
+ 666              		.loc 1 441 0
+ 667              		.cfi_startproc
+ 668 0000 80B5     		push	{r7, lr}
+ 669              		.cfi_def_cfa_offset 8
+ 670              		.cfi_offset 7, -8
+ 671              		.cfi_offset 14, -4
+ 672 0002 82B0     		sub	sp, sp, #8
+ 673              		.cfi_def_cfa_offset 16
+ 674 0004 00AF     		add	r7, sp, #0
+ 675              		.cfi_def_cfa_register 7
+ 676 0006 7860     		str	r0, [r7, #4]
+ 442:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 677              		.loc 1 442 0
+ 678 0008 7B68     		ldr	r3, [r7, #4]
+ 679 000a 002B     		cmp	r3, #0
+ 680 000c 00D1     		bne	.L32
+ 681              	.L33:
+ 682              		.loc 1 442 0 is_stmt 0 discriminator 1
+ 683 000e FEE7     		b	.L33
+ 684              	.L32:
+ 443:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 444:../Sources/generic_drivers/lcd/lcd.c **** 
+ 445:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_RETURNHOME);  // set cursor position to zero
+ 685              		.loc 1 445 0 is_stmt 1
+ 686 0010 7B68     		ldr	r3, [r7, #4]
+ 687 0012 181C     		mov	r0, r3
+ 688 0014 0221     		mov	r1, #2
+ 689 0016 FFF7FEFF 		bl	LCD_Command
+ 446:../Sources/generic_drivers/lcd/lcd.c **** 	Waitus(2000);  // this command takes a long time!
+ 690              		.loc 1 446 0
+ 691 001a 054B     		ldr	r3, .L34
+ 692 001c 1B68     		ldr	r3, [r3]
+ 693 001e FA22     		mov	r2, #250
+ 694 0020 D200     		lsl	r2, r2, #3
+ 695 0022 5343     		mul	r3, r2
+ 696 0024 181C     		mov	r0, r3
+ 697 0026 FFF7FEFF 		bl	Delay_WaitCycles
+ 447:../Sources/generic_drivers/lcd/lcd.c **** 
+ 448:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 449:../Sources/generic_drivers/lcd/lcd.c **** }
+ 698              		.loc 1 449 0
+ 699 002a BD46     		mov	sp, r7
+ 700 002c 02B0     		add	sp, sp, #8
+ 701              		@ sp needed
+ 702 002e 80BD     		pop	{r7, pc}
+ 703              	.L35:
+ 704              		.align	2
+ 705              	.L34:
+ 706 0030 00000000 		.word	g_mcuCyclesForUs
+ 707              		.cfi_endproc
+ 708              	.LFE45:
+ 710              		.section	.text.LCD_SetCursor,"ax",%progbits
+ 711              		.align	2
+ 712              		.global	LCD_SetCursor
+ 713              		.code	16
+ 714              		.thumb_func
+ 716              	LCD_SetCursor:
+ 717              	.LFB46:
+ 450:../Sources/generic_drivers/lcd/lcd.c **** 
+ 451:../Sources/generic_drivers/lcd/lcd.c **** void LCD_SetCursor(lcdHandle_t handle, uint8_t col, uint8_t row)
+ 452:../Sources/generic_drivers/lcd/lcd.c **** {
+ 718              		.loc 1 452 0
+ 719              		.cfi_startproc
+ 720 0000 80B5     		push	{r7, lr}
+ 721              		.cfi_def_cfa_offset 8
+ 722              		.cfi_offset 7, -8
+ 723              		.cfi_offset 14, -4
+ 724 0002 84B0     		sub	sp, sp, #16
+ 725              		.cfi_def_cfa_offset 24
+ 726 0004 00AF     		add	r7, sp, #0
+ 727              		.cfi_def_cfa_register 7
+ 728 0006 7860     		str	r0, [r7, #4]
+ 729 0008 FB1C     		add	r3, r7, #3
+ 730 000a 1970     		strb	r1, [r3]
+ 731 000c BB1C     		add	r3, r7, #2
+ 732 000e 1A70     		strb	r2, [r3]
+ 453:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 733              		.loc 1 453 0
+ 734 0010 7B68     		ldr	r3, [r7, #4]
+ 735 0012 002B     		cmp	r3, #0
+ 736 0014 00D1     		bne	.L37
+ 737              	.L38:
+ 738              		.loc 1 453 0 is_stmt 0 discriminator 1
+ 739 0016 FEE7     		b	.L38
+ 740              	.L37:
+ 454:../Sources/generic_drivers/lcd/lcd.c **** 
+ 455:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 456:../Sources/generic_drivers/lcd/lcd.c **** 
+ 457:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 741              		.loc 1 457 0 is_stmt 1
+ 742 0018 7B68     		ldr	r3, [r7, #4]
+ 743 001a FB60     		str	r3, [r7, #12]
+ 458:../Sources/generic_drivers/lcd/lcd.c **** 
+ 459:../Sources/generic_drivers/lcd/lcd.c **** 	const size_t max_lines = sizeof(lcdHandle->row_offsets) / sizeof(*lcdHandle->row_offsets);
+ 744              		.loc 1 459 0
+ 745 001c 0423     		mov	r3, #4
+ 746 001e BB60     		str	r3, [r7, #8]
+ 460:../Sources/generic_drivers/lcd/lcd.c **** 	if (row >= max_lines)
+ 747              		.loc 1 460 0
+ 748 0020 BB1C     		add	r3, r7, #2
+ 749 0022 1A78     		ldrb	r2, [r3]
+ 750 0024 BB68     		ldr	r3, [r7, #8]
+ 751 0026 9A42     		cmp	r2, r3
+ 752 0028 04D3     		bcc	.L39
+ 461:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 462:../Sources/generic_drivers/lcd/lcd.c **** 	row = max_lines - 1;    // we count rows starting w/0
+ 753              		.loc 1 462 0
+ 754 002a BB68     		ldr	r3, [r7, #8]
+ 755 002c DAB2     		uxtb	r2, r3
+ 756 002e BB1C     		add	r3, r7, #2
+ 757 0030 013A     		sub	r2, r2, #1
+ 758 0032 1A70     		strb	r2, [r3]
+ 759              	.L39:
+ 463:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 464:../Sources/generic_drivers/lcd/lcd.c **** 	if (row >= lcdHandle->config->lines)
+ 760              		.loc 1 464 0
+ 761 0034 FB68     		ldr	r3, [r7, #12]
+ 762 0036 1B68     		ldr	r3, [r3]
+ 763 0038 5B78     		ldrb	r3, [r3, #1]
+ 764 003a BA1C     		add	r2, r7, #2
+ 765 003c 1278     		ldrb	r2, [r2]
+ 766 003e 9A42     		cmp	r2, r3
+ 767 0040 05D3     		bcc	.L40
+ 465:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 466:../Sources/generic_drivers/lcd/lcd.c **** 	row = lcdHandle->config->lines - 1;    // we count rows starting w/0
+ 768              		.loc 1 466 0
+ 769 0042 FB68     		ldr	r3, [r7, #12]
+ 770 0044 1B68     		ldr	r3, [r3]
+ 771 0046 5A78     		ldrb	r2, [r3, #1]
+ 772 0048 BB1C     		add	r3, r7, #2
+ 773 004a 013A     		sub	r2, r2, #1
+ 774 004c 1A70     		strb	r2, [r3]
+ 775              	.L40:
+ 467:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 468:../Sources/generic_drivers/lcd/lcd.c **** 
+ 469:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_SETDDRAMADDR | (col + lcdHandle->row_offsets[row]));
+ 776              		.loc 1 469 0
+ 777 004e BB1C     		add	r3, r7, #2
+ 778 0050 1B78     		ldrb	r3, [r3]
+ 779 0052 FA68     		ldr	r2, [r7, #12]
+ 780 0054 D318     		add	r3, r2, r3
+ 781 0056 DA79     		ldrb	r2, [r3, #7]
+ 782 0058 FB1C     		add	r3, r7, #3
+ 783 005a 1B78     		ldrb	r3, [r3]
+ 784 005c D318     		add	r3, r2, r3
+ 785 005e DBB2     		uxtb	r3, r3
+ 786 0060 DBB2     		uxtb	r3, r3
+ 787 0062 8022     		mov	r2, #128
+ 788 0064 5242     		neg	r2, r2
+ 789 0066 1343     		orr	r3, r2
+ 790 0068 DBB2     		uxtb	r3, r3
+ 791 006a DBB2     		uxtb	r3, r3
+ 792 006c 7A68     		ldr	r2, [r7, #4]
+ 793 006e 101C     		mov	r0, r2
+ 794 0070 191C     		mov	r1, r3
+ 795 0072 FFF7FEFF 		bl	LCD_Command
+ 470:../Sources/generic_drivers/lcd/lcd.c **** 
+ 471:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 472:../Sources/generic_drivers/lcd/lcd.c **** }
+ 796              		.loc 1 472 0
+ 797 0076 BD46     		mov	sp, r7
+ 798 0078 04B0     		add	sp, sp, #16
+ 799              		@ sp needed
+ 800 007a 80BD     		pop	{r7, pc}
+ 801              		.cfi_endproc
+ 802              	.LFE46:
+ 804              		.section	.text.LCD_NoDisplay,"ax",%progbits
+ 805              		.align	2
+ 806              		.global	LCD_NoDisplay
+ 807              		.code	16
+ 808              		.thumb_func
+ 810              	LCD_NoDisplay:
+ 811              	.LFB47:
+ 473:../Sources/generic_drivers/lcd/lcd.c **** 
+ 474:../Sources/generic_drivers/lcd/lcd.c **** 
+ 475:../Sources/generic_drivers/lcd/lcd.c **** // Turn the display on/off (quickly)
+ 476:../Sources/generic_drivers/lcd/lcd.c **** void LCD_NoDisplay(lcdHandle_t handle)
+ 477:../Sources/generic_drivers/lcd/lcd.c **** {
+ 812              		.loc 1 477 0
+ 813              		.cfi_startproc
+ 814 0000 80B5     		push	{r7, lr}
+ 815              		.cfi_def_cfa_offset 8
+ 816              		.cfi_offset 7, -8
+ 817              		.cfi_offset 14, -4
+ 818 0002 84B0     		sub	sp, sp, #16
+ 819              		.cfi_def_cfa_offset 24
+ 820 0004 00AF     		add	r7, sp, #0
+ 821              		.cfi_def_cfa_register 7
+ 822 0006 7860     		str	r0, [r7, #4]
+ 478:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 823              		.loc 1 478 0
+ 824 0008 7B68     		ldr	r3, [r7, #4]
+ 825 000a 002B     		cmp	r3, #0
+ 826 000c 00D1     		bne	.L42
+ 827              	.L43:
+ 828              		.loc 1 478 0 is_stmt 0 discriminator 1
+ 829 000e FEE7     		b	.L43
+ 830              	.L42:
+ 479:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 480:../Sources/generic_drivers/lcd/lcd.c **** 
+ 481:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 831              		.loc 1 481 0 is_stmt 1
+ 832 0010 7B68     		ldr	r3, [r7, #4]
+ 833 0012 FB60     		str	r3, [r7, #12]
+ 482:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaycontrol &= ~LCD_DISPLAYON;
+ 834              		.loc 1 482 0
+ 835 0014 FB68     		ldr	r3, [r7, #12]
+ 836 0016 5B79     		ldrb	r3, [r3, #5]
+ 837 0018 0422     		mov	r2, #4
+ 838 001a 9343     		bic	r3, r2
+ 839 001c DAB2     		uxtb	r2, r3
+ 840 001e FB68     		ldr	r3, [r7, #12]
+ 841 0020 5A71     		strb	r2, [r3, #5]
+ 483:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+ 842              		.loc 1 483 0
+ 843 0022 FB68     		ldr	r3, [r7, #12]
+ 844 0024 5B79     		ldrb	r3, [r3, #5]
+ 845 0026 0822     		mov	r2, #8
+ 846 0028 1343     		orr	r3, r2
+ 847 002a DBB2     		uxtb	r3, r3
+ 848 002c 7A68     		ldr	r2, [r7, #4]
+ 849 002e 101C     		mov	r0, r2
+ 850 0030 191C     		mov	r1, r3
+ 851 0032 FFF7FEFF 		bl	LCD_Command
+ 484:../Sources/generic_drivers/lcd/lcd.c **** 
+ 485:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 486:../Sources/generic_drivers/lcd/lcd.c **** }
+ 852              		.loc 1 486 0
+ 853 0036 BD46     		mov	sp, r7
+ 854 0038 04B0     		add	sp, sp, #16
+ 855              		@ sp needed
+ 856 003a 80BD     		pop	{r7, pc}
+ 857              		.cfi_endproc
+ 858              	.LFE47:
+ 860              		.section	.text.LCD_Display,"ax",%progbits
+ 861              		.align	2
+ 862              		.global	LCD_Display
+ 863              		.code	16
+ 864              		.thumb_func
+ 866              	LCD_Display:
+ 867              	.LFB48:
+ 487:../Sources/generic_drivers/lcd/lcd.c **** 
+ 488:../Sources/generic_drivers/lcd/lcd.c **** void LCD_Display(lcdHandle_t handle)
+ 489:../Sources/generic_drivers/lcd/lcd.c **** {
+ 868              		.loc 1 489 0
+ 869              		.cfi_startproc
+ 870 0000 80B5     		push	{r7, lr}
+ 871              		.cfi_def_cfa_offset 8
+ 872              		.cfi_offset 7, -8
+ 873              		.cfi_offset 14, -4
+ 874 0002 84B0     		sub	sp, sp, #16
+ 875              		.cfi_def_cfa_offset 24
+ 876 0004 00AF     		add	r7, sp, #0
+ 877              		.cfi_def_cfa_register 7
+ 878 0006 7860     		str	r0, [r7, #4]
+ 490:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 879              		.loc 1 490 0
+ 880 0008 7B68     		ldr	r3, [r7, #4]
+ 881 000a 002B     		cmp	r3, #0
+ 882 000c 00D1     		bne	.L45
+ 883              	.L46:
+ 884              		.loc 1 490 0 is_stmt 0 discriminator 1
+ 885 000e FEE7     		b	.L46
+ 886              	.L45:
+ 491:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 492:../Sources/generic_drivers/lcd/lcd.c **** 
+ 493:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 887              		.loc 1 493 0 is_stmt 1
+ 888 0010 7B68     		ldr	r3, [r7, #4]
+ 889 0012 FB60     		str	r3, [r7, #12]
+ 494:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaycontrol |= LCD_DISPLAYON;
+ 890              		.loc 1 494 0
+ 891 0014 FB68     		ldr	r3, [r7, #12]
+ 892 0016 5B79     		ldrb	r3, [r3, #5]
+ 893 0018 0422     		mov	r2, #4
+ 894 001a 1343     		orr	r3, r2
+ 895 001c DAB2     		uxtb	r2, r3
+ 896 001e FB68     		ldr	r3, [r7, #12]
+ 897 0020 5A71     		strb	r2, [r3, #5]
+ 495:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+ 898              		.loc 1 495 0
+ 899 0022 FB68     		ldr	r3, [r7, #12]
+ 900 0024 5B79     		ldrb	r3, [r3, #5]
+ 901 0026 0822     		mov	r2, #8
+ 902 0028 1343     		orr	r3, r2
+ 903 002a DBB2     		uxtb	r3, r3
+ 904 002c 7A68     		ldr	r2, [r7, #4]
+ 905 002e 101C     		mov	r0, r2
+ 906 0030 191C     		mov	r1, r3
+ 907 0032 FFF7FEFF 		bl	LCD_Command
+ 496:../Sources/generic_drivers/lcd/lcd.c **** 
+ 497:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 498:../Sources/generic_drivers/lcd/lcd.c **** }
+ 908              		.loc 1 498 0
+ 909 0036 BD46     		mov	sp, r7
+ 910 0038 04B0     		add	sp, sp, #16
+ 911              		@ sp needed
+ 912 003a 80BD     		pop	{r7, pc}
+ 913              		.cfi_endproc
+ 914              	.LFE48:
+ 916              		.section	.text.LCD_NoCursor,"ax",%progbits
+ 917              		.align	2
+ 918              		.global	LCD_NoCursor
+ 919              		.code	16
+ 920              		.thumb_func
+ 922              	LCD_NoCursor:
+ 923              	.LFB49:
+ 499:../Sources/generic_drivers/lcd/lcd.c **** 
+ 500:../Sources/generic_drivers/lcd/lcd.c **** // Turns the underline cursor on/off
+ 501:../Sources/generic_drivers/lcd/lcd.c **** void LCD_NoCursor(lcdHandle_t handle)
+ 502:../Sources/generic_drivers/lcd/lcd.c **** {
+ 924              		.loc 1 502 0
+ 925              		.cfi_startproc
+ 926 0000 80B5     		push	{r7, lr}
+ 927              		.cfi_def_cfa_offset 8
+ 928              		.cfi_offset 7, -8
+ 929              		.cfi_offset 14, -4
+ 930 0002 84B0     		sub	sp, sp, #16
+ 931              		.cfi_def_cfa_offset 24
+ 932 0004 00AF     		add	r7, sp, #0
+ 933              		.cfi_def_cfa_register 7
+ 934 0006 7860     		str	r0, [r7, #4]
+ 503:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 935              		.loc 1 503 0
+ 936 0008 7B68     		ldr	r3, [r7, #4]
+ 937 000a 002B     		cmp	r3, #0
+ 938 000c 00D1     		bne	.L48
+ 939              	.L49:
+ 940              		.loc 1 503 0 is_stmt 0 discriminator 1
+ 941 000e FEE7     		b	.L49
+ 942              	.L48:
+ 504:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 505:../Sources/generic_drivers/lcd/lcd.c **** 
+ 506:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 943              		.loc 1 506 0 is_stmt 1
+ 944 0010 7B68     		ldr	r3, [r7, #4]
+ 945 0012 FB60     		str	r3, [r7, #12]
+ 507:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaycontrol &= ~LCD_CURSORON;
+ 946              		.loc 1 507 0
+ 947 0014 FB68     		ldr	r3, [r7, #12]
+ 948 0016 5B79     		ldrb	r3, [r3, #5]
+ 949 0018 0222     		mov	r2, #2
+ 950 001a 9343     		bic	r3, r2
+ 951 001c DAB2     		uxtb	r2, r3
+ 952 001e FB68     		ldr	r3, [r7, #12]
+ 953 0020 5A71     		strb	r2, [r3, #5]
+ 508:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+ 954              		.loc 1 508 0
+ 955 0022 FB68     		ldr	r3, [r7, #12]
+ 956 0024 5B79     		ldrb	r3, [r3, #5]
+ 957 0026 0822     		mov	r2, #8
+ 958 0028 1343     		orr	r3, r2
+ 959 002a DBB2     		uxtb	r3, r3
+ 960 002c 7A68     		ldr	r2, [r7, #4]
+ 961 002e 101C     		mov	r0, r2
+ 962 0030 191C     		mov	r1, r3
+ 963 0032 FFF7FEFF 		bl	LCD_Command
+ 509:../Sources/generic_drivers/lcd/lcd.c **** 
+ 510:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 511:../Sources/generic_drivers/lcd/lcd.c **** }
+ 964              		.loc 1 511 0
+ 965 0036 BD46     		mov	sp, r7
+ 966 0038 04B0     		add	sp, sp, #16
+ 967              		@ sp needed
+ 968 003a 80BD     		pop	{r7, pc}
+ 969              		.cfi_endproc
+ 970              	.LFE49:
+ 972              		.section	.text.LCD_Cursor,"ax",%progbits
+ 973              		.align	2
+ 974              		.global	LCD_Cursor
+ 975              		.code	16
+ 976              		.thumb_func
+ 978              	LCD_Cursor:
+ 979              	.LFB50:
+ 512:../Sources/generic_drivers/lcd/lcd.c **** 
+ 513:../Sources/generic_drivers/lcd/lcd.c **** void LCD_Cursor(lcdHandle_t handle)
+ 514:../Sources/generic_drivers/lcd/lcd.c **** {
+ 980              		.loc 1 514 0
+ 981              		.cfi_startproc
+ 982 0000 80B5     		push	{r7, lr}
+ 983              		.cfi_def_cfa_offset 8
+ 984              		.cfi_offset 7, -8
+ 985              		.cfi_offset 14, -4
+ 986 0002 84B0     		sub	sp, sp, #16
+ 987              		.cfi_def_cfa_offset 24
+ 988 0004 00AF     		add	r7, sp, #0
+ 989              		.cfi_def_cfa_register 7
+ 990 0006 7860     		str	r0, [r7, #4]
+ 515:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 991              		.loc 1 515 0
+ 992 0008 7B68     		ldr	r3, [r7, #4]
+ 993 000a 002B     		cmp	r3, #0
+ 994 000c 00D1     		bne	.L51
+ 995              	.L52:
+ 996              		.loc 1 515 0 is_stmt 0 discriminator 1
+ 997 000e FEE7     		b	.L52
+ 998              	.L51:
+ 516:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 517:../Sources/generic_drivers/lcd/lcd.c **** 
+ 518:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 999              		.loc 1 518 0 is_stmt 1
+ 1000 0010 7B68     		ldr	r3, [r7, #4]
+ 1001 0012 FB60     		str	r3, [r7, #12]
+ 519:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaycontrol |= LCD_CURSORON;
+ 1002              		.loc 1 519 0
+ 1003 0014 FB68     		ldr	r3, [r7, #12]
+ 1004 0016 5B79     		ldrb	r3, [r3, #5]
+ 1005 0018 0222     		mov	r2, #2
+ 1006 001a 1343     		orr	r3, r2
+ 1007 001c DAB2     		uxtb	r2, r3
+ 1008 001e FB68     		ldr	r3, [r7, #12]
+ 1009 0020 5A71     		strb	r2, [r3, #5]
+ 520:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+ 1010              		.loc 1 520 0
+ 1011 0022 FB68     		ldr	r3, [r7, #12]
+ 1012 0024 5B79     		ldrb	r3, [r3, #5]
+ 1013 0026 0822     		mov	r2, #8
+ 1014 0028 1343     		orr	r3, r2
+ 1015 002a DBB2     		uxtb	r3, r3
+ 1016 002c 7A68     		ldr	r2, [r7, #4]
+ 1017 002e 101C     		mov	r0, r2
+ 1018 0030 191C     		mov	r1, r3
+ 1019 0032 FFF7FEFF 		bl	LCD_Command
+ 521:../Sources/generic_drivers/lcd/lcd.c **** 
+ 522:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 523:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1020              		.loc 1 523 0
+ 1021 0036 BD46     		mov	sp, r7
+ 1022 0038 04B0     		add	sp, sp, #16
+ 1023              		@ sp needed
+ 1024 003a 80BD     		pop	{r7, pc}
+ 1025              		.cfi_endproc
+ 1026              	.LFE50:
+ 1028              		.section	.text.LCD_NoBlink,"ax",%progbits
+ 1029              		.align	2
+ 1030              		.global	LCD_NoBlink
+ 1031              		.code	16
+ 1032              		.thumb_func
+ 1034              	LCD_NoBlink:
+ 1035              	.LFB51:
+ 524:../Sources/generic_drivers/lcd/lcd.c **** 
+ 525:../Sources/generic_drivers/lcd/lcd.c **** // Turn on and off the blinking cursor
+ 526:../Sources/generic_drivers/lcd/lcd.c **** void LCD_NoBlink(lcdHandle_t handle)
+ 527:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1036              		.loc 1 527 0
+ 1037              		.cfi_startproc
+ 1038 0000 80B5     		push	{r7, lr}
+ 1039              		.cfi_def_cfa_offset 8
+ 1040              		.cfi_offset 7, -8
+ 1041              		.cfi_offset 14, -4
+ 1042 0002 84B0     		sub	sp, sp, #16
+ 1043              		.cfi_def_cfa_offset 24
+ 1044 0004 00AF     		add	r7, sp, #0
+ 1045              		.cfi_def_cfa_register 7
+ 1046 0006 7860     		str	r0, [r7, #4]
+ 528:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1047              		.loc 1 528 0
+ 1048 0008 7B68     		ldr	r3, [r7, #4]
+ 1049 000a 002B     		cmp	r3, #0
+ 1050 000c 00D1     		bne	.L54
+ 1051              	.L55:
+ 1052              		.loc 1 528 0 is_stmt 0 discriminator 1
+ 1053 000e FEE7     		b	.L55
+ 1054              	.L54:
+ 529:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 530:../Sources/generic_drivers/lcd/lcd.c **** 
+ 531:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1055              		.loc 1 531 0 is_stmt 1
+ 1056 0010 7B68     		ldr	r3, [r7, #4]
+ 1057 0012 FB60     		str	r3, [r7, #12]
+ 532:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaycontrol &= ~LCD_BLINKON;
+ 1058              		.loc 1 532 0
+ 1059 0014 FB68     		ldr	r3, [r7, #12]
+ 1060 0016 5B79     		ldrb	r3, [r3, #5]
+ 1061 0018 0122     		mov	r2, #1
+ 1062 001a 9343     		bic	r3, r2
+ 1063 001c DAB2     		uxtb	r2, r3
+ 1064 001e FB68     		ldr	r3, [r7, #12]
+ 1065 0020 5A71     		strb	r2, [r3, #5]
+ 533:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+ 1066              		.loc 1 533 0
+ 1067 0022 FB68     		ldr	r3, [r7, #12]
+ 1068 0024 5B79     		ldrb	r3, [r3, #5]
+ 1069 0026 0822     		mov	r2, #8
+ 1070 0028 1343     		orr	r3, r2
+ 1071 002a DBB2     		uxtb	r3, r3
+ 1072 002c 7A68     		ldr	r2, [r7, #4]
+ 1073 002e 101C     		mov	r0, r2
+ 1074 0030 191C     		mov	r1, r3
+ 1075 0032 FFF7FEFF 		bl	LCD_Command
+ 534:../Sources/generic_drivers/lcd/lcd.c **** 
+ 535:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 536:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1076              		.loc 1 536 0
+ 1077 0036 BD46     		mov	sp, r7
+ 1078 0038 04B0     		add	sp, sp, #16
+ 1079              		@ sp needed
+ 1080 003a 80BD     		pop	{r7, pc}
+ 1081              		.cfi_endproc
+ 1082              	.LFE51:
+ 1084              		.section	.text.LCD_Blink,"ax",%progbits
+ 1085              		.align	2
+ 1086              		.global	LCD_Blink
+ 1087              		.code	16
+ 1088              		.thumb_func
+ 1090              	LCD_Blink:
+ 1091              	.LFB52:
+ 537:../Sources/generic_drivers/lcd/lcd.c **** 
+ 538:../Sources/generic_drivers/lcd/lcd.c **** void LCD_Blink(lcdHandle_t handle)
+ 539:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1092              		.loc 1 539 0
+ 1093              		.cfi_startproc
+ 1094 0000 80B5     		push	{r7, lr}
+ 1095              		.cfi_def_cfa_offset 8
+ 1096              		.cfi_offset 7, -8
+ 1097              		.cfi_offset 14, -4
+ 1098 0002 84B0     		sub	sp, sp, #16
+ 1099              		.cfi_def_cfa_offset 24
+ 1100 0004 00AF     		add	r7, sp, #0
+ 1101              		.cfi_def_cfa_register 7
+ 1102 0006 7860     		str	r0, [r7, #4]
+ 540:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1103              		.loc 1 540 0
+ 1104 0008 7B68     		ldr	r3, [r7, #4]
+ 1105 000a 002B     		cmp	r3, #0
+ 1106 000c 00D1     		bne	.L57
+ 1107              	.L58:
+ 1108              		.loc 1 540 0 is_stmt 0 discriminator 1
+ 1109 000e FEE7     		b	.L58
+ 1110              	.L57:
+ 541:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 542:../Sources/generic_drivers/lcd/lcd.c **** 
+ 543:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1111              		.loc 1 543 0 is_stmt 1
+ 1112 0010 7B68     		ldr	r3, [r7, #4]
+ 1113 0012 FB60     		str	r3, [r7, #12]
+ 544:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaycontrol |= LCD_BLINKON;
+ 1114              		.loc 1 544 0
+ 1115 0014 FB68     		ldr	r3, [r7, #12]
+ 1116 0016 5B79     		ldrb	r3, [r3, #5]
+ 1117 0018 0122     		mov	r2, #1
+ 1118 001a 1343     		orr	r3, r2
+ 1119 001c DAB2     		uxtb	r2, r3
+ 1120 001e FB68     		ldr	r3, [r7, #12]
+ 1121 0020 5A71     		strb	r2, [r3, #5]
+ 545:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+ 1122              		.loc 1 545 0
+ 1123 0022 FB68     		ldr	r3, [r7, #12]
+ 1124 0024 5B79     		ldrb	r3, [r3, #5]
+ 1125 0026 0822     		mov	r2, #8
+ 1126 0028 1343     		orr	r3, r2
+ 1127 002a DBB2     		uxtb	r3, r3
+ 1128 002c 7A68     		ldr	r2, [r7, #4]
+ 1129 002e 101C     		mov	r0, r2
+ 1130 0030 191C     		mov	r1, r3
+ 1131 0032 FFF7FEFF 		bl	LCD_Command
+ 546:../Sources/generic_drivers/lcd/lcd.c **** 
+ 547:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 548:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1132              		.loc 1 548 0
+ 1133 0036 BD46     		mov	sp, r7
+ 1134 0038 04B0     		add	sp, sp, #16
+ 1135              		@ sp needed
+ 1136 003a 80BD     		pop	{r7, pc}
+ 1137              		.cfi_endproc
+ 1138              	.LFE52:
+ 1140              		.section	.text.LCD_ScrollDisplayLeft,"ax",%progbits
+ 1141              		.align	2
+ 1142              		.global	LCD_ScrollDisplayLeft
+ 1143              		.code	16
+ 1144              		.thumb_func
+ 1146              	LCD_ScrollDisplayLeft:
+ 1147              	.LFB53:
+ 549:../Sources/generic_drivers/lcd/lcd.c **** 
+ 550:../Sources/generic_drivers/lcd/lcd.c **** // These commands scroll the display without changing the RAM
+ 551:../Sources/generic_drivers/lcd/lcd.c **** void LCD_ScrollDisplayLeft(lcdHandle_t handle)
+ 552:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1148              		.loc 1 552 0
+ 1149              		.cfi_startproc
+ 1150 0000 80B5     		push	{r7, lr}
+ 1151              		.cfi_def_cfa_offset 8
+ 1152              		.cfi_offset 7, -8
+ 1153              		.cfi_offset 14, -4
+ 1154 0002 82B0     		sub	sp, sp, #8
+ 1155              		.cfi_def_cfa_offset 16
+ 1156 0004 00AF     		add	r7, sp, #0
+ 1157              		.cfi_def_cfa_register 7
+ 1158 0006 7860     		str	r0, [r7, #4]
+ 553:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1159              		.loc 1 553 0
+ 1160 0008 7B68     		ldr	r3, [r7, #4]
+ 1161 000a 002B     		cmp	r3, #0
+ 1162 000c 00D1     		bne	.L60
+ 1163              	.L61:
+ 1164              		.loc 1 553 0 is_stmt 0 discriminator 1
+ 1165 000e FEE7     		b	.L61
+ 1166              	.L60:
+ 554:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 555:../Sources/generic_drivers/lcd/lcd.c **** 
+ 556:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVELEFT);
+ 1167              		.loc 1 556 0 is_stmt 1
+ 1168 0010 7B68     		ldr	r3, [r7, #4]
+ 1169 0012 181C     		mov	r0, r3
+ 1170 0014 1821     		mov	r1, #24
+ 1171 0016 FFF7FEFF 		bl	LCD_Command
+ 557:../Sources/generic_drivers/lcd/lcd.c **** 
+ 558:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 559:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1172              		.loc 1 559 0
+ 1173 001a BD46     		mov	sp, r7
+ 1174 001c 02B0     		add	sp, sp, #8
+ 1175              		@ sp needed
+ 1176 001e 80BD     		pop	{r7, pc}
+ 1177              		.cfi_endproc
+ 1178              	.LFE53:
+ 1180              		.section	.text.LCD_ScrollDisplayRight,"ax",%progbits
+ 1181              		.align	2
+ 1182              		.global	LCD_ScrollDisplayRight
+ 1183              		.code	16
+ 1184              		.thumb_func
+ 1186              	LCD_ScrollDisplayRight:
+ 1187              	.LFB54:
+ 560:../Sources/generic_drivers/lcd/lcd.c **** 
+ 561:../Sources/generic_drivers/lcd/lcd.c **** void LCD_ScrollDisplayRight(lcdHandle_t handle)
+ 562:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1188              		.loc 1 562 0
+ 1189              		.cfi_startproc
+ 1190 0000 80B5     		push	{r7, lr}
+ 1191              		.cfi_def_cfa_offset 8
+ 1192              		.cfi_offset 7, -8
+ 1193              		.cfi_offset 14, -4
+ 1194 0002 82B0     		sub	sp, sp, #8
+ 1195              		.cfi_def_cfa_offset 16
+ 1196 0004 00AF     		add	r7, sp, #0
+ 1197              		.cfi_def_cfa_register 7
+ 1198 0006 7860     		str	r0, [r7, #4]
+ 563:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1199              		.loc 1 563 0
+ 1200 0008 7B68     		ldr	r3, [r7, #4]
+ 1201 000a 002B     		cmp	r3, #0
+ 1202 000c 00D1     		bne	.L63
+ 1203              	.L64:
+ 1204              		.loc 1 563 0 is_stmt 0 discriminator 1
+ 1205 000e FEE7     		b	.L64
+ 1206              	.L63:
+ 564:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 565:../Sources/generic_drivers/lcd/lcd.c **** 
+ 566:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVERIGHT);
+ 1207              		.loc 1 566 0 is_stmt 1
+ 1208 0010 7B68     		ldr	r3, [r7, #4]
+ 1209 0012 181C     		mov	r0, r3
+ 1210 0014 1C21     		mov	r1, #28
+ 1211 0016 FFF7FEFF 		bl	LCD_Command
+ 567:../Sources/generic_drivers/lcd/lcd.c **** 
+ 568:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 569:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1212              		.loc 1 569 0
+ 1213 001a BD46     		mov	sp, r7
+ 1214 001c 02B0     		add	sp, sp, #8
+ 1215              		@ sp needed
+ 1216 001e 80BD     		pop	{r7, pc}
+ 1217              		.cfi_endproc
+ 1218              	.LFE54:
+ 1220              		.section	.text.LCD_LeftToRight,"ax",%progbits
+ 1221              		.align	2
+ 1222              		.global	LCD_LeftToRight
+ 1223              		.code	16
+ 1224              		.thumb_func
+ 1226              	LCD_LeftToRight:
+ 1227              	.LFB55:
+ 570:../Sources/generic_drivers/lcd/lcd.c **** 
+ 571:../Sources/generic_drivers/lcd/lcd.c **** // This is for text that flows Left to Right
+ 572:../Sources/generic_drivers/lcd/lcd.c **** void LCD_LeftToRight(lcdHandle_t handle)
+ 573:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1228              		.loc 1 573 0
+ 1229              		.cfi_startproc
+ 1230 0000 80B5     		push	{r7, lr}
+ 1231              		.cfi_def_cfa_offset 8
+ 1232              		.cfi_offset 7, -8
+ 1233              		.cfi_offset 14, -4
+ 1234 0002 84B0     		sub	sp, sp, #16
+ 1235              		.cfi_def_cfa_offset 24
+ 1236 0004 00AF     		add	r7, sp, #0
+ 1237              		.cfi_def_cfa_register 7
+ 1238 0006 7860     		str	r0, [r7, #4]
+ 574:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1239              		.loc 1 574 0
+ 1240 0008 7B68     		ldr	r3, [r7, #4]
+ 1241 000a 002B     		cmp	r3, #0
+ 1242 000c 00D1     		bne	.L66
+ 1243              	.L67:
+ 1244              		.loc 1 574 0 is_stmt 0 discriminator 1
+ 1245 000e FEE7     		b	.L67
+ 1246              	.L66:
+ 575:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 576:../Sources/generic_drivers/lcd/lcd.c **** 
+ 577:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1247              		.loc 1 577 0 is_stmt 1
+ 1248 0010 7B68     		ldr	r3, [r7, #4]
+ 1249 0012 FB60     		str	r3, [r7, #12]
+ 578:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaymode |= LCD_ENTRYLEFT;
+ 1250              		.loc 1 578 0
+ 1251 0014 FB68     		ldr	r3, [r7, #12]
+ 1252 0016 9B79     		ldrb	r3, [r3, #6]
+ 1253 0018 0222     		mov	r2, #2
+ 1254 001a 1343     		orr	r3, r2
+ 1255 001c DAB2     		uxtb	r2, r3
+ 1256 001e FB68     		ldr	r3, [r7, #12]
+ 1257 0020 9A71     		strb	r2, [r3, #6]
+ 579:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+ 1258              		.loc 1 579 0
+ 1259 0022 FB68     		ldr	r3, [r7, #12]
+ 1260 0024 9B79     		ldrb	r3, [r3, #6]
+ 1261 0026 0422     		mov	r2, #4
+ 1262 0028 1343     		orr	r3, r2
+ 1263 002a DBB2     		uxtb	r3, r3
+ 1264 002c 7A68     		ldr	r2, [r7, #4]
+ 1265 002e 101C     		mov	r0, r2
+ 1266 0030 191C     		mov	r1, r3
+ 1267 0032 FFF7FEFF 		bl	LCD_Command
+ 580:../Sources/generic_drivers/lcd/lcd.c **** 
+ 581:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 582:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1268              		.loc 1 582 0
+ 1269 0036 BD46     		mov	sp, r7
+ 1270 0038 04B0     		add	sp, sp, #16
+ 1271              		@ sp needed
+ 1272 003a 80BD     		pop	{r7, pc}
+ 1273              		.cfi_endproc
+ 1274              	.LFE55:
+ 1276              		.section	.text.LCD_RightToLeft,"ax",%progbits
+ 1277              		.align	2
+ 1278              		.global	LCD_RightToLeft
+ 1279              		.code	16
+ 1280              		.thumb_func
+ 1282              	LCD_RightToLeft:
+ 1283              	.LFB56:
+ 583:../Sources/generic_drivers/lcd/lcd.c **** 
+ 584:../Sources/generic_drivers/lcd/lcd.c **** // This is for text that flows Right to Left
+ 585:../Sources/generic_drivers/lcd/lcd.c **** void LCD_RightToLeft(lcdHandle_t handle)
+ 586:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1284              		.loc 1 586 0
+ 1285              		.cfi_startproc
+ 1286 0000 80B5     		push	{r7, lr}
+ 1287              		.cfi_def_cfa_offset 8
+ 1288              		.cfi_offset 7, -8
+ 1289              		.cfi_offset 14, -4
+ 1290 0002 84B0     		sub	sp, sp, #16
+ 1291              		.cfi_def_cfa_offset 24
+ 1292 0004 00AF     		add	r7, sp, #0
+ 1293              		.cfi_def_cfa_register 7
+ 1294 0006 7860     		str	r0, [r7, #4]
+ 587:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1295              		.loc 1 587 0
+ 1296 0008 7B68     		ldr	r3, [r7, #4]
+ 1297 000a 002B     		cmp	r3, #0
+ 1298 000c 00D1     		bne	.L69
+ 1299              	.L70:
+ 1300              		.loc 1 587 0 is_stmt 0 discriminator 1
+ 1301 000e FEE7     		b	.L70
+ 1302              	.L69:
+ 588:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 589:../Sources/generic_drivers/lcd/lcd.c **** 
+ 590:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1303              		.loc 1 590 0 is_stmt 1
+ 1304 0010 7B68     		ldr	r3, [r7, #4]
+ 1305 0012 FB60     		str	r3, [r7, #12]
+ 591:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaymode &= ~LCD_ENTRYLEFT;
+ 1306              		.loc 1 591 0
+ 1307 0014 FB68     		ldr	r3, [r7, #12]
+ 1308 0016 9B79     		ldrb	r3, [r3, #6]
+ 1309 0018 0222     		mov	r2, #2
+ 1310 001a 9343     		bic	r3, r2
+ 1311 001c DAB2     		uxtb	r2, r3
+ 1312 001e FB68     		ldr	r3, [r7, #12]
+ 1313 0020 9A71     		strb	r2, [r3, #6]
+ 592:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+ 1314              		.loc 1 592 0
+ 1315 0022 FB68     		ldr	r3, [r7, #12]
+ 1316 0024 9B79     		ldrb	r3, [r3, #6]
+ 1317 0026 0422     		mov	r2, #4
+ 1318 0028 1343     		orr	r3, r2
+ 1319 002a DBB2     		uxtb	r3, r3
+ 1320 002c 7A68     		ldr	r2, [r7, #4]
+ 1321 002e 101C     		mov	r0, r2
+ 1322 0030 191C     		mov	r1, r3
+ 1323 0032 FFF7FEFF 		bl	LCD_Command
+ 593:../Sources/generic_drivers/lcd/lcd.c **** 
+ 594:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 595:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1324              		.loc 1 595 0
+ 1325 0036 BD46     		mov	sp, r7
+ 1326 0038 04B0     		add	sp, sp, #16
+ 1327              		@ sp needed
+ 1328 003a 80BD     		pop	{r7, pc}
+ 1329              		.cfi_endproc
+ 1330              	.LFE56:
+ 1332              		.section	.text.LCD_Autoscroll,"ax",%progbits
+ 1333              		.align	2
+ 1334              		.global	LCD_Autoscroll
+ 1335              		.code	16
+ 1336              		.thumb_func
+ 1338              	LCD_Autoscroll:
+ 1339              	.LFB57:
+ 596:../Sources/generic_drivers/lcd/lcd.c **** 
+ 597:../Sources/generic_drivers/lcd/lcd.c **** // This will 'right justify' text from the cursor
+ 598:../Sources/generic_drivers/lcd/lcd.c **** void LCD_Autoscroll(lcdHandle_t handle)
+ 599:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1340              		.loc 1 599 0
+ 1341              		.cfi_startproc
+ 1342 0000 80B5     		push	{r7, lr}
+ 1343              		.cfi_def_cfa_offset 8
+ 1344              		.cfi_offset 7, -8
+ 1345              		.cfi_offset 14, -4
+ 1346 0002 84B0     		sub	sp, sp, #16
+ 1347              		.cfi_def_cfa_offset 24
+ 1348 0004 00AF     		add	r7, sp, #0
+ 1349              		.cfi_def_cfa_register 7
+ 1350 0006 7860     		str	r0, [r7, #4]
+ 600:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1351              		.loc 1 600 0
+ 1352 0008 7B68     		ldr	r3, [r7, #4]
+ 1353 000a 002B     		cmp	r3, #0
+ 1354 000c 00D1     		bne	.L72
+ 1355              	.L73:
+ 1356              		.loc 1 600 0 is_stmt 0 discriminator 1
+ 1357 000e FEE7     		b	.L73
+ 1358              	.L72:
+ 601:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 602:../Sources/generic_drivers/lcd/lcd.c **** 
+ 603:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1359              		.loc 1 603 0 is_stmt 1
+ 1360 0010 7B68     		ldr	r3, [r7, #4]
+ 1361 0012 FB60     		str	r3, [r7, #12]
+ 604:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaymode |= LCD_ENTRYSHIFTINCREMENT;
+ 1362              		.loc 1 604 0
+ 1363 0014 FB68     		ldr	r3, [r7, #12]
+ 1364 0016 9B79     		ldrb	r3, [r3, #6]
+ 1365 0018 0122     		mov	r2, #1
+ 1366 001a 1343     		orr	r3, r2
+ 1367 001c DAB2     		uxtb	r2, r3
+ 1368 001e FB68     		ldr	r3, [r7, #12]
+ 1369 0020 9A71     		strb	r2, [r3, #6]
+ 605:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+ 1370              		.loc 1 605 0
+ 1371 0022 FB68     		ldr	r3, [r7, #12]
+ 1372 0024 9B79     		ldrb	r3, [r3, #6]
+ 1373 0026 0422     		mov	r2, #4
+ 1374 0028 1343     		orr	r3, r2
+ 1375 002a DBB2     		uxtb	r3, r3
+ 1376 002c 7A68     		ldr	r2, [r7, #4]
+ 1377 002e 101C     		mov	r0, r2
+ 1378 0030 191C     		mov	r1, r3
+ 1379 0032 FFF7FEFF 		bl	LCD_Command
+ 606:../Sources/generic_drivers/lcd/lcd.c **** 
+ 607:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 608:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1380              		.loc 1 608 0
+ 1381 0036 BD46     		mov	sp, r7
+ 1382 0038 04B0     		add	sp, sp, #16
+ 1383              		@ sp needed
+ 1384 003a 80BD     		pop	{r7, pc}
+ 1385              		.cfi_endproc
+ 1386              	.LFE57:
+ 1388              		.section	.text.LCD_NoAutoscroll,"ax",%progbits
+ 1389              		.align	2
+ 1390              		.global	LCD_NoAutoscroll
+ 1391              		.code	16
+ 1392              		.thumb_func
+ 1394              	LCD_NoAutoscroll:
+ 1395              	.LFB58:
+ 609:../Sources/generic_drivers/lcd/lcd.c **** 
+ 610:../Sources/generic_drivers/lcd/lcd.c **** // This will 'left justify' text from the cursor
+ 611:../Sources/generic_drivers/lcd/lcd.c **** void LCD_NoAutoscroll(lcdHandle_t handle)
+ 612:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1396              		.loc 1 612 0
+ 1397              		.cfi_startproc
+ 1398 0000 80B5     		push	{r7, lr}
+ 1399              		.cfi_def_cfa_offset 8
+ 1400              		.cfi_offset 7, -8
+ 1401              		.cfi_offset 14, -4
+ 1402 0002 84B0     		sub	sp, sp, #16
+ 1403              		.cfi_def_cfa_offset 24
+ 1404 0004 00AF     		add	r7, sp, #0
+ 1405              		.cfi_def_cfa_register 7
+ 1406 0006 7860     		str	r0, [r7, #4]
+ 613:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1407              		.loc 1 613 0
+ 1408 0008 7B68     		ldr	r3, [r7, #4]
+ 1409 000a 002B     		cmp	r3, #0
+ 1410 000c 00D1     		bne	.L75
+ 1411              	.L76:
+ 1412              		.loc 1 613 0 is_stmt 0 discriminator 1
+ 1413 000e FEE7     		b	.L76
+ 1414              	.L75:
+ 614:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 615:../Sources/generic_drivers/lcd/lcd.c **** 
+ 616:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1415              		.loc 1 616 0 is_stmt 1
+ 1416 0010 7B68     		ldr	r3, [r7, #4]
+ 1417 0012 FB60     		str	r3, [r7, #12]
+ 617:../Sources/generic_drivers/lcd/lcd.c **** 	lcdHandle->displaymode &= ~LCD_ENTRYSHIFTINCREMENT;
+ 1418              		.loc 1 617 0
+ 1419 0014 FB68     		ldr	r3, [r7, #12]
+ 1420 0016 9B79     		ldrb	r3, [r3, #6]
+ 1421 0018 0122     		mov	r2, #1
+ 1422 001a 9343     		bic	r3, r2
+ 1423 001c DAB2     		uxtb	r2, r3
+ 1424 001e FB68     		ldr	r3, [r7, #12]
+ 1425 0020 9A71     		strb	r2, [r3, #6]
+ 618:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+ 1426              		.loc 1 618 0
+ 1427 0022 FB68     		ldr	r3, [r7, #12]
+ 1428 0024 9B79     		ldrb	r3, [r3, #6]
+ 1429 0026 0422     		mov	r2, #4
+ 1430 0028 1343     		orr	r3, r2
+ 1431 002a DBB2     		uxtb	r3, r3
+ 1432 002c 7A68     		ldr	r2, [r7, #4]
+ 1433 002e 101C     		mov	r0, r2
+ 1434 0030 191C     		mov	r1, r3
+ 1435 0032 FFF7FEFF 		bl	LCD_Command
+ 619:../Sources/generic_drivers/lcd/lcd.c **** 
+ 620:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 621:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1436              		.loc 1 621 0
+ 1437 0036 BD46     		mov	sp, r7
+ 1438 0038 04B0     		add	sp, sp, #16
+ 1439              		@ sp needed
+ 1440 003a 80BD     		pop	{r7, pc}
+ 1441              		.cfi_endproc
+ 1442              	.LFE58:
+ 1444              		.section	.text.LCD_CreateChar,"ax",%progbits
+ 1445              		.align	2
+ 1446              		.global	LCD_CreateChar
+ 1447              		.code	16
+ 1448              		.thumb_func
+ 1450              	LCD_CreateChar:
+ 1451              	.LFB59:
+ 622:../Sources/generic_drivers/lcd/lcd.c **** 
+ 623:../Sources/generic_drivers/lcd/lcd.c **** // Allows us to fill the first 8 CGRAM locations
+ 624:../Sources/generic_drivers/lcd/lcd.c **** // with custom characters
+ 625:../Sources/generic_drivers/lcd/lcd.c **** void LCD_CreateChar(lcdHandle_t handle, uint8_t location, uint8_t charmap[])
+ 626:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1452              		.loc 1 626 0
+ 1453              		.cfi_startproc
+ 1454 0000 80B5     		push	{r7, lr}
+ 1455              		.cfi_def_cfa_offset 8
+ 1456              		.cfi_offset 7, -8
+ 1457              		.cfi_offset 14, -4
+ 1458 0002 86B0     		sub	sp, sp, #24
+ 1459              		.cfi_def_cfa_offset 32
+ 1460 0004 00AF     		add	r7, sp, #0
+ 1461              		.cfi_def_cfa_register 7
+ 1462 0006 F860     		str	r0, [r7, #12]
+ 1463 0008 7A60     		str	r2, [r7, #4]
+ 1464 000a 3B1C     		mov	r3, r7
+ 1465 000c 0B33     		add	r3, r3, #11
+ 1466 000e 0A1C     		add	r2, r1, #0
+ 1467 0010 1A70     		strb	r2, [r3]
+ 627:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1468              		.loc 1 627 0
+ 1469 0012 FB68     		ldr	r3, [r7, #12]
+ 1470 0014 002B     		cmp	r3, #0
+ 1471 0016 00D1     		bne	.L78
+ 1472              	.L79:
+ 1473              		.loc 1 627 0 is_stmt 0 discriminator 1
+ 1474 0018 FEE7     		b	.L79
+ 1475              	.L78:
+ 628:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 629:../Sources/generic_drivers/lcd/lcd.c **** 
+ 630:../Sources/generic_drivers/lcd/lcd.c **** 	location &= 0x7; // we only have 8 locations 0-7
+ 1476              		.loc 1 630 0 is_stmt 1
+ 1477 001a 3B1C     		mov	r3, r7
+ 1478 001c 0B33     		add	r3, r3, #11
+ 1479 001e 3A1C     		mov	r2, r7
+ 1480 0020 0B32     		add	r2, r2, #11
+ 1481 0022 1178     		ldrb	r1, [r2]
+ 1482 0024 0722     		mov	r2, #7
+ 1483 0026 0A40     		and	r2, r1
+ 1484 0028 1A70     		strb	r2, [r3]
+ 631:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Command(handle, LCD_SETCGRAMADDR | (location << 3));
+ 1485              		.loc 1 631 0
+ 1486 002a 3B1C     		mov	r3, r7
+ 1487 002c 0B33     		add	r3, r3, #11
+ 1488 002e 1B78     		ldrb	r3, [r3]
+ 1489 0030 DB00     		lsl	r3, r3, #3
+ 1490 0032 DBB2     		uxtb	r3, r3
+ 1491 0034 4022     		mov	r2, #64
+ 1492 0036 1343     		orr	r3, r2
+ 1493 0038 DBB2     		uxtb	r3, r3
+ 1494 003a DBB2     		uxtb	r3, r3
+ 1495 003c FA68     		ldr	r2, [r7, #12]
+ 1496 003e 101C     		mov	r0, r2
+ 1497 0040 191C     		mov	r1, r3
+ 1498 0042 FFF7FEFF 		bl	LCD_Command
+ 1499              	.LBB2:
+ 632:../Sources/generic_drivers/lcd/lcd.c **** 	for (int i=0; i<8; i++)
+ 1500              		.loc 1 632 0
+ 1501 0046 0023     		mov	r3, #0
+ 1502 0048 7B61     		str	r3, [r7, #20]
+ 1503 004a 0BE0     		b	.L80
+ 1504              	.L81:
+ 633:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 634:../Sources/generic_drivers/lcd/lcd.c **** 		LCD_Write(handle, charmap[i]);
+ 1505              		.loc 1 634 0 discriminator 2
+ 1506 004c 7B69     		ldr	r3, [r7, #20]
+ 1507 004e 7A68     		ldr	r2, [r7, #4]
+ 1508 0050 D318     		add	r3, r2, r3
+ 1509 0052 1B78     		ldrb	r3, [r3]
+ 1510 0054 FA68     		ldr	r2, [r7, #12]
+ 1511 0056 101C     		mov	r0, r2
+ 1512 0058 191C     		mov	r1, r3
+ 1513 005a FFF7FEFF 		bl	LCD_Write
+ 632:../Sources/generic_drivers/lcd/lcd.c **** 	for (int i=0; i<8; i++)
+ 1514              		.loc 1 632 0 discriminator 2
+ 1515 005e 7B69     		ldr	r3, [r7, #20]
+ 1516 0060 0133     		add	r3, r3, #1
+ 1517 0062 7B61     		str	r3, [r7, #20]
+ 1518              	.L80:
+ 632:../Sources/generic_drivers/lcd/lcd.c **** 	for (int i=0; i<8; i++)
+ 1519              		.loc 1 632 0 is_stmt 0 discriminator 1
+ 1520 0064 7B69     		ldr	r3, [r7, #20]
+ 1521 0066 072B     		cmp	r3, #7
+ 1522 0068 F0DD     		ble	.L81
+ 1523              	.LBE2:
+ 635:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 636:../Sources/generic_drivers/lcd/lcd.c **** 
+ 637:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 638:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1524              		.loc 1 638 0 is_stmt 1
+ 1525 006a BD46     		mov	sp, r7
+ 1526 006c 06B0     		add	sp, sp, #24
+ 1527              		@ sp needed
+ 1528 006e 80BD     		pop	{r7, pc}
+ 1529              		.cfi_endproc
+ 1530              	.LFE59:
+ 1532              		.section	.text.LCD_WriteString,"ax",%progbits
+ 1533              		.align	2
+ 1534              		.global	LCD_WriteString
+ 1535              		.code	16
+ 1536              		.thumb_func
+ 1538              	LCD_WriteString:
+ 1539              	.LFB60:
+ 639:../Sources/generic_drivers/lcd/lcd.c **** 
+ 640:../Sources/generic_drivers/lcd/lcd.c **** void LCD_WriteString(lcdHandle_t handle, char *str)
+ 641:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1540              		.loc 1 641 0
+ 1541              		.cfi_startproc
+ 1542 0000 80B5     		push	{r7, lr}
+ 1543              		.cfi_def_cfa_offset 8
+ 1544              		.cfi_offset 7, -8
+ 1545              		.cfi_offset 14, -4
+ 1546 0002 82B0     		sub	sp, sp, #8
+ 1547              		.cfi_def_cfa_offset 16
+ 1548 0004 00AF     		add	r7, sp, #0
+ 1549              		.cfi_def_cfa_register 7
+ 1550 0006 7860     		str	r0, [r7, #4]
+ 1551 0008 3960     		str	r1, [r7]
+ 642:../Sources/generic_drivers/lcd/lcd.c **** 	EmbUtil_Assert(handle);
+ 1552              		.loc 1 642 0
+ 1553 000a 7B68     		ldr	r3, [r7, #4]
+ 1554 000c 002B     		cmp	r3, #0
+ 1555 000e 00D1     		bne	.L83
+ 1556              	.L84:
+ 1557              		.loc 1 642 0 is_stmt 0 discriminator 1
+ 1558 0010 FEE7     		b	.L84
+ 1559              	.L83:
+ 643:../Sources/generic_drivers/lcd/lcd.c **** 	LcdEnterMutex(handle);
+ 644:../Sources/generic_drivers/lcd/lcd.c **** 
+ 645:../Sources/generic_drivers/lcd/lcd.c **** 	while (*str != '\0')
+ 1560              		.loc 1 645 0 is_stmt 1
+ 1561 0012 0AE0     		b	.L85
+ 1562              	.L86:
+ 646:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 647:../Sources/generic_drivers/lcd/lcd.c **** 		LCD_Write(handle, *str);
+ 1563              		.loc 1 647 0
+ 1564 0014 3B68     		ldr	r3, [r7]
+ 1565 0016 1B78     		ldrb	r3, [r3]
+ 1566 0018 DBB2     		uxtb	r3, r3
+ 1567 001a 7A68     		ldr	r2, [r7, #4]
+ 1568 001c 101C     		mov	r0, r2
+ 1569 001e 191C     		mov	r1, r3
+ 1570 0020 FFF7FEFF 		bl	LCD_Write
+ 648:../Sources/generic_drivers/lcd/lcd.c **** 		str++;
+ 1571              		.loc 1 648 0
+ 1572 0024 3B68     		ldr	r3, [r7]
+ 1573 0026 0133     		add	r3, r3, #1
+ 1574 0028 3B60     		str	r3, [r7]
+ 1575              	.L85:
+ 645:../Sources/generic_drivers/lcd/lcd.c **** 	while (*str != '\0')
+ 1576              		.loc 1 645 0 discriminator 1
+ 1577 002a 3B68     		ldr	r3, [r7]
+ 1578 002c 1B78     		ldrb	r3, [r3]
+ 1579 002e 002B     		cmp	r3, #0
+ 1580 0030 F0D1     		bne	.L86
+ 649:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 650:../Sources/generic_drivers/lcd/lcd.c **** 
+ 651:../Sources/generic_drivers/lcd/lcd.c **** 	LcdExitMutex(handle);
+ 652:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1581              		.loc 1 652 0
+ 1582 0032 BD46     		mov	sp, r7
+ 1583 0034 02B0     		add	sp, sp, #8
+ 1584              		@ sp needed
+ 1585 0036 80BD     		pop	{r7, pc}
+ 1586              		.cfi_endproc
+ 1587              	.LFE60:
+ 1589              		.section	.text.LCD_CreateBigNumsChars,"ax",%progbits
+ 1590              		.align	2
+ 1591              		.global	LCD_CreateBigNumsChars
+ 1592              		.code	16
+ 1593              		.thumb_func
+ 1595              	LCD_CreateBigNumsChars:
+ 1596              	.LFB61:
+ 653:../Sources/generic_drivers/lcd/lcd.c **** 
+ 654:../Sources/generic_drivers/lcd/lcd.c **** void LCD_CreateBigNumsChars(lcdHandle_t handle)
+ 655:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1597              		.loc 1 655 0
+ 1598              		.cfi_startproc
+ 1599 0000 80B5     		push	{r7, lr}
+ 1600              		.cfi_def_cfa_offset 8
+ 1601              		.cfi_offset 7, -8
+ 1602              		.cfi_offset 14, -4
+ 1603 0002 84B0     		sub	sp, sp, #16
+ 1604              		.cfi_def_cfa_offset 24
+ 1605 0004 00AF     		add	r7, sp, #0
+ 1606              		.cfi_def_cfa_register 7
+ 1607 0006 7860     		str	r0, [r7, #4]
+ 656:../Sources/generic_drivers/lcd/lcd.c **** 	uint8_t i, j = 0;
+ 1608              		.loc 1 656 0
+ 1609 0008 3B1C     		mov	r3, r7
+ 1610 000a 0E33     		add	r3, r3, #14
+ 1611 000c 0022     		mov	r2, #0
+ 1612 000e 1A70     		strb	r2, [r3]
+ 657:../Sources/generic_drivers/lcd/lcd.c **** 
+ 658:../Sources/generic_drivers/lcd/lcd.c **** 	for(i = 0; i < 8; ++i)
+ 1613              		.loc 1 658 0
+ 1614 0010 3B1C     		mov	r3, r7
+ 1615 0012 0F33     		add	r3, r3, #15
+ 1616 0014 0022     		mov	r2, #0
+ 1617 0016 1A70     		strb	r2, [r3]
+ 1618 0018 1BE0     		b	.L88
+ 1619              	.L89:
+ 659:../Sources/generic_drivers/lcd/lcd.c **** 	{
+ 660:../Sources/generic_drivers/lcd/lcd.c **** 		LCD_CreateChar(handle, i, &_bigNumsCodes[j]);
+ 1620              		.loc 1 660 0 discriminator 2
+ 1621 001a 3B1C     		mov	r3, r7
+ 1622 001c 0E33     		add	r3, r3, #14
+ 1623 001e 1A78     		ldrb	r2, [r3]
+ 1624 0020 104B     		ldr	r3, .L90
+ 1625 0022 D318     		add	r3, r2, r3
+ 1626 0024 7968     		ldr	r1, [r7, #4]
+ 1627 0026 3A1C     		mov	r2, r7
+ 1628 0028 0F32     		add	r2, r2, #15
+ 1629 002a 1278     		ldrb	r2, [r2]
+ 1630 002c 081C     		mov	r0, r1
+ 1631 002e 111C     		mov	r1, r2
+ 1632 0030 1A1C     		mov	r2, r3
+ 1633 0032 FFF7FEFF 		bl	LCD_CreateChar
+ 661:../Sources/generic_drivers/lcd/lcd.c **** 		j += 8;
+ 1634              		.loc 1 661 0 discriminator 2
+ 1635 0036 3B1C     		mov	r3, r7
+ 1636 0038 0E33     		add	r3, r3, #14
+ 1637 003a 3A1C     		mov	r2, r7
+ 1638 003c 0E32     		add	r2, r2, #14
+ 1639 003e 1278     		ldrb	r2, [r2]
+ 1640 0040 0832     		add	r2, r2, #8
+ 1641 0042 1A70     		strb	r2, [r3]
+ 658:../Sources/generic_drivers/lcd/lcd.c **** 	for(i = 0; i < 8; ++i)
+ 1642              		.loc 1 658 0 discriminator 2
+ 1643 0044 3B1C     		mov	r3, r7
+ 1644 0046 0F33     		add	r3, r3, #15
+ 1645 0048 3A1C     		mov	r2, r7
+ 1646 004a 0F32     		add	r2, r2, #15
+ 1647 004c 1278     		ldrb	r2, [r2]
+ 1648 004e 0132     		add	r2, r2, #1
+ 1649 0050 1A70     		strb	r2, [r3]
+ 1650              	.L88:
+ 658:../Sources/generic_drivers/lcd/lcd.c **** 	for(i = 0; i < 8; ++i)
+ 1651              		.loc 1 658 0 is_stmt 0 discriminator 1
+ 1652 0052 3B1C     		mov	r3, r7
+ 1653 0054 0F33     		add	r3, r3, #15
+ 1654 0056 1B78     		ldrb	r3, [r3]
+ 1655 0058 072B     		cmp	r3, #7
+ 1656 005a DED9     		bls	.L89
+ 662:../Sources/generic_drivers/lcd/lcd.c **** 	}
+ 663:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1657              		.loc 1 663 0 is_stmt 1
+ 1658 005c BD46     		mov	sp, r7
+ 1659 005e 04B0     		add	sp, sp, #16
+ 1660              		@ sp needed
+ 1661 0060 80BD     		pop	{r7, pc}
+ 1662              	.L91:
+ 1663 0062 C046     		.align	2
+ 1664              	.L90:
+ 1665 0064 00000000 		.word	_bigNumsCodes
+ 1666              		.cfi_endproc
+ 1667              	.LFE61:
+ 1669              		.section	.text.LCD_WriteBigNum,"ax",%progbits
+ 1670              		.align	2
+ 1671              		.global	LCD_WriteBigNum
+ 1672              		.code	16
+ 1673              		.thumb_func
+ 1675              	LCD_WriteBigNum:
+ 1676              	.LFB62:
+ 664:../Sources/generic_drivers/lcd/lcd.c **** 
+ 665:../Sources/generic_drivers/lcd/lcd.c **** void LCD_WriteBigNum(lcdHandle_t handle, uint8_t col, uint8_t num)
+ 666:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1677              		.loc 1 666 0
+ 1678              		.cfi_startproc
+ 1679 0000 80B5     		push	{r7, lr}
+ 1680              		.cfi_def_cfa_offset 8
+ 1681              		.cfi_offset 7, -8
+ 1682              		.cfi_offset 14, -4
+ 1683 0002 82B0     		sub	sp, sp, #8
+ 1684              		.cfi_def_cfa_offset 16
+ 1685 0004 00AF     		add	r7, sp, #0
+ 1686              		.cfi_def_cfa_register 7
+ 1687 0006 7860     		str	r0, [r7, #4]
+ 1688 0008 FB1C     		add	r3, r7, #3
+ 1689 000a 1970     		strb	r1, [r3]
+ 1690 000c BB1C     		add	r3, r7, #2
+ 1691 000e 1A70     		strb	r2, [r3]
+ 667:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_SetCursor(handle, col, 0);
+ 1692              		.loc 1 667 0
+ 1693 0010 7A68     		ldr	r2, [r7, #4]
+ 1694 0012 FB1C     		add	r3, r7, #3
+ 1695 0014 1B78     		ldrb	r3, [r3]
+ 1696 0016 101C     		mov	r0, r2
+ 1697 0018 191C     		mov	r1, r3
+ 1698 001a 0022     		mov	r2, #0
+ 1699 001c FFF7FEFF 		bl	LCD_SetCursor
+ 668:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Write(handle, _bigNumCommands[num][0]);
+ 1700              		.loc 1 668 0
+ 1701 0020 BB1C     		add	r3, r7, #2
+ 1702 0022 1A78     		ldrb	r2, [r3]
+ 1703 0024 1B4B     		ldr	r3, .L93
+ 1704 0026 9200     		lsl	r2, r2, #2
+ 1705 0028 D35C     		ldrb	r3, [r2, r3]
+ 1706 002a 7A68     		ldr	r2, [r7, #4]
+ 1707 002c 101C     		mov	r0, r2
+ 1708 002e 191C     		mov	r1, r3
+ 1709 0030 FFF7FEFF 		bl	LCD_Write
+ 669:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Write(handle, _bigNumCommands[num][1]);
+ 1710              		.loc 1 669 0
+ 1711 0034 BB1C     		add	r3, r7, #2
+ 1712 0036 1B78     		ldrb	r3, [r3]
+ 1713 0038 164A     		ldr	r2, .L93
+ 1714 003a 9B00     		lsl	r3, r3, #2
+ 1715 003c D318     		add	r3, r2, r3
+ 1716 003e 0133     		add	r3, r3, #1
+ 1717 0040 1B78     		ldrb	r3, [r3]
+ 1718 0042 7A68     		ldr	r2, [r7, #4]
+ 1719 0044 101C     		mov	r0, r2
+ 1720 0046 191C     		mov	r1, r3
+ 1721 0048 FFF7FEFF 		bl	LCD_Write
+ 670:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_SetCursor(handle, col, 1);
+ 1722              		.loc 1 670 0
+ 1723 004c 7A68     		ldr	r2, [r7, #4]
+ 1724 004e FB1C     		add	r3, r7, #3
+ 1725 0050 1B78     		ldrb	r3, [r3]
+ 1726 0052 101C     		mov	r0, r2
+ 1727 0054 191C     		mov	r1, r3
+ 1728 0056 0122     		mov	r2, #1
+ 1729 0058 FFF7FEFF 		bl	LCD_SetCursor
+ 671:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Write(handle, _bigNumCommands[num][2]);
+ 1730              		.loc 1 671 0
+ 1731 005c BB1C     		add	r3, r7, #2
+ 1732 005e 1B78     		ldrb	r3, [r3]
+ 1733 0060 0C4A     		ldr	r2, .L93
+ 1734 0062 9B00     		lsl	r3, r3, #2
+ 1735 0064 D318     		add	r3, r2, r3
+ 1736 0066 0233     		add	r3, r3, #2
+ 1737 0068 1B78     		ldrb	r3, [r3]
+ 1738 006a 7A68     		ldr	r2, [r7, #4]
+ 1739 006c 101C     		mov	r0, r2
+ 1740 006e 191C     		mov	r1, r3
+ 1741 0070 FFF7FEFF 		bl	LCD_Write
+ 672:../Sources/generic_drivers/lcd/lcd.c **** 	LCD_Write(handle, _bigNumCommands[num][3]);
+ 1742              		.loc 1 672 0
+ 1743 0074 BB1C     		add	r3, r7, #2
+ 1744 0076 1B78     		ldrb	r3, [r3]
+ 1745 0078 064A     		ldr	r2, .L93
+ 1746 007a 9B00     		lsl	r3, r3, #2
+ 1747 007c D318     		add	r3, r2, r3
+ 1748 007e 0333     		add	r3, r3, #3
+ 1749 0080 1B78     		ldrb	r3, [r3]
+ 1750 0082 7A68     		ldr	r2, [r7, #4]
+ 1751 0084 101C     		mov	r0, r2
+ 1752 0086 191C     		mov	r1, r3
+ 1753 0088 FFF7FEFF 		bl	LCD_Write
+ 673:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1754              		.loc 1 673 0
+ 1755 008c BD46     		mov	sp, r7
+ 1756 008e 02B0     		add	sp, sp, #8
+ 1757              		@ sp needed
+ 1758 0090 80BD     		pop	{r7, pc}
+ 1759              	.L94:
+ 1760 0092 C046     		.align	2
+ 1761              	.L93:
+ 1762 0094 00000000 		.word	_bigNumCommands
+ 1763              		.cfi_endproc
+ 1764              	.LFE62:
+ 1766              		.section	.text.LCD_Command,"ax",%progbits
+ 1767              		.align	2
+ 1768              		.global	LCD_Command
+ 1769              		.code	16
+ 1770              		.thumb_func
+ 1772              	LCD_Command:
+ 1773              	.LFB63:
+ 674:../Sources/generic_drivers/lcd/lcd.c **** 
+ 675:../Sources/generic_drivers/lcd/lcd.c **** /*********** mid level commands, for sending data/cmds */
+ 676:../Sources/generic_drivers/lcd/lcd.c **** 
+ 677:../Sources/generic_drivers/lcd/lcd.c **** inline void LCD_Command(lcdHandle_t handle, uint8_t value)
+ 678:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1774              		.loc 1 678 0
+ 1775              		.cfi_startproc
+ 1776 0000 80B5     		push	{r7, lr}
+ 1777              		.cfi_def_cfa_offset 8
+ 1778              		.cfi_offset 7, -8
+ 1779              		.cfi_offset 14, -4
+ 1780 0002 84B0     		sub	sp, sp, #16
+ 1781              		.cfi_def_cfa_offset 24
+ 1782 0004 00AF     		add	r7, sp, #0
+ 1783              		.cfi_def_cfa_register 7
+ 1784 0006 7860     		str	r0, [r7, #4]
+ 1785 0008 0A1C     		mov	r2, r1
+ 1786 000a FB1C     		add	r3, r7, #3
+ 1787 000c 1A70     		strb	r2, [r3]
+ 679:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1788              		.loc 1 679 0
+ 1789 000e 7B68     		ldr	r3, [r7, #4]
+ 1790 0010 FB60     		str	r3, [r7, #12]
+ 680:../Sources/generic_drivers/lcd/lcd.c **** 	ClrRS(lcdHandle);
+ 1791              		.loc 1 680 0
+ 1792 0012 FB68     		ldr	r3, [r7, #12]
+ 1793 0014 1B68     		ldr	r3, [r3]
+ 1794 0016 5B6A     		ldr	r3, [r3, #36]
+ 1795 0018 FA68     		ldr	r2, [r7, #12]
+ 1796 001a 1268     		ldr	r2, [r2]
+ 1797 001c 926A     		ldr	r2, [r2, #40]
+ 1798 001e 9A60     		str	r2, [r3, #8]
+ 681:../Sources/generic_drivers/lcd/lcd.c **** 	//Waitus(200);
+ 682:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_8BITMODE
+ 683:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(lcdHandle, value);
+ 684:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 685:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(lcdHandle, value >> 4);
+ 1799              		.loc 1 685 0
+ 1800 0020 FB1C     		add	r3, r7, #3
+ 1801 0022 1B78     		ldrb	r3, [r3]
+ 1802 0024 1B09     		lsr	r3, r3, #4
+ 1803 0026 DBB2     		uxtb	r3, r3
+ 1804 0028 FA68     		ldr	r2, [r7, #12]
+ 1805 002a 101C     		mov	r0, r2
+ 1806 002c 191C     		mov	r1, r3
+ 1807 002e FFF7FEFF 		bl	WriteBits
+ 686:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(lcdHandle, value);
+ 1808              		.loc 1 686 0
+ 1809 0032 FA68     		ldr	r2, [r7, #12]
+ 1810 0034 FB1C     		add	r3, r7, #3
+ 1811 0036 1B78     		ldrb	r3, [r3]
+ 1812 0038 101C     		mov	r0, r2
+ 1813 003a 191C     		mov	r1, r3
+ 1814 003c FFF7FEFF 		bl	WriteBits
+ 687:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 688:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1815              		.loc 1 688 0
+ 1816 0040 BD46     		mov	sp, r7
+ 1817 0042 04B0     		add	sp, sp, #16
+ 1818              		@ sp needed
+ 1819 0044 80BD     		pop	{r7, pc}
+ 1820              		.cfi_endproc
+ 1821              	.LFE63:
+ 1823 0046 C046     		.section	.text.LCD_Write,"ax",%progbits
+ 1824              		.align	2
+ 1825              		.global	LCD_Write
+ 1826              		.code	16
+ 1827              		.thumb_func
+ 1829              	LCD_Write:
+ 1830              	.LFB64:
+ 689:../Sources/generic_drivers/lcd/lcd.c **** 
+ 690:../Sources/generic_drivers/lcd/lcd.c **** inline void LCD_Write(lcdHandle_t handle, uint8_t value)
+ 691:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1831              		.loc 1 691 0
+ 1832              		.cfi_startproc
+ 1833 0000 80B5     		push	{r7, lr}
+ 1834              		.cfi_def_cfa_offset 8
+ 1835              		.cfi_offset 7, -8
+ 1836              		.cfi_offset 14, -4
+ 1837 0002 84B0     		sub	sp, sp, #16
+ 1838              		.cfi_def_cfa_offset 24
+ 1839 0004 00AF     		add	r7, sp, #0
+ 1840              		.cfi_def_cfa_register 7
+ 1841 0006 7860     		str	r0, [r7, #4]
+ 1842 0008 0A1C     		mov	r2, r1
+ 1843 000a FB1C     		add	r3, r7, #3
+ 1844 000c 1A70     		strb	r2, [r3]
+ 692:../Sources/generic_drivers/lcd/lcd.c **** 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
+ 1845              		.loc 1 692 0
+ 1846 000e 7B68     		ldr	r3, [r7, #4]
+ 1847 0010 FB60     		str	r3, [r7, #12]
+ 693:../Sources/generic_drivers/lcd/lcd.c **** 	SetRS(lcdHandle);
+ 1848              		.loc 1 693 0
+ 1849 0012 FB68     		ldr	r3, [r7, #12]
+ 1850 0014 1B68     		ldr	r3, [r3]
+ 1851 0016 5B6A     		ldr	r3, [r3, #36]
+ 1852 0018 FA68     		ldr	r2, [r7, #12]
+ 1853 001a 1268     		ldr	r2, [r2]
+ 1854 001c 926A     		ldr	r2, [r2, #40]
+ 1855 001e 5A60     		str	r2, [r3, #4]
+ 694:../Sources/generic_drivers/lcd/lcd.c **** 	//Waitus(200);
+ 695:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_8BITMODE
+ 696:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(lcdHandle, value);
+ 697:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 698:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(lcdHandle, value >> 4);
+ 1856              		.loc 1 698 0
+ 1857 0020 FB1C     		add	r3, r7, #3
+ 1858 0022 1B78     		ldrb	r3, [r3]
+ 1859 0024 1B09     		lsr	r3, r3, #4
+ 1860 0026 DBB2     		uxtb	r3, r3
+ 1861 0028 FA68     		ldr	r2, [r7, #12]
+ 1862 002a 101C     		mov	r0, r2
+ 1863 002c 191C     		mov	r1, r3
+ 1864 002e FFF7FEFF 		bl	WriteBits
+ 699:../Sources/generic_drivers/lcd/lcd.c ****     WriteBits(lcdHandle, value);
+ 1865              		.loc 1 699 0
+ 1866 0032 FA68     		ldr	r2, [r7, #12]
+ 1867 0034 FB1C     		add	r3, r7, #3
+ 1868 0036 1B78     		ldrb	r3, [r3]
+ 1869 0038 101C     		mov	r0, r2
+ 1870 003a 191C     		mov	r1, r3
+ 1871 003c FFF7FEFF 		bl	WriteBits
+ 700:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 701:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1872              		.loc 1 701 0
+ 1873 0040 BD46     		mov	sp, r7
+ 1874 0042 04B0     		add	sp, sp, #16
+ 1875              		@ sp needed
+ 1876 0044 80BD     		pop	{r7, pc}
+ 1877              		.cfi_endproc
+ 1878              	.LFE64:
+ 1880 0046 C046     		.section	.text.WriteBits,"ax",%progbits
+ 1881              		.align	2
+ 1882              		.code	16
+ 1883              		.thumb_func
+ 1885              	WriteBits:
+ 1886              	.LFB65:
+ 702:../Sources/generic_drivers/lcd/lcd.c **** 
+ 703:../Sources/generic_drivers/lcd/lcd.c **** 
+ 704:../Sources/generic_drivers/lcd/lcd.c **** /************ low level data pushing commands **********/
+ 705:../Sources/generic_drivers/lcd/lcd.c **** 
+ 706:../Sources/generic_drivers/lcd/lcd.c **** static void WriteBits(struct lcdHandle_s* handle, uint8_t value)
+ 707:../Sources/generic_drivers/lcd/lcd.c **** {
+ 1887              		.loc 1 707 0
+ 1888              		.cfi_startproc
+ 1889 0000 80B5     		push	{r7, lr}
+ 1890              		.cfi_def_cfa_offset 8
+ 1891              		.cfi_offset 7, -8
+ 1892              		.cfi_offset 14, -4
+ 1893 0002 84B0     		sub	sp, sp, #16
+ 1894              		.cfi_def_cfa_offset 24
+ 1895 0004 00AF     		add	r7, sp, #0
+ 1896              		.cfi_def_cfa_register 7
+ 1897 0006 7860     		str	r0, [r7, #4]
+ 1898 0008 0A1C     		mov	r2, r1
+ 1899 000a FB1C     		add	r3, r7, #3
+ 1900 000c 1A70     		strb	r2, [r3]
+ 708:../Sources/generic_drivers/lcd/lcd.c **** #ifdef LCD_4BITMODE
+ 709:../Sources/generic_drivers/lcd/lcd.c **** 	uint8_t count = 4;
+ 1901              		.loc 1 709 0
+ 1902 000e 3B1C     		mov	r3, r7
+ 1903 0010 0B33     		add	r3, r3, #11
+ 1904 0012 0422     		mov	r2, #4
+ 1905 0014 1A70     		strb	r2, [r3]
+ 1906              	.LBB3:
+ 710:../Sources/generic_drivers/lcd/lcd.c **** #else
+ 711:../Sources/generic_drivers/lcd/lcd.c **** 	uint8_t count = 8;
+ 712:../Sources/generic_drivers/lcd/lcd.c **** #endif
+ 713:../Sources/generic_drivers/lcd/lcd.c ****   for (int i = 0; i < count; i++)
+ 1907              		.loc 1 713 0
+ 1908 0016 0023     		mov	r3, #0
+ 1909 0018 FB60     		str	r3, [r7, #12]
+ 1910 001a 24E0     		b	.L98
+ 1911              	.L101:
+ 714:../Sources/generic_drivers/lcd/lcd.c ****   {
+ 715:../Sources/generic_drivers/lcd/lcd.c **** 	  if((value >> i) & 0x01)
+ 1912              		.loc 1 715 0
+ 1913 001c FB1C     		add	r3, r7, #3
+ 1914 001e 1A78     		ldrb	r2, [r3]
+ 1915 0020 FB68     		ldr	r3, [r7, #12]
+ 1916 0022 1A41     		asr	r2, r2, r3
+ 1917 0024 0123     		mov	r3, #1
+ 1918 0026 1340     		and	r3, r2
+ 1919 0028 0DD0     		beq	.L99
+ 716:../Sources/generic_drivers/lcd/lcd.c **** 	  {
+ 717:../Sources/generic_drivers/lcd/lcd.c **** 		  MCU_PortSet(handle->config->bus.data[i].portRegister, handle->config->bus.data[i].pinMask);
+ 1920              		.loc 1 717 0
+ 1921 002a 7B68     		ldr	r3, [r7, #4]
+ 1922 002c 1A68     		ldr	r2, [r3]
+ 1923 002e FB68     		ldr	r3, [r7, #12]
+ 1924 0030 DB00     		lsl	r3, r3, #3
+ 1925 0032 D318     		add	r3, r2, r3
+ 1926 0034 5B68     		ldr	r3, [r3, #4]
+ 1927 0036 7A68     		ldr	r2, [r7, #4]
+ 1928 0038 1168     		ldr	r1, [r2]
+ 1929 003a FA68     		ldr	r2, [r7, #12]
+ 1930 003c D200     		lsl	r2, r2, #3
+ 1931 003e 8A18     		add	r2, r1, r2
+ 1932 0040 9268     		ldr	r2, [r2, #8]
+ 1933 0042 5A60     		str	r2, [r3, #4]
+ 1934 0044 0CE0     		b	.L100
+ 1935              	.L99:
+ 718:../Sources/generic_drivers/lcd/lcd.c **** 	  }
+ 719:../Sources/generic_drivers/lcd/lcd.c **** 	  else
+ 720:../Sources/generic_drivers/lcd/lcd.c **** 	  {
+ 721:../Sources/generic_drivers/lcd/lcd.c **** 		  MCU_PortClear(handle->config->bus.data[i].portRegister, handle->config->bus.data[i].pinMask);
+ 1936              		.loc 1 721 0
+ 1937 0046 7B68     		ldr	r3, [r7, #4]
+ 1938 0048 1A68     		ldr	r2, [r3]
+ 1939 004a FB68     		ldr	r3, [r7, #12]
+ 1940 004c DB00     		lsl	r3, r3, #3
+ 1941 004e D318     		add	r3, r2, r3
+ 1942 0050 5B68     		ldr	r3, [r3, #4]
+ 1943 0052 7A68     		ldr	r2, [r7, #4]
+ 1944 0054 1168     		ldr	r1, [r2]
+ 1945 0056 FA68     		ldr	r2, [r7, #12]
+ 1946 0058 D200     		lsl	r2, r2, #3
+ 1947 005a 8A18     		add	r2, r1, r2
+ 1948 005c 9268     		ldr	r2, [r2, #8]
+ 1949 005e 9A60     		str	r2, [r3, #8]
+ 1950              	.L100:
+ 713:../Sources/generic_drivers/lcd/lcd.c ****   for (int i = 0; i < count; i++)
+ 1951              		.loc 1 713 0
+ 1952 0060 FB68     		ldr	r3, [r7, #12]
+ 1953 0062 0133     		add	r3, r3, #1
+ 1954 0064 FB60     		str	r3, [r7, #12]
+ 1955              	.L98:
+ 713:../Sources/generic_drivers/lcd/lcd.c ****   for (int i = 0; i < count; i++)
+ 1956              		.loc 1 713 0 is_stmt 0 discriminator 1
+ 1957 0066 3B1C     		mov	r3, r7
+ 1958 0068 0B33     		add	r3, r3, #11
+ 1959 006a 1A78     		ldrb	r2, [r3]
+ 1960 006c FB68     		ldr	r3, [r7, #12]
+ 1961 006e 9A42     		cmp	r2, r3
+ 1962 0070 D4DC     		bgt	.L101
+ 1963              	.LBE3:
+ 722:../Sources/generic_drivers/lcd/lcd.c **** 	  }
+ 723:../Sources/generic_drivers/lcd/lcd.c ****   }
+ 724:../Sources/generic_drivers/lcd/lcd.c **** 
+ 725:../Sources/generic_drivers/lcd/lcd.c ****   EnablePulse(handle);
+ 1964              		.loc 1 725 0 is_stmt 1
+ 1965 0072 7B68     		ldr	r3, [r7, #4]
+ 1966 0074 181C     		mov	r0, r3
+ 1967 0076 FFF7FEFF 		bl	EnablePulse
+ 726:../Sources/generic_drivers/lcd/lcd.c **** }
+ 1968              		.loc 1 726 0
+ 1969 007a BD46     		mov	sp, r7
+ 1970 007c 04B0     		add	sp, sp, #16
+ 1971              		@ sp needed
+ 1972 007e 80BD     		pop	{r7, pc}
+ 1973              		.cfi_endproc
+ 1974              	.LFE65:
+ 1976              		.text
+ 1977              	.Letext0:
+ 1978              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1979              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 1980              		.file 4 "../Includes/MKL05Z4.h"
+ 1981              		.file 5 "../Sources/mcu_general_config.h"
+ 1982              		.file 6 "../Sources/generic_drivers/lcd/lcd.h"
+ 1983              		.file 7 "c:\\freescale\\kds_v3\\toolchain\\lib\\gcc\\arm-none-eabi\\4.8.4\\include\\stddef.h"
+ 1984              		.file 8 "../Sources/libraries/delay/delay.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lcd.c
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:22     .rodata._bigNumsCodes:00000000 _bigNumsCodes
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:19     .rodata._bigNumsCodes:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:88     .rodata._bigNumCommands:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:91     .rodata._bigNumCommands:00000000 _bigNumCommands
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:133    .bss.g_lcdConfigList:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:136    .bss.g_lcdConfigList:00000000 g_lcdConfigList
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:139    .bss.g_lcdHandleList:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:142    .bss.g_lcdHandleList:00000000 g_lcdHandleList
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:147    .bss.g_staticConfigsCreated:00000000 g_staticConfigsCreated
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:148    .bss.g_staticConfigsCreated:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:152    .bss.g_staticHandlesCreated:00000000 g_staticHandlesCreated
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:153    .bss.g_staticHandlesCreated:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:155    .text.CreateObject:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:159    .text.CreateObject:00000000 CreateObject
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:246    .text.CreateObject:00000074 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:254    .text.LCD_CreateConfig:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:259    .text.LCD_CreateConfig:00000000 LCD_CreateConfig
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:282    .text.EnablePulse:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:286    .text.EnablePulse:00000000 EnablePulse
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:348    .text.EnablePulse:0000005c $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:353    .text.SetRowOffsets:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:357    .text.SetRowOffsets:00000000 SetRowOffsets
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:401    .text.LCD_Init:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:406    .text.LCD_Init:00000000 LCD_Init
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1885   .text.WriteBits:00000000 WriteBits
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1772   .text.LCD_Command:00000000 LCD_Command
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:866    .text.LCD_Display:00000000 LCD_Display
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:612    .text.LCD_Clear:00000000 LCD_Clear
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:601    .text.LCD_Init:00000140 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:607    .text.LCD_Clear:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:654    .text.LCD_Clear:00000030 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:659    .text.LCD_Home:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:664    .text.LCD_Home:00000000 LCD_Home
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:706    .text.LCD_Home:00000030 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:711    .text.LCD_SetCursor:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:716    .text.LCD_SetCursor:00000000 LCD_SetCursor
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:805    .text.LCD_NoDisplay:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:810    .text.LCD_NoDisplay:00000000 LCD_NoDisplay
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:861    .text.LCD_Display:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:917    .text.LCD_NoCursor:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:922    .text.LCD_NoCursor:00000000 LCD_NoCursor
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:973    .text.LCD_Cursor:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:978    .text.LCD_Cursor:00000000 LCD_Cursor
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1029   .text.LCD_NoBlink:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1034   .text.LCD_NoBlink:00000000 LCD_NoBlink
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1085   .text.LCD_Blink:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1090   .text.LCD_Blink:00000000 LCD_Blink
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1141   .text.LCD_ScrollDisplayLeft:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1146   .text.LCD_ScrollDisplayLeft:00000000 LCD_ScrollDisplayLeft
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1181   .text.LCD_ScrollDisplayRight:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1186   .text.LCD_ScrollDisplayRight:00000000 LCD_ScrollDisplayRight
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1221   .text.LCD_LeftToRight:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1226   .text.LCD_LeftToRight:00000000 LCD_LeftToRight
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1277   .text.LCD_RightToLeft:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1282   .text.LCD_RightToLeft:00000000 LCD_RightToLeft
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1333   .text.LCD_Autoscroll:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1338   .text.LCD_Autoscroll:00000000 LCD_Autoscroll
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1389   .text.LCD_NoAutoscroll:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1394   .text.LCD_NoAutoscroll:00000000 LCD_NoAutoscroll
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1445   .text.LCD_CreateChar:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1450   .text.LCD_CreateChar:00000000 LCD_CreateChar
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1829   .text.LCD_Write:00000000 LCD_Write
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1533   .text.LCD_WriteString:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1538   .text.LCD_WriteString:00000000 LCD_WriteString
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1590   .text.LCD_CreateBigNumsChars:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1595   .text.LCD_CreateBigNumsChars:00000000 LCD_CreateBigNumsChars
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1665   .text.LCD_CreateBigNumsChars:00000064 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1670   .text.LCD_WriteBigNum:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1675   .text.LCD_WriteBigNum:00000000 LCD_WriteBigNum
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1762   .text.LCD_WriteBigNum:00000094 $d
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1767   .text.LCD_Command:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1824   .text.LCD_Write:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccMWLUzF.s:1881   .text.WriteBits:00000000 $t
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+                           .group:00000000 wm4.lcd.h.59.7bba9926f48e0bbbc91322b4531ef773
+                           .group:00000000 wm4.delay.h.39.43a7ebb51f451ed360034624059d6293
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.stddef.h.158.a7efb00f6cbc6f43213b50e183c9830c
+                           .group:00000000 wm4.lock.h.2.9bc98482741e5e2a9450b12934a684ea
+                           .group:00000000 wm4._types.h.54.d3d34a3b7f3cc230cd159baf022b4b08
+                           .group:00000000 wm4.stddef.h.158.61317cdbfb4026324507d123a50b0fd6
+                           .group:00000000 wm4.reent.h.17.8bd9e4098e0428508c282cad794fae43
+                           .group:00000000 wm4.stdlib.h.53.a73f7e963d962393b7f9086194931e4a
+                           .group:00000000 wm4.cdefs.h.56.a2d04de9d47039852021e66fca39bb58
+                           .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:00000000 wm4.math.h.35.543015094efee9028e0e4b7949018580
+                           .group:00000000 wm4.emb_util.h.51.8ea7742b72b4040e74b9712312555cf1
+
+UNDEFINED SYMBOLS
+Delay_WaitCycles
+g_mcuCyclesForUs
+Delay_Waitms

@@ -1,0 +1,600 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"delay.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.comm	g_mcuCoreFrequency,4,4
+  18              		.comm	g_mcuCyclesForUs,4,4
+  19              		.comm	g_mcuCyclesForMs,4,4
+  20              		.global	__aeabi_uidiv
+  21              		.section	.text.Delay_Init,"ax",%progbits
+  22              		.align	2
+  23              		.global	Delay_Init
+  24              		.code	16
+  25              		.thumb_func
+  27              	Delay_Init:
+  28              	.LFB34:
+  29              		.file 1 "../Sources/libraries/delay/delay.c"
+   1:../Sources/libraries/delay/delay.c **** /**
+   2:../Sources/libraries/delay/delay.c ****  * @file	delay.c
+   3:../Sources/libraries/delay/delay.c ****  * @author  Matheus Leitzke Pinto <matheus.pinto@ifsc.edu.br>
+   4:../Sources/libraries/delay/delay.c ****  * @version 1.0
+   5:../Sources/libraries/delay/delay.c ****  * @date    2021
+   6:../Sources/libraries/delay/delay.c ****  *
+   7:../Sources/libraries/delay/delay.c ****  * @section LICENSE
+   8:../Sources/libraries/delay/delay.c ****  *
+   9:../Sources/libraries/delay/delay.c ****  * This program is free software; you can redistribute it and/or
+  10:../Sources/libraries/delay/delay.c ****  * modify it under the terms of the GNU General Public License as
+  11:../Sources/libraries/delay/delay.c ****  * published by the Free Software Foundation; either version 2 of
+  12:../Sources/libraries/delay/delay.c ****  * the License, or (at your option) any later version.
+  13:../Sources/libraries/delay/delay.c ****  *
+  14:../Sources/libraries/delay/delay.c ****  * This program is distributed in the hope that it will be useful, but
+  15:../Sources/libraries/delay/delay.c ****  * WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:../Sources/libraries/delay/delay.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  17:../Sources/libraries/delay/delay.c ****  * General Public License for more details at
+  18:../Sources/libraries/delay/delay.c ****  * http://www.gnu.org/copyleft/gpl.html
+  19:../Sources/libraries/delay/delay.c ****  *
+  20:../Sources/libraries/delay/delay.c ****  * @section DESCRIPTION
+  21:../Sources/libraries/delay/delay.c ****  *
+  22:../Sources/libraries/delay/delay.c ****  * A library with delay generation functions.
+  23:../Sources/libraries/delay/delay.c ****  *
+  24:../Sources/libraries/delay/delay.c ****  * This library was adapted from Processor Expert Component by Erich Styger:
+  25:../Sources/libraries/delay/delay.c ****  * https://sourceforge.net/projects/mcuoneclipse/files/
+  26:../Sources/libraries/delay/delay.c ****  *
+  27:../Sources/libraries/delay/delay.c ****  * Supported CPUs:
+  28:../Sources/libraries/delay/delay.c ****  *
+  29:../Sources/libraries/delay/delay.c ****  *   - ARM-Cortex M0 to M7;
+  30:../Sources/libraries/delay/delay.c ****  *   - RISC-V
+  31:../Sources/libraries/delay/delay.c ****  *
+  32:../Sources/libraries/delay/delay.c ****  * Supported OSes:
+  33:../Sources/libraries/delay/delay.c ****  *
+  34:../Sources/libraries/delay/delay.c ****  *   - FreeRTOS.
+  35:../Sources/libraries/delay/delay.c ****  *
+  36:../Sources/libraries/delay/delay.c ****  */
+  37:../Sources/libraries/delay/delay.c **** 
+  38:../Sources/libraries/delay/delay.c **** #include "delay.h"
+  39:../Sources/libraries/delay/delay.c **** 
+  40:../Sources/libraries/delay/delay.c **** 
+  41:../Sources/libraries/delay/delay.c **** /*******************************************************************************
+  42:../Sources/libraries/delay/delay.c ****  * Definitions
+  43:../Sources/libraries/delay/delay.c ****  ******************************************************************************/
+  44:../Sources/libraries/delay/delay.c **** 
+  45:../Sources/libraries/delay/delay.c **** /* DWT (Data Watchpoint and Trace) registers, only exists on ARM Cortex with a DWT unit */
+  46:../Sources/libraries/delay/delay.c **** 
+  47:../Sources/libraries/delay/delay.c **** /*!< DWT Control register */
+  48:../Sources/libraries/delay/delay.c **** #define DELAY_ARM_DWT_CONTROL             (*((volatile uint32_t*)0xE0001000))
+  49:../Sources/libraries/delay/delay.c **** 
+  50:../Sources/libraries/delay/delay.c **** /*!< CYCCNTENA bit in DWT_CONTROL register */
+  51:../Sources/libraries/delay/delay.c **** #define DELAY_ARM_DWT_CYCCNTENA_BIT       (1UL<<0)
+  52:../Sources/libraries/delay/delay.c **** 
+  53:../Sources/libraries/delay/delay.c **** /*!< DWT Cycle Counter register */
+  54:../Sources/libraries/delay/delay.c **** #define DELAY_ARM_DWT_CYCCNT              (*((volatile uint32_t*)0xE0001004))
+  55:../Sources/libraries/delay/delay.c **** 
+  56:../Sources/libraries/delay/delay.c **** /*!< DEMCR: Debug Exception and Monitor Control Register */
+  57:../Sources/libraries/delay/delay.c **** #define DELAY_ARM_DEMCR                   (*((volatile uint32_t*)0xE000EDFC))
+  58:../Sources/libraries/delay/delay.c **** 
+  59:../Sources/libraries/delay/delay.c **** /*!< Trace enable bit in DEMCR register */
+  60:../Sources/libraries/delay/delay.c **** #define DELAY_ARM_TRCENA_BIT              (1UL<<24)
+  61:../Sources/libraries/delay/delay.c **** 
+  62:../Sources/libraries/delay/delay.c **** uint32_t g_mcuCoreFrequency;
+  63:../Sources/libraries/delay/delay.c **** uint32_t g_mcuCyclesForUs, g_mcuCyclesForMs;
+  64:../Sources/libraries/delay/delay.c **** 
+  65:../Sources/libraries/delay/delay.c **** /*******************************************************************************
+  66:../Sources/libraries/delay/delay.c ****  * Private Prototypes
+  67:../Sources/libraries/delay/delay.c ****  ******************************************************************************/
+  68:../Sources/libraries/delay/delay.c **** 
+  69:../Sources/libraries/delay/delay.c **** /**
+  70:../Sources/libraries/delay/delay.c ****  * @brief Wait for 10 CPU cycles.
+  71:../Sources/libraries/delay/delay.c ****  *
+  72:../Sources/libraries/delay/delay.c ****  */
+  73:../Sources/libraries/delay/delay.c **** void Wait10Cycles(void);
+  74:../Sources/libraries/delay/delay.c **** 
+  75:../Sources/libraries/delay/delay.c **** /**
+  76:../Sources/libraries/delay/delay.c ****  * @brief Wait for 100 CPU cycles.
+  77:../Sources/libraries/delay/delay.c ****  *
+  78:../Sources/libraries/delay/delay.c ****  */
+  79:../Sources/libraries/delay/delay.c **** void Wait100Cycles(void);
+  80:../Sources/libraries/delay/delay.c **** 
+  81:../Sources/libraries/delay/delay.c **** 
+  82:../Sources/libraries/delay/delay.c **** /*******************************************************************************
+  83:../Sources/libraries/delay/delay.c ****  * Code
+  84:../Sources/libraries/delay/delay.c ****  ******************************************************************************/
+  85:../Sources/libraries/delay/delay.c **** 
+  86:../Sources/libraries/delay/delay.c **** /**
+  87:../Sources/libraries/delay/delay.c ****  * @brief Enable trace and debug block DEMCR (Debug Exception and Monitor Control Register.
+  88:../Sources/libraries/delay/delay.c ****  *
+  89:../Sources/libraries/delay/delay.c ****  */
+  90:../Sources/libraries/delay/delay.c **** #define ArmInitCycleCounter() \
+  91:../Sources/libraries/delay/delay.c ****   DELAY_ARM_DEMCR |= DELAY_ARM_TRCENA_BIT
+  92:../Sources/libraries/delay/delay.c **** 
+  93:../Sources/libraries/delay/delay.c **** /**
+  94:../Sources/libraries/delay/delay.c ****  * @brief Reset cycle counter.
+  95:../Sources/libraries/delay/delay.c ****  *
+  96:../Sources/libraries/delay/delay.c ****  */
+  97:../Sources/libraries/delay/delay.c **** #define ArmResetCycleCounter() \
+  98:../Sources/libraries/delay/delay.c ****   DELAY_ARM_DWT_CYCCNT = 0
+  99:../Sources/libraries/delay/delay.c **** 
+ 100:../Sources/libraries/delay/delay.c **** /**
+ 101:../Sources/libraries/delay/delay.c ****  * @brief Enable cycle counter.
+ 102:../Sources/libraries/delay/delay.c ****  *
+ 103:../Sources/libraries/delay/delay.c ****  */
+ 104:../Sources/libraries/delay/delay.c **** #define ArmEnableCycleCounter() \
+ 105:../Sources/libraries/delay/delay.c ****   DELAY_ARM_DWT_CONTROL |= DELAY_ARM_DWT_CYCCNTENA_BIT
+ 106:../Sources/libraries/delay/delay.c **** 
+ 107:../Sources/libraries/delay/delay.c **** /**
+ 108:../Sources/libraries/delay/delay.c ****  * @brief Disable cycle counter.
+ 109:../Sources/libraries/delay/delay.c ****  *
+ 110:../Sources/libraries/delay/delay.c ****  */
+ 111:../Sources/libraries/delay/delay.c **** #define ArmDisableCycleCounter() \
+ 112:../Sources/libraries/delay/delay.c ****   DELAY_ARM_DWT_CONTROL &= ~DELAY_ARM_DWT_CYCCNTENA_BIT
+ 113:../Sources/libraries/delay/delay.c **** 
+ 114:../Sources/libraries/delay/delay.c **** /**
+ 115:../Sources/libraries/delay/delay.c ****  * @brief Read cycle counter register.
+ 116:../Sources/libraries/delay/delay.c ****  *
+ 117:../Sources/libraries/delay/delay.c ****  */
+ 118:../Sources/libraries/delay/delay.c **** #define ArmGetCycleCounter() \
+ 119:../Sources/libraries/delay/delay.c ****   DELAY_ARM_DWT_CYCCNT
+ 120:../Sources/libraries/delay/delay.c **** 
+ 121:../Sources/libraries/delay/delay.c **** void Delay_Init(void)
+ 122:../Sources/libraries/delay/delay.c **** {
+  30              		.loc 1 122 0
+  31              		.cfi_startproc
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 00AF     		add	r7, sp, #0
+  37              		.cfi_def_cfa_register 7
+ 123:../Sources/libraries/delay/delay.c **** #ifdef DELAY_USE_ARM_CYCLE_COUNTER
+ 124:../Sources/libraries/delay/delay.c ****     /* init cycle counter */
+ 125:../Sources/libraries/delay/delay.c ****     ArmInitCycleCounter();
+ 126:../Sources/libraries/delay/delay.c ****     ArmResetCycleCounter();
+ 127:../Sources/libraries/delay/delay.c ****     ArmEnableCycleCounter();
+ 128:../Sources/libraries/delay/delay.c **** #endif
+ 129:../Sources/libraries/delay/delay.c **** 	g_mcuCoreFrequency = DELAY_CLOCK_FREQUENCY;
+  38              		.loc 1 129 0
+  39 0004 0D4B     		ldr	r3, .L2
+  40 0006 1A68     		ldr	r2, [r3]
+  41 0008 0D4B     		ldr	r3, .L2+4
+  42 000a 1A60     		str	r2, [r3]
+ 130:../Sources/libraries/delay/delay.c **** 	g_mcuCyclesForMs = (g_mcuCoreFrequency/1000);
+  43              		.loc 1 130 0
+  44 000c 0C4B     		ldr	r3, .L2+4
+  45 000e 1B68     		ldr	r3, [r3]
+  46 0010 181C     		mov	r0, r3
+  47 0012 FA23     		mov	r3, #250
+  48 0014 9900     		lsl	r1, r3, #2
+  49 0016 FFF7FEFF 		bl	__aeabi_uidiv
+  50 001a 031C     		mov	r3, r0
+  51 001c 1A1C     		mov	r2, r3
+  52 001e 094B     		ldr	r3, .L2+8
+  53 0020 1A60     		str	r2, [r3]
+ 131:../Sources/libraries/delay/delay.c **** 	g_mcuCyclesForUs = (g_mcuCoreFrequency/1000)/1000;
+  54              		.loc 1 131 0
+  55 0022 074B     		ldr	r3, .L2+4
+  56 0024 1B68     		ldr	r3, [r3]
+  57 0026 181C     		mov	r0, r3
+  58 0028 0749     		ldr	r1, .L2+12
+  59 002a FFF7FEFF 		bl	__aeabi_uidiv
+  60 002e 031C     		mov	r3, r0
+  61 0030 1A1C     		mov	r2, r3
+  62 0032 064B     		ldr	r3, .L2+16
+  63 0034 1A60     		str	r2, [r3]
+ 132:../Sources/libraries/delay/delay.c **** }
+  64              		.loc 1 132 0
+  65 0036 BD46     		mov	sp, r7
+  66              		@ sp needed
+  67 0038 80BD     		pop	{r7, pc}
+  68              	.L3:
+  69 003a C046     		.align	2
+  70              	.L2:
+  71 003c 00000000 		.word	SystemCoreClock
+  72 0040 00000000 		.word	g_mcuCoreFrequency
+  73 0044 00000000 		.word	g_mcuCyclesForMs
+  74 0048 40420F00 		.word	1000000
+  75 004c 00000000 		.word	g_mcuCyclesForUs
+  76              		.cfi_endproc
+  77              	.LFE34:
+  79              		.section	.text.Wait10Cycles,"ax",%progbits
+  80              		.align	2
+  81              		.global	Wait10Cycles
+  82              		.code	16
+  83              		.thumb_func
+  85              	Wait10Cycles:
+  86              	.LFB35:
+ 133:../Sources/libraries/delay/delay.c **** 
+ 134:../Sources/libraries/delay/delay.c **** #ifdef __GNUC__
+ 135:../Sources/libraries/delay/delay.c **** #ifdef DELAY_CPU_IS_RISC_V /* naked is ignored for RISC-V gcc */
+ 136:../Sources/libraries/delay/delay.c ****   #ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't s
+ 137:../Sources/libraries/delay/delay.c ****   #else
+ 138:../Sources/libraries/delay/delay.c ****     __attribute__((no_instrument_function))
+ 139:../Sources/libraries/delay/delay.c ****   #endif
+ 140:../Sources/libraries/delay/delay.c **** #else
+ 141:../Sources/libraries/delay/delay.c ****   #ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't s
+ 142:../Sources/libraries/delay/delay.c ****     __attribute__((naked))
+ 143:../Sources/libraries/delay/delay.c ****   #else
+ 144:../Sources/libraries/delay/delay.c ****     __attribute__((naked, no_instrument_function))
+ 145:../Sources/libraries/delay/delay.c ****   #endif
+ 146:../Sources/libraries/delay/delay.c **** #endif
+ 147:../Sources/libraries/delay/delay.c **** #endif
+ 148:../Sources/libraries/delay/delay.c **** void Wait10Cycles(void)
+ 149:../Sources/libraries/delay/delay.c **** {
+  87              		.loc 1 149 0
+  88              		.cfi_startproc
+ 150:../Sources/libraries/delay/delay.c ****     /* This function will wait 10 CPU cycles (including call overhead). */
+ 151:../Sources/libraries/delay/delay.c ****     /*lint -save -e522 function lacks side effect. */
+ 152:../Sources/libraries/delay/delay.c **** 
+ 153:../Sources/libraries/delay/delay.c **** #ifdef DELAY_CPU_IS_ARM_CORTEX_M
+ 154:../Sources/libraries/delay/delay.c ****     /* NOTE: Cortex-M0 and M4 have 1 cycle for a NOP */
+ 155:../Sources/libraries/delay/delay.c ****     /* Compiler is GNUC */
+ 156:../Sources/libraries/delay/delay.c ****     __asm (
+  89              		.loc 1 156 0
+  90              	@ 156 "../Sources/libraries/delay/delay.c" 1
+  91 0000 C046     		nop   
+  92 0002 C046     		nop   
+  93 0004 C046     		nop   
+  94 0006 7047     		bx lr 
+  95              		
+  96              	@ 0 "" 2
+ 157:../Sources/libraries/delay/delay.c ****     /* bl Wait10Cycles() to here: [4] */
+ 158:../Sources/libraries/delay/delay.c ****     "nop   \n\t" /* [1] */
+ 159:../Sources/libraries/delay/delay.c ****     "nop   \n\t" /* [1] */
+ 160:../Sources/libraries/delay/delay.c ****     "nop   \n\t" /* [1] */
+ 161:../Sources/libraries/delay/delay.c ****     "bx lr \n\t" /* [3] */
+ 162:../Sources/libraries/delay/delay.c ****     );
+ 163:../Sources/libraries/delay/delay.c **** #elif DELAY_CPU_IS_RISC_V
+ 164:../Sources/libraries/delay/delay.c ****   /* \todo */
+ 165:../Sources/libraries/delay/delay.c ****     __asm ( /* assuming [4] for overhead */
+ 166:../Sources/libraries/delay/delay.c ****     "nop   \n\t" /* [1] */
+ 167:../Sources/libraries/delay/delay.c ****     "nop   \n\t" /* [1] */
+ 168:../Sources/libraries/delay/delay.c ****     "nop   \n\t" /* [1] */
+ 169:../Sources/libraries/delay/delay.c ****     "nop   \n\t" /* [1] */
+ 170:../Sources/libraries/delay/delay.c ****   );
+ 171:../Sources/libraries/delay/delay.c **** #endif
+ 172:../Sources/libraries/delay/delay.c ****   /*lint -restore */
+ 173:../Sources/libraries/delay/delay.c **** }
+  97              		.loc 1 173 0
+  98              		.code	16
+  99              		.cfi_endproc
+ 100              	.LFE35:
+ 102              		.section	.text.Wait100Cycles,"ax",%progbits
+ 103              		.align	2
+ 104              		.global	Wait100Cycles
+ 105              		.code	16
+ 106              		.thumb_func
+ 108              	Wait100Cycles:
+ 109              	.LFB36:
+ 174:../Sources/libraries/delay/delay.c **** 
+ 175:../Sources/libraries/delay/delay.c **** #ifdef __GNUC__
+ 176:../Sources/libraries/delay/delay.c ****   #ifdef DELAY_CPU_IS_RISC_V /* naked is ignored for RISC-V gcc */
+ 177:../Sources/libraries/delay/delay.c ****     #ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't
+ 178:../Sources/libraries/delay/delay.c ****     #else
+ 179:../Sources/libraries/delay/delay.c ****       __attribute__((no_instrument_function))
+ 180:../Sources/libraries/delay/delay.c ****     #endif
+ 181:../Sources/libraries/delay/delay.c ****   #else
+ 182:../Sources/libraries/delay/delay.c ****     #ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't
+ 183:../Sources/libraries/delay/delay.c ****       __attribute__((naked))
+ 184:../Sources/libraries/delay/delay.c ****     #else
+ 185:../Sources/libraries/delay/delay.c ****       __attribute__((naked, no_instrument_function))
+ 186:../Sources/libraries/delay/delay.c ****     #endif
+ 187:../Sources/libraries/delay/delay.c ****   #endif
+ 188:../Sources/libraries/delay/delay.c **** #endif
+ 189:../Sources/libraries/delay/delay.c **** void Wait100Cycles(void)
+ 190:../Sources/libraries/delay/delay.c **** {
+ 110              		.loc 1 190 0
+ 111              		.cfi_startproc
+ 191:../Sources/libraries/delay/delay.c ****    /* This function will spend 100 CPU cycles (including call overhead). */
+ 192:../Sources/libraries/delay/delay.c ****    /*lint -save -e522 function lacks side effect. */
+ 193:../Sources/libraries/delay/delay.c **** #ifdef DELAY_CPU_IS_ARM_CORTEX_M
+ 194:../Sources/libraries/delay/delay.c ****    __asm (
+ 112              		.loc 1 194 0
+ 113              	@ 194 "../Sources/libraries/delay/delay.c" 1
+ 114 0000 01B4     		push {r0}   
+ 115 0002 0020     		movs r0, #0 
+ 116              		loop:       
+ 117 0004 C046     		nop         
+ 118 0006 C046     		nop         
+ 119 0008 C046     		nop         
+ 120 000a C046     		nop         
+ 121 000c 0130     		add r0,#1   
+ 122 000e 0928     		cmp r0,#9   
+ 123 0010 F8D9     		bls loop    
+ 124 0012 C046     		nop         
+ 125 0014 C046     		nop         
+ 126 0016 C046     		nop         
+ 127 0018 C046     		nop         
+ 128 001a C046     		nop         
+ 129 001c C046     		nop         
+ 130 001e C046     		nop         
+ 131 0020 01BC     		pop {r0}    
+ 132 0022 7047     		bx lr       
+ 133              		
+ 134              	@ 0 "" 2
+ 195:../Sources/libraries/delay/delay.c ****      /* bl to here:               [4] */
+ 196:../Sources/libraries/delay/delay.c ****      "push {r0}   \n\t"        /* [2] */
+ 197:../Sources/libraries/delay/delay.c ****      "movs r0, #0 \n\t"        /* [1] */
+ 198:../Sources/libraries/delay/delay.c ****      "loop:       \n\t"
+ 199:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 200:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 201:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 202:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 203:../Sources/libraries/delay/delay.c ****      "add r0,#1   \n\t"        /* [1] */
+ 204:../Sources/libraries/delay/delay.c ****      "cmp r0,#9   \n\t"        /* [1] */
+ 205:../Sources/libraries/delay/delay.c ****      "bls loop    \n\t"        /* [3] taken, [1] not taken */
+ 206:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 207:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 208:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 209:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 210:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 211:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 212:../Sources/libraries/delay/delay.c ****      "nop         \n\t"        /* [1] */
+ 213:../Sources/libraries/delay/delay.c ****      "pop {r0}    \n\t"        /* [2] */
+ 214:../Sources/libraries/delay/delay.c ****      "bx lr       \n\t"        /* [3] */
+ 215:../Sources/libraries/delay/delay.c ****    );
+ 216:../Sources/libraries/delay/delay.c **** #elif DELAY_CPU_IS_RISC_V
+ 217:../Sources/libraries/delay/delay.c ****    /* \todo */
+ 218:../Sources/libraries/delay/delay.c ****    __asm ( /* assuming [10] for overhead */
+ 219:../Sources/libraries/delay/delay.c **** 	 "  li a5,20        \n\t"
+ 220:../Sources/libraries/delay/delay.c **** 	 "Loop:             \n\t"
+ 221:../Sources/libraries/delay/delay.c **** 	 "  addi a5,a5,-1   \n\t"
+ 222:../Sources/libraries/delay/delay.c **** 	 "  bgtz a5, Loop   \n\t"
+ 223:../Sources/libraries/delay/delay.c ****    );
+ 224:../Sources/libraries/delay/delay.c **** #endif
+ 225:../Sources/libraries/delay/delay.c ****   /*lint -restore */
+ 226:../Sources/libraries/delay/delay.c **** }
+ 135              		.loc 1 226 0
+ 136              		.code	16
+ 137              		.cfi_endproc
+ 138              	.LFE36:
+ 140              		.section	.text.Delay_WaitCycles,"ax",%progbits
+ 141              		.align	2
+ 142              		.global	Delay_WaitCycles
+ 143              		.code	16
+ 144              		.thumb_func
+ 146              	Delay_WaitCycles:
+ 147              	.LFB37:
+ 227:../Sources/libraries/delay/delay.c **** 
+ 228:../Sources/libraries/delay/delay.c **** void Delay_WaitCycles(uint32_t cycles)
+ 229:../Sources/libraries/delay/delay.c **** {
+ 148              		.loc 1 229 0
+ 149              		.cfi_startproc
+ 150 0000 80B5     		push	{r7, lr}
+ 151              		.cfi_def_cfa_offset 8
+ 152              		.cfi_offset 7, -8
+ 153              		.cfi_offset 14, -4
+ 154 0002 82B0     		sub	sp, sp, #8
+ 155              		.cfi_def_cfa_offset 16
+ 156 0004 00AF     		add	r7, sp, #0
+ 157              		.cfi_def_cfa_register 7
+ 158 0006 7860     		str	r0, [r7, #4]
+ 230:../Sources/libraries/delay/delay.c **** /*lint -save -e522 function lacks side effect. */
+ 231:../Sources/libraries/delay/delay.c **** #ifdef DELAY_USE_ARM_CYCLE_COUNTER
+ 232:../Sources/libraries/delay/delay.c **** 
+ 233:../Sources/libraries/delay/delay.c ****    cycles += ArmGetCycleCounter();
+ 234:../Sources/libraries/delay/delay.c ****    while (ArmGetCycleCounter() < cycles)
+ 235:../Sources/libraries/delay/delay.c ****    {
+ 236:../Sources/libraries/delay/delay.c **** 	 /* wait */
+ 237:../Sources/libraries/delay/delay.c ****    }
+ 238:../Sources/libraries/delay/delay.c **** #else
+ 239:../Sources/libraries/delay/delay.c **** 
+ 240:../Sources/libraries/delay/delay.c ****    while (cycles > 1000)
+ 159              		.loc 1 240 0
+ 160 0008 17E0     		b	.L7
+ 161              	.L8:
+ 241:../Sources/libraries/delay/delay.c ****    {
+ 242:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 162              		.loc 1 242 0
+ 163 000a FFF7FEFF 		bl	Wait100Cycles
+ 243:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 164              		.loc 1 243 0
+ 165 000e FFF7FEFF 		bl	Wait100Cycles
+ 244:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 166              		.loc 1 244 0
+ 167 0012 FFF7FEFF 		bl	Wait100Cycles
+ 245:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 168              		.loc 1 245 0
+ 169 0016 FFF7FEFF 		bl	Wait100Cycles
+ 246:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 170              		.loc 1 246 0
+ 171 001a FFF7FEFF 		bl	Wait100Cycles
+ 247:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 172              		.loc 1 247 0
+ 173 001e FFF7FEFF 		bl	Wait100Cycles
+ 248:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 174              		.loc 1 248 0
+ 175 0022 FFF7FEFF 		bl	Wait100Cycles
+ 249:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 176              		.loc 1 249 0
+ 177 0026 FFF7FEFF 		bl	Wait100Cycles
+ 250:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 178              		.loc 1 250 0
+ 179 002a FFF7FEFF 		bl	Wait100Cycles
+ 251:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 180              		.loc 1 251 0
+ 181 002e FFF7FEFF 		bl	Wait100Cycles
+ 252:../Sources/libraries/delay/delay.c **** 	 cycles -= 1000;
+ 182              		.loc 1 252 0
+ 183 0032 7B68     		ldr	r3, [r7, #4]
+ 184 0034 0E4A     		ldr	r2, .L13
+ 185 0036 9B18     		add	r3, r3, r2
+ 186 0038 7B60     		str	r3, [r7, #4]
+ 187              	.L7:
+ 240:../Sources/libraries/delay/delay.c ****    while (cycles > 1000)
+ 188              		.loc 1 240 0 discriminator 1
+ 189 003a 7A68     		ldr	r2, [r7, #4]
+ 190 003c FA23     		mov	r3, #250
+ 191 003e 9B00     		lsl	r3, r3, #2
+ 192 0040 9A42     		cmp	r2, r3
+ 193 0042 E2D8     		bhi	.L8
+ 253:../Sources/libraries/delay/delay.c ****    }
+ 254:../Sources/libraries/delay/delay.c ****    /*If cycles > 100 conditional evaluation will be minimized
+ 255:../Sources/libraries/delay/delay.c ****      calling delayer_Wait100Cycles. */
+ 256:../Sources/libraries/delay/delay.c ****    while (cycles > 100)
+ 194              		.loc 1 256 0
+ 195 0044 04E0     		b	.L9
+ 196              	.L10:
+ 257:../Sources/libraries/delay/delay.c ****    {
+ 258:../Sources/libraries/delay/delay.c **** 	 Wait100Cycles();
+ 197              		.loc 1 258 0
+ 198 0046 FFF7FEFF 		bl	Wait100Cycles
+ 259:../Sources/libraries/delay/delay.c **** 	 cycles -= 100;
+ 199              		.loc 1 259 0
+ 200 004a 7B68     		ldr	r3, [r7, #4]
+ 201 004c 643B     		sub	r3, r3, #100
+ 202 004e 7B60     		str	r3, [r7, #4]
+ 203              	.L9:
+ 256:../Sources/libraries/delay/delay.c ****    while (cycles > 100)
+ 204              		.loc 1 256 0 discriminator 1
+ 205 0050 7B68     		ldr	r3, [r7, #4]
+ 206 0052 642B     		cmp	r3, #100
+ 207 0054 F7D8     		bhi	.L10
+ 260:../Sources/libraries/delay/delay.c ****    }
+ 261:../Sources/libraries/delay/delay.c ****    while (cycles > 10)
+ 208              		.loc 1 261 0
+ 209 0056 04E0     		b	.L11
+ 210              	.L12:
+ 262:../Sources/libraries/delay/delay.c ****    {
+ 263:../Sources/libraries/delay/delay.c **** 	 Wait10Cycles();
+ 211              		.loc 1 263 0
+ 212 0058 FFF7FEFF 		bl	Wait10Cycles
+ 264:../Sources/libraries/delay/delay.c **** 	 cycles -= 10;
+ 213              		.loc 1 264 0
+ 214 005c 7B68     		ldr	r3, [r7, #4]
+ 215 005e 0A3B     		sub	r3, r3, #10
+ 216 0060 7B60     		str	r3, [r7, #4]
+ 217              	.L11:
+ 261:../Sources/libraries/delay/delay.c ****    while (cycles > 10)
+ 218              		.loc 1 261 0 discriminator 1
+ 219 0062 7B68     		ldr	r3, [r7, #4]
+ 220 0064 0A2B     		cmp	r3, #10
+ 221 0066 F7D8     		bhi	.L12
+ 265:../Sources/libraries/delay/delay.c ****    }
+ 266:../Sources/libraries/delay/delay.c **** #endif
+ 267:../Sources/libraries/delay/delay.c ****   /*lint -restore */
+ 268:../Sources/libraries/delay/delay.c **** }
+ 222              		.loc 1 268 0
+ 223 0068 BD46     		mov	sp, r7
+ 224 006a 02B0     		add	sp, sp, #8
+ 225              		@ sp needed
+ 226 006c 80BD     		pop	{r7, pc}
+ 227              	.L14:
+ 228 006e C046     		.align	2
+ 229              	.L13:
+ 230 0070 18FCFFFF 		.word	-1000
+ 231              		.cfi_endproc
+ 232              	.LFE37:
+ 234              		.section	.text.Delay_Waitms,"ax",%progbits
+ 235              		.align	2
+ 236              		.global	Delay_Waitms
+ 237              		.code	16
+ 238              		.thumb_func
+ 240              	Delay_Waitms:
+ 241              	.LFB38:
+ 269:../Sources/libraries/delay/delay.c **** 
+ 270:../Sources/libraries/delay/delay.c **** void Delay_Waitms(uint16_t ms)
+ 271:../Sources/libraries/delay/delay.c **** {
+ 242              		.loc 1 271 0
+ 243              		.cfi_startproc
+ 244 0000 80B5     		push	{r7, lr}
+ 245              		.cfi_def_cfa_offset 8
+ 246              		.cfi_offset 7, -8
+ 247              		.cfi_offset 14, -4
+ 248 0002 82B0     		sub	sp, sp, #8
+ 249              		.cfi_def_cfa_offset 16
+ 250 0004 00AF     		add	r7, sp, #0
+ 251              		.cfi_def_cfa_register 7
+ 252 0006 021C     		mov	r2, r0
+ 253 0008 BB1D     		add	r3, r7, #6
+ 254 000a 1A80     		strh	r2, [r3]
+ 272:../Sources/libraries/delay/delay.c ****    /*lint -save -e522 function lacks side effect. */
+ 273:../Sources/libraries/delay/delay.c ****    while (ms > 0)
+ 255              		.loc 1 273 0
+ 256 000c 09E0     		b	.L16
+ 257              	.L17:
+ 274:../Sources/libraries/delay/delay.c ****    {
+ 275:../Sources/libraries/delay/delay.c ****      Delay_WaitCycles(g_mcuCyclesForMs);
+ 258              		.loc 1 275 0
+ 259 000e 084B     		ldr	r3, .L18
+ 260 0010 1B68     		ldr	r3, [r3]
+ 261 0012 181C     		mov	r0, r3
+ 262 0014 FFF7FEFF 		bl	Delay_WaitCycles
+ 276:../Sources/libraries/delay/delay.c ****      --ms;
+ 263              		.loc 1 276 0
+ 264 0018 BB1D     		add	r3, r7, #6
+ 265 001a BA1D     		add	r2, r7, #6
+ 266 001c 1288     		ldrh	r2, [r2]
+ 267 001e 013A     		sub	r2, r2, #1
+ 268 0020 1A80     		strh	r2, [r3]
+ 269              	.L16:
+ 273:../Sources/libraries/delay/delay.c ****    while (ms > 0)
+ 270              		.loc 1 273 0 discriminator 1
+ 271 0022 BB1D     		add	r3, r7, #6
+ 272 0024 1B88     		ldrh	r3, [r3]
+ 273 0026 002B     		cmp	r3, #0
+ 274 0028 F1D1     		bne	.L17
+ 277:../Sources/libraries/delay/delay.c ****    }
+ 278:../Sources/libraries/delay/delay.c ****   /*lint -restore */
+ 279:../Sources/libraries/delay/delay.c **** }
+ 275              		.loc 1 279 0
+ 276 002a BD46     		mov	sp, r7
+ 277 002c 02B0     		add	sp, sp, #8
+ 278              		@ sp needed
+ 279 002e 80BD     		pop	{r7, pc}
+ 280              	.L19:
+ 281              		.align	2
+ 282              	.L18:
+ 283 0030 00000000 		.word	g_mcuCyclesForMs
+ 284              		.cfi_endproc
+ 285              	.LFE38:
+ 287              		.text
+ 288              	.Letext0:
+ 289              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 290              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 291              		.file 4 "../Includes/system_MKL05Z4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+                            *COM*:00000004 g_mcuCoreFrequency
+                            *COM*:00000004 g_mcuCyclesForUs
+                            *COM*:00000004 g_mcuCyclesForMs
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:22     .text.Delay_Init:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:27     .text.Delay_Init:00000000 Delay_Init
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:71     .text.Delay_Init:0000003c $d
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:80     .text.Wait10Cycles:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:85     .text.Wait10Cycles:00000000 Wait10Cycles
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:103    .text.Wait100Cycles:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:108    .text.Wait100Cycles:00000000 Wait100Cycles
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:116    .text.Wait100Cycles:00000004 loop
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:141    .text.Delay_WaitCycles:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:146    .text.Delay_WaitCycles:00000000 Delay_WaitCycles
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:230    .text.Delay_WaitCycles:00000070 $d
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:235    .text.Delay_Waitms:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:240    .text.Delay_Waitms:00000000 Delay_Waitms
+C:\Users\mathe\AppData\Local\Temp\ccef3FEj.s:283    .text.Delay_Waitms:00000030 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+                           .group:00000000 wm4.delay.h.63.166aa2b883bf66328fbc7fa736ae3d6f
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv
+SystemCoreClock

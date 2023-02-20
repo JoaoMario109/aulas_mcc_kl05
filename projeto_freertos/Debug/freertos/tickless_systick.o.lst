@@ -1,0 +1,363 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"tickless_systick.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	__aeabi_uidiv
+  18              		.section	.text.prvSetupTimerInterrupt,"ax",%progbits
+  19              		.align	2
+  20              		.weak	prvSetupTimerInterrupt
+  21              		.code	16
+  22              		.thumb_func
+  24              	prvSetupTimerInterrupt:
+  25              	.LFB0:
+  26              		.file 1 "../freertos/tickless_systick.c"
+   1:../freertos/tickless_systick.c **** /*
+   2:../freertos/tickless_systick.c ****     FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
+   3:../freertos/tickless_systick.c ****     All rights reserved
+   4:../freertos/tickless_systick.c **** 
+   5:../freertos/tickless_systick.c ****     VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
+   6:../freertos/tickless_systick.c **** 
+   7:../freertos/tickless_systick.c ****     This file is part of the FreeRTOS distribution.
+   8:../freertos/tickless_systick.c **** 
+   9:../freertos/tickless_systick.c ****     FreeRTOS is free software; you can redistribute it and/or modify it under
+  10:../freertos/tickless_systick.c ****     the terms of the GNU General Public License (version 2) as published by the
+  11:../freertos/tickless_systick.c ****     Free Software Foundation >>>> AND MODIFIED BY <<<< the FreeRTOS exception.
+  12:../freertos/tickless_systick.c **** 
+  13:../freertos/tickless_systick.c ****     ***************************************************************************
+  14:../freertos/tickless_systick.c ****     >>!   NOTE: The modification to the GPL is included to allow you to     !<<
+  15:../freertos/tickless_systick.c ****     >>!   distribute a combined work that includes FreeRTOS without being   !<<
+  16:../freertos/tickless_systick.c ****     >>!   obliged to provide the source code for proprietary components     !<<
+  17:../freertos/tickless_systick.c ****     >>!   outside of the FreeRTOS kernel.                                   !<<
+  18:../freertos/tickless_systick.c ****     ***************************************************************************
+  19:../freertos/tickless_systick.c **** 
+  20:../freertos/tickless_systick.c ****     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT ANY
+  21:../freertos/tickless_systick.c ****     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  22:../freertos/tickless_systick.c ****     FOR A PARTICULAR PURPOSE.  Full license text is available on the following
+  23:../freertos/tickless_systick.c ****     link: http://www.freertos.org/a00114.html
+  24:../freertos/tickless_systick.c **** 
+  25:../freertos/tickless_systick.c ****     ***************************************************************************
+  26:../freertos/tickless_systick.c ****      *                                                                       *
+  27:../freertos/tickless_systick.c ****      *    FreeRTOS provides completely free yet professionally developed,    *
+  28:../freertos/tickless_systick.c ****      *    robust, strictly quality controlled, supported, and cross          *
+  29:../freertos/tickless_systick.c ****      *    platform software that is more than just the market leader, it     *
+  30:../freertos/tickless_systick.c ****      *    is the industry's de facto standard.                               *
+  31:../freertos/tickless_systick.c ****      *                                                                       *
+  32:../freertos/tickless_systick.c ****      *    Help yourself get started quickly while simultaneously helping     *
+  33:../freertos/tickless_systick.c ****      *    to support the FreeRTOS project by purchasing a FreeRTOS           *
+  34:../freertos/tickless_systick.c ****      *    tutorial book, reference manual, or both:                          *
+  35:../freertos/tickless_systick.c ****      *    http://www.FreeRTOS.org/Documentation                              *
+  36:../freertos/tickless_systick.c ****      *                                                                       *
+  37:../freertos/tickless_systick.c ****     ***************************************************************************
+  38:../freertos/tickless_systick.c **** 
+  39:../freertos/tickless_systick.c ****     http://www.FreeRTOS.org/FAQHelp.html - Having a problem?  Start by reading
+  40:../freertos/tickless_systick.c ****     the FAQ page "My application does not run, what could be wrong?".  Have you
+  41:../freertos/tickless_systick.c ****     defined configASSERT()?
+  42:../freertos/tickless_systick.c **** 
+  43:../freertos/tickless_systick.c ****     http://www.FreeRTOS.org/support - In return for receiving this top quality
+  44:../freertos/tickless_systick.c ****     embedded software for free we request you assist our global community by
+  45:../freertos/tickless_systick.c ****     participating in the support forum.
+  46:../freertos/tickless_systick.c **** 
+  47:../freertos/tickless_systick.c ****     http://www.FreeRTOS.org/training - Investing in training allows your team to
+  48:../freertos/tickless_systick.c ****     be as productive as possible as early as possible.  Now you can receive
+  49:../freertos/tickless_systick.c ****     FreeRTOS training directly from Richard Barry, CEO of Real Time Engineers
+  50:../freertos/tickless_systick.c ****     Ltd, and the world's leading authority on the world's leading RTOS.
+  51:../freertos/tickless_systick.c **** 
+  52:../freertos/tickless_systick.c ****     http://www.FreeRTOS.org/plus - A selection of FreeRTOS ecosystem products,
+  53:../freertos/tickless_systick.c ****     including FreeRTOS+Trace - an indispensable productivity tool, a DOS
+  54:../freertos/tickless_systick.c ****     compatible FAT file system, and our tiny thread aware UDP/IP stack.
+  55:../freertos/tickless_systick.c **** 
+  56:../freertos/tickless_systick.c ****     http://www.FreeRTOS.org/labs - Where new FreeRTOS products go to incubate.
+  57:../freertos/tickless_systick.c ****     Come and try FreeRTOS+TCP, our new open source TCP/IP stack for FreeRTOS.
+  58:../freertos/tickless_systick.c **** 
+  59:../freertos/tickless_systick.c ****     http://www.OpenRTOS.com - Real Time Engineers ltd. license FreeRTOS to High
+  60:../freertos/tickless_systick.c ****     Integrity Systems ltd. to sell under the OpenRTOS brand.  Low cost OpenRTOS
+  61:../freertos/tickless_systick.c ****     licenses offer ticketed support, indemnification and commercial middleware.
+  62:../freertos/tickless_systick.c **** 
+  63:../freertos/tickless_systick.c ****     http://www.SafeRTOS.com - High Integrity Systems also provide a safety
+  64:../freertos/tickless_systick.c ****     engineered and independently SIL3 certified version for use in safety and
+  65:../freertos/tickless_systick.c ****     mission critical applications that require provable dependability.
+  66:../freertos/tickless_systick.c **** 
+  67:../freertos/tickless_systick.c ****     1 tab == 4 spaces!
+  68:../freertos/tickless_systick.c **** */
+  69:../freertos/tickless_systick.c **** 
+  70:../freertos/tickless_systick.c **** #include "FreeRTOS.h"
+  71:../freertos/tickless_systick.c **** #include "task.h"
+  72:../freertos/tickless_systick.c **** #include "tickless_generic.h"
+  73:../freertos/tickless_systick.c **** 
+  74:../freertos/tickless_systick.c **** extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
+  75:../freertos/tickless_systick.c **** 
+  76:../freertos/tickless_systick.c **** /*
+  77:../freertos/tickless_systick.c ****  * The number of SysTick increments that make up one tick period.
+  78:../freertos/tickless_systick.c ****  */
+  79:../freertos/tickless_systick.c **** #if configUSE_TICKLESS_IDLE == 1
+  80:../freertos/tickless_systick.c **** 	static uint32_t ulTimerCountsForOneTick = 0;
+  81:../freertos/tickless_systick.c **** #endif /* configUSE_TICKLESS_IDLE */
+  82:../freertos/tickless_systick.c **** 
+  83:../freertos/tickless_systick.c **** /*
+  84:../freertos/tickless_systick.c ****  * The maximum number of tick periods that can be suppressed is limited by the
+  85:../freertos/tickless_systick.c ****  * 24 bit resolution of the SysTick timer.
+  86:../freertos/tickless_systick.c ****  */
+  87:../freertos/tickless_systick.c **** #if configUSE_TICKLESS_IDLE == 1
+  88:../freertos/tickless_systick.c **** 	static uint32_t xMaximumPossibleSuppressedTicks = 0;
+  89:../freertos/tickless_systick.c **** #endif /* configUSE_TICKLESS_IDLE */
+  90:../freertos/tickless_systick.c **** 
+  91:../freertos/tickless_systick.c **** /*
+  92:../freertos/tickless_systick.c ****  * Compensate for the CPU cycles that pass while the SysTick is stopped (low
+  93:../freertos/tickless_systick.c ****  * power functionality only.
+  94:../freertos/tickless_systick.c ****  */
+  95:../freertos/tickless_systick.c **** #if configUSE_TICKLESS_IDLE == 1
+  96:../freertos/tickless_systick.c **** 	static uint32_t ulStoppedTimerCompensation = 0;
+  97:../freertos/tickless_systick.c **** #endif /* configUSE_TICKLESS_IDLE */
+  98:../freertos/tickless_systick.c **** 
+  99:../freertos/tickless_systick.c **** 
+ 100:../freertos/tickless_systick.c **** /*-----------------------------------------------------------*/
+ 101:../freertos/tickless_systick.c **** #if configUSE_TICKLESS_IDLE == 1
+ 102:../freertos/tickless_systick.c **** 
+ 103:../freertos/tickless_systick.c **** 	__attribute__(( weak )) void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
+ 104:../freertos/tickless_systick.c **** 	{
+ 105:../freertos/tickless_systick.c **** 	uint32_t ulReloadValue, ulCompleteTickPeriods, ulCompletedSysTickDecrements, ulSysTickCTRL;
+ 106:../freertos/tickless_systick.c **** 	TickType_t xModifiableIdleTime;
+ 107:../freertos/tickless_systick.c **** 
+ 108:../freertos/tickless_systick.c **** 		/* Make sure the SysTick reload value does not overflow the counter. */
+ 109:../freertos/tickless_systick.c **** 		if( xExpectedIdleTime > xMaximumPossibleSuppressedTicks )
+ 110:../freertos/tickless_systick.c **** 		{
+ 111:../freertos/tickless_systick.c **** 			xExpectedIdleTime = xMaximumPossibleSuppressedTicks;
+ 112:../freertos/tickless_systick.c **** 		}
+ 113:../freertos/tickless_systick.c **** 		if (xExpectedIdleTime == 0) return;
+ 114:../freertos/tickless_systick.c **** 		/* Stop the SysTick momentarily.  The time the SysTick is stopped for
+ 115:../freertos/tickless_systick.c **** 		is accounted for as best it can be, but using the tickless mode will
+ 116:../freertos/tickless_systick.c **** 		inevitably result in some tiny drift of the time maintained by the
+ 117:../freertos/tickless_systick.c **** 		kernel with respect to calendar time. */
+ 118:../freertos/tickless_systick.c **** 		*(portNVIC_SYSTICK_CTRL) &= ~portNVIC_SYSTICK_ENABLE_BIT;
+ 119:../freertos/tickless_systick.c **** 
+ 120:../freertos/tickless_systick.c **** 		/* Calculate the reload value required to wait xExpectedIdleTime
+ 121:../freertos/tickless_systick.c **** 		tick periods.  -1 is used because this code will execute part way
+ 122:../freertos/tickless_systick.c **** 		through one of the tick periods. */
+ 123:../freertos/tickless_systick.c **** 		ulReloadValue = portNVIC_SYSTICK_CURRENT_VALUE_REG + ( ulTimerCountsForOneTick * ( xExpectedIdleT
+ 124:../freertos/tickless_systick.c **** 		if( ulReloadValue > ulStoppedTimerCompensation )
+ 125:../freertos/tickless_systick.c **** 		{
+ 126:../freertos/tickless_systick.c **** 			ulReloadValue -= ulStoppedTimerCompensation;
+ 127:../freertos/tickless_systick.c **** 		}
+ 128:../freertos/tickless_systick.c **** 
+ 129:../freertos/tickless_systick.c **** 		/* Enter a critical section but don't use the taskENTER_CRITICAL()
+ 130:../freertos/tickless_systick.c **** 		method as that will mask interrupts that should exit sleep mode. */
+ 131:../freertos/tickless_systick.c **** 		__asm volatile( "cpsid i" );
+ 132:../freertos/tickless_systick.c **** 
+ 133:../freertos/tickless_systick.c **** 		/* If a context switch is pending or a task is waiting for the scheduler
+ 134:../freertos/tickless_systick.c **** 		to be unsuspended then abandon the low power entry. */
+ 135:../freertos/tickless_systick.c **** 		if( eTaskConfirmSleepModeStatus() == eAbortSleep )
+ 136:../freertos/tickless_systick.c **** 		{
+ 137:../freertos/tickless_systick.c **** 			/* Restart from whatever is left in the count register to complete
+ 138:../freertos/tickless_systick.c **** 			this tick period. */
+ 139:../freertos/tickless_systick.c **** 			*(portNVIC_SYSTICK_LOAD) = portNVIC_SYSTICK_CURRENT_VALUE_REG;
+ 140:../freertos/tickless_systick.c **** 
+ 141:../freertos/tickless_systick.c **** 			/* Restart SysTick. */
+ 142:../freertos/tickless_systick.c **** 			*(portNVIC_SYSTICK_CTRL) |= portNVIC_SYSTICK_ENABLE_BIT;
+ 143:../freertos/tickless_systick.c **** 
+ 144:../freertos/tickless_systick.c **** 			/* Reset the reload register to the value required for normal tick
+ 145:../freertos/tickless_systick.c **** 			periods. */
+ 146:../freertos/tickless_systick.c **** 			*(portNVIC_SYSTICK_LOAD) = ulTimerCountsForOneTick - 1UL;
+ 147:../freertos/tickless_systick.c **** 
+ 148:../freertos/tickless_systick.c **** 			/* Re-enable interrupts - see comments above the cpsid instruction()
+ 149:../freertos/tickless_systick.c **** 			above. */
+ 150:../freertos/tickless_systick.c **** 			__asm volatile( "cpsie i" );
+ 151:../freertos/tickless_systick.c **** 		}
+ 152:../freertos/tickless_systick.c **** 		else
+ 153:../freertos/tickless_systick.c **** 		{
+ 154:../freertos/tickless_systick.c **** 			/* Set the new reload value. */
+ 155:../freertos/tickless_systick.c **** 			*(portNVIC_SYSTICK_LOAD) = ulReloadValue;
+ 156:../freertos/tickless_systick.c **** 
+ 157:../freertos/tickless_systick.c **** 			/* Clear the SysTick count flag and set the count value back to
+ 158:../freertos/tickless_systick.c **** 			zero. */
+ 159:../freertos/tickless_systick.c **** 			portNVIC_SYSTICK_CURRENT_VALUE_REG = 0UL;
+ 160:../freertos/tickless_systick.c **** 
+ 161:../freertos/tickless_systick.c **** 			/* Restart SysTick. */
+ 162:../freertos/tickless_systick.c **** 			*(portNVIC_SYSTICK_CTRL) |= portNVIC_SYSTICK_ENABLE_BIT;
+ 163:../freertos/tickless_systick.c **** 
+ 164:../freertos/tickless_systick.c **** 			/* Sleep until something happens.  configPRE_SLEEP_PROCESSING() can
+ 165:../freertos/tickless_systick.c **** 			set its parameter to 0 to indicate that its implementation contains
+ 166:../freertos/tickless_systick.c **** 			its own wait for interrupt or wait for event instruction, and so wfi
+ 167:../freertos/tickless_systick.c **** 			should not be executed again.  However, the original expected idle
+ 168:../freertos/tickless_systick.c **** 			time variable must remain unmodified, so a copy is taken. */
+ 169:../freertos/tickless_systick.c **** 			xModifiableIdleTime = xExpectedIdleTime;
+ 170:../freertos/tickless_systick.c **** 			configPRE_SLEEP_PROCESSING( xModifiableIdleTime );
+ 171:../freertos/tickless_systick.c **** 			if( xModifiableIdleTime > 0 )
+ 172:../freertos/tickless_systick.c **** 			{
+ 173:../freertos/tickless_systick.c **** 				__asm volatile( "dsb" );
+ 174:../freertos/tickless_systick.c **** 				__asm volatile( "wfi" );
+ 175:../freertos/tickless_systick.c **** 				__asm volatile( "isb" );
+ 176:../freertos/tickless_systick.c **** 			}
+ 177:../freertos/tickless_systick.c **** 			configPOST_SLEEP_PROCESSING( xExpectedIdleTime );
+ 178:../freertos/tickless_systick.c **** 
+ 179:../freertos/tickless_systick.c **** 			/* Stop SysTick.  Again, the time the SysTick is stopped for is
+ 180:../freertos/tickless_systick.c **** 			accounted for as best it can be, but using the tickless mode will
+ 181:../freertos/tickless_systick.c **** 			inevitably result in some tiny drift of the time maintained by the
+ 182:../freertos/tickless_systick.c **** 			kernel with respect to calendar time. */
+ 183:../freertos/tickless_systick.c **** 			ulSysTickCTRL = *(portNVIC_SYSTICK_CTRL);
+ 184:../freertos/tickless_systick.c **** 			*(portNVIC_SYSTICK_CTRL) = ( ulSysTickCTRL & ~portNVIC_SYSTICK_ENABLE_BIT );
+ 185:../freertos/tickless_systick.c **** 
+ 186:../freertos/tickless_systick.c **** 			/* Re-enable interrupts - see comments above the cpsid instruction()
+ 187:../freertos/tickless_systick.c **** 			above. */
+ 188:../freertos/tickless_systick.c **** 			__asm volatile( "cpsie i" );
+ 189:../freertos/tickless_systick.c **** 
+ 190:../freertos/tickless_systick.c **** 			if( ( ulSysTickCTRL & portNVIC_SYSTICK_COUNT_FLAG_BIT ) != 0 )
+ 191:../freertos/tickless_systick.c **** 			{
+ 192:../freertos/tickless_systick.c **** 				uint32_t ulCalculatedLoadValue;
+ 193:../freertos/tickless_systick.c **** 
+ 194:../freertos/tickless_systick.c **** 				/* The tick interrupt has already executed, and the SysTick
+ 195:../freertos/tickless_systick.c **** 				count reloaded with ulReloadValue.  Reset the
+ 196:../freertos/tickless_systick.c **** 				portNVIC_SYSTICK_LOAD_REG with whatever remains of this tick
+ 197:../freertos/tickless_systick.c **** 				period. */
+ 198:../freertos/tickless_systick.c **** 				ulCalculatedLoadValue = ( ulTimerCountsForOneTick - 1UL ) - ( ulReloadValue - portNVIC_SYSTICK_
+ 199:../freertos/tickless_systick.c **** 
+ 200:../freertos/tickless_systick.c **** 				/* Don't allow a tiny value, or values that have somehow
+ 201:../freertos/tickless_systick.c **** 				underflowed because the post sleep hook did something
+ 202:../freertos/tickless_systick.c **** 				that took too long. */
+ 203:../freertos/tickless_systick.c **** 				if( ( ulCalculatedLoadValue < ulStoppedTimerCompensation ) || ( ulCalculatedLoadValue > ulTimer
+ 204:../freertos/tickless_systick.c **** 				{
+ 205:../freertos/tickless_systick.c **** 					ulCalculatedLoadValue = ( ulTimerCountsForOneTick - 1UL );
+ 206:../freertos/tickless_systick.c **** 				}
+ 207:../freertos/tickless_systick.c **** 
+ 208:../freertos/tickless_systick.c **** 				*(portNVIC_SYSTICK_LOAD) = ulCalculatedLoadValue;
+ 209:../freertos/tickless_systick.c **** 
+ 210:../freertos/tickless_systick.c **** 				/* The tick interrupt handler will already have pended the tick
+ 211:../freertos/tickless_systick.c **** 				processing in the kernel.  As the pending tick will be
+ 212:../freertos/tickless_systick.c **** 				processed as soon as this function exits, the tick value
+ 213:../freertos/tickless_systick.c **** 				maintained by the tick is stepped forward by one less than the
+ 214:../freertos/tickless_systick.c **** 				time spent waiting. */
+ 215:../freertos/tickless_systick.c **** 				ulCompleteTickPeriods = xExpectedIdleTime - 1UL;
+ 216:../freertos/tickless_systick.c **** 			}
+ 217:../freertos/tickless_systick.c **** 			else
+ 218:../freertos/tickless_systick.c **** 			{
+ 219:../freertos/tickless_systick.c **** 				/* Something other than the tick interrupt ended the sleep.
+ 220:../freertos/tickless_systick.c **** 				Work out how long the sleep lasted rounded to complete tick
+ 221:../freertos/tickless_systick.c **** 				periods (not the ulReload value which accounted for part
+ 222:../freertos/tickless_systick.c **** 				ticks). */
+ 223:../freertos/tickless_systick.c **** 				ulCompletedSysTickDecrements = ( xExpectedIdleTime * ulTimerCountsForOneTick ) - portNVIC_SYSTI
+ 224:../freertos/tickless_systick.c **** 
+ 225:../freertos/tickless_systick.c **** 				/* How many complete tick periods passed while the processor
+ 226:../freertos/tickless_systick.c **** 				was waiting? */
+ 227:../freertos/tickless_systick.c **** 				ulCompleteTickPeriods = ulCompletedSysTickDecrements / ulTimerCountsForOneTick;
+ 228:../freertos/tickless_systick.c **** 
+ 229:../freertos/tickless_systick.c **** 				/* The reload value is set to whatever fraction of a single tick
+ 230:../freertos/tickless_systick.c **** 				period remains. */
+ 231:../freertos/tickless_systick.c **** 				*(portNVIC_SYSTICK_LOAD) = ( ( ulCompleteTickPeriods + 1 ) * ulTimerCountsForOneTick ) - ulComp
+ 232:../freertos/tickless_systick.c **** 			}
+ 233:../freertos/tickless_systick.c **** 
+ 234:../freertos/tickless_systick.c **** 			/* Restart SysTick so it runs from portNVIC_SYSTICK_LOAD_REG
+ 235:../freertos/tickless_systick.c **** 			again, then set portNVIC_SYSTICK_LOAD_REG back to its standard
+ 236:../freertos/tickless_systick.c **** 			value.  The critical section is used to ensure the tick interrupt
+ 237:../freertos/tickless_systick.c **** 			can only execute once in the case that the reload register is near
+ 238:../freertos/tickless_systick.c **** 			zero. */
+ 239:../freertos/tickless_systick.c **** 			portNVIC_SYSTICK_CURRENT_VALUE_REG = 0UL;
+ 240:../freertos/tickless_systick.c **** 			portENTER_CRITICAL();
+ 241:../freertos/tickless_systick.c **** 			{
+ 242:../freertos/tickless_systick.c **** 				*(portNVIC_SYSTICK_CTRL) |= portNVIC_SYSTICK_ENABLE_BIT;
+ 243:../freertos/tickless_systick.c **** 				vTaskStepTick( ulCompleteTickPeriods );
+ 244:../freertos/tickless_systick.c **** 				*(portNVIC_SYSTICK_LOAD) = ulTimerCountsForOneTick - 1UL;
+ 245:../freertos/tickless_systick.c **** 			}
+ 246:../freertos/tickless_systick.c **** 			portEXIT_CRITICAL();
+ 247:../freertos/tickless_systick.c **** 		}
+ 248:../freertos/tickless_systick.c **** 	}
+ 249:../freertos/tickless_systick.c **** #endif /* #if configUSE_TICKLESS_IDLE */
+ 250:../freertos/tickless_systick.c **** 
+ 251:../freertos/tickless_systick.c **** /*
+ 252:../freertos/tickless_systick.c ****  * Setup the systick timer to generate the tick interrupts at the required
+ 253:../freertos/tickless_systick.c ****  * frequency.
+ 254:../freertos/tickless_systick.c ****  */
+ 255:../freertos/tickless_systick.c **** __attribute__(( weak )) void prvSetupTimerInterrupt( void )
+ 256:../freertos/tickless_systick.c **** {
+  27              		.loc 1 256 0
+  28              		.cfi_startproc
+  29 0000 98B5     		push	{r3, r4, r7, lr}
+  30              		.cfi_def_cfa_offset 16
+  31              		.cfi_offset 3, -16
+  32              		.cfi_offset 4, -12
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+ 257:../freertos/tickless_systick.c **** 	/* Calculate the constants required to configure the tick interrupt. */
+ 258:../freertos/tickless_systick.c **** #if( configUSE_TICKLESS_IDLE == 1 )
+ 259:../freertos/tickless_systick.c **** 	ulTimerCountsForOneTick = ( configSYSTICK_CLOCK_HZ / configTICK_RATE_HZ );
+ 260:../freertos/tickless_systick.c **** 	xMaximumPossibleSuppressedTicks = portMAX_24_BIT_NUMBER / ulTimerCountsForOneTick;
+ 261:../freertos/tickless_systick.c **** 	ulStoppedTimerCompensation = portMISSED_COUNTS_FACTOR / ( configCPU_CLOCK_HZ / configSYSTICK_CLOCK
+ 262:../freertos/tickless_systick.c **** #endif /* configUSE_TICKLESS_IDLE */
+ 263:../freertos/tickless_systick.c **** 	/* Configure SysTick to interrupt at the requested rate. */
+ 264:../freertos/tickless_systick.c **** 	*(portNVIC_SYSTICK_LOAD) = ( configCPU_CLOCK_HZ / configTICK_RATE_HZ ) - 1UL;
+  37              		.loc 1 264 0
+  38 0004 094C     		ldr	r4, .L2
+  39 0006 0A4B     		ldr	r3, .L2+4
+  40 0008 1B68     		ldr	r3, [r3]
+  41 000a 181C     		mov	r0, r3
+  42 000c FA23     		mov	r3, #250
+  43 000e 9900     		lsl	r1, r3, #2
+  44 0010 FFF7FEFF 		bl	__aeabi_uidiv
+  45 0014 031C     		mov	r3, r0
+  46 0016 013B     		sub	r3, r3, #1
+  47 0018 2360     		str	r3, [r4]
+ 265:../freertos/tickless_systick.c **** 	portNVIC_SYSTICK_CURRENT_VALUE_REG = 0UL;
+  48              		.loc 1 265 0
+  49 001a 064B     		ldr	r3, .L2+8
+  50 001c 0022     		mov	r2, #0
+  51 001e 1A60     		str	r2, [r3]
+ 266:../freertos/tickless_systick.c **** 	*(portNVIC_SYSTICK_CTRL) = portNVIC_SYSTICK_CLK | portNVIC_SYSTICK_INT | portNVIC_SYSTICK_ENABLE;
+  52              		.loc 1 266 0
+  53 0020 054B     		ldr	r3, .L2+12
+  54 0022 0722     		mov	r2, #7
+  55 0024 1A60     		str	r2, [r3]
+ 267:../freertos/tickless_systick.c **** }
+  56              		.loc 1 267 0
+  57 0026 BD46     		mov	sp, r7
+  58              		@ sp needed
+  59 0028 98BD     		pop	{r3, r4, r7, pc}
+  60              	.L3:
+  61 002a C046     		.align	2
+  62              	.L2:
+  63 002c 14E000E0 		.word	-536813548
+  64 0030 00000000 		.word	SystemCoreClock
+  65 0034 18E000E0 		.word	-536813544
+  66 0038 10E000E0 		.word	-536813552
+  67              		.cfi_endproc
+  68              	.LFE0:
+  70              		.text
+  71              	.Letext0:
+  72              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+  73              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+  74              		.file 4 "../freertos/portmacro.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tickless_systick.c
+C:\Users\mathe\AppData\Local\Temp\ccJBH4Zy.s:19     .text.prvSetupTimerInterrupt:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccJBH4Zy.s:24     .text.prvSetupTimerInterrupt:00000000 prvSetupTimerInterrupt
+C:\Users\mathe\AppData\Local\Temp\ccJBH4Zy.s:63     .text.prvSetupTimerInterrupt:0000002c $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.FreeRTOSConfig.h.71.9ce5dd93bb084cb2714008d9030c087d
+                           .group:00000000 wm4.projdefs.h.71.6ed2b4e07820ea275c61d78138cfae10
+                           .group:00000000 wm4.portmacro.h.72.32efb3512b0394b29d8211ba7ab279d9
+                           .group:00000000 wm4.portable.h.106.61ffdda1afafb5a5e1f7197ade95b43a
+                           .group:00000000 wm4.mpu_wrappers.h.71.c0872672d360e197b5a999335351843d
+                           .group:00000000 wm4.FreeRTOS.h.186.2e14eee2d995e9702d028b4adcebc296
+                           .group:00000000 wm4.list.h.103.6a12b7b9a7a136c3cca0ee53675c5498
+                           .group:00000000 wm4.task.h.88.c21feabc7be8ca1396f9c7c7a7eaee9b
+                           .group:00000000 wm4.tickless_generic.h.73.ad75429969dd12079da634c8da54311d
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv
+SystemCoreClock

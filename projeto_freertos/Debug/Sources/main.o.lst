@@ -1,0 +1,215 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.task,"ax",%progbits
+  18              		.align	2
+  19              		.global	task
+  20              		.code	16
+  21              		.thumb_func
+  23              	task:
+  24              	.LFB34:
+  25              		.file 1 "../Sources/main.c"
+   1:../Sources/main.c **** #include "MKL05Z4.h"
+   2:../Sources/main.c **** #include "FreeRTOS.h"
+   3:../Sources/main.c **** #include "task.h"
+   4:../Sources/main.c **** 
+   5:../Sources/main.c **** void task(void * arg)
+   6:../Sources/main.c **** {
+  26              		.loc 1 6 0
+  27              		.cfi_startproc
+  28 0000 80B5     		push	{r7, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 7, -8
+  31              		.cfi_offset 14, -4
+  32 0002 84B0     		sub	sp, sp, #16
+  33              		.cfi_def_cfa_offset 24
+  34 0004 00AF     		add	r7, sp, #0
+  35              		.cfi_def_cfa_register 7
+  36 0006 7860     		str	r0, [r7, #4]
+   7:../Sources/main.c **** 	TickType_t prevTime = xTaskGetTickCount();
+  37              		.loc 1 7 0
+  38 0008 FFF7FEFF 		bl	xTaskGetTickCount
+  39 000c 031C     		mov	r3, r0
+  40 000e FB60     		str	r3, [r7, #12]
+  41              	.L2:
+   8:../Sources/main.c **** 
+   9:../Sources/main.c **** 	for(;;)
+  10:../Sources/main.c **** 	{
+  11:../Sources/main.c **** 		GPIOB->PTOR = 1 << 9;
+  42              		.loc 1 11 0 discriminator 1
+  43 0010 064B     		ldr	r3, .L3
+  44 0012 8022     		mov	r2, #128
+  45 0014 9200     		lsl	r2, r2, #2
+  46 0016 DA60     		str	r2, [r3, #12]
+  12:../Sources/main.c **** 		vTaskDelayUntil(&prevTime, 1000/portTICK_RATE_MS);
+  47              		.loc 1 12 0 discriminator 1
+  48 0018 3A1C     		mov	r2, r7
+  49 001a 0C32     		add	r2, r2, #12
+  50 001c FA23     		mov	r3, #250
+  51 001e 9B00     		lsl	r3, r3, #2
+  52 0020 101C     		mov	r0, r2
+  53 0022 191C     		mov	r1, r3
+  54 0024 FFF7FEFF 		bl	vTaskDelayUntil
+  13:../Sources/main.c **** 	}
+  55              		.loc 1 13 0 discriminator 1
+  56 0028 F2E7     		b	.L2
+  57              	.L4:
+  58 002a C046     		.align	2
+  59              	.L3:
+  60 002c 40F00F40 		.word	1074786368
+  61              		.cfi_endproc
+  62              	.LFE34:
+  64              		.section	.rodata
+  65              		.align	2
+  66              	.LC1:
+  67 0000 6D795461 		.ascii	"myTask\000"
+  67      736B00
+  68 0007 00       		.section	.text.main,"ax",%progbits
+  69              		.align	2
+  70              		.global	main
+  71              		.code	16
+  72              		.thumb_func
+  74              	main:
+  75              	.LFB35:
+  14:../Sources/main.c **** }
+  15:../Sources/main.c **** 
+  16:../Sources/main.c **** int main(void)
+  17:../Sources/main.c **** {
+  76              		.loc 1 17 0
+  77              		.cfi_startproc
+  78 0000 80B5     		push	{r7, lr}
+  79              		.cfi_def_cfa_offset 8
+  80              		.cfi_offset 7, -8
+  81              		.cfi_offset 14, -4
+  82 0002 82B0     		sub	sp, sp, #8
+  83              		.cfi_def_cfa_offset 16
+  84 0004 02AF     		add	r7, sp, #8
+  85              		.cfi_def_cfa 7, 8
+  18:../Sources/main.c **** 	SIM->SCGC5 |= 1 << 10;
+  86              		.loc 1 18 0
+  87 0006 144A     		ldr	r2, .L7
+  88 0008 1349     		ldr	r1, .L7
+  89 000a 144B     		ldr	r3, .L7+4
+  90 000c CB58     		ldr	r3, [r1, r3]
+  91 000e 8021     		mov	r1, #128
+  92 0010 C900     		lsl	r1, r1, #3
+  93 0012 1943     		orr	r1, r3
+  94 0014 114B     		ldr	r3, .L7+4
+  95 0016 D150     		str	r1, [r2, r3]
+  19:../Sources/main.c **** 	PORTB->PCR[9] |= PORT_PCR_MUX(1);
+  96              		.loc 1 19 0
+  97 0018 114B     		ldr	r3, .L7+8
+  98 001a 114A     		ldr	r2, .L7+8
+  99 001c 526A     		ldr	r2, [r2, #36]
+ 100 001e 8021     		mov	r1, #128
+ 101 0020 4900     		lsl	r1, r1, #1
+ 102 0022 0A43     		orr	r2, r1
+ 103 0024 5A62     		str	r2, [r3, #36]
+  20:../Sources/main.c **** 	GPIOB->PDDR |= 1 << 9;
+ 104              		.loc 1 20 0
+ 105 0026 0F4B     		ldr	r3, .L7+12
+ 106 0028 0E4A     		ldr	r2, .L7+12
+ 107 002a 5269     		ldr	r2, [r2, #20]
+ 108 002c 8021     		mov	r1, #128
+ 109 002e 8900     		lsl	r1, r1, #2
+ 110 0030 0A43     		orr	r2, r1
+ 111 0032 5A61     		str	r2, [r3, #20]
+  21:../Sources/main.c **** 
+  22:../Sources/main.c **** 	xTaskCreate( task,
+ 112              		.loc 1 22 0
+ 113 0034 0C4A     		ldr	r2, .L7+16
+ 114 0036 0D4B     		ldr	r3, .L7+20
+ 115 0038 0121     		mov	r1, #1
+ 116 003a 0091     		str	r1, [sp]
+ 117 003c 0021     		mov	r1, #0
+ 118 003e 0191     		str	r1, [sp, #4]
+ 119 0040 101C     		mov	r0, r2
+ 120 0042 191C     		mov	r1, r3
+ 121 0044 C822     		mov	r2, #200
+ 122 0046 0023     		mov	r3, #0
+ 123 0048 FFF7FEFF 		bl	xTaskCreate
+  23:../Sources/main.c **** 			     "myTask",
+  24:../Sources/main.c **** 				 200,
+  25:../Sources/main.c **** 				 NULL,
+  26:../Sources/main.c **** 				 1,
+  27:../Sources/main.c **** 				 NULL);
+  28:../Sources/main.c **** 
+  29:../Sources/main.c **** 	vTaskStartScheduler();
+ 124              		.loc 1 29 0
+ 125 004c FFF7FEFF 		bl	vTaskStartScheduler
+  30:../Sources/main.c **** 
+  31:../Sources/main.c **** 	return 0;
+ 126              		.loc 1 31 0
+ 127 0050 0023     		mov	r3, #0
+  32:../Sources/main.c **** }
+ 128              		.loc 1 32 0
+ 129 0052 181C     		mov	r0, r3
+ 130 0054 BD46     		mov	sp, r7
+ 131              		@ sp needed
+ 132 0056 80BD     		pop	{r7, pc}
+ 133              	.L8:
+ 134              		.align	2
+ 135              	.L7:
+ 136 0058 00700440 		.word	1074032640
+ 137 005c 38100000 		.word	4152
+ 138 0060 00A00440 		.word	1074044928
+ 139 0064 40F00F40 		.word	1074786368
+ 140 0068 00000000 		.word	task
+ 141 006c 00000000 		.word	.LC1
+ 142              		.cfi_endproc
+ 143              	.LFE35:
+ 145              		.text
+ 146              	.Letext0:
+ 147              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 148              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 149              		.file 4 "../Includes/MKL05Z4.h"
+ 150              		.file 5 "../freertos/portmacro.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\mathe\AppData\Local\Temp\ccEKKgXF.s:18     .text.task:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccEKKgXF.s:23     .text.task:00000000 task
+C:\Users\mathe\AppData\Local\Temp\ccEKKgXF.s:60     .text.task:0000002c $d
+C:\Users\mathe\AppData\Local\Temp\ccEKKgXF.s:65     .rodata:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccEKKgXF.s:69     .text.main:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccEKKgXF.s:74     .text.main:00000000 main
+C:\Users\mathe\AppData\Local\Temp\ccEKKgXF.s:136    .text.main:00000058 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.MKL05Z4.h.103.f68bb2c385f84d89dfea36d27f6bce5b
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.MKL05Z4.h.116.5814b45345fcb3a5729634de577cb2e4
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.FreeRTOSConfig.h.71.9ce5dd93bb084cb2714008d9030c087d
+                           .group:00000000 wm4.projdefs.h.71.6ed2b4e07820ea275c61d78138cfae10
+                           .group:00000000 wm4.portmacro.h.72.32efb3512b0394b29d8211ba7ab279d9
+                           .group:00000000 wm4.portable.h.106.61ffdda1afafb5a5e1f7197ade95b43a
+                           .group:00000000 wm4.mpu_wrappers.h.71.c0872672d360e197b5a999335351843d
+                           .group:00000000 wm4.FreeRTOS.h.186.2e14eee2d995e9702d028b4adcebc296
+                           .group:00000000 wm4.list.h.103.6a12b7b9a7a136c3cca0ee53675c5498
+                           .group:00000000 wm4.task.h.88.c21feabc7be8ca1396f9c7c7a7eaee9b
+
+UNDEFINED SYMBOLS
+xTaskGetTickCount
+vTaskDelayUntil
+xTaskCreate
+vTaskStartScheduler

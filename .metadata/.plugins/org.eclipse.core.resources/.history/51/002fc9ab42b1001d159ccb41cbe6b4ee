@@ -1,0 +1,20 @@
+#include "mcu_general_config.h"
+#include "libraries/delay/delay.h"
+#include "libraries/emb_util/emb_util.h"
+#include "drivers/port/port.h"
+#include "drivers/gpio/gpio.h"
+
+int main(void)
+{
+	PORT_Init( PORTB );
+	GPIO_InitOutputPin( GPIOB, 19, 1 );
+	Delay_Init();
+
+    for (;;)
+    {
+    	Delay_Waitms(1000);
+    	GPIO_TogglePin( GPIOB, 19 );
+    }
+
+    return 0;
+}

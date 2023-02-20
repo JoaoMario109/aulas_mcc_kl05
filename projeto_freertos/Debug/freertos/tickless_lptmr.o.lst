@@ -1,0 +1,356 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"tickless_lptmr.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.global	__aeabi_uidiv
+  18              		.section	.text.prvSetupTimerInterrupt,"ax",%progbits
+  19              		.align	2
+  20              		.global	prvSetupTimerInterrupt
+  21              		.code	16
+  22              		.thumb_func
+  24              	prvSetupTimerInterrupt:
+  25              	.LFB0:
+  26              		.file 1 "../freertos/tickless_lptmr.c"
+   1:../freertos/tickless_lptmr.c **** /*
+   2:../freertos/tickless_lptmr.c ****     FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
+   3:../freertos/tickless_lptmr.c ****     All rights reserved
+   4:../freertos/tickless_lptmr.c **** 
+   5:../freertos/tickless_lptmr.c ****     VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
+   6:../freertos/tickless_lptmr.c **** 
+   7:../freertos/tickless_lptmr.c ****     This file is part of the FreeRTOS distribution.
+   8:../freertos/tickless_lptmr.c **** 
+   9:../freertos/tickless_lptmr.c ****     FreeRTOS is free software; you can redistribute it and/or modify it under
+  10:../freertos/tickless_lptmr.c ****     the terms of the GNU General Public License (version 2) as published by the
+  11:../freertos/tickless_lptmr.c ****     Free Software Foundation >>>> AND MODIFIED BY <<<< the FreeRTOS exception.
+  12:../freertos/tickless_lptmr.c **** 
+  13:../freertos/tickless_lptmr.c ****     ***************************************************************************
+  14:../freertos/tickless_lptmr.c ****     >>!   NOTE: The modification to the GPL is included to allow you to     !<<
+  15:../freertos/tickless_lptmr.c ****     >>!   distribute a combined work that includes FreeRTOS without being   !<<
+  16:../freertos/tickless_lptmr.c ****     >>!   obliged to provide the source code for proprietary components     !<<
+  17:../freertos/tickless_lptmr.c ****     >>!   outside of the FreeRTOS kernel.                                   !<<
+  18:../freertos/tickless_lptmr.c ****     ***************************************************************************
+  19:../freertos/tickless_lptmr.c **** 
+  20:../freertos/tickless_lptmr.c ****     FreeRTOS is distributed in the hope that it will be useful, but WITHOUT ANY
+  21:../freertos/tickless_lptmr.c ****     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  22:../freertos/tickless_lptmr.c ****     FOR A PARTICULAR PURPOSE.  Full license text is available on the following
+  23:../freertos/tickless_lptmr.c ****     link: http://www.freertos.org/a00114.html
+  24:../freertos/tickless_lptmr.c **** 
+  25:../freertos/tickless_lptmr.c ****     ***************************************************************************
+  26:../freertos/tickless_lptmr.c ****      *                                                                       *
+  27:../freertos/tickless_lptmr.c ****      *    FreeRTOS provides completely free yet professionally developed,    *
+  28:../freertos/tickless_lptmr.c ****      *    robust, strictly quality controlled, supported, and cross          *
+  29:../freertos/tickless_lptmr.c ****      *    platform software that is more than just the market leader, it     *
+  30:../freertos/tickless_lptmr.c ****      *    is the industry's de facto standard.                               *
+  31:../freertos/tickless_lptmr.c ****      *                                                                       *
+  32:../freertos/tickless_lptmr.c ****      *    Help yourself get started quickly while simultaneously helping     *
+  33:../freertos/tickless_lptmr.c ****      *    to support the FreeRTOS project by purchasing a FreeRTOS           *
+  34:../freertos/tickless_lptmr.c ****      *    tutorial book, reference manual, or both:                          *
+  35:../freertos/tickless_lptmr.c ****      *    http://www.FreeRTOS.org/Documentation                              *
+  36:../freertos/tickless_lptmr.c ****      *                                                                       *
+  37:../freertos/tickless_lptmr.c ****     ***************************************************************************
+  38:../freertos/tickless_lptmr.c **** 
+  39:../freertos/tickless_lptmr.c ****     http://www.FreeRTOS.org/FAQHelp.html - Having a problem?  Start by reading
+  40:../freertos/tickless_lptmr.c ****     the FAQ page "My application does not run, what could be wrong?".  Have you
+  41:../freertos/tickless_lptmr.c ****     defined configASSERT()?
+  42:../freertos/tickless_lptmr.c **** 
+  43:../freertos/tickless_lptmr.c ****     http://www.FreeRTOS.org/support - In return for receiving this top quality
+  44:../freertos/tickless_lptmr.c ****     embedded software for free we request you assist our global community by
+  45:../freertos/tickless_lptmr.c ****     participating in the support forum.
+  46:../freertos/tickless_lptmr.c **** 
+  47:../freertos/tickless_lptmr.c ****     http://www.FreeRTOS.org/training - Investing in training allows your team to
+  48:../freertos/tickless_lptmr.c ****     be as productive as possible as early as possible.  Now you can receive
+  49:../freertos/tickless_lptmr.c ****     FreeRTOS training directly from Richard Barry, CEO of Real Time Engineers
+  50:../freertos/tickless_lptmr.c ****     Ltd, and the world's leading authority on the world's leading RTOS.
+  51:../freertos/tickless_lptmr.c **** 
+  52:../freertos/tickless_lptmr.c ****     http://www.FreeRTOS.org/plus - A selection of FreeRTOS ecosystem products,
+  53:../freertos/tickless_lptmr.c ****     including FreeRTOS+Trace - an indispensable productivity tool, a DOS
+  54:../freertos/tickless_lptmr.c ****     compatible FAT file system, and our tiny thread aware UDP/IP stack.
+  55:../freertos/tickless_lptmr.c **** 
+  56:../freertos/tickless_lptmr.c ****     http://www.FreeRTOS.org/labs - Where new FreeRTOS products go to incubate.
+  57:../freertos/tickless_lptmr.c ****     Come and try FreeRTOS+TCP, our new open source TCP/IP stack for FreeRTOS.
+  58:../freertos/tickless_lptmr.c **** 
+  59:../freertos/tickless_lptmr.c ****     http://www.OpenRTOS.com - Real Time Engineers ltd. license FreeRTOS to High
+  60:../freertos/tickless_lptmr.c ****     Integrity Systems ltd. to sell under the OpenRTOS brand.  Low cost OpenRTOS
+  61:../freertos/tickless_lptmr.c ****     licenses offer ticketed support, indemnification and commercial middleware.
+  62:../freertos/tickless_lptmr.c **** 
+  63:../freertos/tickless_lptmr.c ****     http://www.SafeRTOS.com - High Integrity Systems also provide a safety
+  64:../freertos/tickless_lptmr.c ****     engineered and independently SIL3 certified version for use in safety and
+  65:../freertos/tickless_lptmr.c ****     mission critical applications that require provable dependability.
+  66:../freertos/tickless_lptmr.c **** 
+  67:../freertos/tickless_lptmr.c ****     1 tab == 4 spaces!
+  68:../freertos/tickless_lptmr.c **** */
+  69:../freertos/tickless_lptmr.c **** 
+  70:../freertos/tickless_lptmr.c **** #include "FreeRTOS.h"
+  71:../freertos/tickless_lptmr.c **** #include "task.h"
+  72:../freertos/tickless_lptmr.c **** #include "tickless_generic.h"
+  73:../freertos/tickless_lptmr.c **** 
+  74:../freertos/tickless_lptmr.c **** #if configUSE_TICKLESS_IDLE
+  75:../freertos/tickless_lptmr.c **** #include "fsl_lptmr.h"
+  76:../freertos/tickless_lptmr.c **** #endif
+  77:../freertos/tickless_lptmr.c **** 
+  78:../freertos/tickless_lptmr.c **** extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
+  79:../freertos/tickless_lptmr.c **** 
+  80:../freertos/tickless_lptmr.c **** /*
+  81:../freertos/tickless_lptmr.c ****  * LPT timer base address and interrupt number
+  82:../freertos/tickless_lptmr.c ****  */
+  83:../freertos/tickless_lptmr.c **** #if configUSE_TICKLESS_IDLE == 1
+  84:../freertos/tickless_lptmr.c **** 	extern LPTMR_Type *vPortGetLptrmBase(void);
+  85:../freertos/tickless_lptmr.c **** 	extern IRQn_Type vPortGetLptmrIrqn(void);
+  86:../freertos/tickless_lptmr.c **** #endif /* configUSE_TICKLESS_IDLE */
+  87:../freertos/tickless_lptmr.c **** 
+  88:../freertos/tickless_lptmr.c **** /*-----------------------------------------------------------*/
+  89:../freertos/tickless_lptmr.c **** 
+  90:../freertos/tickless_lptmr.c **** /*
+  91:../freertos/tickless_lptmr.c ****  * The number of SysTick increments that make up one tick period.
+  92:../freertos/tickless_lptmr.c ****  */
+  93:../freertos/tickless_lptmr.c **** #if configUSE_TICKLESS_IDLE == 1
+  94:../freertos/tickless_lptmr.c **** 	static uint32_t ulTimerCountsForOneTick = 0;
+  95:../freertos/tickless_lptmr.c **** #endif /* configUSE_TICKLESS_IDLE */
+  96:../freertos/tickless_lptmr.c **** 
+  97:../freertos/tickless_lptmr.c **** /*
+  98:../freertos/tickless_lptmr.c ****  * The maximum number of tick periods that can be suppressed is limited by the
+  99:../freertos/tickless_lptmr.c ****  * 24 bit resolution of the SysTick timer.
+ 100:../freertos/tickless_lptmr.c ****  */
+ 101:../freertos/tickless_lptmr.c **** #if configUSE_TICKLESS_IDLE == 1
+ 102:../freertos/tickless_lptmr.c **** 	static uint32_t xMaximumPossibleSuppressedTicks = 0;
+ 103:../freertos/tickless_lptmr.c **** #endif /* configUSE_TICKLESS_IDLE */
+ 104:../freertos/tickless_lptmr.c **** 
+ 105:../freertos/tickless_lptmr.c **** /*
+ 106:../freertos/tickless_lptmr.c ****  * The number of LPTIMER increments that make up one tick period.
+ 107:../freertos/tickless_lptmr.c ****  */
+ 108:../freertos/tickless_lptmr.c **** #if configUSE_TICKLESS_IDLE == 1
+ 109:../freertos/tickless_lptmr.c **** 	static uint32_t ulLPTimerCountsForOneTick = 0;
+ 110:../freertos/tickless_lptmr.c **** #endif /* configUSE_TICKLESS_IDLE */
+ 111:../freertos/tickless_lptmr.c **** 
+ 112:../freertos/tickless_lptmr.c **** /*
+ 113:../freertos/tickless_lptmr.c ****  * The flag of LPTIMER is occurs or not.
+ 114:../freertos/tickless_lptmr.c ****  */
+ 115:../freertos/tickless_lptmr.c **** #if configUSE_TICKLESS_IDLE == 1
+ 116:../freertos/tickless_lptmr.c **** 	static volatile bool ulLPTimerInterruptFired = false;
+ 117:../freertos/tickless_lptmr.c **** #endif /* configUSE_TICKLESS_IDLE */
+ 118:../freertos/tickless_lptmr.c **** 
+ 119:../freertos/tickless_lptmr.c **** /*-----------------------------------------------------------*/
+ 120:../freertos/tickless_lptmr.c **** 
+ 121:../freertos/tickless_lptmr.c **** #if configUSE_TICKLESS_IDLE == 1
+ 122:../freertos/tickless_lptmr.c **** 
+ 123:../freertos/tickless_lptmr.c **** 	void vPortLptmrIsr(void)
+ 124:../freertos/tickless_lptmr.c **** 	{
+ 125:../freertos/tickless_lptmr.c **** 		ulLPTimerInterruptFired = true;
+ 126:../freertos/tickless_lptmr.c **** 		LPTMR_ClearStatusFlags(vPortGetLptrmBase(), kLPTMR_TimerCompareFlag);
+ 127:../freertos/tickless_lptmr.c **** 	}
+ 128:../freertos/tickless_lptmr.c **** 
+ 129:../freertos/tickless_lptmr.c **** 	void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
+ 130:../freertos/tickless_lptmr.c **** 	{
+ 131:../freertos/tickless_lptmr.c **** 		uint32_t ulReloadValue, ulCompleteTickPeriods;
+ 132:../freertos/tickless_lptmr.c **** 		TickType_t xModifiableIdleTime;
+ 133:../freertos/tickless_lptmr.c **** 		LPTMR_Type *pxLptmrBase;
+ 134:../freertos/tickless_lptmr.c **** 
+ 135:../freertos/tickless_lptmr.c **** 		pxLptmrBase = vPortGetLptrmBase();
+ 136:../freertos/tickless_lptmr.c **** 		if (pxLptmrBase == 0) return;
+ 137:../freertos/tickless_lptmr.c **** 		/* Make sure the SysTick reload value does not overflow the counter. */
+ 138:../freertos/tickless_lptmr.c **** 		if( xExpectedIdleTime > xMaximumPossibleSuppressedTicks )
+ 139:../freertos/tickless_lptmr.c **** 		{
+ 140:../freertos/tickless_lptmr.c **** 			xExpectedIdleTime = xMaximumPossibleSuppressedTicks;
+ 141:../freertos/tickless_lptmr.c **** 		}
+ 142:../freertos/tickless_lptmr.c **** 		if (xExpectedIdleTime == 0) return;
+ 143:../freertos/tickless_lptmr.c **** 		/* Calculate the reload value required to wait xExpectedIdleTime
+ 144:../freertos/tickless_lptmr.c **** 		tick periods.  -1 is used because this code will execute part way
+ 145:../freertos/tickless_lptmr.c **** 		through one of the tick periods. */
+ 146:../freertos/tickless_lptmr.c **** 		ulReloadValue = LPTMR_GetCurrentTimerCount(pxLptmrBase) + ( ulLPTimerCountsForOneTick * ( xExpect
+ 147:../freertos/tickless_lptmr.c **** 
+ 148:../freertos/tickless_lptmr.c **** 		/* Stop the LPTMR and systick momentarily.  The time the LPTMR and systick is stopped for
+ 149:../freertos/tickless_lptmr.c **** 		is accounted for as best it can be, but using the tickless mode will
+ 150:../freertos/tickless_lptmr.c **** 		inevitably result in some tiny drift of the time maintained by the
+ 151:../freertos/tickless_lptmr.c **** 		kernel with respect to calendar time. */
+ 152:../freertos/tickless_lptmr.c **** 		LPTMR_StopTimer(pxLptmrBase);
+ 153:../freertos/tickless_lptmr.c **** 		*(portNVIC_SYSTICK_CTRL) &= ~portNVIC_SYSTICK_ENABLE_BIT;
+ 154:../freertos/tickless_lptmr.c **** 
+ 155:../freertos/tickless_lptmr.c **** 		/* Enter a critical section but don't use the taskENTER_CRITICAL()
+ 156:../freertos/tickless_lptmr.c **** 		method as that will mask interrupts that should exit sleep mode. */
+ 157:../freertos/tickless_lptmr.c **** 		__asm volatile( "cpsid i" );
+ 158:../freertos/tickless_lptmr.c **** 
+ 159:../freertos/tickless_lptmr.c **** 		/* If a context switch is pending or a task is waiting for the scheduler
+ 160:../freertos/tickless_lptmr.c **** 		to be unsuspended then abandon the low power entry. */
+ 161:../freertos/tickless_lptmr.c **** 		if( eTaskConfirmSleepModeStatus() == eAbortSleep )
+ 162:../freertos/tickless_lptmr.c **** 		{
+ 163:../freertos/tickless_lptmr.c **** 			/* Restart from whatever is left in the count register to complete
+ 164:../freertos/tickless_lptmr.c **** 			this tick period. */
+ 165:../freertos/tickless_lptmr.c **** 			*(portNVIC_SYSTICK_LOAD) = portNVIC_SYSTICK_CURRENT_VALUE_REG;
+ 166:../freertos/tickless_lptmr.c **** 
+ 167:../freertos/tickless_lptmr.c **** 			/* Restart SysTick. */
+ 168:../freertos/tickless_lptmr.c **** 			*(portNVIC_SYSTICK_CTRL) |= portNVIC_SYSTICK_ENABLE_BIT;
+ 169:../freertos/tickless_lptmr.c **** 
+ 170:../freertos/tickless_lptmr.c **** 			/* Reset the reload register to the value required for normal tick
+ 171:../freertos/tickless_lptmr.c **** 			periods. */
+ 172:../freertos/tickless_lptmr.c **** 			*(portNVIC_SYSTICK_LOAD) = ulTimerCountsForOneTick - 1UL;
+ 173:../freertos/tickless_lptmr.c **** 
+ 174:../freertos/tickless_lptmr.c **** 			/* Re-enable interrupts - see comments above __disable_interrupt()
+ 175:../freertos/tickless_lptmr.c **** 			call above. */
+ 176:../freertos/tickless_lptmr.c **** 			__asm volatile( "cpsie i" );
+ 177:../freertos/tickless_lptmr.c **** 		}
+ 178:../freertos/tickless_lptmr.c **** 		else
+ 179:../freertos/tickless_lptmr.c **** 		{
+ 180:../freertos/tickless_lptmr.c **** 			/* Set the new reload value. */
+ 181:../freertos/tickless_lptmr.c **** 			LPTMR_SetTimerPeriod(pxLptmrBase, ulReloadValue);
+ 182:../freertos/tickless_lptmr.c **** 
+ 183:../freertos/tickless_lptmr.c **** 			/* Enable LPTMR. */
+ 184:../freertos/tickless_lptmr.c **** 			LPTMR_StartTimer(pxLptmrBase);
+ 185:../freertos/tickless_lptmr.c **** 
+ 186:../freertos/tickless_lptmr.c **** 			/* Sleep until something happens.  configPRE_SLEEP_PROCESSING() can
+ 187:../freertos/tickless_lptmr.c **** 			set its parameter to 0 to indicate that its implementation contains
+ 188:../freertos/tickless_lptmr.c **** 			its own wait for interrupt or wait for event instruction, and so wfi
+ 189:../freertos/tickless_lptmr.c **** 			should not be executed again.  However, the original expected idle
+ 190:../freertos/tickless_lptmr.c **** 			time variable must remain unmodified, so a copy is taken. */
+ 191:../freertos/tickless_lptmr.c **** 			xModifiableIdleTime = xExpectedIdleTime;
+ 192:../freertos/tickless_lptmr.c **** 			configPRE_SLEEP_PROCESSING( xModifiableIdleTime );
+ 193:../freertos/tickless_lptmr.c **** 			if( xModifiableIdleTime > 0 )
+ 194:../freertos/tickless_lptmr.c **** 			{
+ 195:../freertos/tickless_lptmr.c **** 				__asm volatile( "dsb" );
+ 196:../freertos/tickless_lptmr.c **** 				__asm volatile( "wfi" );
+ 197:../freertos/tickless_lptmr.c **** 				__asm volatile( "isb" );
+ 198:../freertos/tickless_lptmr.c **** 			}
+ 199:../freertos/tickless_lptmr.c **** 			configPOST_SLEEP_PROCESSING( xExpectedIdleTime );
+ 200:../freertos/tickless_lptmr.c **** 
+ 201:../freertos/tickless_lptmr.c **** 			ulLPTimerInterruptFired = false;
+ 202:../freertos/tickless_lptmr.c **** 			/* Re-enable interrupts - see comments above __disable_interrupt()
+ 203:../freertos/tickless_lptmr.c **** 			call above. */
+ 204:../freertos/tickless_lptmr.c **** 			__asm volatile( "cpsie i" );
+ 205:../freertos/tickless_lptmr.c **** 			__NOP();
+ 206:../freertos/tickless_lptmr.c **** 			if( ulLPTimerInterruptFired )
+ 207:../freertos/tickless_lptmr.c **** 			{
+ 208:../freertos/tickless_lptmr.c **** 
+ 209:../freertos/tickless_lptmr.c **** 				/* The tick interrupt handler will already have pended the tick
+ 210:../freertos/tickless_lptmr.c **** 				processing in the kernel.  As the pending tick will be
+ 211:../freertos/tickless_lptmr.c **** 				processed as soon as this function exits, the tick value
+ 212:../freertos/tickless_lptmr.c **** 				maintained by the tick is stepped forward by one less than the
+ 213:../freertos/tickless_lptmr.c **** 				time spent waiting. */
+ 214:../freertos/tickless_lptmr.c **** 				ulCompleteTickPeriods = xExpectedIdleTime - 1UL;
+ 215:../freertos/tickless_lptmr.c **** 				ulLPTimerInterruptFired = false;
+ 216:../freertos/tickless_lptmr.c **** 			}
+ 217:../freertos/tickless_lptmr.c **** 			else
+ 218:../freertos/tickless_lptmr.c **** 			{
+ 219:../freertos/tickless_lptmr.c **** 				/* Something other than the tick interrupt ended the sleep.
+ 220:../freertos/tickless_lptmr.c **** 				Work out how long the sleep lasted rounded to complete tick
+ 221:../freertos/tickless_lptmr.c **** 				periods (not the ulReload value which accounted for part
+ 222:../freertos/tickless_lptmr.c **** 				ticks). */
+ 223:../freertos/tickless_lptmr.c **** 				ulCompleteTickPeriods = LPTMR_GetCurrentTimerCount(pxLptmrBase)/ulLPTimerCountsForOneTick;
+ 224:../freertos/tickless_lptmr.c **** 
+ 225:../freertos/tickless_lptmr.c **** 			}
+ 226:../freertos/tickless_lptmr.c **** 
+ 227:../freertos/tickless_lptmr.c **** 			/* Stop LPTMR when CPU waked up then set portNVIC_SYSTICK_LOAD_REG back to its standard
+ 228:../freertos/tickless_lptmr.c **** 			value.  The critical section is used to ensure the tick interrupt
+ 229:../freertos/tickless_lptmr.c **** 			can only execute once in the case that the reload register is near
+ 230:../freertos/tickless_lptmr.c **** 			zero. */
+ 231:../freertos/tickless_lptmr.c **** 			LPTMR_StopTimer(pxLptmrBase);
+ 232:../freertos/tickless_lptmr.c **** 			portENTER_CRITICAL();
+ 233:../freertos/tickless_lptmr.c **** 			{
+ 234:../freertos/tickless_lptmr.c **** 				*(portNVIC_SYSTICK_CTRL) |= portNVIC_SYSTICK_ENABLE_BIT;
+ 235:../freertos/tickless_lptmr.c **** 				vTaskStepTick( ulCompleteTickPeriods );
+ 236:../freertos/tickless_lptmr.c **** 				*(portNVIC_SYSTICK_LOAD) = ulTimerCountsForOneTick - 1UL;
+ 237:../freertos/tickless_lptmr.c **** 			}
+ 238:../freertos/tickless_lptmr.c **** 			portEXIT_CRITICAL();
+ 239:../freertos/tickless_lptmr.c **** 		}
+ 240:../freertos/tickless_lptmr.c **** 	}
+ 241:../freertos/tickless_lptmr.c **** #endif /* #if configUSE_TICKLESS_IDLE */
+ 242:../freertos/tickless_lptmr.c **** 
+ 243:../freertos/tickless_lptmr.c **** /*
+ 244:../freertos/tickless_lptmr.c ****  * Setup the systick timer to generate the tick interrupts at the required
+ 245:../freertos/tickless_lptmr.c ****  * frequency.
+ 246:../freertos/tickless_lptmr.c ****  */
+ 247:../freertos/tickless_lptmr.c **** void prvSetupTimerInterrupt( void )
+ 248:../freertos/tickless_lptmr.c **** {
+  27              		.loc 1 248 0
+  28              		.cfi_startproc
+  29 0000 98B5     		push	{r3, r4, r7, lr}
+  30              		.cfi_def_cfa_offset 16
+  31              		.cfi_offset 3, -16
+  32              		.cfi_offset 4, -12
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+ 249:../freertos/tickless_lptmr.c **** 	/* Calculate the constants required to configure the tick interrupt. */
+ 250:../freertos/tickless_lptmr.c **** #if( configUSE_TICKLESS_IDLE == 1 )
+ 251:../freertos/tickless_lptmr.c **** 	ulTimerCountsForOneTick = ( configSYSTICK_CLOCK_HZ / configTICK_RATE_HZ );
+ 252:../freertos/tickless_lptmr.c **** 	ulLPTimerCountsForOneTick = ( configLPTMR_CLOCK_HZ / configTICK_RATE_HZ );
+ 253:../freertos/tickless_lptmr.c **** 	xMaximumPossibleSuppressedTicks = portMAX_16_BIT_NUMBER / ulLPTimerCountsForOneTick;
+ 254:../freertos/tickless_lptmr.c **** 	NVIC_EnableIRQ(vPortGetLptmrIrqn());
+ 255:../freertos/tickless_lptmr.c **** #endif /* configUSE_TICKLESS_IDLE */
+ 256:../freertos/tickless_lptmr.c **** 	/* Configure SysTick to interrupt at the requested rate. */
+ 257:../freertos/tickless_lptmr.c **** 	*(portNVIC_SYSTICK_LOAD) = ( configCPU_CLOCK_HZ / configTICK_RATE_HZ ) - 1UL;
+  37              		.loc 1 257 0
+  38 0004 094C     		ldr	r4, .L2
+  39 0006 0A4B     		ldr	r3, .L2+4
+  40 0008 1B68     		ldr	r3, [r3]
+  41 000a 181C     		mov	r0, r3
+  42 000c FA23     		mov	r3, #250
+  43 000e 9900     		lsl	r1, r3, #2
+  44 0010 FFF7FEFF 		bl	__aeabi_uidiv
+  45 0014 031C     		mov	r3, r0
+  46 0016 013B     		sub	r3, r3, #1
+  47 0018 2360     		str	r3, [r4]
+ 258:../freertos/tickless_lptmr.c **** 	portNVIC_SYSTICK_CURRENT_VALUE_REG = 0UL;
+  48              		.loc 1 258 0
+  49 001a 064B     		ldr	r3, .L2+8
+  50 001c 0022     		mov	r2, #0
+  51 001e 1A60     		str	r2, [r3]
+ 259:../freertos/tickless_lptmr.c **** 	*(portNVIC_SYSTICK_CTRL) = portNVIC_SYSTICK_CLK | portNVIC_SYSTICK_INT | portNVIC_SYSTICK_ENABLE;
+  52              		.loc 1 259 0
+  53 0020 054B     		ldr	r3, .L2+12
+  54 0022 0722     		mov	r2, #7
+  55 0024 1A60     		str	r2, [r3]
+ 260:../freertos/tickless_lptmr.c **** }
+  56              		.loc 1 260 0
+  57 0026 BD46     		mov	sp, r7
+  58              		@ sp needed
+  59 0028 98BD     		pop	{r3, r4, r7, pc}
+  60              	.L3:
+  61 002a C046     		.align	2
+  62              	.L2:
+  63 002c 14E000E0 		.word	-536813548
+  64 0030 00000000 		.word	SystemCoreClock
+  65 0034 18E000E0 		.word	-536813544
+  66 0038 10E000E0 		.word	-536813552
+  67              		.cfi_endproc
+  68              	.LFE0:
+  70              		.text
+  71              	.Letext0:
+  72              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+  73              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+  74              		.file 4 "../freertos/portmacro.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tickless_lptmr.c
+C:\Users\mathe\AppData\Local\Temp\ccGyHhac.s:19     .text.prvSetupTimerInterrupt:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccGyHhac.s:24     .text.prvSetupTimerInterrupt:00000000 prvSetupTimerInterrupt
+C:\Users\mathe\AppData\Local\Temp\ccGyHhac.s:63     .text.prvSetupTimerInterrupt:0000002c $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.FreeRTOSConfig.h.71.9ce5dd93bb084cb2714008d9030c087d
+                           .group:00000000 wm4.projdefs.h.71.6ed2b4e07820ea275c61d78138cfae10
+                           .group:00000000 wm4.portmacro.h.72.32efb3512b0394b29d8211ba7ab279d9
+                           .group:00000000 wm4.portable.h.106.61ffdda1afafb5a5e1f7197ade95b43a
+                           .group:00000000 wm4.mpu_wrappers.h.71.c0872672d360e197b5a999335351843d
+                           .group:00000000 wm4.FreeRTOS.h.186.2e14eee2d995e9702d028b4adcebc296
+                           .group:00000000 wm4.list.h.103.6a12b7b9a7a136c3cca0ee53675c5498
+                           .group:00000000 wm4.task.h.88.c21feabc7be8ca1396f9c7c7a7eaee9b
+                           .group:00000000 wm4.tickless_generic.h.73.ad75429969dd12079da634c8da54311d
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv
+SystemCoreClock

@@ -1,0 +1,249 @@
+/*
+ * Copyright (c) 2015, Freescale Semiconductor, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice, this list
+ *   of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following disclaimer in the documentation and/or
+ *   other materials provided with the distribution.
+ *
+ * o Neither the name of Freescale Semiconductor, Inc. nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include "mcu_general_config.h"
+#include "generic_drivers/lcd/lcd.h"
+#include "libraries/delay/delay.h"
+#include "libraries/emb_util/emb_util.h"
+#include "drivers/port/port.h"
+#include "drivers/gpio/gpio.h"
+#include "drivers/tpm/tpm.h"
+#include "drivers/adc/adc.h"
+
+
+#define BOARD_TIMER_PORT PORTB
+#define BOARD_TIMER_PIN 13
+
+#define BOARD_KEY0_GPIO GPIOA
+#define BOARD_KEY0_PORT PORTA
+#define BOARD_KEY0_PIN 11
+#define BOARD_KEY0_PIN_MASK (1 << BOARD_LCD_D4_PIN)
+
+#define BOARD_KEY1_GPIO GPIOA
+#define BOARD_KEY1_PORT PORTA
+#define BOARD_KEY1_PIN 1
+#define BOARD_KEY1_PIN_MASK (1 << BOARD_LCD_D4_PIN)
+
+#define BOARD_LCD_D4_GPIO GPIOA
+#define BOARD_LCD_D4_PORT PORTA
+#define BOARD_LCD_D4_PIN 10
+#define BOARD_LCD_D4_PIN_MASK (1 << BOARD_LCD_D4_PIN)
+
+#define BOARD_LCD_D5_GPIO GPIOA
+#define BOARD_LCD_D5_PORT PORTA
+#define BOARD_LCD_D5_PIN 12
+#define BOARD_LCD_D5_PIN_MASK (1 << BOARD_LCD_D5_PIN)
+
+#define BOARD_LCD_D6_GPIO GPIOB
+#define BOARD_LCD_D6_PORT PORTB
+#define BOARD_LCD_D6_PIN 6
+#define BOARD_LCD_D6_PIN_MASK (1 << BOARD_LCD_D6_PIN)
+
+#define BOARD_LCD_D7_GPIO GPIOB
+#define BOARD_LCD_D7_PORT PORTB
+#define BOARD_LCD_D7_PIN 7
+#define BOARD_LCD_D7_PIN_MASK (1 << BOARD_LCD_D7_PIN)
+
+#define BOARD_LCD_RS_GPIO GPIOB
+#define BOARD_LCD_RS_PORT PORTB
+#define BOARD_LCD_RS_PIN 10
+#define BOARD_LCD_RS_PIN_MASK (1 << BOARD_LCD_RS_PIN)
+
+#define BOARD_LCD_EN_GPIO GPIOB
+#define BOARD_LCD_EN_PORT PORTB
+#define BOARD_LCD_EN_PIN 11
+#define BOARD_LCD_EN_PIN_MASK (1 << BOARD_LCD_EN_PIN)
+
+lcdConfig_t *lcd0Config;
+lcdHandle_t lcd0;
+
+uint8_t pwmDuty;
+uint16_t pwmFreq = 200, tpmPwmModulo = 52429;
+volatile uint8_t dutyKeyFlag, freqKeyFlag, portaISRFlag;
+
+void PORTA_IRQHandler(void)
+{
+	portaISRFlag = 1;
+
+	if( PORTA->ISFR & BOARD_KEY0_PIN )
+	{
+		dutyKeyFlag = 1;
+		PORTA->ISFR = BOARD_KEY0_PIN;
+	}
+
+	if( PORTA->ISFR & BOARD_KEY1_PIN )
+	{
+		freqKeyFlag = 1;
+		PORTA->ISFR = BOARD_KEY1_PIN;
+	}
+
+	NVIC_DisableIRQ( PORTA_IRQn );
+}
+
+int main(void)
+{
+	uint32_t adcValue;
+	char lcdString[10];
+
+    /* Write your code here */
+	TPM_SetCounterClkSrc(TPM1, TPM_CNT_CLOCK_FLL);
+	TPM_Init(TPM1, tpmPwmModulo, TPM_PRESCALER_DIV_2); /*Inicializa TPM1*/
+
+	PORT_Init(PORTA);
+	PORT_Init(PORTB);
+
+	GPIO_InitOutputPin(BOARD_LCD_D4_GPIO, BOARD_LCD_D4_PIN, 0);
+	GPIO_InitOutputPin(BOARD_LCD_D5_GPIO, BOARD_LCD_D5_PIN, 0);
+	GPIO_InitOutputPin(BOARD_LCD_D6_GPIO, BOARD_LCD_D6_PIN, 0);
+	GPIO_InitOutputPin(BOARD_LCD_D7_GPIO, BOARD_LCD_D7_PIN, 0);
+	GPIO_InitOutputPin(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, 0);
+	GPIO_InitOutputPin(BOARD_LCD_EN_GPIO, BOARD_LCD_EN_PIN, 0);
+
+	GPIO_InitInputPin(BOARD_KEY0_GPIO, BOARD_KEY0_PIN);
+	GPIO_InitInputPin(BOARD_KEY1_GPIO, BOARD_KEY1_PIN);
+
+	PORT_IRQEnable(BOARD_KEY0_PORT, BOARD_KEY0_PIN, PORT_IRQ_ON_FALLING_EDGE);
+	PORT_PullEnable(BOARD_KEY0_PORT, BOARD_KEY0_PIN);
+
+	PORT_IRQEnable(BOARD_KEY1_PORT, BOARD_KEY1_PIN, PORT_IRQ_ON_FALLING_EDGE);
+	PORT_PullEnable(BOARD_KEY1_PORT, BOARD_KEY1_PIN);
+
+	PORT_SetMux(BOARD_TIMER_PORT, BOARD_TIMER_PIN, PORT_MUX_ALT2);
+	/* O canal que controla o pino PTB13 é o TPM1_Ch1
+	 * Irá ser utilizado o PWM alinhado a borda, com o duty cycle em nível alto*/
+	TPM_InitChannel(TPM1, 0, TPM_EDGE_PWM_MODE, TPM_PWM_HIGH_TRUE_CONFIG);
+	TPM_SetChMatch(TPM1, 0, 0); /*Configuração do duty cycle (valor de match)*/
+
+	TPM_InitCounter(TPM1); /*Inicializa registrador contador*/
+
+	Delay_Init();
+
+	lcd0Config = LCD_CreateConfig();
+	lcd0Config->lines = 2;
+	lcd0Config->cols = 16;
+	lcd0Config->charsize = LCD_5x8DOTS;
+	lcd0Config->bus.data[0].portRegister = BOARD_LCD_D4_GPIO;
+	lcd0Config->bus.data[0].pinMask =  BOARD_LCD_D4_PIN_MASK;
+	lcd0Config->bus.data[1].portRegister = BOARD_LCD_D5_GPIO;
+	lcd0Config->bus.data[1].pinMask =  BOARD_LCD_D5_PIN_MASK;
+	lcd0Config->bus.data[2].portRegister = BOARD_LCD_D6_GPIO;
+	lcd0Config->bus.data[2].pinMask =  BOARD_LCD_D6_PIN_MASK;
+	lcd0Config->bus.data[3].portRegister = BOARD_LCD_D7_GPIO;
+	lcd0Config->bus.data[3].pinMask =  BOARD_LCD_D7_PIN_MASK;
+	lcd0Config->bus.rs.portRegister = BOARD_LCD_RS_GPIO;
+	lcd0Config->bus.rs.pinMask =  BOARD_LCD_RS_PIN_MASK;
+	lcd0Config->bus.en.portRegister = BOARD_LCD_EN_GPIO;
+	lcd0Config->bus.en.pinMask =  BOARD_LCD_EN_PIN_MASK;
+
+	lcd0 = LCD_Init(lcd0Config);
+
+    Delay_Waitms(1000);
+
+    LCD_Clear(lcd0);
+
+    LCD_SetCursor(lcd0, 0, 0);
+    LCD_WriteString(lcd0, "PWM Duty: ");
+    LCD_SetCursor(lcd0, sizeof("PWM Duty:"), 0);
+	LCD_WriteString(lcd0, "              ");
+	LCD_SetCursor(lcd0, sizeof("PWM Duty:"), 0);
+   	LCD_WriteString(lcd0, "0");
+
+    LCD_SetCursor(lcd0, 0, 1);
+    LCD_WriteString(lcd0, "PWM Freq.: ");
+    LCD_SetCursor(lcd0, sizeof("PWM Freq.:"), 1);
+	LCD_WriteString(lcd0, "              ");
+	LCD_SetCursor(lcd0, sizeof("PWM Freq.:"), 1);
+   	LCD_WriteString(lcd0, "200");
+
+
+   	uint8_t keyFlagTmp, freqKeyFlagTmp;
+
+    for (;;) {
+
+    	if ( keyFlagTmp )
+    	{
+    		dutyKeyFlag = 0;
+
+    		if( pwmDuty == 100)
+    		{
+    			pwmDuty = 0;
+    		}
+    		else
+    		{
+    			pwmDuty += 10;
+    		}
+            TPM_SetChMatch(TPM1, 0, ( pwmDuty * tpmPwmModulo ) / 100 ); /*Configuração do duty cycle (valor de match)*/
+        	EmbUtil_ItoA(pwmDuty, lcdString, 10);
+        	LCD_SetCursor(lcd0, sizeof("PWM Duty:"), 0);
+        	LCD_WriteString(lcd0, "              ");
+        	LCD_SetCursor(lcd0, sizeof("PWM Duty:"), 0);
+        	LCD_WriteString(lcd0, lcdString);
+    	}
+
+    	if ( freqKeyFlagTmp )
+    	{
+    		freqKeyFlag = 0;
+
+    		if( pwmFreq == 1000)
+    		{
+    			pwmFreq = 200;
+    		}
+    		else
+    		{
+    			pwmFreq += 50;
+    		}
+    		tpmPwmModulo = 10485760U / pwmFreq;
+
+    		TPM_SetModulo(TPM1, tpmPwmModulo); /*Seta o valor de módulo - fim de contagem (borda)*/
+        	EmbUtil_ItoA(pwmFreq, lcdString, 10);
+        	LCD_SetCursor(lcd0, sizeof("PWM Freq.:"), 1);
+        	LCD_WriteString(lcd0, "              ");
+        	LCD_SetCursor(lcd0, sizeof("PWM Freq.:"), 1);
+        	LCD_WriteString(lcd0, lcdString);
+    	}
+
+    	Delay_Waitms(100);
+    	NVIC_DisableIRQ( PORTA_IRQn );
+    	if(portaISRFlag) /* Verifica se ISR já estava habilitada e ja foi chamada*/
+        {
+    		portaISRFlag = 0;
+    		keyFlagTmp =  dutyKeyFlag;
+    		freqKeyFlagTmp =  freqKeyFlag;
+        }
+
+		NVIC_EnableIRQ( PORTA_IRQn );
+
+    }
+    /* Never leave main */
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////
+// EOF
+////////////////////////////////////////////////////////////////////////////////

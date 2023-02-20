@@ -1,0 +1,214 @@
+/***************************************************************************************
+ * Módulo      : port.h
+ * Revisão     : 1.0
+ * Data        : 09/02/2023
+ * Descrição   : Arquivo com implementações dos Módulos PORT da Familia Kinetis KL05.
+ * Comentários : Nenhum.
+ * Autor(es)   : Matheus Leitzke Pinto
+ ***************************************************************************************/
+
+#ifndef PORT_DRV_H_
+#define PORT_DRV_H_
+
+/*ARQUIVOS DE CABEÇALHO*/
+/*=======================================================================================*/
+
+#include "drivers/common_driver.h"
+
+/*FIM: ARQUIVOS DE CABEÇALHO*/
+/*=======================================================================================*/
+
+/*TIPOS ENUMERADOS*/
+/*=======================================================================================*/
+
+/*Possíveis alternativas de multiplexação dos pinos das PORTs*/
+typedef enum{
+	PORT_MUX_ALT0 		= 0x0u,
+	PORT_MUX_ALT1 		= 0x1u,
+	PORT_MUX_ALT2 		= 0x2u,
+	PORT_MUX_ALT3 		= 0x3u,
+	PORT_MUX_DISABLE 	= PORT_MUX_ALT0
+}portMux_t;
+
+/*Possíveis alternativas de interrupção dos pinos das PORTs*/
+typedef enum{
+	PORT_IRQ_DISABLE 		 	 = 0x0U,
+	PORT_IRQ_DMA_ON_RISING_EDGE  = 0x1U,
+	PORT_IRQ_DMA_ON_FALLING_EDGE = 0x2U,
+	PORT_IRQ_DMA_ON_EITHER_EDGE  = 0x3U,
+	PORT_IRQ_ON_lOW_LEVEL		 = 0x8U,
+	PORT_IRQ_ON_RISING_EDGE 	 = 0x9U,
+	PORT_IRQ_ON_FALLING_EDGE 	 = 0xAU,
+	PORT_IRQ_ON_EITHER_EDGE 	 = 0xBU,
+	PORT_IRQ_ON_HIGH_LEVEL 	 	 = 0xCU
+}portIRQ_t;
+
+/*FIM: TIPOS ENUMERADOS*/
+/*=======================================================================================*/
+
+/*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+/*=======================================================================================*/
+
+/**********************************************************************
+ * Função		:	PORT_IRQEnable
+ *
+ * Descrição	:   Habilita a geração de interrupção pelo pino de
+ * 					um módulo PORT.
+ *
+ * Entradas		:   *base - registrador base do periférico PORT.
+ *                  pin	- numeração do pino;
+ * 					irq - uma das alternativas de interrupção do pino.
+ *
+ * Saídas		:  Nenhuma.
+ *
+ * Comentários 	:  Nenhum.
+ * ********************************************************************/
+void PORT_IRQEnable(PORT_Type *base, uint8_t pin, portIRQ_t irq);
+
+/**********************************************************************
+ * Função		:	PORT_GetIRQFlag
+ *
+ * Descrição	:   Retorna se a flag de interrupção de pino do PORT foi setada.
+ *
+ * Entradas		:   *base - registrador base do periférico PORT.
+ *                  pin	- numeração do pino;
+ *
+ * Saídas		:  0 - se flag não setada;
+ *                 !0 - se flag setada.
+ *
+ * Comentários 	:  Nenhum.
+ * ********************************************************************/
+uint8_t PORT_GetIRQFlag(PORT_Type *base, uint8_t pin);
+
+/**********************************************************************
+ * Função		:	PORT_ClearIRQFlag
+ *
+ * Descrição	:   Limpa flag de interrupção do pino de PORT.
+ *
+ * Entradas		:   *base - registrador base do periférico PORT.
+ *                  pin	- numeração do pino;
+ *
+ * Saídas		:  Nenhuma.
+ *
+ * Comentários 	:  Nenhum.
+ * ********************************************************************/
+void PORT_ClearIRQFlag(PORT_Type *base, uint8_t pin);
+
+/*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+/*=======================================================================================*/
+
+
+/*PROTOTIPOS - FUNÇÕES INLINE*/
+/*=======================================================================================*/
+
+static inline void PORT_Init(PORT_Type* base);
+static inline void PORT_SetMux(PORT_Type *base, uint8_t pin, portMux_t mux);
+static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin);
+static inline void PORT_HighStrengthEnable(PORT_Type *base, uint8_t pin);
+
+/*FIM: PROTOTIPOS - FUNÇÕES INLINE*/
+/*=======================================================================================*/
+
+/*FUNÇÕES INLINE*/
+/*=======================================================================================*/
+
+/**********************************************************************
+ * Função		:	PORT_Init
+ *
+ * Descrição	:   Deve ser chamado antes de utilizar um módulo PORT.
+ *
+ * Entradas		:   *base - registrador base do periférico PORT.
+ *
+ * Saídas 		:   Nenhuma.
+ *
+ * Comentários 	: 	Nenhum.
+ * ********************************************************************/
+static inline void PORT_Init(PORT_Type* base)
+{
+	assert(base);
+
+	if( PORTA == base )
+	{
+		   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK; /* Ativa o clock do periférico PORTA*/
+	}
+	else
+	{
+		if( PORTB == base )
+		{
+			SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; /* Ativa o clock do periférico PORTB*/
+			/*Desabilita NMI em PTB5 e habilita como GPIO*/
+			base->PCR[5] &= ~PORT_PCR_MUX_MASK; /*Limpa configurações anteriores*/
+			base->PCR[5] |= PORT_PCR_MUX(PORT_MUX_ALT1);
+		}
+	}
+}
+/**********************************************************************
+ * Função		:	PORT_PullEnable
+ *
+ * Descrição	:   Habilita pullUp no pino do módulo PORT.
+ *
+ * Entradas		:   *base - registrador base do periférico PORT.
+ *                  pin	  - numeração do pino;
+ *
+ * Saídas		:   Nenhuma.
+ *
+ * Comentários 	: 	Nenhum.
+ * ********************************************************************/
+static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin)
+{
+	assert(base);
+	assert( ( pin >= 0 ) && ( pin < 32 ) );
+
+	base->PCR[pin] |= PORT_PCR_PE_MASK;
+}
+
+/**********************************************************************
+ * Função		:	PORT_HighStrengthEnable
+ *
+ * Descrição	:   Habilita a intensidade da corrente do pino como alta.
+ *
+ * Entradas		:   *base - registrador base do periférico PORT.
+ *                  pin	  - numeração do pino;
+ *
+ * Saídas		:   Nenhuma.
+ *
+ * Comentários 	: 	Nenhum.
+ * ********************************************************************/
+static inline void PORT_HighStrengthEnable(PORT_Type *base, uint8_t pin)
+{
+	assert(base);
+	assert( ( pin >= 0 ) && ( pin < 32 ) );
+
+	base->PCR[pin] |= PORT_PCR_DSE_MASK;
+}
+
+/**********************************************************************
+ * Função		:	PORTB_SetMux
+ *
+ * Descrição	:   Configura a multiplexação no pino do módulo PORTB.
+ *
+ * Entradas		:   *base - registrador base do periférico PORT.
+ *                  pin	- numeração do pino;
+ * 					mux - uma das alternativas de multiplexação do pino.
+ *
+ * Saídas		:   Nenhuma.
+ *
+ * Comentários 	: 	Nenhum.
+ * ********************************************************************/
+static inline void PORT_SetMux(PORT_Type *base, uint8_t pin, portMux_t mux)
+{
+	assert(base);
+	assert( ( pin >= 0 ) && ( pin < 32 ) );
+
+	base->PCR[pin] &= ~PORT_PCR_MUX_MASK; /*Limpa configurações anteriores*/
+	base->PCR[pin] |= PORT_PCR_MUX(mux);
+}
+
+/*FIM: FUNÇÕES INLINE*/
+/*=======================================================================================*/
+
+#endif /* PORT_DRV_H_ */
+
+/***************************************************************************************
+ * FIM: Módulo - port.h
+ ***************************************************************************************/

@@ -1,0 +1,809 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"tpm.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.bss.matchVal,"aw",%nobits
+  18              		.align	1
+  21              	matchVal:
+  22 0000 0000     		.space	2
+  23              		.section	.bss.g_tpmClkSrc,"aw",%nobits
+  24              		.align	2
+  27              	g_tpmClkSrc:
+  28 0000 00000000 		.space	4
+  29              		.section	.text.TPM_SetCounterClkSrc,"ax",%progbits
+  30              		.align	2
+  31              		.global	TPM_SetCounterClkSrc
+  32              		.code	16
+  33              		.thumb_func
+  35              	TPM_SetCounterClkSrc:
+  36              	.LFB41:
+  37              		.file 1 "../Sources/drivers/tpm/tpm.c"
+   1:../Sources/drivers/tpm/tpm.c **** /***************************************************************************************
+   2:../Sources/drivers/tpm/tpm.c ****  * Módulo      : TPM_HAL.c
+   3:../Sources/drivers/tpm/tpm.c ****  *
+   4:../Sources/drivers/tpm/tpm.c ****  * Revisão     : 1.0
+   5:../Sources/drivers/tpm/tpm.c ****  *
+   6:../Sources/drivers/tpm/tpm.c ****  * Data        : 26/10/2017
+   7:../Sources/drivers/tpm/tpm.c ****  *
+   8:../Sources/drivers/tpm/tpm.c ****  * Descrição   : Arquivo com implementações dos Módulos Timer/PWM (TPM) da Familia Kinetis KL25.
+   9:../Sources/drivers/tpm/tpm.c ****  *
+  10:../Sources/drivers/tpm/tpm.c ****  * Comentários : Nenhum.
+  11:../Sources/drivers/tpm/tpm.c ****  *
+  12:../Sources/drivers/tpm/tpm.c ****  * Autor(es)   : Matheus Leitzke Pinto
+  13:../Sources/drivers/tpm/tpm.c ****  ***************************************************************************************/
+  14:../Sources/drivers/tpm/tpm.c **** 
+  15:../Sources/drivers/tpm/tpm.c **** /*ARQUIVOS DE CABEÇALHO*/
+  16:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
+  17:../Sources/drivers/tpm/tpm.c **** 
+  18:../Sources/drivers/tpm/tpm.c **** #include "tpm.h"
+  19:../Sources/drivers/tpm/tpm.c **** 
+  20:../Sources/drivers/tpm/tpm.c **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  21:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
+  22:../Sources/drivers/tpm/tpm.c **** 
+  23:../Sources/drivers/tpm/tpm.c **** /*VARIÁVEIS PRIVADAS*/
+  24:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
+  25:../Sources/drivers/tpm/tpm.c **** 
+  26:../Sources/drivers/tpm/tpm.c **** static uint16_t matchVal;
+  27:../Sources/drivers/tpm/tpm.c **** static moduleClock_t g_tpmClkSrc;
+  28:../Sources/drivers/tpm/tpm.c **** 
+  29:../Sources/drivers/tpm/tpm.c **** /*FIM: VARIÁVEIS PRIVADAS*/
+  30:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
+  31:../Sources/drivers/tpm/tpm.c **** 
+  32:../Sources/drivers/tpm/tpm.c **** /*FUNÇÕES PÚBLICAS*/
+  33:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
+  34:../Sources/drivers/tpm/tpm.c **** 
+  35:../Sources/drivers/tpm/tpm.c **** /**********************************************************************
+  36:../Sources/drivers/tpm/tpm.c ****  * Função		:	TPM_SetCounterClkSrc
+  37:../Sources/drivers/tpm/tpm.c ****  *
+  38:../Sources/drivers/tpm/tpm.c ****  * Descrição	:   Define a fonte de clock utilizada pelo contador.
+  39:../Sources/drivers/tpm/tpm.c ****  *
+  40:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base - registrador base do periférico TPM;
+  41:../Sources/drivers/tpm/tpm.c ****  *                  src   - tipo enumerado que define a fonte de clock.
+  42:../Sources/drivers/tpm/tpm.c ****  *
+  43:../Sources/drivers/tpm/tpm.c ****  * Saídas 		:   STATUS_SUCCESS, se configuração ocorreu corretamente;
+  44:../Sources/drivers/tpm/tpm.c ****  *                  STATUS_FAIL, caso contrário.
+  45:../Sources/drivers/tpm/tpm.c ****  *
+  46:../Sources/drivers/tpm/tpm.c ****  * Comentários 	: 	Deve ser chamada antes da função TPM_Init.
+  47:../Sources/drivers/tpm/tpm.c ****  * ********************************************************************/
+  48:../Sources/drivers/tpm/tpm.c **** uint8_t TPM_SetCounterClkSrc(TPM_Type *base, tpmClkSrc_t src)
+  49:../Sources/drivers/tpm/tpm.c **** {
+  38              		.loc 1 49 0
+  39              		.cfi_startproc
+  40 0000 80B5     		push	{r7, lr}
+  41              		.cfi_def_cfa_offset 8
+  42              		.cfi_offset 7, -8
+  43              		.cfi_offset 14, -4
+  44 0002 82B0     		sub	sp, sp, #8
+  45              		.cfi_def_cfa_offset 16
+  46 0004 00AF     		add	r7, sp, #0
+  47              		.cfi_def_cfa_register 7
+  48 0006 7860     		str	r0, [r7, #4]
+  49 0008 0A1C     		mov	r2, r1
+  50 000a FB1C     		add	r3, r7, #3
+  51 000c 1A70     		strb	r2, [r3]
+  50:../Sources/drivers/tpm/tpm.c **** 	switch(src)
+  52              		.loc 1 50 0
+  53 000e FB1C     		add	r3, r7, #3
+  54 0010 1B78     		ldrb	r3, [r3]
+  55 0012 012B     		cmp	r3, #1
+  56 0014 0CD0     		beq	.L3
+  57 0016 02DC     		bgt	.L4
+  58 0018 002B     		cmp	r3, #0
+  59 001a 05D0     		beq	.L5
+  60 001c 17E0     		b	.L2
+  61              	.L4:
+  62 001e 022B     		cmp	r3, #2
+  63 0020 10D0     		beq	.L6
+  64 0022 032B     		cmp	r3, #3
+  65 0024 09D0     		beq	.L7
+  66 0026 12E0     		b	.L2
+  67              	.L5:
+  51:../Sources/drivers/tpm/tpm.c **** 	{
+  52:../Sources/drivers/tpm/tpm.c **** 	case TPM_CNT_CLOCK_DISABLE:
+  53:../Sources/drivers/tpm/tpm.c **** 		g_tpmClkSrc = 0U;
+  68              		.loc 1 53 0
+  69 0028 174B     		ldr	r3, .L10
+  70 002a 0022     		mov	r2, #0
+  71 002c 1A60     		str	r2, [r3]
+  54:../Sources/drivers/tpm/tpm.c **** 		break;
+  72              		.loc 1 54 0
+  73 002e 10E0     		b	.L8
+  74              	.L3:
+  55:../Sources/drivers/tpm/tpm.c **** 	case TPM_CNT_CLOCK_FLL:
+  56:../Sources/drivers/tpm/tpm.c **** 		g_tpmClkSrc = MCG_FLL_CLK_FREQ;
+  75              		.loc 1 56 0
+  76 0030 154B     		ldr	r3, .L10
+  77 0032 A022     		mov	r2, #160
+  78 0034 5204     		lsl	r2, r2, #17
+  79 0036 1A60     		str	r2, [r3]
+  57:../Sources/drivers/tpm/tpm.c **** 		break;
+  80              		.loc 1 57 0
+  81 0038 0BE0     		b	.L8
+  82              	.L7:
+  58:../Sources/drivers/tpm/tpm.c **** 	case TPM_CNT_CLOCK_IRC:
+  59:../Sources/drivers/tpm/tpm.c **** 		g_tpmClkSrc = MCG_IRC_CLK_FREQ;
+  83              		.loc 1 59 0
+  84 003a 134B     		ldr	r3, .L10
+  85 003c 8022     		mov	r2, #128
+  86 003e 1202     		lsl	r2, r2, #8
+  87 0040 1A60     		str	r2, [r3]
+  60:../Sources/drivers/tpm/tpm.c **** 		break;
+  88              		.loc 1 60 0
+  89 0042 06E0     		b	.L8
+  90              	.L6:
+  61:../Sources/drivers/tpm/tpm.c **** 	case TPM_CNT_CLOCK_OSC:
+  62:../Sources/drivers/tpm/tpm.c **** 		g_tpmClkSrc = OSC_ER_CLK_FREQ;
+  91              		.loc 1 62 0
+  92 0044 104B     		ldr	r3, .L10
+  93 0046 8022     		mov	r2, #128
+  94 0048 1202     		lsl	r2, r2, #8
+  95 004a 1A60     		str	r2, [r3]
+  63:../Sources/drivers/tpm/tpm.c **** 		break;
+  96              		.loc 1 63 0
+  97 004c 01E0     		b	.L8
+  98              	.L2:
+  64:../Sources/drivers/tpm/tpm.c **** 	default:
+  65:../Sources/drivers/tpm/tpm.c **** 		return STATUS_FAIL;
+  99              		.loc 1 65 0
+ 100 004e 0123     		mov	r3, #1
+ 101 0050 15E0     		b	.L9
+ 102              	.L8:
+  66:../Sources/drivers/tpm/tpm.c **** 		break;
+  67:../Sources/drivers/tpm/tpm.c **** 	}
+  68:../Sources/drivers/tpm/tpm.c **** 
+  69:../Sources/drivers/tpm/tpm.c **** 	SIM->SOPT2 &= ~SIM_SOPT2_TPMSRC_MASK;
+ 103              		.loc 1 69 0
+ 104 0052 0E4A     		ldr	r2, .L10+4
+ 105 0054 0D49     		ldr	r1, .L10+4
+ 106 0056 0E4B     		ldr	r3, .L10+8
+ 107 0058 C958     		ldr	r1, [r1, r3]
+ 108 005a 0E4B     		ldr	r3, .L10+12
+ 109 005c 1940     		and	r1, r3
+ 110 005e 0C4B     		ldr	r3, .L10+8
+ 111 0060 D150     		str	r1, [r2, r3]
+  70:../Sources/drivers/tpm/tpm.c **** 	SIM->SOPT2 |= SIM_SOPT2_TPMSRC(src);
+ 112              		.loc 1 70 0
+ 113 0062 0A4A     		ldr	r2, .L10+4
+ 114 0064 0949     		ldr	r1, .L10+4
+ 115 0066 0A4B     		ldr	r3, .L10+8
+ 116 0068 C958     		ldr	r1, [r1, r3]
+ 117 006a FB1C     		add	r3, r7, #3
+ 118 006c 1B78     		ldrb	r3, [r3]
+ 119 006e 1806     		lsl	r0, r3, #24
+ 120 0070 C023     		mov	r3, #192
+ 121 0072 9B04     		lsl	r3, r3, #18
+ 122 0074 0340     		and	r3, r0
+ 123 0076 1943     		orr	r1, r3
+ 124 0078 054B     		ldr	r3, .L10+8
+ 125 007a D150     		str	r1, [r2, r3]
+  71:../Sources/drivers/tpm/tpm.c **** 
+  72:../Sources/drivers/tpm/tpm.c **** 	return STATUS_SUCCESS;
+ 126              		.loc 1 72 0
+ 127 007c 0023     		mov	r3, #0
+ 128              	.L9:
+  73:../Sources/drivers/tpm/tpm.c **** }
+ 129              		.loc 1 73 0
+ 130 007e 181C     		mov	r0, r3
+ 131 0080 BD46     		mov	sp, r7
+ 132 0082 02B0     		add	sp, sp, #8
+ 133              		@ sp needed
+ 134 0084 80BD     		pop	{r7, pc}
+ 135              	.L11:
+ 136 0086 C046     		.align	2
+ 137              	.L10:
+ 138 0088 00000000 		.word	g_tpmClkSrc
+ 139 008c 00700440 		.word	1074032640
+ 140 0090 04100000 		.word	4100
+ 141 0094 FFFFFFFC 		.word	-50331649
+ 142              		.cfi_endproc
+ 143              	.LFE41:
+ 145              		.section	.rodata
+ 146              		.align	2
+ 147              	.LC1:
+ 148 0000 2E2E2F53 		.ascii	"../Sources/drivers/tpm/tpm.c\000"
+ 148      6F757263 
+ 148      65732F64 
+ 148      72697665 
+ 148      72732F74 
+ 149 001d 000000   		.align	2
+ 150              	.LC4:
+ 151 0020 62617365 		.ascii	"base\000"
+ 151      00
+ 152              		.section	.text.TPM_Init,"ax",%progbits
+ 153              		.align	2
+ 154              		.global	TPM_Init
+ 155              		.code	16
+ 156              		.thumb_func
+ 158              	TPM_Init:
+ 159              	.LFB42:
+  74:../Sources/drivers/tpm/tpm.c **** 
+  75:../Sources/drivers/tpm/tpm.c **** /**********************************************************************
+  76:../Sources/drivers/tpm/tpm.c ****  * Função		:	TPM_Init
+  77:../Sources/drivers/tpm/tpm.c ****  *
+  78:../Sources/drivers/tpm/tpm.c ****  * Descrição	:   Inicialização do driver do módulo TPM.
+  79:../Sources/drivers/tpm/tpm.c ****  *
+  80:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base    - registrador base do periférico TPM;
+  81:../Sources/drivers/tpm/tpm.c ****  *                  modulo   - valor de final de contagem;
+  82:../Sources/drivers/tpm/tpm.c ****  *                  prescale - tipo enumerado com um dos possíveis
+  83:../Sources/drivers/tpm/tpm.c ****  *                             valores de prescaler.
+  84:../Sources/drivers/tpm/tpm.c ****  *
+  85:../Sources/drivers/tpm/tpm.c ****  * Saídas 		:   Nenhuma.
+  86:../Sources/drivers/tpm/tpm.c ****  *
+  87:../Sources/drivers/tpm/tpm.c ****  * Comentários 	: 	Deve ser chamada após a função TPM_SetCounterClkSrc.
+  88:../Sources/drivers/tpm/tpm.c ****  * ********************************************************************/
+  89:../Sources/drivers/tpm/tpm.c **** void TPM_Init(TPM_Type *base, uint16_t modulo, tpmPrescalerValues_t prescale)
+  90:../Sources/drivers/tpm/tpm.c **** {
+ 160              		.loc 1 90 0
+ 161              		.cfi_startproc
+ 162 0000 80B5     		push	{r7, lr}
+ 163              		.cfi_def_cfa_offset 8
+ 164              		.cfi_offset 7, -8
+ 165              		.cfi_offset 14, -4
+ 166 0002 82B0     		sub	sp, sp, #8
+ 167              		.cfi_def_cfa_offset 16
+ 168 0004 00AF     		add	r7, sp, #0
+ 169              		.cfi_def_cfa_register 7
+ 170 0006 7860     		str	r0, [r7, #4]
+ 171 0008 BB1C     		add	r3, r7, #2
+ 172 000a 1980     		strh	r1, [r3]
+ 173 000c 7B1C     		add	r3, r7, #1
+ 174 000e 1A70     		strb	r2, [r3]
+  91:../Sources/drivers/tpm/tpm.c **** 	assert(base);
+ 175              		.loc 1 91 0
+ 176 0010 7B68     		ldr	r3, [r7, #4]
+ 177 0012 002B     		cmp	r3, #0
+ 178 0014 06D1     		bne	.L13
+ 179              		.loc 1 91 0 is_stmt 0 discriminator 1
+ 180 0016 1E49     		ldr	r1, .L16
+ 181 0018 1E4A     		ldr	r2, .L16+4
+ 182 001a 1F4B     		ldr	r3, .L16+8
+ 183 001c 081C     		mov	r0, r1
+ 184 001e 5B21     		mov	r1, #91
+ 185 0020 FFF7FEFF 		bl	__assert_func
+ 186              	.L13:
+  92:../Sources/drivers/tpm/tpm.c **** 
+  93:../Sources/drivers/tpm/tpm.c **** 	if (TPM0 == base)
+ 187              		.loc 1 93 0 is_stmt 1
+ 188 0024 7A68     		ldr	r2, [r7, #4]
+ 189 0026 1D4B     		ldr	r3, .L16+12
+ 190 0028 9A42     		cmp	r2, r3
+ 191 002a 09D1     		bne	.L14
+  94:../Sources/drivers/tpm/tpm.c **** 	{
+  95:../Sources/drivers/tpm/tpm.c **** 		SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK; /* Ativa o clock do módulo TPM0 */
+ 192              		.loc 1 95 0
+ 193 002c 1C4A     		ldr	r2, .L16+16
+ 194 002e 1C49     		ldr	r1, .L16+16
+ 195 0030 1C4B     		ldr	r3, .L16+20
+ 196 0032 CB58     		ldr	r3, [r1, r3]
+ 197 0034 8021     		mov	r1, #128
+ 198 0036 4904     		lsl	r1, r1, #17
+ 199 0038 1943     		orr	r1, r3
+ 200 003a 1A4B     		ldr	r3, .L16+20
+ 201 003c D150     		str	r1, [r2, r3]
+ 202 003e 0CE0     		b	.L15
+ 203              	.L14:
+  96:../Sources/drivers/tpm/tpm.c **** 	}
+  97:../Sources/drivers/tpm/tpm.c **** 	else
+  98:../Sources/drivers/tpm/tpm.c **** 	{
+  99:../Sources/drivers/tpm/tpm.c **** 		if (TPM1 == base)
+ 204              		.loc 1 99 0
+ 205 0040 7A68     		ldr	r2, [r7, #4]
+ 206 0042 194B     		ldr	r3, .L16+24
+ 207 0044 9A42     		cmp	r2, r3
+ 208 0046 08D1     		bne	.L15
+ 100:../Sources/drivers/tpm/tpm.c **** 		{
+ 101:../Sources/drivers/tpm/tpm.c **** 			SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK; /* Ativa o clock do módulo TPM1 */
+ 209              		.loc 1 101 0
+ 210 0048 154A     		ldr	r2, .L16+16
+ 211 004a 1549     		ldr	r1, .L16+16
+ 212 004c 154B     		ldr	r3, .L16+20
+ 213 004e CB58     		ldr	r3, [r1, r3]
+ 214 0050 8021     		mov	r1, #128
+ 215 0052 8904     		lsl	r1, r1, #18
+ 216 0054 1943     		orr	r1, r3
+ 217 0056 134B     		ldr	r3, .L16+20
+ 218 0058 D150     		str	r1, [r2, r3]
+ 219              	.L15:
+ 102:../Sources/drivers/tpm/tpm.c **** 		}
+ 103:../Sources/drivers/tpm/tpm.c **** 	}
+ 104:../Sources/drivers/tpm/tpm.c **** 
+ 105:../Sources/drivers/tpm/tpm.c **** 	base->MOD = modulo;
+ 220              		.loc 1 105 0
+ 221 005a BB1C     		add	r3, r7, #2
+ 222 005c 1A88     		ldrh	r2, [r3]
+ 223 005e 7B68     		ldr	r3, [r7, #4]
+ 224 0060 9A60     		str	r2, [r3, #8]
+ 106:../Sources/drivers/tpm/tpm.c **** 
+ 107:../Sources/drivers/tpm/tpm.c ****     base->SC &= ~TPM_SC_PS_MASK;
+ 225              		.loc 1 107 0
+ 226 0062 7B68     		ldr	r3, [r7, #4]
+ 227 0064 1B68     		ldr	r3, [r3]
+ 228 0066 0722     		mov	r2, #7
+ 229 0068 191C     		mov	r1, r3
+ 230 006a 9143     		bic	r1, r2
+ 231 006c 0A1C     		mov	r2, r1
+ 232 006e 7B68     		ldr	r3, [r7, #4]
+ 233 0070 1A60     		str	r2, [r3]
+ 108:../Sources/drivers/tpm/tpm.c ****     base->SC |= TPM_SC_PS(prescale);
+ 234              		.loc 1 108 0
+ 235 0072 7B68     		ldr	r3, [r7, #4]
+ 236 0074 1A68     		ldr	r2, [r3]
+ 237 0076 7B1C     		add	r3, r7, #1
+ 238 0078 1978     		ldrb	r1, [r3]
+ 239 007a 0723     		mov	r3, #7
+ 240 007c 0B40     		and	r3, r1
+ 241 007e 1A43     		orr	r2, r3
+ 242 0080 7B68     		ldr	r3, [r7, #4]
+ 243 0082 1A60     		str	r2, [r3]
+ 109:../Sources/drivers/tpm/tpm.c **** 
+ 110:../Sources/drivers/tpm/tpm.c ****     base->CNT = 0x00U;					/* Reseta registrador contador */
+ 244              		.loc 1 110 0
+ 245 0084 7B68     		ldr	r3, [r7, #4]
+ 246 0086 0022     		mov	r2, #0
+ 247 0088 5A60     		str	r2, [r3, #4]
+ 111:../Sources/drivers/tpm/tpm.c **** }
+ 248              		.loc 1 111 0
+ 249 008a BD46     		mov	sp, r7
+ 250 008c 02B0     		add	sp, sp, #8
+ 251              		@ sp needed
+ 252 008e 80BD     		pop	{r7, pc}
+ 253              	.L17:
+ 254              		.align	2
+ 255              	.L16:
+ 256 0090 00000000 		.word	.LC1
+ 257 0094 00000000 		.word	__func__.4705
+ 258 0098 20000000 		.word	.LC4
+ 259 009c 00800340 		.word	1073971200
+ 260 00a0 00700440 		.word	1074032640
+ 261 00a4 3C100000 		.word	4156
+ 262 00a8 00900340 		.word	1073975296
+ 263              		.cfi_endproc
+ 264              	.LFE42:
+ 266              		.section	.rodata
+ 267 0025 000000   		.align	2
+ 268              	.LC9:
+ 269 0028 28206368 		.ascii	"( chNum >=0 ) && (chNum < 7)\000"
+ 269      4E756D20 
+ 269      3E3D3020 
+ 269      29202626 
+ 269      20286368 
+ 270 0045 000000   		.section	.text.TPM_InitChannel,"ax",%progbits
+ 271              		.align	2
+ 272              		.global	TPM_InitChannel
+ 273              		.code	16
+ 274              		.thumb_func
+ 276              	TPM_InitChannel:
+ 277              	.LFB43:
+ 112:../Sources/drivers/tpm/tpm.c **** 
+ 113:../Sources/drivers/tpm/tpm.c **** 
+ 114:../Sources/drivers/tpm/tpm.c **** /**********************************************************************
+ 115:../Sources/drivers/tpm/tpm.c ****  * Função		:	TPM_InitChannel
+ 116:../Sources/drivers/tpm/tpm.c ****  *
+ 117:../Sources/drivers/tpm/tpm.c ****  * Descrição	:   Inicializa um canal do módulo TPM.
+ 118:../Sources/drivers/tpm/tpm.c ****  *
+ 119:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base  - registrador base do periférico TPM;
+ 120:../Sources/drivers/tpm/tpm.c ****  *                  chNum  - numéro do canal;
+ 121:../Sources/drivers/tpm/tpm.c ****  *                  mode   - modo de operação do canal, sendo
+ 122:../Sources/drivers/tpm/tpm.c ****  * 							 definidos pelo tipo TPM_chMode_t.
+ 123:../Sources/drivers/tpm/tpm.c ****  * 					config - possíveisconfigurações de cada modo de
+ 124:../Sources/drivers/tpm/tpm.c ****  * 							 operação do canal, sendo definidos pelo
+ 125:../Sources/drivers/tpm/tpm.c ****  * 							 tipo TPM_chConfig_t.
+ 126:../Sources/drivers/tpm/tpm.c ****  *
+ 127:../Sources/drivers/tpm/tpm.c ****  * Saídas		:   Nenhuma.
+ 128:../Sources/drivers/tpm/tpm.c ****  *
+ 129:../Sources/drivers/tpm/tpm.c ****  * Comentários 	: 	Nenhum.
+ 130:../Sources/drivers/tpm/tpm.c ****  * ********************************************************************/
+ 131:../Sources/drivers/tpm/tpm.c **** void TPM_InitChannel(TPM_Type *base, uint8_t chNum, tpmChMode_t mode, tpmChConfig_t config){
+ 278              		.loc 1 131 0
+ 279              		.cfi_startproc
+ 280 0000 80B5     		push	{r7, lr}
+ 281              		.cfi_def_cfa_offset 8
+ 282              		.cfi_offset 7, -8
+ 283              		.cfi_offset 14, -4
+ 284 0002 82B0     		sub	sp, sp, #8
+ 285              		.cfi_def_cfa_offset 16
+ 286 0004 00AF     		add	r7, sp, #0
+ 287              		.cfi_def_cfa_register 7
+ 288 0006 7860     		str	r0, [r7, #4]
+ 289 0008 081C     		mov	r0, r1
+ 290 000a 111C     		mov	r1, r2
+ 291 000c 1A1C     		mov	r2, r3
+ 292 000e FB1C     		add	r3, r7, #3
+ 293 0010 1870     		strb	r0, [r3]
+ 294 0012 BB1C     		add	r3, r7, #2
+ 295 0014 1970     		strb	r1, [r3]
+ 296 0016 7B1C     		add	r3, r7, #1
+ 297 0018 1A70     		strb	r2, [r3]
+ 132:../Sources/drivers/tpm/tpm.c **** 
+ 133:../Sources/drivers/tpm/tpm.c **** 	assert(base);
+ 298              		.loc 1 133 0
+ 299 001a 7B68     		ldr	r3, [r7, #4]
+ 300 001c 002B     		cmp	r3, #0
+ 301 001e 06D1     		bne	.L19
+ 302              		.loc 1 133 0 is_stmt 0 discriminator 1
+ 303 0020 5C49     		ldr	r1, .L39
+ 304 0022 5D4A     		ldr	r2, .L39+4
+ 305 0024 5D4B     		ldr	r3, .L39+8
+ 306 0026 081C     		mov	r0, r1
+ 307 0028 8521     		mov	r1, #133
+ 308 002a FFF7FEFF 		bl	__assert_func
+ 309              	.L19:
+ 134:../Sources/drivers/tpm/tpm.c **** 	assert( ( chNum >=0 ) && (chNum < 7) );
+ 310              		.loc 1 134 0 is_stmt 1
+ 311 002e FB1C     		add	r3, r7, #3
+ 312 0030 1B78     		ldrb	r3, [r3]
+ 313 0032 062B     		cmp	r3, #6
+ 314 0034 06D9     		bls	.L20
+ 315              		.loc 1 134 0 is_stmt 0 discriminator 1
+ 316 0036 5749     		ldr	r1, .L39
+ 317 0038 574A     		ldr	r2, .L39+4
+ 318 003a 594B     		ldr	r3, .L39+12
+ 319 003c 081C     		mov	r0, r1
+ 320 003e 8621     		mov	r1, #134
+ 321 0040 FFF7FEFF 		bl	__assert_func
+ 322              	.L20:
+ 135:../Sources/drivers/tpm/tpm.c **** 
+ 136:../Sources/drivers/tpm/tpm.c **** 	switch(mode)
+ 323              		.loc 1 136 0 is_stmt 1
+ 324 0044 BB1C     		add	r3, r7, #2
+ 325 0046 1B78     		ldrb	r3, [r3]
+ 326 0048 012B     		cmp	r3, #1
+ 327 004a 39D0     		beq	.L22
+ 328 004c 02DC     		bgt	.L23
+ 329 004e 002B     		cmp	r3, #0
+ 330 0050 06D0     		beq	.L24
+ 137:../Sources/drivers/tpm/tpm.c **** 	{
+ 138:../Sources/drivers/tpm/tpm.c **** 		case(TPM_OUT_COMPARE_MODE):
+ 139:../Sources/drivers/tpm/tpm.c **** 			base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 140:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_OUT_TOGGLE_GONFIG)
+ 141:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | TPM_CnSC_ELSA_MASK);
+ 142:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_OUT_CLEAR_GONFIG)
+ 143:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | TPM_CnSC_ELSB_MASK);
+ 144:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_OUT_SET_GONFIG)
+ 145:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | (TPM_CnSC_ELSA_MASK) | TPM_CnSC_ELSA_MASK);
+ 146:../Sources/drivers/tpm/tpm.c **** 			break;
+ 147:../Sources/drivers/tpm/tpm.c **** 		case(TPM_IN_COMPARE_MODE):
+ 148:../Sources/drivers/tpm/tpm.c **** 				base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 149:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_IN_RISING_EDGE_CONFIG)
+ 150:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = TPM_CnSC_ELSA_MASK;
+ 151:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_IN_FALLING_EDGE_CONFIG)
+ 152:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = TPM_CnSC_ELSB_MASK;
+ 153:../Sources/drivers/tpm/tpm.c **** 			else
+ 154:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_ELSA_MASK | TPM_CnSC_ELSA_MASK);
+ 155:../Sources/drivers/tpm/tpm.c **** 			break;
+ 156:../Sources/drivers/tpm/tpm.c **** 		case(TPM_EDGE_PWM_MODE):
+ 157:../Sources/drivers/tpm/tpm.c **** 		base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 158:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_PWM_HIGH_TRUE_CONFIG)
+ 159:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK);
+ 160:../Sources/drivers/tpm/tpm.c **** 			else
+ 161:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSA_MASK);
+ 162:../Sources/drivers/tpm/tpm.c **** 			break;
+ 163:../Sources/drivers/tpm/tpm.c **** 		case(TPM_CENTER_PWM_MODE):
+ 164:../Sources/drivers/tpm/tpm.c **** 				base->SC |= TPM_SC_CPWMS_MASK; /*É Center PWM*/
+ 165:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_PWM_HIGH_TRUE_CONFIG)
+ 166:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK);
+ 167:../Sources/drivers/tpm/tpm.c **** 			else
+ 168:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSA_MASK);
+ 169:../Sources/drivers/tpm/tpm.c **** 			break;
+ 170:../Sources/drivers/tpm/tpm.c **** 		default:
+ 171:../Sources/drivers/tpm/tpm.c **** 			break;
+ 331              		.loc 1 171 0
+ 332 0052 9BE0     		b	.L18
+ 333              	.L23:
+ 136:../Sources/drivers/tpm/tpm.c **** 	switch(mode)
+ 334              		.loc 1 136 0
+ 335 0054 022B     		cmp	r3, #2
+ 336 0056 5FD0     		beq	.L25
+ 337 0058 032B     		cmp	r3, #3
+ 338 005a 00D1     		bne	.LCB285
+ 339 005c 7AE0     		b	.L26	@long jump
+ 340              	.LCB285:
+ 341              		.loc 1 171 0
+ 342 005e 95E0     		b	.L18
+ 343              	.L24:
+ 139:../Sources/drivers/tpm/tpm.c **** 			base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 344              		.loc 1 139 0
+ 345 0060 7B68     		ldr	r3, [r7, #4]
+ 346 0062 1B68     		ldr	r3, [r3]
+ 347 0064 2022     		mov	r2, #32
+ 348 0066 191C     		mov	r1, r3
+ 349 0068 9143     		bic	r1, r2
+ 350 006a 0A1C     		mov	r2, r1
+ 351 006c 7B68     		ldr	r3, [r7, #4]
+ 352 006e 1A60     		str	r2, [r3]
+ 140:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_OUT_TOGGLE_GONFIG)
+ 353              		.loc 1 140 0
+ 354 0070 7B1C     		add	r3, r7, #1
+ 355 0072 1B78     		ldrb	r3, [r3]
+ 356 0074 002B     		cmp	r3, #0
+ 357 0076 08D1     		bne	.L27
+ 141:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | TPM_CnSC_ELSA_MASK);
+ 358              		.loc 1 141 0
+ 359 0078 FB1C     		add	r3, r7, #3
+ 360 007a 1B78     		ldrb	r3, [r3]
+ 361 007c 7A68     		ldr	r2, [r7, #4]
+ 362 007e 0133     		add	r3, r3, #1
+ 363 0080 DB00     		lsl	r3, r3, #3
+ 364 0082 D318     		add	r3, r2, r3
+ 365 0084 1422     		mov	r2, #20
+ 366 0086 5A60     		str	r2, [r3, #4]
+ 367 0088 19E0     		b	.L28
+ 368              	.L27:
+ 142:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_OUT_CLEAR_GONFIG)
+ 369              		.loc 1 142 0
+ 370 008a 7B1C     		add	r3, r7, #1
+ 371 008c 1B78     		ldrb	r3, [r3]
+ 372 008e 012B     		cmp	r3, #1
+ 373 0090 08D1     		bne	.L29
+ 143:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | TPM_CnSC_ELSB_MASK);
+ 374              		.loc 1 143 0
+ 375 0092 FB1C     		add	r3, r7, #3
+ 376 0094 1B78     		ldrb	r3, [r3]
+ 377 0096 7A68     		ldr	r2, [r7, #4]
+ 378 0098 0133     		add	r3, r3, #1
+ 379 009a DB00     		lsl	r3, r3, #3
+ 380 009c D318     		add	r3, r2, r3
+ 381 009e 1822     		mov	r2, #24
+ 382 00a0 5A60     		str	r2, [r3, #4]
+ 383 00a2 0CE0     		b	.L28
+ 384              	.L29:
+ 144:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_OUT_SET_GONFIG)
+ 385              		.loc 1 144 0
+ 386 00a4 7B1C     		add	r3, r7, #1
+ 387 00a6 1B78     		ldrb	r3, [r3]
+ 388 00a8 022B     		cmp	r3, #2
+ 389 00aa 08D1     		bne	.L28
+ 145:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | (TPM_CnSC_ELSA_MASK) | TPM_CnSC_ELSA_MASK);
+ 390              		.loc 1 145 0
+ 391 00ac FB1C     		add	r3, r7, #3
+ 392 00ae 1B78     		ldrb	r3, [r3]
+ 393 00b0 7A68     		ldr	r2, [r7, #4]
+ 394 00b2 0133     		add	r3, r3, #1
+ 395 00b4 DB00     		lsl	r3, r3, #3
+ 396 00b6 D318     		add	r3, r2, r3
+ 397 00b8 1422     		mov	r2, #20
+ 398 00ba 5A60     		str	r2, [r3, #4]
+ 146:../Sources/drivers/tpm/tpm.c **** 			break;
+ 399              		.loc 1 146 0
+ 400 00bc 66E0     		b	.L18
+ 401              	.L28:
+ 402 00be 65E0     		b	.L18
+ 403              	.L22:
+ 148:../Sources/drivers/tpm/tpm.c **** 				base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 404              		.loc 1 148 0
+ 405 00c0 7B68     		ldr	r3, [r7, #4]
+ 406 00c2 1B68     		ldr	r3, [r3]
+ 407 00c4 2022     		mov	r2, #32
+ 408 00c6 191C     		mov	r1, r3
+ 409 00c8 9143     		bic	r1, r2
+ 410 00ca 0A1C     		mov	r2, r1
+ 411 00cc 7B68     		ldr	r3, [r7, #4]
+ 412 00ce 1A60     		str	r2, [r3]
+ 149:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_IN_RISING_EDGE_CONFIG)
+ 413              		.loc 1 149 0
+ 414 00d0 7B1C     		add	r3, r7, #1
+ 415 00d2 1B78     		ldrb	r3, [r3]
+ 416 00d4 032B     		cmp	r3, #3
+ 417 00d6 08D1     		bne	.L31
+ 150:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = TPM_CnSC_ELSA_MASK;
+ 418              		.loc 1 150 0
+ 419 00d8 FB1C     		add	r3, r7, #3
+ 420 00da 1B78     		ldrb	r3, [r3]
+ 421 00dc 7A68     		ldr	r2, [r7, #4]
+ 422 00de 0133     		add	r3, r3, #1
+ 423 00e0 DB00     		lsl	r3, r3, #3
+ 424 00e2 D318     		add	r3, r2, r3
+ 425 00e4 0422     		mov	r2, #4
+ 426 00e6 5A60     		str	r2, [r3, #4]
+ 427 00e8 15E0     		b	.L32
+ 428              	.L31:
+ 151:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_IN_FALLING_EDGE_CONFIG)
+ 429              		.loc 1 151 0
+ 430 00ea 7B1C     		add	r3, r7, #1
+ 431 00ec 1B78     		ldrb	r3, [r3]
+ 432 00ee 042B     		cmp	r3, #4
+ 433 00f0 08D1     		bne	.L33
+ 152:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = TPM_CnSC_ELSB_MASK;
+ 434              		.loc 1 152 0
+ 435 00f2 FB1C     		add	r3, r7, #3
+ 436 00f4 1B78     		ldrb	r3, [r3]
+ 437 00f6 7A68     		ldr	r2, [r7, #4]
+ 438 00f8 0133     		add	r3, r3, #1
+ 439 00fa DB00     		lsl	r3, r3, #3
+ 440 00fc D318     		add	r3, r2, r3
+ 441 00fe 0822     		mov	r2, #8
+ 442 0100 5A60     		str	r2, [r3, #4]
+ 443 0102 08E0     		b	.L32
+ 444              	.L33:
+ 154:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_ELSA_MASK | TPM_CnSC_ELSA_MASK);
+ 445              		.loc 1 154 0
+ 446 0104 FB1C     		add	r3, r7, #3
+ 447 0106 1B78     		ldrb	r3, [r3]
+ 448 0108 7A68     		ldr	r2, [r7, #4]
+ 449 010a 0133     		add	r3, r3, #1
+ 450 010c DB00     		lsl	r3, r3, #3
+ 451 010e D318     		add	r3, r2, r3
+ 452 0110 0422     		mov	r2, #4
+ 453 0112 5A60     		str	r2, [r3, #4]
+ 155:../Sources/drivers/tpm/tpm.c **** 			break;
+ 454              		.loc 1 155 0
+ 455 0114 3AE0     		b	.L18
+ 456              	.L32:
+ 457 0116 39E0     		b	.L18
+ 458              	.L25:
+ 157:../Sources/drivers/tpm/tpm.c **** 		base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 459              		.loc 1 157 0
+ 460 0118 7B68     		ldr	r3, [r7, #4]
+ 461 011a 1B68     		ldr	r3, [r3]
+ 462 011c 2022     		mov	r2, #32
+ 463 011e 191C     		mov	r1, r3
+ 464 0120 9143     		bic	r1, r2
+ 465 0122 0A1C     		mov	r2, r1
+ 466 0124 7B68     		ldr	r3, [r7, #4]
+ 467 0126 1A60     		str	r2, [r3]
+ 158:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_PWM_HIGH_TRUE_CONFIG)
+ 468              		.loc 1 158 0
+ 469 0128 7B1C     		add	r3, r7, #1
+ 470 012a 1B78     		ldrb	r3, [r3]
+ 471 012c 062B     		cmp	r3, #6
+ 472 012e 08D1     		bne	.L34
+ 159:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK);
+ 473              		.loc 1 159 0
+ 474 0130 FB1C     		add	r3, r7, #3
+ 475 0132 1B78     		ldrb	r3, [r3]
+ 476 0134 7A68     		ldr	r2, [r7, #4]
+ 477 0136 0133     		add	r3, r3, #1
+ 478 0138 DB00     		lsl	r3, r3, #3
+ 479 013a D318     		add	r3, r2, r3
+ 480 013c 2822     		mov	r2, #40
+ 481 013e 5A60     		str	r2, [r3, #4]
+ 162:../Sources/drivers/tpm/tpm.c **** 			break;
+ 482              		.loc 1 162 0
+ 483 0140 24E0     		b	.L18
+ 484              	.L34:
+ 161:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSA_MASK);
+ 485              		.loc 1 161 0
+ 486 0142 FB1C     		add	r3, r7, #3
+ 487 0144 1B78     		ldrb	r3, [r3]
+ 488 0146 7A68     		ldr	r2, [r7, #4]
+ 489 0148 0133     		add	r3, r3, #1
+ 490 014a DB00     		lsl	r3, r3, #3
+ 491 014c D318     		add	r3, r2, r3
+ 492 014e 2422     		mov	r2, #36
+ 493 0150 5A60     		str	r2, [r3, #4]
+ 162:../Sources/drivers/tpm/tpm.c **** 			break;
+ 494              		.loc 1 162 0
+ 495 0152 1BE0     		b	.L18
+ 496              	.L26:
+ 164:../Sources/drivers/tpm/tpm.c **** 				base->SC |= TPM_SC_CPWMS_MASK; /*É Center PWM*/
+ 497              		.loc 1 164 0
+ 498 0154 7B68     		ldr	r3, [r7, #4]
+ 499 0156 1B68     		ldr	r3, [r3]
+ 500 0158 2022     		mov	r2, #32
+ 501 015a 1A43     		orr	r2, r3
+ 502 015c 7B68     		ldr	r3, [r7, #4]
+ 503 015e 1A60     		str	r2, [r3]
+ 165:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_PWM_HIGH_TRUE_CONFIG)
+ 504              		.loc 1 165 0
+ 505 0160 7B1C     		add	r3, r7, #1
+ 506 0162 1B78     		ldrb	r3, [r3]
+ 507 0164 062B     		cmp	r3, #6
+ 508 0166 08D1     		bne	.L36
+ 166:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK);
+ 509              		.loc 1 166 0
+ 510 0168 FB1C     		add	r3, r7, #3
+ 511 016a 1B78     		ldrb	r3, [r3]
+ 512 016c 7A68     		ldr	r2, [r7, #4]
+ 513 016e 0133     		add	r3, r3, #1
+ 514 0170 DB00     		lsl	r3, r3, #3
+ 515 0172 D318     		add	r3, r2, r3
+ 516 0174 2822     		mov	r2, #40
+ 517 0176 5A60     		str	r2, [r3, #4]
+ 169:../Sources/drivers/tpm/tpm.c **** 			break;
+ 518              		.loc 1 169 0
+ 519 0178 07E0     		b	.L38
+ 520              	.L36:
+ 168:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSA_MASK);
+ 521              		.loc 1 168 0
+ 522 017a FB1C     		add	r3, r7, #3
+ 523 017c 1B78     		ldrb	r3, [r3]
+ 524 017e 7A68     		ldr	r2, [r7, #4]
+ 525 0180 0133     		add	r3, r3, #1
+ 526 0182 DB00     		lsl	r3, r3, #3
+ 527 0184 D318     		add	r3, r2, r3
+ 528 0186 2422     		mov	r2, #36
+ 529 0188 5A60     		str	r2, [r3, #4]
+ 530              	.L38:
+ 169:../Sources/drivers/tpm/tpm.c **** 			break;
+ 531              		.loc 1 169 0
+ 532 018a C046     		mov	r8, r8
+ 533              	.L18:
+ 172:../Sources/drivers/tpm/tpm.c **** 	}
+ 173:../Sources/drivers/tpm/tpm.c **** }
+ 534              		.loc 1 173 0
+ 535 018c BD46     		mov	sp, r7
+ 536 018e 02B0     		add	sp, sp, #8
+ 537              		@ sp needed
+ 538 0190 80BD     		pop	{r7, pc}
+ 539              	.L40:
+ 540 0192 C046     		.align	2
+ 541              	.L39:
+ 542 0194 00000000 		.word	.LC1
+ 543 0198 00000000 		.word	__func__.4712
+ 544 019c 20000000 		.word	.LC4
+ 545 01a0 28000000 		.word	.LC9
+ 546              		.cfi_endproc
+ 547              	.LFE43:
+ 549              		.section	.rodata.__func__.4705,"a",%progbits
+ 550              		.align	2
+ 553              	__func__.4705:
+ 554 0000 54504D5F 		.ascii	"TPM_Init\000"
+ 554      496E6974 
+ 554      00
+ 555 0009 000000   		.section	.rodata.__func__.4712,"a",%progbits
+ 556              		.align	2
+ 559              	__func__.4712:
+ 560 0000 54504D5F 		.ascii	"TPM_InitChannel\000"
+ 560      496E6974 
+ 560      4368616E 
+ 560      6E656C00 
+ 561              		.text
+ 562              	.Letext0:
+ 563              		.file 2 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 564              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 565              		.file 4 "../Includes/MKL05Z4.h"
+ 566              		.file 5 "../Sources/drivers/common_driver.h"
+ 567              		.file 6 "../Sources/drivers/tpm/tpm.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 tpm.c
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:18     .bss.matchVal:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:21     .bss.matchVal:00000000 matchVal
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:24     .bss.g_tpmClkSrc:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:27     .bss.g_tpmClkSrc:00000000 g_tpmClkSrc
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:30     .text.TPM_SetCounterClkSrc:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:35     .text.TPM_SetCounterClkSrc:00000000 TPM_SetCounterClkSrc
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:138    .text.TPM_SetCounterClkSrc:00000088 $d
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:146    .rodata:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:153    .text.TPM_Init:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:158    .text.TPM_Init:00000000 TPM_Init
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:256    .text.TPM_Init:00000090 $d
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:553    .rodata.__func__.4705:00000000 __func__.4705
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:271    .text.TPM_InitChannel:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:276    .text.TPM_InitChannel:00000000 TPM_InitChannel
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:542    .text.TPM_InitChannel:00000194 $d
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:559    .rodata.__func__.4712:00000000 __func__.4712
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:550    .rodata.__func__.4705:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccZCWG1h.s:556    .rodata.__func__.4712:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+
+UNDEFINED SYMBOLS
+__assert_func

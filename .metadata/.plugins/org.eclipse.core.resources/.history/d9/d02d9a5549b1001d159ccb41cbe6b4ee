@@ -1,0 +1,107 @@
+#include "mcu_general_config.h"
+#include "generic_drivers/lcd/lcd.h"
+#include "libraries/delay/delay.h"
+#include "libraries/emb_util/emb_util.h"
+#include "drivers/port/port.h"
+#include "drivers/gpio/gpio.h"
+#include "drivers/tpm/tpm.h"
+
+int main(void)
+{
+	char lcdString[10];
+
+	TPM_SetCounterClkSrc(TPM1, TPM_CNT_CLOCK_FLL);
+	TPM_Init(TPM1, tpmPwmModulo, TPM_PRESCALER_DIV_2); /*Inicializa TPM1*/
+
+	PORT_Init(PORTB);
+	PORT_SetMux(PORTB, 9, PORT_MUX_ALT2);
+
+	/* O canal que controla o pino PTB13 é o TPM1_Ch1
+	 * Irá ser utilizado o PWM alinhado a borda, com o duty cycle em nível alto*/
+	TPM_InitChannel(TPM1, 0, TPM_EDGE_PWM_MODE, TPM_PWM_HIGH_TRUE_CONFIG);
+	TPM_SetChMatch(TPM1, 0, 0); /*Configuração do duty cycle (valor de match)*/
+
+	TPM_InitCounter(TPM1); /*Inicializa registrador contador*/
+
+	Delay_Init();
+
+    for (;;)
+    {
+        /* Delays to see the change of LED brightness. */
+        Delay_Waitus( 50 );
+        if ( brightnessUp )
+        {
+            /* Increases a duty cycle until it reaches a limited value. */
+            if ( ++updatedDutycycle == 65535U )
+            {
+                brightnessUp = false;
+            }
+        }
+        else
+        {
+            /* Decreases a duty cycle until it reaches a limited value. */
+            if ( 0U == --updatedDutycycle )
+            {
+                brightnessUp = true;
+            }
+        }
+        /* Starts PWM mode with an updated duty cycle. */
+        TPM_UpdatePwmDutycycle(TPM2, kTPM_Chnl_1, kTPM_EdgeAlignedPwm, updatedDutycycle);
+
+    	if ( keyFlagTmp )
+    	{
+    		dutyKeyFlag = 0;
+
+    		if( pwmDuty == 100)
+    		{
+    			pwmDuty = 0;
+    		}
+    		else
+    		{
+    			pwmDuty += 10;
+    		}
+            TPM_SetChMatch(TPM1, 0, ( pwmDuty * tpmPwmModulo ) / 100 ); /*Configuração do duty cycle (valor de match)*/
+        	EmbUtil_ItoA(pwmDuty, lcdString, 10);
+        	LCD_SetCursor(lcd0, sizeof("PWM Duty:"), 0);
+        	LCD_WriteString(lcd0, "              ");
+        	LCD_SetCursor(lcd0, sizeof("PWM Duty:"), 0);
+        	LCD_WriteString(lcd0, lcdString);
+    	}
+
+    	if ( freqKeyFlagTmp )
+    	{
+    		freqKeyFlag = 0;
+
+    		if( pwmFreq == 1000)
+    		{
+    			pwmFreq = 200;
+    		}
+    		else
+    		{
+    			pwmFreq += 50;
+    		}
+    		tpmPwmModulo = 10485760U / pwmFreq;
+
+    		TPM_SetModulo(TPM1, tpmPwmModulo); /*Seta o valor de módulo - fim de contagem (borda)*/
+        	EmbUtil_ItoA(pwmFreq, lcdString, 10);
+        	LCD_SetCursor(lcd0, sizeof("PWM Freq.:"), 1);
+        	LCD_WriteString(lcd0, "              ");
+        	LCD_SetCursor(lcd0, sizeof("PWM Freq.:"), 1);
+        	LCD_WriteString(lcd0, lcdString);
+    	}
+
+    	Delay_Waitms(100);
+    	NVIC_DisableIRQ( PORTA_IRQn );
+    	if(portaISRFlag) /* Verifica se ISR já estava habilitada e ja foi chamada*/
+        {
+    		portaISRFlag = 0;
+    		keyFlagTmp =  dutyKeyFlag;
+    		freqKeyFlagTmp =  freqKeyFlag;
+        }
+
+		NVIC_EnableIRQ( PORTA_IRQn );
+
+    }
+
+    return 0;
+}

@@ -1,0 +1,1646 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main_irq.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.NVIC_EnableIRQ,"ax",%progbits
+  18              		.align	2
+  19              		.code	16
+  20              		.thumb_func
+  22              	NVIC_EnableIRQ:
+  23              	.LFB25:
+  24              		.file 1 "../Includes/core_cm0plus.h"
+   1:../Includes/core_cm0plus.h **** /**************************************************************************//**
+   2:../Includes/core_cm0plus.h ****  * @file     core_cm0plus.h
+   3:../Includes/core_cm0plus.h ****  * @brief    CMSIS Cortex-M0+ Core Peripheral Access Layer Header File
+   4:../Includes/core_cm0plus.h ****  * @version  V4.10
+   5:../Includes/core_cm0plus.h ****  * @date     18. March 2015
+   6:../Includes/core_cm0plus.h ****  *
+   7:../Includes/core_cm0plus.h ****  * @note
+   8:../Includes/core_cm0plus.h ****  *
+   9:../Includes/core_cm0plus.h ****  ******************************************************************************/
+  10:../Includes/core_cm0plus.h **** /* Copyright (c) 2009 - 2015 ARM LIMITED
+  11:../Includes/core_cm0plus.h **** 
+  12:../Includes/core_cm0plus.h ****    All rights reserved.
+  13:../Includes/core_cm0plus.h ****    Redistribution and use in source and binary forms, with or without
+  14:../Includes/core_cm0plus.h ****    modification, are permitted provided that the following conditions are met:
+  15:../Includes/core_cm0plus.h ****    - Redistributions of source code must retain the above copyright
+  16:../Includes/core_cm0plus.h ****      notice, this list of conditions and the following disclaimer.
+  17:../Includes/core_cm0plus.h ****    - Redistributions in binary form must reproduce the above copyright
+  18:../Includes/core_cm0plus.h ****      notice, this list of conditions and the following disclaimer in the
+  19:../Includes/core_cm0plus.h ****      documentation and/or other materials provided with the distribution.
+  20:../Includes/core_cm0plus.h ****    - Neither the name of ARM nor the names of its contributors may be used
+  21:../Includes/core_cm0plus.h ****      to endorse or promote products derived from this software without
+  22:../Includes/core_cm0plus.h ****      specific prior written permission.
+  23:../Includes/core_cm0plus.h ****    *
+  24:../Includes/core_cm0plus.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  25:../Includes/core_cm0plus.h ****    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  26:../Includes/core_cm0plus.h ****    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  27:../Includes/core_cm0plus.h ****    ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+  28:../Includes/core_cm0plus.h ****    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  29:../Includes/core_cm0plus.h ****    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  30:../Includes/core_cm0plus.h ****    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  31:../Includes/core_cm0plus.h ****    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  32:../Includes/core_cm0plus.h ****    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  33:../Includes/core_cm0plus.h ****    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  34:../Includes/core_cm0plus.h ****    POSSIBILITY OF SUCH DAMAGE.
+  35:../Includes/core_cm0plus.h ****    ---------------------------------------------------------------------------*/
+  36:../Includes/core_cm0plus.h **** 
+  37:../Includes/core_cm0plus.h **** 
+  38:../Includes/core_cm0plus.h **** #if defined ( __ICCARM__ )
+  39:../Includes/core_cm0plus.h ****  #pragma system_include  /* treat file as system include file for MISRA check */
+  40:../Includes/core_cm0plus.h **** #endif
+  41:../Includes/core_cm0plus.h **** 
+  42:../Includes/core_cm0plus.h **** #ifndef __CORE_CM0PLUS_H_GENERIC
+  43:../Includes/core_cm0plus.h **** #define __CORE_CM0PLUS_H_GENERIC
+  44:../Includes/core_cm0plus.h **** 
+  45:../Includes/core_cm0plus.h **** #ifdef __cplusplus
+  46:../Includes/core_cm0plus.h ****  extern "C" {
+  47:../Includes/core_cm0plus.h **** #endif
+  48:../Includes/core_cm0plus.h **** 
+  49:../Includes/core_cm0plus.h **** /** \page CMSIS_MISRA_Exceptions  MISRA-C:2004 Compliance Exceptions
+  50:../Includes/core_cm0plus.h ****   CMSIS violates the following MISRA-C:2004 rules:
+  51:../Includes/core_cm0plus.h **** 
+  52:../Includes/core_cm0plus.h ****    \li Required Rule 8.5, object/function definition in header file.<br>
+  53:../Includes/core_cm0plus.h ****      Function definitions in header files are used to allow 'inlining'.
+  54:../Includes/core_cm0plus.h **** 
+  55:../Includes/core_cm0plus.h ****    \li Required Rule 18.4, declaration of union type or object of union type: '{...}'.<br>
+  56:../Includes/core_cm0plus.h ****      Unions are used for effective representation of core registers.
+  57:../Includes/core_cm0plus.h **** 
+  58:../Includes/core_cm0plus.h ****    \li Advisory Rule 19.7, Function-like macro defined.<br>
+  59:../Includes/core_cm0plus.h ****      Function-like macros are used to allow more efficient code.
+  60:../Includes/core_cm0plus.h ****  */
+  61:../Includes/core_cm0plus.h **** 
+  62:../Includes/core_cm0plus.h **** 
+  63:../Includes/core_cm0plus.h **** /*******************************************************************************
+  64:../Includes/core_cm0plus.h ****  *                 CMSIS definitions
+  65:../Includes/core_cm0plus.h ****  ******************************************************************************/
+  66:../Includes/core_cm0plus.h **** /** \ingroup Cortex-M0+
+  67:../Includes/core_cm0plus.h ****   @{
+  68:../Includes/core_cm0plus.h ****  */
+  69:../Includes/core_cm0plus.h **** 
+  70:../Includes/core_cm0plus.h **** /*  CMSIS CM0P definitions */
+  71:../Includes/core_cm0plus.h **** #define __CM0PLUS_CMSIS_VERSION_MAIN (0x04)                                /*!< [31:16] CMSIS HAL m
+  72:../Includes/core_cm0plus.h **** #define __CM0PLUS_CMSIS_VERSION_SUB  (0x00)                                /*!< [15:0]  CMSIS HAL s
+  73:../Includes/core_cm0plus.h **** #define __CM0PLUS_CMSIS_VERSION      ((__CM0PLUS_CMSIS_VERSION_MAIN << 16) | \
+  74:../Includes/core_cm0plus.h ****                                        __CM0PLUS_CMSIS_VERSION_SUB)        /*!< CMSIS HAL version n
+  75:../Includes/core_cm0plus.h **** 
+  76:../Includes/core_cm0plus.h **** #define __CORTEX_M                (0x00)                                   /*!< Cortex-M Core      
+  77:../Includes/core_cm0plus.h **** 
+  78:../Includes/core_cm0plus.h **** 
+  79:../Includes/core_cm0plus.h **** #if   defined ( __CC_ARM )
+  80:../Includes/core_cm0plus.h ****   #define __ASM            __asm                                      /*!< asm keyword for ARM Comp
+  81:../Includes/core_cm0plus.h ****   #define __INLINE         __inline                                   /*!< inline keyword for ARM C
+  82:../Includes/core_cm0plus.h ****   #define __STATIC_INLINE  static __inline
+  83:../Includes/core_cm0plus.h **** 
+  84:../Includes/core_cm0plus.h **** #elif defined ( __GNUC__ )
+  85:../Includes/core_cm0plus.h ****   #define __ASM            __asm                                      /*!< asm keyword for GNU Comp
+  86:../Includes/core_cm0plus.h ****   #define __INLINE         inline                                     /*!< inline keyword for GNU C
+  87:../Includes/core_cm0plus.h ****   #define __STATIC_INLINE  static inline
+  88:../Includes/core_cm0plus.h **** 
+  89:../Includes/core_cm0plus.h **** #elif defined ( __ICCARM__ )
+  90:../Includes/core_cm0plus.h ****   #define __ASM            __asm                                      /*!< asm keyword for IAR Comp
+  91:../Includes/core_cm0plus.h ****   #define __INLINE         inline                                     /*!< inline keyword for IAR C
+  92:../Includes/core_cm0plus.h ****   #define __STATIC_INLINE  static inline
+  93:../Includes/core_cm0plus.h **** 
+  94:../Includes/core_cm0plus.h **** #elif defined ( __TMS470__ )
+  95:../Includes/core_cm0plus.h ****   #define __ASM            __asm                                      /*!< asm keyword for TI CCS C
+  96:../Includes/core_cm0plus.h ****   #define __STATIC_INLINE  static inline
+  97:../Includes/core_cm0plus.h **** 
+  98:../Includes/core_cm0plus.h **** #elif defined ( __TASKING__ )
+  99:../Includes/core_cm0plus.h ****   #define __ASM            __asm                                      /*!< asm keyword for TASKING 
+ 100:../Includes/core_cm0plus.h ****   #define __INLINE         inline                                     /*!< inline keyword for TASKI
+ 101:../Includes/core_cm0plus.h ****   #define __STATIC_INLINE  static inline
+ 102:../Includes/core_cm0plus.h **** 
+ 103:../Includes/core_cm0plus.h **** #elif defined ( __CSMC__ )
+ 104:../Includes/core_cm0plus.h ****   #define __packed
+ 105:../Includes/core_cm0plus.h ****   #define __ASM            _asm                                      /*!< asm keyword for COSMIC Co
+ 106:../Includes/core_cm0plus.h ****   #define __INLINE         inline                                    /*use -pc99 on compile line !<
+ 107:../Includes/core_cm0plus.h ****   #define __STATIC_INLINE  static inline
+ 108:../Includes/core_cm0plus.h **** 
+ 109:../Includes/core_cm0plus.h **** #endif
+ 110:../Includes/core_cm0plus.h **** 
+ 111:../Includes/core_cm0plus.h **** /** __FPU_USED indicates whether an FPU is used or not.
+ 112:../Includes/core_cm0plus.h ****     This core does not support an FPU at all
+ 113:../Includes/core_cm0plus.h **** */
+ 114:../Includes/core_cm0plus.h **** #define __FPU_USED       0
+ 115:../Includes/core_cm0plus.h **** 
+ 116:../Includes/core_cm0plus.h **** #if defined ( __CC_ARM )
+ 117:../Includes/core_cm0plus.h ****   #if defined __TARGET_FPU_VFP
+ 118:../Includes/core_cm0plus.h ****     #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)
+ 119:../Includes/core_cm0plus.h ****   #endif
+ 120:../Includes/core_cm0plus.h **** 
+ 121:../Includes/core_cm0plus.h **** #elif defined ( __GNUC__ )
+ 122:../Includes/core_cm0plus.h ****   #if defined (__VFP_FP__) && !defined(__SOFTFP__)
+ 123:../Includes/core_cm0plus.h ****     #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)
+ 124:../Includes/core_cm0plus.h ****   #endif
+ 125:../Includes/core_cm0plus.h **** 
+ 126:../Includes/core_cm0plus.h **** #elif defined ( __ICCARM__ )
+ 127:../Includes/core_cm0plus.h ****   #if defined __ARMVFP__
+ 128:../Includes/core_cm0plus.h ****     #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)
+ 129:../Includes/core_cm0plus.h ****   #endif
+ 130:../Includes/core_cm0plus.h **** 
+ 131:../Includes/core_cm0plus.h **** #elif defined ( __TMS470__ )
+ 132:../Includes/core_cm0plus.h ****   #if defined __TI__VFP_SUPPORT____
+ 133:../Includes/core_cm0plus.h ****     #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)
+ 134:../Includes/core_cm0plus.h ****   #endif
+ 135:../Includes/core_cm0plus.h **** 
+ 136:../Includes/core_cm0plus.h **** #elif defined ( __TASKING__ )
+ 137:../Includes/core_cm0plus.h ****   #if defined __FPU_VFP__
+ 138:../Includes/core_cm0plus.h ****     #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+ 139:../Includes/core_cm0plus.h ****   #endif
+ 140:../Includes/core_cm0plus.h **** 
+ 141:../Includes/core_cm0plus.h **** #elif defined ( __CSMC__ )		/* Cosmic */
+ 142:../Includes/core_cm0plus.h ****   #if ( __CSMC__ & 0x400)		// FPU present for parser
+ 143:../Includes/core_cm0plus.h ****     #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+ 144:../Includes/core_cm0plus.h ****   #endif
+ 145:../Includes/core_cm0plus.h **** #endif
+ 146:../Includes/core_cm0plus.h **** 
+ 147:../Includes/core_cm0plus.h **** #include <stdint.h>                      /* standard types definitions                      */
+ 148:../Includes/core_cm0plus.h **** #include <core_cmInstr.h>                /* Core Instruction Access                         */
+ 149:../Includes/core_cm0plus.h **** #include <core_cmFunc.h>                 /* Core Function Access                            */
+ 150:../Includes/core_cm0plus.h **** 
+ 151:../Includes/core_cm0plus.h **** #ifdef __cplusplus
+ 152:../Includes/core_cm0plus.h **** }
+ 153:../Includes/core_cm0plus.h **** #endif
+ 154:../Includes/core_cm0plus.h **** 
+ 155:../Includes/core_cm0plus.h **** #endif /* __CORE_CM0PLUS_H_GENERIC */
+ 156:../Includes/core_cm0plus.h **** 
+ 157:../Includes/core_cm0plus.h **** #ifndef __CMSIS_GENERIC
+ 158:../Includes/core_cm0plus.h **** 
+ 159:../Includes/core_cm0plus.h **** #ifndef __CORE_CM0PLUS_H_DEPENDANT
+ 160:../Includes/core_cm0plus.h **** #define __CORE_CM0PLUS_H_DEPENDANT
+ 161:../Includes/core_cm0plus.h **** 
+ 162:../Includes/core_cm0plus.h **** #ifdef __cplusplus
+ 163:../Includes/core_cm0plus.h ****  extern "C" {
+ 164:../Includes/core_cm0plus.h **** #endif
+ 165:../Includes/core_cm0plus.h **** 
+ 166:../Includes/core_cm0plus.h **** /* check device defines and use defaults */
+ 167:../Includes/core_cm0plus.h **** #if defined __CHECK_DEVICE_DEFINES
+ 168:../Includes/core_cm0plus.h ****   #ifndef __CM0PLUS_REV
+ 169:../Includes/core_cm0plus.h ****     #define __CM0PLUS_REV             0x0000
+ 170:../Includes/core_cm0plus.h ****     #warning "__CM0PLUS_REV not defined in device header file; using default!"
+ 171:../Includes/core_cm0plus.h ****   #endif
+ 172:../Includes/core_cm0plus.h **** 
+ 173:../Includes/core_cm0plus.h ****   #ifndef __MPU_PRESENT
+ 174:../Includes/core_cm0plus.h ****     #define __MPU_PRESENT             0
+ 175:../Includes/core_cm0plus.h ****     #warning "__MPU_PRESENT not defined in device header file; using default!"
+ 176:../Includes/core_cm0plus.h ****   #endif
+ 177:../Includes/core_cm0plus.h **** 
+ 178:../Includes/core_cm0plus.h ****   #ifndef __VTOR_PRESENT
+ 179:../Includes/core_cm0plus.h ****     #define __VTOR_PRESENT            0
+ 180:../Includes/core_cm0plus.h ****     #warning "__VTOR_PRESENT not defined in device header file; using default!"
+ 181:../Includes/core_cm0plus.h ****   #endif
+ 182:../Includes/core_cm0plus.h **** 
+ 183:../Includes/core_cm0plus.h ****   #ifndef __NVIC_PRIO_BITS
+ 184:../Includes/core_cm0plus.h ****     #define __NVIC_PRIO_BITS          2
+ 185:../Includes/core_cm0plus.h ****     #warning "__NVIC_PRIO_BITS not defined in device header file; using default!"
+ 186:../Includes/core_cm0plus.h ****   #endif
+ 187:../Includes/core_cm0plus.h **** 
+ 188:../Includes/core_cm0plus.h ****   #ifndef __Vendor_SysTickConfig
+ 189:../Includes/core_cm0plus.h ****     #define __Vendor_SysTickConfig    0
+ 190:../Includes/core_cm0plus.h ****     #warning "__Vendor_SysTickConfig not defined in device header file; using default!"
+ 191:../Includes/core_cm0plus.h ****   #endif
+ 192:../Includes/core_cm0plus.h **** #endif
+ 193:../Includes/core_cm0plus.h **** 
+ 194:../Includes/core_cm0plus.h **** /* IO definitions (access restrictions to peripheral registers) */
+ 195:../Includes/core_cm0plus.h **** /**
+ 196:../Includes/core_cm0plus.h ****     \defgroup CMSIS_glob_defs CMSIS Global Defines
+ 197:../Includes/core_cm0plus.h **** 
+ 198:../Includes/core_cm0plus.h ****     <strong>IO Type Qualifiers</strong> are used
+ 199:../Includes/core_cm0plus.h ****     \li to specify the access to peripheral variables.
+ 200:../Includes/core_cm0plus.h ****     \li for automatic generation of peripheral register debug information.
+ 201:../Includes/core_cm0plus.h **** */
+ 202:../Includes/core_cm0plus.h **** #ifdef __cplusplus
+ 203:../Includes/core_cm0plus.h ****   #define   __I     volatile             /*!< Defines 'read only' permissions                 */
+ 204:../Includes/core_cm0plus.h **** #else
+ 205:../Includes/core_cm0plus.h ****   #define   __I     volatile const       /*!< Defines 'read only' permissions                 */
+ 206:../Includes/core_cm0plus.h **** #endif
+ 207:../Includes/core_cm0plus.h **** #define     __O     volatile             /*!< Defines 'write only' permissions                */
+ 208:../Includes/core_cm0plus.h **** #define     __IO    volatile             /*!< Defines 'read / write' permissions              */
+ 209:../Includes/core_cm0plus.h **** 
+ 210:../Includes/core_cm0plus.h **** /*@} end of group Cortex-M0+ */
+ 211:../Includes/core_cm0plus.h **** 
+ 212:../Includes/core_cm0plus.h **** 
+ 213:../Includes/core_cm0plus.h **** 
+ 214:../Includes/core_cm0plus.h **** /*******************************************************************************
+ 215:../Includes/core_cm0plus.h ****  *                 Register Abstraction
+ 216:../Includes/core_cm0plus.h ****   Core Register contain:
+ 217:../Includes/core_cm0plus.h ****   - Core Register
+ 218:../Includes/core_cm0plus.h ****   - Core NVIC Register
+ 219:../Includes/core_cm0plus.h ****   - Core SCB Register
+ 220:../Includes/core_cm0plus.h ****   - Core SysTick Register
+ 221:../Includes/core_cm0plus.h ****   - Core MPU Register
+ 222:../Includes/core_cm0plus.h ****  ******************************************************************************/
+ 223:../Includes/core_cm0plus.h **** /** \defgroup CMSIS_core_register Defines and Type Definitions
+ 224:../Includes/core_cm0plus.h ****     \brief Type definitions and defines for Cortex-M processor based devices.
+ 225:../Includes/core_cm0plus.h **** */
+ 226:../Includes/core_cm0plus.h **** 
+ 227:../Includes/core_cm0plus.h **** /** \ingroup    CMSIS_core_register
+ 228:../Includes/core_cm0plus.h ****     \defgroup   CMSIS_CORE  Status and Control Registers
+ 229:../Includes/core_cm0plus.h ****     \brief  Core Register type definitions.
+ 230:../Includes/core_cm0plus.h ****   @{
+ 231:../Includes/core_cm0plus.h ****  */
+ 232:../Includes/core_cm0plus.h **** 
+ 233:../Includes/core_cm0plus.h **** /** \brief  Union type to access the Application Program Status Register (APSR).
+ 234:../Includes/core_cm0plus.h ****  */
+ 235:../Includes/core_cm0plus.h **** typedef union
+ 236:../Includes/core_cm0plus.h **** {
+ 237:../Includes/core_cm0plus.h ****   struct
+ 238:../Includes/core_cm0plus.h ****   {
+ 239:../Includes/core_cm0plus.h ****     uint32_t _reserved0:28;              /*!< bit:  0..27  Reserved                           */
+ 240:../Includes/core_cm0plus.h ****     uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag       */
+ 241:../Includes/core_cm0plus.h ****     uint32_t C:1;                        /*!< bit:     29  Carry condition code flag          */
+ 242:../Includes/core_cm0plus.h ****     uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag           */
+ 243:../Includes/core_cm0plus.h ****     uint32_t N:1;                        /*!< bit:     31  Negative condition code flag       */
+ 244:../Includes/core_cm0plus.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 245:../Includes/core_cm0plus.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 246:../Includes/core_cm0plus.h **** } APSR_Type;
+ 247:../Includes/core_cm0plus.h **** 
+ 248:../Includes/core_cm0plus.h **** /* APSR Register Definitions */
+ 249:../Includes/core_cm0plus.h **** #define APSR_N_Pos                         31                                             /*!< APSR
+ 250:../Includes/core_cm0plus.h **** #define APSR_N_Msk                         (1UL << APSR_N_Pos)                            /*!< APSR
+ 251:../Includes/core_cm0plus.h **** 
+ 252:../Includes/core_cm0plus.h **** #define APSR_Z_Pos                         30                                             /*!< APSR
+ 253:../Includes/core_cm0plus.h **** #define APSR_Z_Msk                         (1UL << APSR_Z_Pos)                            /*!< APSR
+ 254:../Includes/core_cm0plus.h **** 
+ 255:../Includes/core_cm0plus.h **** #define APSR_C_Pos                         29                                             /*!< APSR
+ 256:../Includes/core_cm0plus.h **** #define APSR_C_Msk                         (1UL << APSR_C_Pos)                            /*!< APSR
+ 257:../Includes/core_cm0plus.h **** 
+ 258:../Includes/core_cm0plus.h **** #define APSR_V_Pos                         28                                             /*!< APSR
+ 259:../Includes/core_cm0plus.h **** #define APSR_V_Msk                         (1UL << APSR_V_Pos)                            /*!< APSR
+ 260:../Includes/core_cm0plus.h **** 
+ 261:../Includes/core_cm0plus.h **** 
+ 262:../Includes/core_cm0plus.h **** /** \brief  Union type to access the Interrupt Program Status Register (IPSR).
+ 263:../Includes/core_cm0plus.h ****  */
+ 264:../Includes/core_cm0plus.h **** typedef union
+ 265:../Includes/core_cm0plus.h **** {
+ 266:../Includes/core_cm0plus.h ****   struct
+ 267:../Includes/core_cm0plus.h ****   {
+ 268:../Includes/core_cm0plus.h ****     uint32_t ISR:9;                      /*!< bit:  0.. 8  Exception number                   */
+ 269:../Includes/core_cm0plus.h ****     uint32_t _reserved0:23;              /*!< bit:  9..31  Reserved                           */
+ 270:../Includes/core_cm0plus.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 271:../Includes/core_cm0plus.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 272:../Includes/core_cm0plus.h **** } IPSR_Type;
+ 273:../Includes/core_cm0plus.h **** 
+ 274:../Includes/core_cm0plus.h **** /* IPSR Register Definitions */
+ 275:../Includes/core_cm0plus.h **** #define IPSR_ISR_Pos                        0                                             /*!< IPSR
+ 276:../Includes/core_cm0plus.h **** #define IPSR_ISR_Msk                       (0x1FFUL /*<< IPSR_ISR_Pos*/)                  /*!< IPSR
+ 277:../Includes/core_cm0plus.h **** 
+ 278:../Includes/core_cm0plus.h **** 
+ 279:../Includes/core_cm0plus.h **** /** \brief  Union type to access the Special-Purpose Program Status Registers (xPSR).
+ 280:../Includes/core_cm0plus.h ****  */
+ 281:../Includes/core_cm0plus.h **** typedef union
+ 282:../Includes/core_cm0plus.h **** {
+ 283:../Includes/core_cm0plus.h ****   struct
+ 284:../Includes/core_cm0plus.h ****   {
+ 285:../Includes/core_cm0plus.h ****     uint32_t ISR:9;                      /*!< bit:  0.. 8  Exception number                   */
+ 286:../Includes/core_cm0plus.h ****     uint32_t _reserved0:15;              /*!< bit:  9..23  Reserved                           */
+ 287:../Includes/core_cm0plus.h ****     uint32_t T:1;                        /*!< bit:     24  Thumb bit        (read 0)          */
+ 288:../Includes/core_cm0plus.h ****     uint32_t _reserved1:3;               /*!< bit: 25..27  Reserved                           */
+ 289:../Includes/core_cm0plus.h ****     uint32_t V:1;                        /*!< bit:     28  Overflow condition code flag       */
+ 290:../Includes/core_cm0plus.h ****     uint32_t C:1;                        /*!< bit:     29  Carry condition code flag          */
+ 291:../Includes/core_cm0plus.h ****     uint32_t Z:1;                        /*!< bit:     30  Zero condition code flag           */
+ 292:../Includes/core_cm0plus.h ****     uint32_t N:1;                        /*!< bit:     31  Negative condition code flag       */
+ 293:../Includes/core_cm0plus.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 294:../Includes/core_cm0plus.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 295:../Includes/core_cm0plus.h **** } xPSR_Type;
+ 296:../Includes/core_cm0plus.h **** 
+ 297:../Includes/core_cm0plus.h **** /* xPSR Register Definitions */
+ 298:../Includes/core_cm0plus.h **** #define xPSR_N_Pos                         31                                             /*!< xPSR
+ 299:../Includes/core_cm0plus.h **** #define xPSR_N_Msk                         (1UL << xPSR_N_Pos)                            /*!< xPSR
+ 300:../Includes/core_cm0plus.h **** 
+ 301:../Includes/core_cm0plus.h **** #define xPSR_Z_Pos                         30                                             /*!< xPSR
+ 302:../Includes/core_cm0plus.h **** #define xPSR_Z_Msk                         (1UL << xPSR_Z_Pos)                            /*!< xPSR
+ 303:../Includes/core_cm0plus.h **** 
+ 304:../Includes/core_cm0plus.h **** #define xPSR_C_Pos                         29                                             /*!< xPSR
+ 305:../Includes/core_cm0plus.h **** #define xPSR_C_Msk                         (1UL << xPSR_C_Pos)                            /*!< xPSR
+ 306:../Includes/core_cm0plus.h **** 
+ 307:../Includes/core_cm0plus.h **** #define xPSR_V_Pos                         28                                             /*!< xPSR
+ 308:../Includes/core_cm0plus.h **** #define xPSR_V_Msk                         (1UL << xPSR_V_Pos)                            /*!< xPSR
+ 309:../Includes/core_cm0plus.h **** 
+ 310:../Includes/core_cm0plus.h **** #define xPSR_T_Pos                         24                                             /*!< xPSR
+ 311:../Includes/core_cm0plus.h **** #define xPSR_T_Msk                         (1UL << xPSR_T_Pos)                            /*!< xPSR
+ 312:../Includes/core_cm0plus.h **** 
+ 313:../Includes/core_cm0plus.h **** #define xPSR_ISR_Pos                        0                                             /*!< xPSR
+ 314:../Includes/core_cm0plus.h **** #define xPSR_ISR_Msk                       (0x1FFUL /*<< xPSR_ISR_Pos*/)                  /*!< xPSR
+ 315:../Includes/core_cm0plus.h **** 
+ 316:../Includes/core_cm0plus.h **** 
+ 317:../Includes/core_cm0plus.h **** /** \brief  Union type to access the Control Registers (CONTROL).
+ 318:../Includes/core_cm0plus.h ****  */
+ 319:../Includes/core_cm0plus.h **** typedef union
+ 320:../Includes/core_cm0plus.h **** {
+ 321:../Includes/core_cm0plus.h ****   struct
+ 322:../Includes/core_cm0plus.h ****   {
+ 323:../Includes/core_cm0plus.h ****     uint32_t nPRIV:1;                    /*!< bit:      0  Execution privilege in Thread mode */
+ 324:../Includes/core_cm0plus.h ****     uint32_t SPSEL:1;                    /*!< bit:      1  Stack to be used                   */
+ 325:../Includes/core_cm0plus.h ****     uint32_t _reserved1:30;              /*!< bit:  2..31  Reserved                           */
+ 326:../Includes/core_cm0plus.h ****   } b;                                   /*!< Structure used for bit  access                  */
+ 327:../Includes/core_cm0plus.h ****   uint32_t w;                            /*!< Type      used for word access                  */
+ 328:../Includes/core_cm0plus.h **** } CONTROL_Type;
+ 329:../Includes/core_cm0plus.h **** 
+ 330:../Includes/core_cm0plus.h **** /* CONTROL Register Definitions */
+ 331:../Includes/core_cm0plus.h **** #define CONTROL_SPSEL_Pos                   1                                             /*!< CONT
+ 332:../Includes/core_cm0plus.h **** #define CONTROL_SPSEL_Msk                  (1UL << CONTROL_SPSEL_Pos)                     /*!< CONT
+ 333:../Includes/core_cm0plus.h **** 
+ 334:../Includes/core_cm0plus.h **** #define CONTROL_nPRIV_Pos                   0                                             /*!< CONT
+ 335:../Includes/core_cm0plus.h **** #define CONTROL_nPRIV_Msk                  (1UL /*<< CONTROL_nPRIV_Pos*/)                 /*!< CONT
+ 336:../Includes/core_cm0plus.h **** 
+ 337:../Includes/core_cm0plus.h **** /*@} end of group CMSIS_CORE */
+ 338:../Includes/core_cm0plus.h **** 
+ 339:../Includes/core_cm0plus.h **** 
+ 340:../Includes/core_cm0plus.h **** /** \ingroup    CMSIS_core_register
+ 341:../Includes/core_cm0plus.h ****     \defgroup   CMSIS_NVIC  Nested Vectored Interrupt Controller (NVIC)
+ 342:../Includes/core_cm0plus.h ****     \brief      Type definitions for the NVIC Registers
+ 343:../Includes/core_cm0plus.h ****   @{
+ 344:../Includes/core_cm0plus.h ****  */
+ 345:../Includes/core_cm0plus.h **** 
+ 346:../Includes/core_cm0plus.h **** /** \brief  Structure type to access the Nested Vectored Interrupt Controller (NVIC).
+ 347:../Includes/core_cm0plus.h ****  */
+ 348:../Includes/core_cm0plus.h **** typedef struct
+ 349:../Includes/core_cm0plus.h **** {
+ 350:../Includes/core_cm0plus.h ****   __IO uint32_t ISER[1];                 /*!< Offset: 0x000 (R/W)  Interrupt Set Enable Register   
+ 351:../Includes/core_cm0plus.h ****        uint32_t RESERVED0[31];
+ 352:../Includes/core_cm0plus.h ****   __IO uint32_t ICER[1];                 /*!< Offset: 0x080 (R/W)  Interrupt Clear Enable Register 
+ 353:../Includes/core_cm0plus.h ****        uint32_t RSERVED1[31];
+ 354:../Includes/core_cm0plus.h ****   __IO uint32_t ISPR[1];                 /*!< Offset: 0x100 (R/W)  Interrupt Set Pending Register  
+ 355:../Includes/core_cm0plus.h ****        uint32_t RESERVED2[31];
+ 356:../Includes/core_cm0plus.h ****   __IO uint32_t ICPR[1];                 /*!< Offset: 0x180 (R/W)  Interrupt Clear Pending Register
+ 357:../Includes/core_cm0plus.h ****        uint32_t RESERVED3[31];
+ 358:../Includes/core_cm0plus.h ****        uint32_t RESERVED4[64];
+ 359:../Includes/core_cm0plus.h ****   __IO uint32_t IP[8];                   /*!< Offset: 0x300 (R/W)  Interrupt Priority Register     
+ 360:../Includes/core_cm0plus.h **** }  NVIC_Type;
+ 361:../Includes/core_cm0plus.h **** 
+ 362:../Includes/core_cm0plus.h **** /*@} end of group CMSIS_NVIC */
+ 363:../Includes/core_cm0plus.h **** 
+ 364:../Includes/core_cm0plus.h **** 
+ 365:../Includes/core_cm0plus.h **** /** \ingroup  CMSIS_core_register
+ 366:../Includes/core_cm0plus.h ****     \defgroup CMSIS_SCB     System Control Block (SCB)
+ 367:../Includes/core_cm0plus.h ****     \brief      Type definitions for the System Control Block Registers
+ 368:../Includes/core_cm0plus.h ****   @{
+ 369:../Includes/core_cm0plus.h ****  */
+ 370:../Includes/core_cm0plus.h **** 
+ 371:../Includes/core_cm0plus.h **** /** \brief  Structure type to access the System Control Block (SCB).
+ 372:../Includes/core_cm0plus.h ****  */
+ 373:../Includes/core_cm0plus.h **** typedef struct
+ 374:../Includes/core_cm0plus.h **** {
+ 375:../Includes/core_cm0plus.h ****   __I  uint32_t CPUID;                   /*!< Offset: 0x000 (R/ )  CPUID Base Register             
+ 376:../Includes/core_cm0plus.h ****   __IO uint32_t ICSR;                    /*!< Offset: 0x004 (R/W)  Interrupt Control and State Regi
+ 377:../Includes/core_cm0plus.h **** #if (__VTOR_PRESENT == 1)
+ 378:../Includes/core_cm0plus.h ****   __IO uint32_t VTOR;                    /*!< Offset: 0x008 (R/W)  Vector Table Offset Register    
+ 379:../Includes/core_cm0plus.h **** #else
+ 380:../Includes/core_cm0plus.h ****        uint32_t RESERVED0;
+ 381:../Includes/core_cm0plus.h **** #endif
+ 382:../Includes/core_cm0plus.h ****   __IO uint32_t AIRCR;                   /*!< Offset: 0x00C (R/W)  Application Interrupt and Reset 
+ 383:../Includes/core_cm0plus.h ****   __IO uint32_t SCR;                     /*!< Offset: 0x010 (R/W)  System Control Register         
+ 384:../Includes/core_cm0plus.h ****   __IO uint32_t CCR;                     /*!< Offset: 0x014 (R/W)  Configuration Control Register  
+ 385:../Includes/core_cm0plus.h ****        uint32_t RESERVED1;
+ 386:../Includes/core_cm0plus.h ****   __IO uint32_t SHP[2];                  /*!< Offset: 0x01C (R/W)  System Handlers Priority Registe
+ 387:../Includes/core_cm0plus.h ****   __IO uint32_t SHCSR;                   /*!< Offset: 0x024 (R/W)  System Handler Control and State
+ 388:../Includes/core_cm0plus.h **** } SCB_Type;
+ 389:../Includes/core_cm0plus.h **** 
+ 390:../Includes/core_cm0plus.h **** /* SCB CPUID Register Definitions */
+ 391:../Includes/core_cm0plus.h **** #define SCB_CPUID_IMPLEMENTER_Pos          24                                             /*!< SCB 
+ 392:../Includes/core_cm0plus.h **** #define SCB_CPUID_IMPLEMENTER_Msk          (0xFFUL << SCB_CPUID_IMPLEMENTER_Pos)          /*!< SCB 
+ 393:../Includes/core_cm0plus.h **** 
+ 394:../Includes/core_cm0plus.h **** #define SCB_CPUID_VARIANT_Pos              20                                             /*!< SCB 
+ 395:../Includes/core_cm0plus.h **** #define SCB_CPUID_VARIANT_Msk              (0xFUL << SCB_CPUID_VARIANT_Pos)               /*!< SCB 
+ 396:../Includes/core_cm0plus.h **** 
+ 397:../Includes/core_cm0plus.h **** #define SCB_CPUID_ARCHITECTURE_Pos         16                                             /*!< SCB 
+ 398:../Includes/core_cm0plus.h **** #define SCB_CPUID_ARCHITECTURE_Msk         (0xFUL << SCB_CPUID_ARCHITECTURE_Pos)          /*!< SCB 
+ 399:../Includes/core_cm0plus.h **** 
+ 400:../Includes/core_cm0plus.h **** #define SCB_CPUID_PARTNO_Pos                4                                             /*!< SCB 
+ 401:../Includes/core_cm0plus.h **** #define SCB_CPUID_PARTNO_Msk               (0xFFFUL << SCB_CPUID_PARTNO_Pos)              /*!< SCB 
+ 402:../Includes/core_cm0plus.h **** 
+ 403:../Includes/core_cm0plus.h **** #define SCB_CPUID_REVISION_Pos              0                                             /*!< SCB 
+ 404:../Includes/core_cm0plus.h **** #define SCB_CPUID_REVISION_Msk             (0xFUL /*<< SCB_CPUID_REVISION_Pos*/)          /*!< SCB 
+ 405:../Includes/core_cm0plus.h **** 
+ 406:../Includes/core_cm0plus.h **** /* SCB Interrupt Control State Register Definitions */
+ 407:../Includes/core_cm0plus.h **** #define SCB_ICSR_NMIPENDSET_Pos            31                                             /*!< SCB 
+ 408:../Includes/core_cm0plus.h **** #define SCB_ICSR_NMIPENDSET_Msk            (1UL << SCB_ICSR_NMIPENDSET_Pos)               /*!< SCB 
+ 409:../Includes/core_cm0plus.h **** 
+ 410:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSVSET_Pos             28                                             /*!< SCB 
+ 411:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSVSET_Msk             (1UL << SCB_ICSR_PENDSVSET_Pos)                /*!< SCB 
+ 412:../Includes/core_cm0plus.h **** 
+ 413:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSVCLR_Pos             27                                             /*!< SCB 
+ 414:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSVCLR_Msk             (1UL << SCB_ICSR_PENDSVCLR_Pos)                /*!< SCB 
+ 415:../Includes/core_cm0plus.h **** 
+ 416:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSTSET_Pos             26                                             /*!< SCB 
+ 417:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSTSET_Msk             (1UL << SCB_ICSR_PENDSTSET_Pos)                /*!< SCB 
+ 418:../Includes/core_cm0plus.h **** 
+ 419:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSTCLR_Pos             25                                             /*!< SCB 
+ 420:../Includes/core_cm0plus.h **** #define SCB_ICSR_PENDSTCLR_Msk             (1UL << SCB_ICSR_PENDSTCLR_Pos)                /*!< SCB 
+ 421:../Includes/core_cm0plus.h **** 
+ 422:../Includes/core_cm0plus.h **** #define SCB_ICSR_ISRPREEMPT_Pos            23                                             /*!< SCB 
+ 423:../Includes/core_cm0plus.h **** #define SCB_ICSR_ISRPREEMPT_Msk            (1UL << SCB_ICSR_ISRPREEMPT_Pos)               /*!< SCB 
+ 424:../Includes/core_cm0plus.h **** 
+ 425:../Includes/core_cm0plus.h **** #define SCB_ICSR_ISRPENDING_Pos            22                                             /*!< SCB 
+ 426:../Includes/core_cm0plus.h **** #define SCB_ICSR_ISRPENDING_Msk            (1UL << SCB_ICSR_ISRPENDING_Pos)               /*!< SCB 
+ 427:../Includes/core_cm0plus.h **** 
+ 428:../Includes/core_cm0plus.h **** #define SCB_ICSR_VECTPENDING_Pos           12                                             /*!< SCB 
+ 429:../Includes/core_cm0plus.h **** #define SCB_ICSR_VECTPENDING_Msk           (0x1FFUL << SCB_ICSR_VECTPENDING_Pos)          /*!< SCB 
+ 430:../Includes/core_cm0plus.h **** 
+ 431:../Includes/core_cm0plus.h **** #define SCB_ICSR_VECTACTIVE_Pos             0                                             /*!< SCB 
+ 432:../Includes/core_cm0plus.h **** #define SCB_ICSR_VECTACTIVE_Msk            (0x1FFUL /*<< SCB_ICSR_VECTACTIVE_Pos*/)       /*!< SCB 
+ 433:../Includes/core_cm0plus.h **** 
+ 434:../Includes/core_cm0plus.h **** #if (__VTOR_PRESENT == 1)
+ 435:../Includes/core_cm0plus.h **** /* SCB Interrupt Control State Register Definitions */
+ 436:../Includes/core_cm0plus.h **** #define SCB_VTOR_TBLOFF_Pos                 8                                             /*!< SCB 
+ 437:../Includes/core_cm0plus.h **** #define SCB_VTOR_TBLOFF_Msk                (0xFFFFFFUL << SCB_VTOR_TBLOFF_Pos)            /*!< SCB 
+ 438:../Includes/core_cm0plus.h **** #endif
+ 439:../Includes/core_cm0plus.h **** 
+ 440:../Includes/core_cm0plus.h **** /* SCB Application Interrupt and Reset Control Register Definitions */
+ 441:../Includes/core_cm0plus.h **** #define SCB_AIRCR_VECTKEY_Pos              16                                             /*!< SCB 
+ 442:../Includes/core_cm0plus.h **** #define SCB_AIRCR_VECTKEY_Msk              (0xFFFFUL << SCB_AIRCR_VECTKEY_Pos)            /*!< SCB 
+ 443:../Includes/core_cm0plus.h **** 
+ 444:../Includes/core_cm0plus.h **** #define SCB_AIRCR_VECTKEYSTAT_Pos          16                                             /*!< SCB 
+ 445:../Includes/core_cm0plus.h **** #define SCB_AIRCR_VECTKEYSTAT_Msk          (0xFFFFUL << SCB_AIRCR_VECTKEYSTAT_Pos)        /*!< SCB 
+ 446:../Includes/core_cm0plus.h **** 
+ 447:../Includes/core_cm0plus.h **** #define SCB_AIRCR_ENDIANESS_Pos            15                                             /*!< SCB 
+ 448:../Includes/core_cm0plus.h **** #define SCB_AIRCR_ENDIANESS_Msk            (1UL << SCB_AIRCR_ENDIANESS_Pos)               /*!< SCB 
+ 449:../Includes/core_cm0plus.h **** 
+ 450:../Includes/core_cm0plus.h **** #define SCB_AIRCR_SYSRESETREQ_Pos           2                                             /*!< SCB 
+ 451:../Includes/core_cm0plus.h **** #define SCB_AIRCR_SYSRESETREQ_Msk          (1UL << SCB_AIRCR_SYSRESETREQ_Pos)             /*!< SCB 
+ 452:../Includes/core_cm0plus.h **** 
+ 453:../Includes/core_cm0plus.h **** #define SCB_AIRCR_VECTCLRACTIVE_Pos         1                                             /*!< SCB 
+ 454:../Includes/core_cm0plus.h **** #define SCB_AIRCR_VECTCLRACTIVE_Msk        (1UL << SCB_AIRCR_VECTCLRACTIVE_Pos)           /*!< SCB 
+ 455:../Includes/core_cm0plus.h **** 
+ 456:../Includes/core_cm0plus.h **** /* SCB System Control Register Definitions */
+ 457:../Includes/core_cm0plus.h **** #define SCB_SCR_SEVONPEND_Pos               4                                             /*!< SCB 
+ 458:../Includes/core_cm0plus.h **** #define SCB_SCR_SEVONPEND_Msk              (1UL << SCB_SCR_SEVONPEND_Pos)                 /*!< SCB 
+ 459:../Includes/core_cm0plus.h **** 
+ 460:../Includes/core_cm0plus.h **** #define SCB_SCR_SLEEPDEEP_Pos               2                                             /*!< SCB 
+ 461:../Includes/core_cm0plus.h **** #define SCB_SCR_SLEEPDEEP_Msk              (1UL << SCB_SCR_SLEEPDEEP_Pos)                 /*!< SCB 
+ 462:../Includes/core_cm0plus.h **** 
+ 463:../Includes/core_cm0plus.h **** #define SCB_SCR_SLEEPONEXIT_Pos             1                                             /*!< SCB 
+ 464:../Includes/core_cm0plus.h **** #define SCB_SCR_SLEEPONEXIT_Msk            (1UL << SCB_SCR_SLEEPONEXIT_Pos)               /*!< SCB 
+ 465:../Includes/core_cm0plus.h **** 
+ 466:../Includes/core_cm0plus.h **** /* SCB Configuration Control Register Definitions */
+ 467:../Includes/core_cm0plus.h **** #define SCB_CCR_STKALIGN_Pos                9                                             /*!< SCB 
+ 468:../Includes/core_cm0plus.h **** #define SCB_CCR_STKALIGN_Msk               (1UL << SCB_CCR_STKALIGN_Pos)                  /*!< SCB 
+ 469:../Includes/core_cm0plus.h **** 
+ 470:../Includes/core_cm0plus.h **** #define SCB_CCR_UNALIGN_TRP_Pos             3                                             /*!< SCB 
+ 471:../Includes/core_cm0plus.h **** #define SCB_CCR_UNALIGN_TRP_Msk            (1UL << SCB_CCR_UNALIGN_TRP_Pos)               /*!< SCB 
+ 472:../Includes/core_cm0plus.h **** 
+ 473:../Includes/core_cm0plus.h **** /* SCB System Handler Control and State Register Definitions */
+ 474:../Includes/core_cm0plus.h **** #define SCB_SHCSR_SVCALLPENDED_Pos         15                                             /*!< SCB 
+ 475:../Includes/core_cm0plus.h **** #define SCB_SHCSR_SVCALLPENDED_Msk         (1UL << SCB_SHCSR_SVCALLPENDED_Pos)            /*!< SCB 
+ 476:../Includes/core_cm0plus.h **** 
+ 477:../Includes/core_cm0plus.h **** /*@} end of group CMSIS_SCB */
+ 478:../Includes/core_cm0plus.h **** 
+ 479:../Includes/core_cm0plus.h **** 
+ 480:../Includes/core_cm0plus.h **** /** \ingroup  CMSIS_core_register
+ 481:../Includes/core_cm0plus.h ****     \defgroup CMSIS_SysTick     System Tick Timer (SysTick)
+ 482:../Includes/core_cm0plus.h ****     \brief      Type definitions for the System Timer Registers.
+ 483:../Includes/core_cm0plus.h ****   @{
+ 484:../Includes/core_cm0plus.h ****  */
+ 485:../Includes/core_cm0plus.h **** 
+ 486:../Includes/core_cm0plus.h **** /** \brief  Structure type to access the System Timer (SysTick).
+ 487:../Includes/core_cm0plus.h ****  */
+ 488:../Includes/core_cm0plus.h **** typedef struct
+ 489:../Includes/core_cm0plus.h **** {
+ 490:../Includes/core_cm0plus.h ****   __IO uint32_t CTRL;                    /*!< Offset: 0x000 (R/W)  SysTick Control and Status Regis
+ 491:../Includes/core_cm0plus.h ****   __IO uint32_t LOAD;                    /*!< Offset: 0x004 (R/W)  SysTick Reload Value Register   
+ 492:../Includes/core_cm0plus.h ****   __IO uint32_t VAL;                     /*!< Offset: 0x008 (R/W)  SysTick Current Value Register  
+ 493:../Includes/core_cm0plus.h ****   __I  uint32_t CALIB;                   /*!< Offset: 0x00C (R/ )  SysTick Calibration Register    
+ 494:../Includes/core_cm0plus.h **** } SysTick_Type;
+ 495:../Includes/core_cm0plus.h **** 
+ 496:../Includes/core_cm0plus.h **** /* SysTick Control / Status Register Definitions */
+ 497:../Includes/core_cm0plus.h **** #define SysTick_CTRL_COUNTFLAG_Pos         16                                             /*!< SysT
+ 498:../Includes/core_cm0plus.h **** #define SysTick_CTRL_COUNTFLAG_Msk         (1UL << SysTick_CTRL_COUNTFLAG_Pos)            /*!< SysT
+ 499:../Includes/core_cm0plus.h **** 
+ 500:../Includes/core_cm0plus.h **** #define SysTick_CTRL_CLKSOURCE_Pos          2                                             /*!< SysT
+ 501:../Includes/core_cm0plus.h **** #define SysTick_CTRL_CLKSOURCE_Msk         (1UL << SysTick_CTRL_CLKSOURCE_Pos)            /*!< SysT
+ 502:../Includes/core_cm0plus.h **** 
+ 503:../Includes/core_cm0plus.h **** #define SysTick_CTRL_TICKINT_Pos            1                                             /*!< SysT
+ 504:../Includes/core_cm0plus.h **** #define SysTick_CTRL_TICKINT_Msk           (1UL << SysTick_CTRL_TICKINT_Pos)              /*!< SysT
+ 505:../Includes/core_cm0plus.h **** 
+ 506:../Includes/core_cm0plus.h **** #define SysTick_CTRL_ENABLE_Pos             0                                             /*!< SysT
+ 507:../Includes/core_cm0plus.h **** #define SysTick_CTRL_ENABLE_Msk            (1UL /*<< SysTick_CTRL_ENABLE_Pos*/)           /*!< SysT
+ 508:../Includes/core_cm0plus.h **** 
+ 509:../Includes/core_cm0plus.h **** /* SysTick Reload Register Definitions */
+ 510:../Includes/core_cm0plus.h **** #define SysTick_LOAD_RELOAD_Pos             0                                             /*!< SysT
+ 511:../Includes/core_cm0plus.h **** #define SysTick_LOAD_RELOAD_Msk            (0xFFFFFFUL /*<< SysTick_LOAD_RELOAD_Pos*/)    /*!< SysT
+ 512:../Includes/core_cm0plus.h **** 
+ 513:../Includes/core_cm0plus.h **** /* SysTick Current Register Definitions */
+ 514:../Includes/core_cm0plus.h **** #define SysTick_VAL_CURRENT_Pos             0                                             /*!< SysT
+ 515:../Includes/core_cm0plus.h **** #define SysTick_VAL_CURRENT_Msk            (0xFFFFFFUL /*<< SysTick_VAL_CURRENT_Pos*/)    /*!< SysT
+ 516:../Includes/core_cm0plus.h **** 
+ 517:../Includes/core_cm0plus.h **** /* SysTick Calibration Register Definitions */
+ 518:../Includes/core_cm0plus.h **** #define SysTick_CALIB_NOREF_Pos            31                                             /*!< SysT
+ 519:../Includes/core_cm0plus.h **** #define SysTick_CALIB_NOREF_Msk            (1UL << SysTick_CALIB_NOREF_Pos)               /*!< SysT
+ 520:../Includes/core_cm0plus.h **** 
+ 521:../Includes/core_cm0plus.h **** #define SysTick_CALIB_SKEW_Pos             30                                             /*!< SysT
+ 522:../Includes/core_cm0plus.h **** #define SysTick_CALIB_SKEW_Msk             (1UL << SysTick_CALIB_SKEW_Pos)                /*!< SysT
+ 523:../Includes/core_cm0plus.h **** 
+ 524:../Includes/core_cm0plus.h **** #define SysTick_CALIB_TENMS_Pos             0                                             /*!< SysT
+ 525:../Includes/core_cm0plus.h **** #define SysTick_CALIB_TENMS_Msk            (0xFFFFFFUL /*<< SysTick_CALIB_TENMS_Pos*/)    /*!< SysT
+ 526:../Includes/core_cm0plus.h **** 
+ 527:../Includes/core_cm0plus.h **** /*@} end of group CMSIS_SysTick */
+ 528:../Includes/core_cm0plus.h **** 
+ 529:../Includes/core_cm0plus.h **** #if (__MPU_PRESENT == 1)
+ 530:../Includes/core_cm0plus.h **** /** \ingroup  CMSIS_core_register
+ 531:../Includes/core_cm0plus.h ****     \defgroup CMSIS_MPU     Memory Protection Unit (MPU)
+ 532:../Includes/core_cm0plus.h ****     \brief      Type definitions for the Memory Protection Unit (MPU)
+ 533:../Includes/core_cm0plus.h ****   @{
+ 534:../Includes/core_cm0plus.h ****  */
+ 535:../Includes/core_cm0plus.h **** 
+ 536:../Includes/core_cm0plus.h **** /** \brief  Structure type to access the Memory Protection Unit (MPU).
+ 537:../Includes/core_cm0plus.h ****  */
+ 538:../Includes/core_cm0plus.h **** typedef struct
+ 539:../Includes/core_cm0plus.h **** {
+ 540:../Includes/core_cm0plus.h ****   __I  uint32_t TYPE;                    /*!< Offset: 0x000 (R/ )  MPU Type Register               
+ 541:../Includes/core_cm0plus.h ****   __IO uint32_t CTRL;                    /*!< Offset: 0x004 (R/W)  MPU Control Register            
+ 542:../Includes/core_cm0plus.h ****   __IO uint32_t RNR;                     /*!< Offset: 0x008 (R/W)  MPU Region RNRber Register      
+ 543:../Includes/core_cm0plus.h ****   __IO uint32_t RBAR;                    /*!< Offset: 0x00C (R/W)  MPU Region Base Address Register
+ 544:../Includes/core_cm0plus.h ****   __IO uint32_t RASR;                    /*!< Offset: 0x010 (R/W)  MPU Region Attribute and Size Re
+ 545:../Includes/core_cm0plus.h **** } MPU_Type;
+ 546:../Includes/core_cm0plus.h **** 
+ 547:../Includes/core_cm0plus.h **** /* MPU Type Register */
+ 548:../Includes/core_cm0plus.h **** #define MPU_TYPE_IREGION_Pos               16                                             /*!< MPU 
+ 549:../Includes/core_cm0plus.h **** #define MPU_TYPE_IREGION_Msk               (0xFFUL << MPU_TYPE_IREGION_Pos)               /*!< MPU 
+ 550:../Includes/core_cm0plus.h **** 
+ 551:../Includes/core_cm0plus.h **** #define MPU_TYPE_DREGION_Pos                8                                             /*!< MPU 
+ 552:../Includes/core_cm0plus.h **** #define MPU_TYPE_DREGION_Msk               (0xFFUL << MPU_TYPE_DREGION_Pos)               /*!< MPU 
+ 553:../Includes/core_cm0plus.h **** 
+ 554:../Includes/core_cm0plus.h **** #define MPU_TYPE_SEPARATE_Pos               0                                             /*!< MPU 
+ 555:../Includes/core_cm0plus.h **** #define MPU_TYPE_SEPARATE_Msk              (1UL /*<< MPU_TYPE_SEPARATE_Pos*/)             /*!< MPU 
+ 556:../Includes/core_cm0plus.h **** 
+ 557:../Includes/core_cm0plus.h **** /* MPU Control Register */
+ 558:../Includes/core_cm0plus.h **** #define MPU_CTRL_PRIVDEFENA_Pos             2                                             /*!< MPU 
+ 559:../Includes/core_cm0plus.h **** #define MPU_CTRL_PRIVDEFENA_Msk            (1UL << MPU_CTRL_PRIVDEFENA_Pos)               /*!< MPU 
+ 560:../Includes/core_cm0plus.h **** 
+ 561:../Includes/core_cm0plus.h **** #define MPU_CTRL_HFNMIENA_Pos               1                                             /*!< MPU 
+ 562:../Includes/core_cm0plus.h **** #define MPU_CTRL_HFNMIENA_Msk              (1UL << MPU_CTRL_HFNMIENA_Pos)                 /*!< MPU 
+ 563:../Includes/core_cm0plus.h **** 
+ 564:../Includes/core_cm0plus.h **** #define MPU_CTRL_ENABLE_Pos                 0                                             /*!< MPU 
+ 565:../Includes/core_cm0plus.h **** #define MPU_CTRL_ENABLE_Msk                (1UL /*<< MPU_CTRL_ENABLE_Pos*/)               /*!< MPU 
+ 566:../Includes/core_cm0plus.h **** 
+ 567:../Includes/core_cm0plus.h **** /* MPU Region Number Register */
+ 568:../Includes/core_cm0plus.h **** #define MPU_RNR_REGION_Pos                  0                                             /*!< MPU 
+ 569:../Includes/core_cm0plus.h **** #define MPU_RNR_REGION_Msk                 (0xFFUL /*<< MPU_RNR_REGION_Pos*/)             /*!< MPU 
+ 570:../Includes/core_cm0plus.h **** 
+ 571:../Includes/core_cm0plus.h **** /* MPU Region Base Address Register */
+ 572:../Includes/core_cm0plus.h **** #define MPU_RBAR_ADDR_Pos                   8                                             /*!< MPU 
+ 573:../Includes/core_cm0plus.h **** #define MPU_RBAR_ADDR_Msk                  (0xFFFFFFUL << MPU_RBAR_ADDR_Pos)              /*!< MPU 
+ 574:../Includes/core_cm0plus.h **** 
+ 575:../Includes/core_cm0plus.h **** #define MPU_RBAR_VALID_Pos                  4                                             /*!< MPU 
+ 576:../Includes/core_cm0plus.h **** #define MPU_RBAR_VALID_Msk                 (1UL << MPU_RBAR_VALID_Pos)                    /*!< MPU 
+ 577:../Includes/core_cm0plus.h **** 
+ 578:../Includes/core_cm0plus.h **** #define MPU_RBAR_REGION_Pos                 0                                             /*!< MPU 
+ 579:../Includes/core_cm0plus.h **** #define MPU_RBAR_REGION_Msk                (0xFUL /*<< MPU_RBAR_REGION_Pos*/)             /*!< MPU 
+ 580:../Includes/core_cm0plus.h **** 
+ 581:../Includes/core_cm0plus.h **** /* MPU Region Attribute and Size Register */
+ 582:../Includes/core_cm0plus.h **** #define MPU_RASR_ATTRS_Pos                 16                                             /*!< MPU 
+ 583:../Includes/core_cm0plus.h **** #define MPU_RASR_ATTRS_Msk                 (0xFFFFUL << MPU_RASR_ATTRS_Pos)               /*!< MPU 
+ 584:../Includes/core_cm0plus.h **** 
+ 585:../Includes/core_cm0plus.h **** #define MPU_RASR_XN_Pos                    28                                             /*!< MPU 
+ 586:../Includes/core_cm0plus.h **** #define MPU_RASR_XN_Msk                    (1UL << MPU_RASR_XN_Pos)                       /*!< MPU 
+ 587:../Includes/core_cm0plus.h **** 
+ 588:../Includes/core_cm0plus.h **** #define MPU_RASR_AP_Pos                    24                                             /*!< MPU 
+ 589:../Includes/core_cm0plus.h **** #define MPU_RASR_AP_Msk                    (0x7UL << MPU_RASR_AP_Pos)                     /*!< MPU 
+ 590:../Includes/core_cm0plus.h **** 
+ 591:../Includes/core_cm0plus.h **** #define MPU_RASR_TEX_Pos                   19                                             /*!< MPU 
+ 592:../Includes/core_cm0plus.h **** #define MPU_RASR_TEX_Msk                   (0x7UL << MPU_RASR_TEX_Pos)                    /*!< MPU 
+ 593:../Includes/core_cm0plus.h **** 
+ 594:../Includes/core_cm0plus.h **** #define MPU_RASR_S_Pos                     18                                             /*!< MPU 
+ 595:../Includes/core_cm0plus.h **** #define MPU_RASR_S_Msk                     (1UL << MPU_RASR_S_Pos)                        /*!< MPU 
+ 596:../Includes/core_cm0plus.h **** 
+ 597:../Includes/core_cm0plus.h **** #define MPU_RASR_C_Pos                     17                                             /*!< MPU 
+ 598:../Includes/core_cm0plus.h **** #define MPU_RASR_C_Msk                     (1UL << MPU_RASR_C_Pos)                        /*!< MPU 
+ 599:../Includes/core_cm0plus.h **** 
+ 600:../Includes/core_cm0plus.h **** #define MPU_RASR_B_Pos                     16                                             /*!< MPU 
+ 601:../Includes/core_cm0plus.h **** #define MPU_RASR_B_Msk                     (1UL << MPU_RASR_B_Pos)                        /*!< MPU 
+ 602:../Includes/core_cm0plus.h **** 
+ 603:../Includes/core_cm0plus.h **** #define MPU_RASR_SRD_Pos                    8                                             /*!< MPU 
+ 604:../Includes/core_cm0plus.h **** #define MPU_RASR_SRD_Msk                   (0xFFUL << MPU_RASR_SRD_Pos)                   /*!< MPU 
+ 605:../Includes/core_cm0plus.h **** 
+ 606:../Includes/core_cm0plus.h **** #define MPU_RASR_SIZE_Pos                   1                                             /*!< MPU 
+ 607:../Includes/core_cm0plus.h **** #define MPU_RASR_SIZE_Msk                  (0x1FUL << MPU_RASR_SIZE_Pos)                  /*!< MPU 
+ 608:../Includes/core_cm0plus.h **** 
+ 609:../Includes/core_cm0plus.h **** #define MPU_RASR_ENABLE_Pos                 0                                             /*!< MPU 
+ 610:../Includes/core_cm0plus.h **** #define MPU_RASR_ENABLE_Msk                (1UL /*<< MPU_RASR_ENABLE_Pos*/)               /*!< MPU 
+ 611:../Includes/core_cm0plus.h **** 
+ 612:../Includes/core_cm0plus.h **** /*@} end of group CMSIS_MPU */
+ 613:../Includes/core_cm0plus.h **** #endif
+ 614:../Includes/core_cm0plus.h **** 
+ 615:../Includes/core_cm0plus.h **** 
+ 616:../Includes/core_cm0plus.h **** /** \ingroup  CMSIS_core_register
+ 617:../Includes/core_cm0plus.h ****     \defgroup CMSIS_CoreDebug       Core Debug Registers (CoreDebug)
+ 618:../Includes/core_cm0plus.h ****     \brief      Cortex-M0+ Core Debug Registers (DCB registers, SHCSR, and DFSR)
+ 619:../Includes/core_cm0plus.h ****                 are only accessible over DAP and not via processor. Therefore
+ 620:../Includes/core_cm0plus.h ****                 they are not covered by the Cortex-M0 header file.
+ 621:../Includes/core_cm0plus.h ****   @{
+ 622:../Includes/core_cm0plus.h ****  */
+ 623:../Includes/core_cm0plus.h **** /*@} end of group CMSIS_CoreDebug */
+ 624:../Includes/core_cm0plus.h **** 
+ 625:../Includes/core_cm0plus.h **** 
+ 626:../Includes/core_cm0plus.h **** /** \ingroup    CMSIS_core_register
+ 627:../Includes/core_cm0plus.h ****     \defgroup   CMSIS_core_base     Core Definitions
+ 628:../Includes/core_cm0plus.h ****     \brief      Definitions for base addresses, unions, and structures.
+ 629:../Includes/core_cm0plus.h ****   @{
+ 630:../Includes/core_cm0plus.h ****  */
+ 631:../Includes/core_cm0plus.h **** 
+ 632:../Includes/core_cm0plus.h **** /* Memory mapping of Cortex-M0+ Hardware */
+ 633:../Includes/core_cm0plus.h **** #define SCS_BASE            (0xE000E000UL)                            /*!< System Control Space Bas
+ 634:../Includes/core_cm0plus.h **** #define SysTick_BASE        (SCS_BASE +  0x0010UL)                    /*!< SysTick Base Address    
+ 635:../Includes/core_cm0plus.h **** #define NVIC_BASE           (SCS_BASE +  0x0100UL)                    /*!< NVIC Base Address       
+ 636:../Includes/core_cm0plus.h **** #define SCB_BASE            (SCS_BASE +  0x0D00UL)                    /*!< System Control Block Bas
+ 637:../Includes/core_cm0plus.h **** 
+ 638:../Includes/core_cm0plus.h **** #define SCB                 ((SCB_Type       *)     SCB_BASE      )   /*!< SCB configuration struct
+ 639:../Includes/core_cm0plus.h **** #define SysTick             ((SysTick_Type   *)     SysTick_BASE  )   /*!< SysTick configuration st
+ 640:../Includes/core_cm0plus.h **** #define NVIC                ((NVIC_Type      *)     NVIC_BASE     )   /*!< NVIC configuration struc
+ 641:../Includes/core_cm0plus.h **** 
+ 642:../Includes/core_cm0plus.h **** #if (__MPU_PRESENT == 1)
+ 643:../Includes/core_cm0plus.h ****   #define MPU_BASE          (SCS_BASE +  0x0D90UL)                    /*!< Memory Protection Unit  
+ 644:../Includes/core_cm0plus.h ****   #define MPU               ((MPU_Type       *)     MPU_BASE      )   /*!< Memory Protection Unit  
+ 645:../Includes/core_cm0plus.h **** #endif
+ 646:../Includes/core_cm0plus.h **** 
+ 647:../Includes/core_cm0plus.h **** /*@} */
+ 648:../Includes/core_cm0plus.h **** 
+ 649:../Includes/core_cm0plus.h **** 
+ 650:../Includes/core_cm0plus.h **** 
+ 651:../Includes/core_cm0plus.h **** /*******************************************************************************
+ 652:../Includes/core_cm0plus.h ****  *                Hardware Abstraction Layer
+ 653:../Includes/core_cm0plus.h ****   Core Function Interface contains:
+ 654:../Includes/core_cm0plus.h ****   - Core NVIC Functions
+ 655:../Includes/core_cm0plus.h ****   - Core SysTick Functions
+ 656:../Includes/core_cm0plus.h ****   - Core Register Access Functions
+ 657:../Includes/core_cm0plus.h ****  ******************************************************************************/
+ 658:../Includes/core_cm0plus.h **** /** \defgroup CMSIS_Core_FunctionInterface Functions and Instructions Reference
+ 659:../Includes/core_cm0plus.h **** */
+ 660:../Includes/core_cm0plus.h **** 
+ 661:../Includes/core_cm0plus.h **** 
+ 662:../Includes/core_cm0plus.h **** 
+ 663:../Includes/core_cm0plus.h **** /* ##########################   NVIC functions  #################################### */
+ 664:../Includes/core_cm0plus.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 665:../Includes/core_cm0plus.h ****     \defgroup CMSIS_Core_NVICFunctions NVIC Functions
+ 666:../Includes/core_cm0plus.h ****     \brief      Functions that manage interrupts and exceptions via the NVIC.
+ 667:../Includes/core_cm0plus.h ****     @{
+ 668:../Includes/core_cm0plus.h ****  */
+ 669:../Includes/core_cm0plus.h **** 
+ 670:../Includes/core_cm0plus.h **** /* Interrupt Priorities are WORD accessible only under ARMv6M                   */
+ 671:../Includes/core_cm0plus.h **** /* The following MACROS handle generation of the register offset and byte masks */
+ 672:../Includes/core_cm0plus.h **** #define _BIT_SHIFT(IRQn)         (  ((((uint32_t)(int32_t)(IRQn))         )      &  0x03UL) * 8UL)
+ 673:../Includes/core_cm0plus.h **** #define _SHP_IDX(IRQn)           ( (((((uint32_t)(int32_t)(IRQn)) & 0x0FUL)-8UL) >>    2UL)      )
+ 674:../Includes/core_cm0plus.h **** #define _IP_IDX(IRQn)            (   (((uint32_t)(int32_t)(IRQn))                >>    2UL)      )
+ 675:../Includes/core_cm0plus.h **** 
+ 676:../Includes/core_cm0plus.h **** 
+ 677:../Includes/core_cm0plus.h **** /** \brief  Enable External Interrupt
+ 678:../Includes/core_cm0plus.h **** 
+ 679:../Includes/core_cm0plus.h ****     The function enables a device-specific interrupt in the NVIC interrupt controller.
+ 680:../Includes/core_cm0plus.h **** 
+ 681:../Includes/core_cm0plus.h ****     \param [in]      IRQn  External interrupt number. Value cannot be negative.
+ 682:../Includes/core_cm0plus.h ****  */
+ 683:../Includes/core_cm0plus.h **** __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
+ 684:../Includes/core_cm0plus.h **** {
+  25              		.loc 1 684 0
+  26              		.cfi_startproc
+  27 0000 80B5     		push	{r7, lr}
+  28              		.cfi_def_cfa_offset 8
+  29              		.cfi_offset 7, -8
+  30              		.cfi_offset 14, -4
+  31 0002 82B0     		sub	sp, sp, #8
+  32              		.cfi_def_cfa_offset 16
+  33 0004 00AF     		add	r7, sp, #0
+  34              		.cfi_def_cfa_register 7
+  35 0006 021C     		mov	r2, r0
+  36 0008 FB1D     		add	r3, r7, #7
+  37 000a 1A70     		strb	r2, [r3]
+ 685:../Includes/core_cm0plus.h ****   NVIC->ISER[0] = (uint32_t)(1UL << (((uint32_t)(int32_t)IRQn) & 0x1FUL));
+  38              		.loc 1 685 0
+  39 000c 064B     		ldr	r3, .L2
+  40 000e FA1D     		add	r2, r7, #7
+  41 0010 1278     		ldrb	r2, [r2]
+  42 0012 111C     		mov	r1, r2
+  43 0014 1F22     		mov	r2, #31
+  44 0016 0A40     		and	r2, r1
+  45 0018 0121     		mov	r1, #1
+  46 001a 081C     		mov	r0, r1
+  47 001c 9040     		lsl	r0, r0, r2
+  48 001e 021C     		mov	r2, r0
+  49 0020 1A60     		str	r2, [r3]
+ 686:../Includes/core_cm0plus.h **** }
+  50              		.loc 1 686 0
+  51 0022 BD46     		mov	sp, r7
+  52 0024 02B0     		add	sp, sp, #8
+  53              		@ sp needed
+  54 0026 80BD     		pop	{r7, pc}
+  55              	.L3:
+  56              		.align	2
+  57              	.L2:
+  58 0028 00E100E0 		.word	-536813312
+  59              		.cfi_endproc
+  60              	.LFE25:
+  62              		.section	.rodata
+  63              		.align	2
+  64              	.LC0:
+  65 0000 2E2E2F53 		.ascii	"../Sources/drivers/port/port.h\000"
+  65      6F757263 
+  65      65732F64 
+  65      72697665 
+  65      72732F70 
+  66 001f 00       		.align	2
+  67              	.LC3:
+  68 0020 62617365 		.ascii	"base\000"
+  68      00
+  69              		.section	.text.PORT_Init,"ax",%progbits
+  70              		.align	2
+  71              		.code	16
+  72              		.thumb_func
+  74              	PORT_Init:
+  75              	.LFB39:
+  76              		.file 2 "../Sources/drivers/port/port.h"
+   1:../Sources/drivers/port/port.h **** /***************************************************************************************
+   2:../Sources/drivers/port/port.h ****  * Módulo      : port.h
+   3:../Sources/drivers/port/port.h ****  * Revisão     : 1.0
+   4:../Sources/drivers/port/port.h ****  * Data        : 09/02/2023
+   5:../Sources/drivers/port/port.h ****  * Descrição   : Arquivo com implementações dos Módulos PORT da Familia Kinetis KL05.
+   6:../Sources/drivers/port/port.h ****  * Comentários : Nenhum.
+   7:../Sources/drivers/port/port.h ****  * Autor(es)   : Matheus Leitzke Pinto
+   8:../Sources/drivers/port/port.h ****  ***************************************************************************************/
+   9:../Sources/drivers/port/port.h **** 
+  10:../Sources/drivers/port/port.h **** #ifndef PORT_DRV_H_
+  11:../Sources/drivers/port/port.h **** #define PORT_DRV_H_
+  12:../Sources/drivers/port/port.h **** 
+  13:../Sources/drivers/port/port.h **** /*ARQUIVOS DE CABEÇALHO*/
+  14:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  15:../Sources/drivers/port/port.h **** 
+  16:../Sources/drivers/port/port.h **** #include "drivers/common_driver.h"
+  17:../Sources/drivers/port/port.h **** 
+  18:../Sources/drivers/port/port.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  19:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  20:../Sources/drivers/port/port.h **** 
+  21:../Sources/drivers/port/port.h **** /*TIPOS ENUMERADOS*/
+  22:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  23:../Sources/drivers/port/port.h **** 
+  24:../Sources/drivers/port/port.h **** /*Possíveis alternativas de multiplexação dos pinos das PORTs*/
+  25:../Sources/drivers/port/port.h **** typedef enum{
+  26:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT0 		= 0x0u,
+  27:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT1 		= 0x1u,
+  28:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT2 		= 0x2u,
+  29:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT3 		= 0x3u,
+  30:../Sources/drivers/port/port.h **** 	PORT_MUX_DISABLE 	= PORT_MUX_ALT0
+  31:../Sources/drivers/port/port.h **** }portMux_t;
+  32:../Sources/drivers/port/port.h **** 
+  33:../Sources/drivers/port/port.h **** /*Possíveis alternativas de interrupção dos pinos das PORTs*/
+  34:../Sources/drivers/port/port.h **** typedef enum{
+  35:../Sources/drivers/port/port.h **** 	PORT_IRQ_DISABLE 		 	 = 0x0U,
+  36:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_RISING_EDGE  = 0x1U,
+  37:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_FALLING_EDGE = 0x2U,
+  38:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_EITHER_EDGE  = 0x3U,
+  39:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_lOW_LEVEL		 = 0x8U,
+  40:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_RISING_EDGE 	 = 0x9U,
+  41:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_FALLING_EDGE 	 = 0xAU,
+  42:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_EITHER_EDGE 	 = 0xBU,
+  43:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_HIGH_LEVEL 	 	 = 0xCU
+  44:../Sources/drivers/port/port.h **** }portIRQ_t;
+  45:../Sources/drivers/port/port.h **** 
+  46:../Sources/drivers/port/port.h **** /*FIM: TIPOS ENUMERADOS*/
+  47:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  48:../Sources/drivers/port/port.h **** 
+  49:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  50:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  51:../Sources/drivers/port/port.h **** 
+  52:../Sources/drivers/port/port.h **** /**********************************************************************
+  53:../Sources/drivers/port/port.h ****  * Função		:	PORT_IRQEnable
+  54:../Sources/drivers/port/port.h ****  *
+  55:../Sources/drivers/port/port.h ****  * Descrição	:   Habilita a geração de interrupção pelo pino de
+  56:../Sources/drivers/port/port.h ****  * 					um módulo PORT.
+  57:../Sources/drivers/port/port.h ****  *
+  58:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  59:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  60:../Sources/drivers/port/port.h ****  * 					irq - uma das alternativas de interrupção do pino.
+  61:../Sources/drivers/port/port.h ****  *
+  62:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  63:../Sources/drivers/port/port.h ****  *
+  64:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  65:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  66:../Sources/drivers/port/port.h **** void PORT_IRQEnable(PORT_Type *base, uint8_t pin, portIRQ_t irq);
+  67:../Sources/drivers/port/port.h **** 
+  68:../Sources/drivers/port/port.h **** /**********************************************************************
+  69:../Sources/drivers/port/port.h ****  * Função		:	PORT_GetIRQFlag
+  70:../Sources/drivers/port/port.h ****  *
+  71:../Sources/drivers/port/port.h ****  * Descrição	:   Retorna se a flag de interrupção de pino do PORT foi setada.
+  72:../Sources/drivers/port/port.h ****  *
+  73:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  74:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  75:../Sources/drivers/port/port.h ****  *
+  76:../Sources/drivers/port/port.h ****  * Saídas		:  0 - se flag não setada;
+  77:../Sources/drivers/port/port.h ****  *                 !0 - se flag setada.
+  78:../Sources/drivers/port/port.h ****  *
+  79:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  80:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  81:../Sources/drivers/port/port.h **** uint32_t PORT_GetIRQFlag(PORT_Type *base, uint8_t pin);
+  82:../Sources/drivers/port/port.h **** 
+  83:../Sources/drivers/port/port.h **** /**********************************************************************
+  84:../Sources/drivers/port/port.h ****  * Função		:	PORT_ClearIRQFlag
+  85:../Sources/drivers/port/port.h ****  *
+  86:../Sources/drivers/port/port.h ****  * Descrição	:   Limpa flag de interrupção do pino de PORT.
+  87:../Sources/drivers/port/port.h ****  *
+  88:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  89:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  90:../Sources/drivers/port/port.h ****  *
+  91:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  92:../Sources/drivers/port/port.h ****  *
+  93:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  94:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  95:../Sources/drivers/port/port.h **** void PORT_ClearIRQFlag(PORT_Type *base, uint8_t pin);
+  96:../Sources/drivers/port/port.h **** 
+  97:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  98:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  99:../Sources/drivers/port/port.h **** 
+ 100:../Sources/drivers/port/port.h **** 
+ 101:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES INLINE*/
+ 102:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 103:../Sources/drivers/port/port.h **** 
+ 104:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base);
+ 105:../Sources/drivers/port/port.h **** static inline void PORT_SetMux(PORT_Type *base, uint8_t pin, portMux_t mux);
+ 106:../Sources/drivers/port/port.h **** static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin);
+ 107:../Sources/drivers/port/port.h **** static inline void PORT_HighStrengthEnable(PORT_Type *base, uint8_t pin);
+ 108:../Sources/drivers/port/port.h **** 
+ 109:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES INLINE*/
+ 110:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 111:../Sources/drivers/port/port.h **** 
+ 112:../Sources/drivers/port/port.h **** /*FUNÇÕES INLINE*/
+ 113:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 114:../Sources/drivers/port/port.h **** 
+ 115:../Sources/drivers/port/port.h **** /**********************************************************************
+ 116:../Sources/drivers/port/port.h ****  * Função		:	PORT_Init
+ 117:../Sources/drivers/port/port.h ****  *
+ 118:../Sources/drivers/port/port.h ****  * Descrição	:   Deve ser chamado antes de utilizar um módulo PORT.
+ 119:../Sources/drivers/port/port.h ****  *
+ 120:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+ 121:../Sources/drivers/port/port.h ****  *
+ 122:../Sources/drivers/port/port.h ****  * Saídas 		:   Nenhuma.
+ 123:../Sources/drivers/port/port.h ****  *
+ 124:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 125:../Sources/drivers/port/port.h ****  * ********************************************************************/
+ 126:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base)
+ 127:../Sources/drivers/port/port.h **** {
+  77              		.loc 2 127 0
+  78              		.cfi_startproc
+  79 0000 80B5     		push	{r7, lr}
+  80              		.cfi_def_cfa_offset 8
+  81              		.cfi_offset 7, -8
+  82              		.cfi_offset 14, -4
+  83 0002 82B0     		sub	sp, sp, #8
+  84              		.cfi_def_cfa_offset 16
+  85 0004 00AF     		add	r7, sp, #0
+  86              		.cfi_def_cfa_register 7
+  87 0006 7860     		str	r0, [r7, #4]
+ 128:../Sources/drivers/port/port.h **** 	assert(base);
+  88              		.loc 2 128 0
+  89 0008 7B68     		ldr	r3, [r7, #4]
+  90 000a 002B     		cmp	r3, #0
+  91 000c 06D1     		bne	.L5
+  92              		.loc 2 128 0 is_stmt 0 discriminator 1
+  93 000e 1949     		ldr	r1, .L8
+  94 0010 194A     		ldr	r2, .L8+4
+  95 0012 1A4B     		ldr	r3, .L8+8
+  96 0014 081C     		mov	r0, r1
+  97 0016 8021     		mov	r1, #128
+  98 0018 FFF7FEFF 		bl	__assert_func
+  99              	.L5:
+ 129:../Sources/drivers/port/port.h **** 
+ 130:../Sources/drivers/port/port.h **** 	if( PORTA == base )
+ 100              		.loc 2 130 0 is_stmt 1
+ 101 001c 7A68     		ldr	r2, [r7, #4]
+ 102 001e 184B     		ldr	r3, .L8+12
+ 103 0020 9A42     		cmp	r2, r3
+ 104 0022 09D1     		bne	.L6
+ 131:../Sources/drivers/port/port.h **** 	{
+ 132:../Sources/drivers/port/port.h **** 		   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK; /* Ativa o clock do periférico PORTA*/
+ 105              		.loc 2 132 0
+ 106 0024 174A     		ldr	r2, .L8+16
+ 107 0026 1749     		ldr	r1, .L8+16
+ 108 0028 174B     		ldr	r3, .L8+20
+ 109 002a CB58     		ldr	r3, [r1, r3]
+ 110 002c 8021     		mov	r1, #128
+ 111 002e 8900     		lsl	r1, r1, #2
+ 112 0030 1943     		orr	r1, r3
+ 113 0032 154B     		ldr	r3, .L8+20
+ 114 0034 D150     		str	r1, [r2, r3]
+ 115 0036 19E0     		b	.L4
+ 116              	.L6:
+ 133:../Sources/drivers/port/port.h **** 	}
+ 134:../Sources/drivers/port/port.h **** 	else
+ 135:../Sources/drivers/port/port.h **** 	{
+ 136:../Sources/drivers/port/port.h **** 		if( PORTB == base )
+ 117              		.loc 2 136 0
+ 118 0038 7A68     		ldr	r2, [r7, #4]
+ 119 003a 144B     		ldr	r3, .L8+24
+ 120 003c 9A42     		cmp	r2, r3
+ 121 003e 15D1     		bne	.L4
+ 137:../Sources/drivers/port/port.h **** 		{
+ 138:../Sources/drivers/port/port.h **** 			SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; /* Ativa o clock do periférico PORTB*/
+ 122              		.loc 2 138 0
+ 123 0040 104A     		ldr	r2, .L8+16
+ 124 0042 1049     		ldr	r1, .L8+16
+ 125 0044 104B     		ldr	r3, .L8+20
+ 126 0046 CB58     		ldr	r3, [r1, r3]
+ 127 0048 8021     		mov	r1, #128
+ 128 004a C900     		lsl	r1, r1, #3
+ 129 004c 1943     		orr	r1, r3
+ 130 004e 0E4B     		ldr	r3, .L8+20
+ 131 0050 D150     		str	r1, [r2, r3]
+ 139:../Sources/drivers/port/port.h **** 			/*Desabilita NMI em PTB5 e habilita como GPIO*/
+ 140:../Sources/drivers/port/port.h **** 			base->PCR[5] &= ~PORT_PCR_MUX_MASK; /*Limpa configurações anteriores*/
+ 132              		.loc 2 140 0
+ 133 0052 7B68     		ldr	r3, [r7, #4]
+ 134 0054 5A69     		ldr	r2, [r3, #20]
+ 135 0056 0E4B     		ldr	r3, .L8+28
+ 136 0058 1A40     		and	r2, r3
+ 137 005a 7B68     		ldr	r3, [r7, #4]
+ 138 005c 5A61     		str	r2, [r3, #20]
+ 141:../Sources/drivers/port/port.h **** 			base->PCR[5] |= PORT_PCR_MUX(PORT_MUX_ALT1);
+ 139              		.loc 2 141 0
+ 140 005e 7B68     		ldr	r3, [r7, #4]
+ 141 0060 5B69     		ldr	r3, [r3, #20]
+ 142 0062 8022     		mov	r2, #128
+ 143 0064 5200     		lsl	r2, r2, #1
+ 144 0066 1A43     		orr	r2, r3
+ 145 0068 7B68     		ldr	r3, [r7, #4]
+ 146 006a 5A61     		str	r2, [r3, #20]
+ 147              	.L4:
+ 142:../Sources/drivers/port/port.h **** 		}
+ 143:../Sources/drivers/port/port.h **** 	}
+ 144:../Sources/drivers/port/port.h **** }
+ 148              		.loc 2 144 0
+ 149 006c BD46     		mov	sp, r7
+ 150 006e 02B0     		add	sp, sp, #8
+ 151              		@ sp needed
+ 152 0070 80BD     		pop	{r7, pc}
+ 153              	.L9:
+ 154 0072 C046     		.align	2
+ 155              	.L8:
+ 156 0074 00000000 		.word	.LC0
+ 157 0078 00000000 		.word	__func__.5655
+ 158 007c 20000000 		.word	.LC3
+ 159 0080 00900440 		.word	1074040832
+ 160 0084 00700440 		.word	1074032640
+ 161 0088 38100000 		.word	4152
+ 162 008c 00A00440 		.word	1074044928
+ 163 0090 FFF8FFFF 		.word	-1793
+ 164              		.cfi_endproc
+ 165              	.LFE39:
+ 167              		.section	.rodata
+ 168 0025 000000   		.align	2
+ 169              	.LC8:
+ 170 0028 28207069 		.ascii	"( pin >= 0 ) && ( pin < 32 )\000"
+ 170      6E203E3D 
+ 170      20302029 
+ 170      20262620 
+ 170      28207069 
+ 171              		.section	.text.PORT_PullEnable,"ax",%progbits
+ 172              		.align	2
+ 173              		.code	16
+ 174              		.thumb_func
+ 176              	PORT_PullEnable:
+ 177              	.LFB40:
+ 145:../Sources/drivers/port/port.h **** /**********************************************************************
+ 146:../Sources/drivers/port/port.h ****  * Função		:	PORT_PullEnable
+ 147:../Sources/drivers/port/port.h ****  *
+ 148:../Sources/drivers/port/port.h ****  * Descrição	:   Habilita pullUp no pino do módulo PORT.
+ 149:../Sources/drivers/port/port.h ****  *
+ 150:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+ 151:../Sources/drivers/port/port.h ****  *                  pin	  - numeração do pino;
+ 152:../Sources/drivers/port/port.h ****  *
+ 153:../Sources/drivers/port/port.h ****  * Saídas		:   Nenhuma.
+ 154:../Sources/drivers/port/port.h ****  *
+ 155:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 156:../Sources/drivers/port/port.h ****  * ********************************************************************/
+ 157:../Sources/drivers/port/port.h **** static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin)
+ 158:../Sources/drivers/port/port.h **** {
+ 178              		.loc 2 158 0
+ 179              		.cfi_startproc
+ 180 0000 80B5     		push	{r7, lr}
+ 181              		.cfi_def_cfa_offset 8
+ 182              		.cfi_offset 7, -8
+ 183              		.cfi_offset 14, -4
+ 184 0002 82B0     		sub	sp, sp, #8
+ 185              		.cfi_def_cfa_offset 16
+ 186 0004 00AF     		add	r7, sp, #0
+ 187              		.cfi_def_cfa_register 7
+ 188 0006 7860     		str	r0, [r7, #4]
+ 189 0008 0A1C     		mov	r2, r1
+ 190 000a FB1C     		add	r3, r7, #3
+ 191 000c 1A70     		strb	r2, [r3]
+ 159:../Sources/drivers/port/port.h **** 	assert(base);
+ 192              		.loc 2 159 0
+ 193 000e 7B68     		ldr	r3, [r7, #4]
+ 194 0010 002B     		cmp	r3, #0
+ 195 0012 06D1     		bne	.L11
+ 196              		.loc 2 159 0 is_stmt 0 discriminator 1
+ 197 0014 1049     		ldr	r1, .L13
+ 198 0016 114A     		ldr	r2, .L13+4
+ 199 0018 114B     		ldr	r3, .L13+8
+ 200 001a 081C     		mov	r0, r1
+ 201 001c 9F21     		mov	r1, #159
+ 202 001e FFF7FEFF 		bl	__assert_func
+ 203              	.L11:
+ 160:../Sources/drivers/port/port.h **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+ 204              		.loc 2 160 0 is_stmt 1
+ 205 0022 FB1C     		add	r3, r7, #3
+ 206 0024 1B78     		ldrb	r3, [r3]
+ 207 0026 1F2B     		cmp	r3, #31
+ 208 0028 06D9     		bls	.L12
+ 209              		.loc 2 160 0 is_stmt 0 discriminator 1
+ 210 002a 0B49     		ldr	r1, .L13
+ 211 002c 0B4A     		ldr	r2, .L13+4
+ 212 002e 0D4B     		ldr	r3, .L13+12
+ 213 0030 081C     		mov	r0, r1
+ 214 0032 A021     		mov	r1, #160
+ 215 0034 FFF7FEFF 		bl	__assert_func
+ 216              	.L12:
+ 161:../Sources/drivers/port/port.h **** 
+ 162:../Sources/drivers/port/port.h **** 	base->PCR[pin] |= PORT_PCR_PE_MASK;
+ 217              		.loc 2 162 0 is_stmt 1
+ 218 0038 FB1C     		add	r3, r7, #3
+ 219 003a 1A78     		ldrb	r2, [r3]
+ 220 003c FB1C     		add	r3, r7, #3
+ 221 003e 1978     		ldrb	r1, [r3]
+ 222 0040 7B68     		ldr	r3, [r7, #4]
+ 223 0042 8900     		lsl	r1, r1, #2
+ 224 0044 CB58     		ldr	r3, [r1, r3]
+ 225 0046 0221     		mov	r1, #2
+ 226 0048 1943     		orr	r1, r3
+ 227 004a 7B68     		ldr	r3, [r7, #4]
+ 228 004c 9200     		lsl	r2, r2, #2
+ 229 004e D150     		str	r1, [r2, r3]
+ 163:../Sources/drivers/port/port.h **** }
+ 230              		.loc 2 163 0
+ 231 0050 BD46     		mov	sp, r7
+ 232 0052 02B0     		add	sp, sp, #8
+ 233              		@ sp needed
+ 234 0054 80BD     		pop	{r7, pc}
+ 235              	.L14:
+ 236 0056 C046     		.align	2
+ 237              	.L13:
+ 238 0058 00000000 		.word	.LC0
+ 239 005c 00000000 		.word	__func__.5660
+ 240 0060 20000000 		.word	.LC3
+ 241 0064 28000000 		.word	.LC8
+ 242              		.cfi_endproc
+ 243              	.LFE40:
+ 245              		.section	.rodata
+ 246 0045 000000   		.align	2
+ 247              	.LC10:
+ 248 0048 2E2E2F53 		.ascii	"../Sources/drivers/gpio/gpio.h\000"
+ 248      6F757263 
+ 248      65732F64 
+ 248      72697665 
+ 248      72732F67 
+ 249 0067 00       		.section	.text.GPIO_TogglePin,"ax",%progbits
+ 250              		.align	2
+ 251              		.code	16
+ 252              		.thumb_func
+ 254              	GPIO_TogglePin:
+ 255              	.LFB45:
+ 256              		.file 3 "../Sources/drivers/gpio/gpio.h"
+   1:../Sources/drivers/gpio/gpio.h **** /***************************************************************************************
+   2:../Sources/drivers/gpio/gpio.h ****  * Módulo      : gpio.h
+   3:../Sources/drivers/gpio/gpio.h ****  * Revisão     : 1.0
+   4:../Sources/drivers/gpio/gpio.h ****  * Data        : 16/02/2023
+   5:../Sources/drivers/gpio/gpio.h ****  * Descrição   : Arquivo com implementações dos Módulos GPIO da Familia Kinetis KL05.
+   6:../Sources/drivers/gpio/gpio.h ****  * Comentários : Nenhum.
+   7:../Sources/drivers/gpio/gpio.h ****  * Autor(es)   : Matheus Leitzke Pinto
+   8:../Sources/drivers/gpio/gpio.h ****  ***************************************************************************************/
+   9:../Sources/drivers/gpio/gpio.h **** 
+  10:../Sources/drivers/gpio/gpio.h **** #ifndef GPIO_DRV_H_
+  11:../Sources/drivers/gpio/gpio.h **** #define GPIO_DRV_H_
+  12:../Sources/drivers/gpio/gpio.h **** 
+  13:../Sources/drivers/gpio/gpio.h **** /*ARQUIVOS DE CABEÇALHO*/
+  14:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  15:../Sources/drivers/gpio/gpio.h **** 
+  16:../Sources/drivers/gpio/gpio.h **** #include "drivers/common_driver.h"
+  17:../Sources/drivers/gpio/gpio.h **** #include "drivers/port/port.h"
+  18:../Sources/drivers/gpio/gpio.h **** 
+  19:../Sources/drivers/gpio/gpio.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  20:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  21:../Sources/drivers/gpio/gpio.h **** 
+  22:../Sources/drivers/gpio/gpio.h **** /*PROTÓTIPOS - FUNÇÕES INLINE*/
+  23:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  24:../Sources/drivers/gpio/gpio.h **** 
+  25:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_SetPin(GPIO_Type *base, uint8_t pin);
+  26:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_ClearPin(GPIO_Type *base, uint8_t pin);
+  27:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_TogglePin(GPIO_Type *base, uint8_t pin);
+  28:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_WritePin(GPIO_Type *base, uint8_t pin, uint8_t value);
+  29:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_SetPinsMask(GPIO_Type *base, uint32_t mask);
+  30:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_ClearPinsMask(GPIO_Type *base, uint32_t mask);
+  31:../Sources/drivers/gpio/gpio.h **** static inline uint8_t GPIO_ReadPin(GPIO_Type *base, uint8_t pin);
+  32:../Sources/drivers/gpio/gpio.h **** 
+  33:../Sources/drivers/gpio/gpio.h **** /*FIM: PROTÓTIPOS - FUNÇÕES INLINE*/
+  34:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  35:../Sources/drivers/gpio/gpio.h **** 
+  36:../Sources/drivers/gpio/gpio.h **** /*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  37:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  38:../Sources/drivers/gpio/gpio.h **** 
+  39:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  40:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_InitInputPin
+  41:../Sources/drivers/gpio/gpio.h ****  *
+  42:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Inicializa pino de módulo GPIO como entrada.
+  43:../Sources/drivers/gpio/gpio.h ****  *
+  44:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+  45:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+  46:../Sources/drivers/gpio/gpio.h ****  *
+  47:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+  48:../Sources/drivers/gpio/gpio.h ****  *
+  49:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Essa função também realiza a multiplexação do
+  50:../Sources/drivers/gpio/gpio.h ****  *                  do pino do PORT relacionado ao GPIO.
+  51:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+  52:../Sources/drivers/gpio/gpio.h **** void GPIO_InitInputPin(GPIO_Type *base, uint8_t pin);
+  53:../Sources/drivers/gpio/gpio.h **** 
+  54:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  55:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_InitOutputPin
+  56:../Sources/drivers/gpio/gpio.h ****  *
+  57:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Inicializa pino de módulo GPIO como saída.
+  58:../Sources/drivers/gpio/gpio.h ****  *
+  59:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+  60:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino;
+  61:../Sources/drivers/gpio/gpio.h ****  *                  initVal - valor lógico inicial do pino (0 ou !0).
+  62:../Sources/drivers/gpio/gpio.h ****  *
+  63:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+  64:../Sources/drivers/gpio/gpio.h ****  *
+  65:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Essa função também realiza a multiplexação do
+  66:../Sources/drivers/gpio/gpio.h ****  *                  do pino do PORT relacionado ao GPIO.
+  67:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+  68:../Sources/drivers/gpio/gpio.h **** void GPIO_InitOutputPin(GPIO_Type *base, uint8_t pin, uint8_t initVal);
+  69:../Sources/drivers/gpio/gpio.h **** 
+  70:../Sources/drivers/gpio/gpio.h **** /*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  71:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  72:../Sources/drivers/gpio/gpio.h **** 
+  73:../Sources/drivers/gpio/gpio.h **** /*FUNÇÕES INLINE*/
+  74:../Sources/drivers/gpio/gpio.h **** /*=======================================================================================*/
+  75:../Sources/drivers/gpio/gpio.h **** 
+  76:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  77:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_SetPinValue
+  78:../Sources/drivers/gpio/gpio.h ****  *
+  79:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Coloca o valor lógico 1 no pino do módulo GPIO.
+  80:../Sources/drivers/gpio/gpio.h ****  *
+  81:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+  82:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+  83:../Sources/drivers/gpio/gpio.h ****  *
+  84:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+  85:../Sources/drivers/gpio/gpio.h ****  *
+  86:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Nenhum.
+  87:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+  88:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_SetPin(GPIO_Type *base, uint8_t pin)
+  89:../Sources/drivers/gpio/gpio.h **** {
+  90:../Sources/drivers/gpio/gpio.h **** 	assert(base);
+  91:../Sources/drivers/gpio/gpio.h **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+  92:../Sources/drivers/gpio/gpio.h **** 
+  93:../Sources/drivers/gpio/gpio.h **** 	base->PSOR = (1 << pin);
+  94:../Sources/drivers/gpio/gpio.h **** }
+  95:../Sources/drivers/gpio/gpio.h **** 
+  96:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+  97:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_ClearPinValue
+  98:../Sources/drivers/gpio/gpio.h ****  *
+  99:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Coloca o valor lógico 0 no pino do módulo GPIO.
+ 100:../Sources/drivers/gpio/gpio.h ****  *
+ 101:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+ 102:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+ 103:../Sources/drivers/gpio/gpio.h ****  *
+ 104:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+ 105:../Sources/drivers/gpio/gpio.h ****  *
+ 106:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Nenhum.
+ 107:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+ 108:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_ClearPin(GPIO_Type *base, uint8_t pin)
+ 109:../Sources/drivers/gpio/gpio.h **** {
+ 110:../Sources/drivers/gpio/gpio.h **** 	assert(base);
+ 111:../Sources/drivers/gpio/gpio.h **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+ 112:../Sources/drivers/gpio/gpio.h **** 
+ 113:../Sources/drivers/gpio/gpio.h **** 	base->PCOR = (1 << pin);
+ 114:../Sources/drivers/gpio/gpio.h **** }
+ 115:../Sources/drivers/gpio/gpio.h **** 
+ 116:../Sources/drivers/gpio/gpio.h **** /**********************************************************************
+ 117:../Sources/drivers/gpio/gpio.h ****  * Função		:	GPIO_TogglePin
+ 118:../Sources/drivers/gpio/gpio.h ****  *
+ 119:../Sources/drivers/gpio/gpio.h ****  * Descrição	:   Inverte o valor lógico no pino do módulo GPIO.
+ 120:../Sources/drivers/gpio/gpio.h ****  *
+ 121:../Sources/drivers/gpio/gpio.h ****  * Entradas		:   *base - registrador base do periférico GPIO;
+ 122:../Sources/drivers/gpio/gpio.h ****  *                  pin   - numeração do pino.
+ 123:../Sources/drivers/gpio/gpio.h ****  *
+ 124:../Sources/drivers/gpio/gpio.h ****  * Saídas		:  	Nenhuma.
+ 125:../Sources/drivers/gpio/gpio.h ****  *
+ 126:../Sources/drivers/gpio/gpio.h ****  * Comentários 	: 	Nenhum.
+ 127:../Sources/drivers/gpio/gpio.h ****  * ********************************************************************/
+ 128:../Sources/drivers/gpio/gpio.h **** static inline void GPIO_TogglePin(GPIO_Type *base, uint8_t pin)
+ 129:../Sources/drivers/gpio/gpio.h **** {
+ 257              		.loc 3 129 0
+ 258              		.cfi_startproc
+ 259 0000 80B5     		push	{r7, lr}
+ 260              		.cfi_def_cfa_offset 8
+ 261              		.cfi_offset 7, -8
+ 262              		.cfi_offset 14, -4
+ 263 0002 82B0     		sub	sp, sp, #8
+ 264              		.cfi_def_cfa_offset 16
+ 265 0004 00AF     		add	r7, sp, #0
+ 266              		.cfi_def_cfa_register 7
+ 267 0006 7860     		str	r0, [r7, #4]
+ 268 0008 0A1C     		mov	r2, r1
+ 269 000a FB1C     		add	r3, r7, #3
+ 270 000c 1A70     		strb	r2, [r3]
+ 130:../Sources/drivers/gpio/gpio.h **** 	assert(base);
+ 271              		.loc 3 130 0
+ 272 000e 7B68     		ldr	r3, [r7, #4]
+ 273 0010 002B     		cmp	r3, #0
+ 274 0012 06D1     		bne	.L16
+ 275              		.loc 3 130 0 is_stmt 0 discriminator 1
+ 276 0014 0E49     		ldr	r1, .L18
+ 277 0016 0F4A     		ldr	r2, .L18+4
+ 278 0018 0F4B     		ldr	r3, .L18+8
+ 279 001a 081C     		mov	r0, r1
+ 280 001c 8221     		mov	r1, #130
+ 281 001e FFF7FEFF 		bl	__assert_func
+ 282              	.L16:
+ 131:../Sources/drivers/gpio/gpio.h **** 	assert( ( pin >= 0 ) && ( pin < 32 ) );
+ 283              		.loc 3 131 0 is_stmt 1
+ 284 0022 FB1C     		add	r3, r7, #3
+ 285 0024 1B78     		ldrb	r3, [r3]
+ 286 0026 1F2B     		cmp	r3, #31
+ 287 0028 06D9     		bls	.L17
+ 288              		.loc 3 131 0 is_stmt 0 discriminator 1
+ 289 002a 0949     		ldr	r1, .L18
+ 290 002c 094A     		ldr	r2, .L18+4
+ 291 002e 0B4B     		ldr	r3, .L18+12
+ 292 0030 081C     		mov	r0, r1
+ 293 0032 8321     		mov	r1, #131
+ 294 0034 FFF7FEFF 		bl	__assert_func
+ 295              	.L17:
+ 132:../Sources/drivers/gpio/gpio.h **** 
+ 133:../Sources/drivers/gpio/gpio.h **** 	base->PTOR = (1 << pin);
+ 296              		.loc 3 133 0 is_stmt 1
+ 297 0038 FB1C     		add	r3, r7, #3
+ 298 003a 1B78     		ldrb	r3, [r3]
+ 299 003c 0122     		mov	r2, #1
+ 300 003e 111C     		mov	r1, r2
+ 301 0040 9940     		lsl	r1, r1, r3
+ 302 0042 0B1C     		mov	r3, r1
+ 303 0044 1A1C     		mov	r2, r3
+ 304 0046 7B68     		ldr	r3, [r7, #4]
+ 305 0048 DA60     		str	r2, [r3, #12]
+ 134:../Sources/drivers/gpio/gpio.h **** }
+ 306              		.loc 3 134 0
+ 307 004a BD46     		mov	sp, r7
+ 308 004c 02B0     		add	sp, sp, #8
+ 309              		@ sp needed
+ 310 004e 80BD     		pop	{r7, pc}
+ 311              	.L19:
+ 312              		.align	2
+ 313              	.L18:
+ 314 0050 48000000 		.word	.LC10
+ 315 0054 00000000 		.word	__func__.5715
+ 316 0058 20000000 		.word	.LC3
+ 317 005c 28000000 		.word	.LC8
+ 318              		.cfi_endproc
+ 319              	.LFE45:
+ 321              		.section	.text.PORTA_IRQHandler,"ax",%progbits
+ 322              		.align	2
+ 323              		.global	PORTA_IRQHandler
+ 324              		.code	16
+ 325              		.thumb_func
+ 327              	PORTA_IRQHandler:
+ 328              	.LFB50:
+ 329              		.file 4 "../Sources/main_irq.c"
+   1:../Sources/main_irq.c **** #include "mcu_general_config.h"
+   2:../Sources/main_irq.c **** #include "generic_drivers/lcd/lcd.h"
+   3:../Sources/main_irq.c **** #include "libraries/delay/delay.h"
+   4:../Sources/main_irq.c **** #include "libraries/emb_util/emb_util.h"
+   5:../Sources/main_irq.c **** #include "drivers/port/port.h"
+   6:../Sources/main_irq.c **** #include "drivers/gpio/gpio.h"
+   7:../Sources/main_irq.c **** 
+   8:../Sources/main_irq.c **** /* Ver página 147 e 148 do manual de referência do KL05 para saber quais
+   9:../Sources/main_irq.c ****  * pinos possuem IRQ. */
+  10:../Sources/main_irq.c **** 
+  11:../Sources/main_irq.c **** void PORTA_IRQHandler( void )
+  12:../Sources/main_irq.c **** {
+ 330              		.loc 4 12 0
+ 331              		.cfi_startproc
+ 332 0000 80B5     		push	{r7, lr}
+ 333              		.cfi_def_cfa_offset 8
+ 334              		.cfi_offset 7, -8
+ 335              		.cfi_offset 14, -4
+ 336 0002 00AF     		add	r7, sp, #0
+ 337              		.cfi_def_cfa_register 7
+  13:../Sources/main_irq.c **** 	if ( PORT_GetIRQFlag( PORTA, 10 ) )// PTA10 causou interrupção?
+ 338              		.loc 4 13 0
+ 339 0004 094B     		ldr	r3, .L22
+ 340 0006 181C     		mov	r0, r3
+ 341 0008 0A21     		mov	r1, #10
+ 342 000a FFF7FEFF 		bl	PORT_GetIRQFlag
+ 343 000e 031C     		mov	r3, r0
+ 344 0010 002B     		cmp	r3, #0
+ 345 0012 09D0     		beq	.L20
+  14:../Sources/main_irq.c ****     {
+  15:../Sources/main_irq.c ****         //Limpa a flag de ISR do PTA10
+  16:../Sources/main_irq.c ****         PORT_ClearIRQFlag( PORTA, 10 );
+ 346              		.loc 4 16 0
+ 347 0014 054B     		ldr	r3, .L22
+ 348 0016 181C     		mov	r0, r3
+ 349 0018 0A21     		mov	r1, #10
+ 350 001a FFF7FEFF 		bl	PORT_ClearIRQFlag
+  17:../Sources/main_irq.c ****         //Inverte valor lógico de PTB9
+  18:../Sources/main_irq.c ****         GPIO_TogglePin( GPIOB, 9 );
+ 351              		.loc 4 18 0
+ 352 001e 044B     		ldr	r3, .L22+4
+ 353 0020 181C     		mov	r0, r3
+ 354 0022 0921     		mov	r1, #9
+ 355 0024 FFF7FEFF 		bl	GPIO_TogglePin
+ 356              	.L20:
+  19:../Sources/main_irq.c ****     }
+  20:../Sources/main_irq.c **** }
+ 357              		.loc 4 20 0
+ 358 0028 BD46     		mov	sp, r7
+ 359              		@ sp needed
+ 360 002a 80BD     		pop	{r7, pc}
+ 361              	.L23:
+ 362              		.align	2
+ 363              	.L22:
+ 364 002c 00900440 		.word	1074040832
+ 365 0030 40F00F40 		.word	1074786368
+ 366              		.cfi_endproc
+ 367              	.LFE50:
+ 369              		.section	.text.NMI_Handler,"ax",%progbits
+ 370              		.align	2
+ 371              		.global	NMI_Handler
+ 372              		.code	16
+ 373              		.thumb_func
+ 375              	NMI_Handler:
+ 376              	.LFB51:
+  21:../Sources/main_irq.c **** 
+  22:../Sources/main_irq.c **** void NMI_Handler(void)
+  23:../Sources/main_irq.c **** {
+ 377              		.loc 4 23 0
+ 378              		.cfi_startproc
+ 379 0000 80B5     		push	{r7, lr}
+ 380              		.cfi_def_cfa_offset 8
+ 381              		.cfi_offset 7, -8
+ 382              		.cfi_offset 14, -4
+ 383 0002 82B0     		sub	sp, sp, #8
+ 384              		.cfi_def_cfa_offset 16
+ 385 0004 00AF     		add	r7, sp, #0
+ 386              		.cfi_def_cfa_register 7
+ 387              	.LBB2:
+  24:../Sources/main_irq.c **** 	for ( uint32_t i = 0; ; ++i )
+ 388              		.loc 4 24 0
+ 389 0006 0023     		mov	r3, #0
+ 390 0008 7B60     		str	r3, [r7, #4]
+ 391              	.L25:
+  25:../Sources/main_irq.c **** 	{
+  26:../Sources/main_irq.c **** 		__asm ( "nop" );
+ 392              		.loc 4 26 0 discriminator 1
+ 393              	@ 26 "../Sources/main_irq.c" 1
+ 394 000a C046     		nop
+ 395              	@ 0 "" 2
+  27:../Sources/main_irq.c **** 		++i;
+ 396              		.loc 4 27 0 discriminator 1
+ 397              		.code	16
+ 398 000c 7B68     		ldr	r3, [r7, #4]
+ 399 000e 0133     		add	r3, r3, #1
+ 400 0010 7B60     		str	r3, [r7, #4]
+  24:../Sources/main_irq.c **** 	for ( uint32_t i = 0; ; ++i )
+ 401              		.loc 4 24 0 discriminator 1
+ 402 0012 7B68     		ldr	r3, [r7, #4]
+ 403 0014 0133     		add	r3, r3, #1
+ 404 0016 7B60     		str	r3, [r7, #4]
+  28:../Sources/main_irq.c **** 	}
+ 405              		.loc 4 28 0 discriminator 1
+ 406 0018 F7E7     		b	.L25
+ 407              	.LBE2:
+ 408              		.cfi_endproc
+ 409              	.LFE51:
+ 411 001a C046     		.section	.text.HardFault_Handler,"ax",%progbits
+ 412              		.align	2
+ 413              		.global	HardFault_Handler
+ 414              		.code	16
+ 415              		.thumb_func
+ 417              	HardFault_Handler:
+ 418              	.LFB52:
+  29:../Sources/main_irq.c **** }
+  30:../Sources/main_irq.c **** 
+  31:../Sources/main_irq.c **** void HardFault_Handler(void)
+  32:../Sources/main_irq.c **** {
+ 419              		.loc 4 32 0
+ 420              		.cfi_startproc
+ 421 0000 80B5     		push	{r7, lr}
+ 422              		.cfi_def_cfa_offset 8
+ 423              		.cfi_offset 7, -8
+ 424              		.cfi_offset 14, -4
+ 425 0002 82B0     		sub	sp, sp, #8
+ 426              		.cfi_def_cfa_offset 16
+ 427 0004 00AF     		add	r7, sp, #0
+ 428              		.cfi_def_cfa_register 7
+ 429              	.LBB3:
+  33:../Sources/main_irq.c **** 	for ( uint32_t i = 0; ; ++i )
+ 430              		.loc 4 33 0
+ 431 0006 0023     		mov	r3, #0
+ 432 0008 7B60     		str	r3, [r7, #4]
+ 433              	.L27:
+  34:../Sources/main_irq.c **** 	{
+  35:../Sources/main_irq.c **** 		__asm ( "nop" );
+ 434              		.loc 4 35 0 discriminator 1
+ 435              	@ 35 "../Sources/main_irq.c" 1
+ 436 000a C046     		nop
+ 437              	@ 0 "" 2
+  36:../Sources/main_irq.c **** 		++i;
+ 438              		.loc 4 36 0 discriminator 1
+ 439              		.code	16
+ 440 000c 7B68     		ldr	r3, [r7, #4]
+ 441 000e 0133     		add	r3, r3, #1
+ 442 0010 7B60     		str	r3, [r7, #4]
+  33:../Sources/main_irq.c **** 	for ( uint32_t i = 0; ; ++i )
+ 443              		.loc 4 33 0 discriminator 1
+ 444 0012 7B68     		ldr	r3, [r7, #4]
+ 445 0014 0133     		add	r3, r3, #1
+ 446 0016 7B60     		str	r3, [r7, #4]
+  37:../Sources/main_irq.c **** 	}
+ 447              		.loc 4 37 0 discriminator 1
+ 448 0018 F7E7     		b	.L27
+ 449              	.LBE3:
+ 450              		.cfi_endproc
+ 451              	.LFE52:
+ 453 001a C046     		.section	.text.main,"ax",%progbits
+ 454              		.align	2
+ 455              		.global	main
+ 456              		.code	16
+ 457              		.thumb_func
+ 459              	main:
+ 460              	.LFB53:
+  38:../Sources/main_irq.c **** }
+  39:../Sources/main_irq.c **** 
+  40:../Sources/main_irq.c **** int main(void)
+  41:../Sources/main_irq.c **** {
+ 461              		.loc 4 41 0
+ 462              		.cfi_startproc
+ 463 0000 80B5     		push	{r7, lr}
+ 464              		.cfi_def_cfa_offset 8
+ 465              		.cfi_offset 7, -8
+ 466              		.cfi_offset 14, -4
+ 467 0002 00AF     		add	r7, sp, #0
+ 468              		.cfi_def_cfa_register 7
+  42:../Sources/main_irq.c **** 	PORT_Init( PORTA );
+ 469              		.loc 4 42 0
+ 470 0004 104B     		ldr	r3, .L30
+ 471 0006 181C     		mov	r0, r3
+ 472 0008 FFF7FEFF 		bl	PORT_Init
+  43:../Sources/main_irq.c **** 	PORT_Init( PORTB );
+ 473              		.loc 4 43 0
+ 474 000c 0F4B     		ldr	r3, .L30+4
+ 475 000e 181C     		mov	r0, r3
+ 476 0010 FFF7FEFF 		bl	PORT_Init
+  44:../Sources/main_irq.c **** 
+  45:../Sources/main_irq.c **** 	GPIO_InitOutputPin( GPIOB, 9, 1 );
+ 477              		.loc 4 45 0
+ 478 0014 0E4B     		ldr	r3, .L30+8
+ 479 0016 181C     		mov	r0, r3
+ 480 0018 0921     		mov	r1, #9
+ 481 001a 0122     		mov	r2, #1
+ 482 001c FFF7FEFF 		bl	GPIO_InitOutputPin
+  46:../Sources/main_irq.c **** 	GPIO_InitInputPin( GPIOA, 10 );
+ 483              		.loc 4 46 0
+ 484 0020 0C4B     		ldr	r3, .L30+12
+ 485 0022 181C     		mov	r0, r3
+ 486 0024 0A21     		mov	r1, #10
+ 487 0026 FFF7FEFF 		bl	GPIO_InitInputPin
+  47:../Sources/main_irq.c **** 	PORT_PullEnable( PORTA, 10 );
+ 488              		.loc 4 47 0
+ 489 002a 074B     		ldr	r3, .L30
+ 490 002c 181C     		mov	r0, r3
+ 491 002e 0A21     		mov	r1, #10
+ 492 0030 FFF7FEFF 		bl	PORT_PullEnable
+  48:../Sources/main_irq.c **** 	PORT_IRQEnable( PORTA, 10, PORT_IRQ_ON_FALLING_EDGE );
+ 493              		.loc 4 48 0
+ 494 0034 044B     		ldr	r3, .L30
+ 495 0036 181C     		mov	r0, r3
+ 496 0038 0A21     		mov	r1, #10
+ 497 003a 0A22     		mov	r2, #10
+ 498 003c FFF7FEFF 		bl	PORT_IRQEnable
+  49:../Sources/main_irq.c **** 
+  50:../Sources/main_irq.c ****     NVIC_EnableIRQ( PORTA_IRQn );
+ 499              		.loc 4 50 0
+ 500 0040 1E20     		mov	r0, #30
+ 501 0042 FFF7FEFF 		bl	NVIC_EnableIRQ
+ 502              	.L29:
+  51:../Sources/main_irq.c **** 
+  52:../Sources/main_irq.c ****     for ( ; ; )
+  53:../Sources/main_irq.c ****     {
+  54:../Sources/main_irq.c **** 
+  55:../Sources/main_irq.c ****     }
+ 503              		.loc 4 55 0 discriminator 1
+ 504 0046 FEE7     		b	.L29
+ 505              	.L31:
+ 506              		.align	2
+ 507              	.L30:
+ 508 0048 00900440 		.word	1074040832
+ 509 004c 00A00440 		.word	1074044928
+ 510 0050 40F00F40 		.word	1074786368
+ 511 0054 00F00F40 		.word	1074786304
+ 512              		.cfi_endproc
+ 513              	.LFE53:
+ 515              		.section	.rodata.__func__.5715,"a",%progbits
+ 516              		.align	2
+ 519              	__func__.5715:
+ 520 0000 4750494F 		.ascii	"GPIO_TogglePin\000"
+ 520      5F546F67 
+ 520      676C6550 
+ 520      696E00
+ 521 000f 00       		.section	.rodata.__func__.5655,"a",%progbits
+ 522              		.align	2
+ 525              	__func__.5655:
+ 526 0000 504F5254 		.ascii	"PORT_Init\000"
+ 526      5F496E69 
+ 526      7400
+ 527 000a 0000     		.section	.rodata.__func__.5660,"a",%progbits
+ 528              		.align	2
+ 531              	__func__.5660:
+ 532 0000 504F5254 		.ascii	"PORT_PullEnable\000"
+ 532      5F50756C 
+ 532      6C456E61 
+ 532      626C6500 
+ 533              		.text
+ 534              	.Letext0:
+ 535              		.file 5 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 536              		.file 6 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 537              		.file 7 "../Includes/MKL05Z4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main_irq.c
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:18     .text.NVIC_EnableIRQ:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:22     .text.NVIC_EnableIRQ:00000000 NVIC_EnableIRQ
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:58     .text.NVIC_EnableIRQ:00000028 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:63     .rodata:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:70     .text.PORT_Init:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:74     .text.PORT_Init:00000000 PORT_Init
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:156    .text.PORT_Init:00000074 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:525    .rodata.__func__.5655:00000000 __func__.5655
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:172    .text.PORT_PullEnable:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:176    .text.PORT_PullEnable:00000000 PORT_PullEnable
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:238    .text.PORT_PullEnable:00000058 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:531    .rodata.__func__.5660:00000000 __func__.5660
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:250    .text.GPIO_TogglePin:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:254    .text.GPIO_TogglePin:00000000 GPIO_TogglePin
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:314    .text.GPIO_TogglePin:00000050 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:519    .rodata.__func__.5715:00000000 __func__.5715
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:322    .text.PORTA_IRQHandler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:327    .text.PORTA_IRQHandler:00000000 PORTA_IRQHandler
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:364    .text.PORTA_IRQHandler:0000002c $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:370    .text.NMI_Handler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:375    .text.NMI_Handler:00000000 NMI_Handler
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:412    .text.HardFault_Handler:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:417    .text.HardFault_Handler:00000000 HardFault_Handler
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:454    .text.main:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:459    .text.main:00000000 main
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:508    .text.main:00000048 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:516    .rodata.__func__.5715:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:522    .rodata.__func__.5655:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccNU9hDc.s:528    .rodata.__func__.5660:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+                           .group:00000000 wm4.lcd.h.59.7bba9926f48e0bbbc91322b4531ef773
+                           .group:00000000 wm4.delay.h.39.43a7ebb51f451ed360034624059d6293
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.stddef.h.158.a7efb00f6cbc6f43213b50e183c9830c
+                           .group:00000000 wm4.lock.h.2.9bc98482741e5e2a9450b12934a684ea
+                           .group:00000000 wm4._types.h.54.d3d34a3b7f3cc230cd159baf022b4b08
+                           .group:00000000 wm4.stddef.h.158.61317cdbfb4026324507d123a50b0fd6
+                           .group:00000000 wm4.reent.h.17.8bd9e4098e0428508c282cad794fae43
+                           .group:00000000 wm4.stdlib.h.53.a73f7e963d962393b7f9086194931e4a
+                           .group:00000000 wm4.cdefs.h.56.a2d04de9d47039852021e66fca39bb58
+                           .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:00000000 wm4.math.h.35.543015094efee9028e0e4b7949018580
+                           .group:00000000 wm4.emb_util.h.51.8ea7742b72b4040e74b9712312555cf1
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+
+UNDEFINED SYMBOLS
+__assert_func
+PORT_GetIRQFlag
+PORT_ClearIRQFlag
+GPIO_InitOutputPin
+GPIO_InitInputPin
+PORT_IRQEnable

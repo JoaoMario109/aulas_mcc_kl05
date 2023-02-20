@@ -1,0 +1,675 @@
+   1              		.cpu cortex-m0plus
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main_lcd.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata
+  18              		.align	2
+  19              	.LC0:
+  20 0000 2E2E2F53 		.ascii	"../Sources/drivers/port/port.h\000"
+  20      6F757263 
+  20      65732F64 
+  20      72697665 
+  20      72732F70 
+  21 001f 00       		.align	2
+  22              	.LC3:
+  23 0020 62617365 		.ascii	"base\000"
+  23      00
+  24              		.section	.text.PORT_Init,"ax",%progbits
+  25              		.align	2
+  26              		.code	16
+  27              		.thumb_func
+  29              	PORT_Init:
+  30              	.LFB39:
+  31              		.file 1 "../Sources/drivers/port/port.h"
+   1:../Sources/drivers/port/port.h **** /***************************************************************************************
+   2:../Sources/drivers/port/port.h ****  * Módulo      : port.h
+   3:../Sources/drivers/port/port.h ****  * Revisão     : 1.0
+   4:../Sources/drivers/port/port.h ****  * Data        : 09/02/2023
+   5:../Sources/drivers/port/port.h ****  * Descrição   : Arquivo com implementações dos Módulos PORT da Familia Kinetis KL05.
+   6:../Sources/drivers/port/port.h ****  * Comentários : Nenhum.
+   7:../Sources/drivers/port/port.h ****  * Autor(es)   : Matheus Leitzke Pinto
+   8:../Sources/drivers/port/port.h ****  ***************************************************************************************/
+   9:../Sources/drivers/port/port.h **** 
+  10:../Sources/drivers/port/port.h **** #ifndef PORT_DRV_H_
+  11:../Sources/drivers/port/port.h **** #define PORT_DRV_H_
+  12:../Sources/drivers/port/port.h **** 
+  13:../Sources/drivers/port/port.h **** /*ARQUIVOS DE CABEÇALHO*/
+  14:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  15:../Sources/drivers/port/port.h **** 
+  16:../Sources/drivers/port/port.h **** #include "drivers/common_driver.h"
+  17:../Sources/drivers/port/port.h **** 
+  18:../Sources/drivers/port/port.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  19:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  20:../Sources/drivers/port/port.h **** 
+  21:../Sources/drivers/port/port.h **** /*TIPOS ENUMERADOS*/
+  22:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  23:../Sources/drivers/port/port.h **** 
+  24:../Sources/drivers/port/port.h **** /*Possíveis alternativas de multiplexação dos pinos das PORTs*/
+  25:../Sources/drivers/port/port.h **** typedef enum{
+  26:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT0 		= 0x0u,
+  27:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT1 		= 0x1u,
+  28:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT2 		= 0x2u,
+  29:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT3 		= 0x3u,
+  30:../Sources/drivers/port/port.h **** 	PORT_MUX_DISABLE 	= PORT_MUX_ALT0
+  31:../Sources/drivers/port/port.h **** }portMux_t;
+  32:../Sources/drivers/port/port.h **** 
+  33:../Sources/drivers/port/port.h **** /*Possíveis alternativas de interrupção dos pinos das PORTs*/
+  34:../Sources/drivers/port/port.h **** typedef enum{
+  35:../Sources/drivers/port/port.h **** 	PORT_IRQ_DISABLE 		 	 = 0x0U,
+  36:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_RISING_EDGE  = 0x1U,
+  37:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_FALLING_EDGE = 0x2U,
+  38:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_EITHER_EDGE  = 0x3U,
+  39:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_lOW_LEVEL		 = 0x8U,
+  40:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_RISING_EDGE 	 = 0x9U,
+  41:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_FALLING_EDGE 	 = 0xAU,
+  42:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_EITHER_EDGE 	 = 0xBU,
+  43:../Sources/drivers/port/port.h **** 	PORT_IRQ_ON_HIGH_LEVEL 	 	 = 0xCU
+  44:../Sources/drivers/port/port.h **** }portIRQ_t;
+  45:../Sources/drivers/port/port.h **** 
+  46:../Sources/drivers/port/port.h **** /*FIM: TIPOS ENUMERADOS*/
+  47:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  48:../Sources/drivers/port/port.h **** 
+  49:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  50:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  51:../Sources/drivers/port/port.h **** 
+  52:../Sources/drivers/port/port.h **** /**********************************************************************
+  53:../Sources/drivers/port/port.h ****  * Função		:	PORT_IRQEnable
+  54:../Sources/drivers/port/port.h ****  *
+  55:../Sources/drivers/port/port.h ****  * Descrição	:   Habilita a geração de interrupção pelo pino de
+  56:../Sources/drivers/port/port.h ****  * 					um módulo PORT.
+  57:../Sources/drivers/port/port.h ****  *
+  58:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  59:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  60:../Sources/drivers/port/port.h ****  * 					irq - uma das alternativas de interrupção do pino.
+  61:../Sources/drivers/port/port.h ****  *
+  62:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  63:../Sources/drivers/port/port.h ****  *
+  64:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  65:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  66:../Sources/drivers/port/port.h **** void PORT_IRQEnable(PORT_Type *base, uint8_t pin, portIRQ_t irq);
+  67:../Sources/drivers/port/port.h **** 
+  68:../Sources/drivers/port/port.h **** /**********************************************************************
+  69:../Sources/drivers/port/port.h ****  * Função		:	PORT_GetIRQFlag
+  70:../Sources/drivers/port/port.h ****  *
+  71:../Sources/drivers/port/port.h ****  * Descrição	:   Retorna se a flag de interrupção de pino do PORT foi setada.
+  72:../Sources/drivers/port/port.h ****  *
+  73:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  74:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  75:../Sources/drivers/port/port.h ****  *
+  76:../Sources/drivers/port/port.h ****  * Saídas		:  0 - se flag não setada;
+  77:../Sources/drivers/port/port.h ****  *                 !0 - se flag setada.
+  78:../Sources/drivers/port/port.h ****  *
+  79:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  80:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  81:../Sources/drivers/port/port.h **** uint32_t PORT_GetIRQFlag(PORT_Type *base, uint8_t pin);
+  82:../Sources/drivers/port/port.h **** 
+  83:../Sources/drivers/port/port.h **** /**********************************************************************
+  84:../Sources/drivers/port/port.h ****  * Função		:	PORT_ClearIRQFlag
+  85:../Sources/drivers/port/port.h ****  *
+  86:../Sources/drivers/port/port.h ****  * Descrição	:   Limpa flag de interrupção do pino de PORT.
+  87:../Sources/drivers/port/port.h ****  *
+  88:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+  89:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  90:../Sources/drivers/port/port.h ****  *
+  91:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  92:../Sources/drivers/port/port.h ****  *
+  93:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  94:../Sources/drivers/port/port.h ****  * ********************************************************************/
+  95:../Sources/drivers/port/port.h **** void PORT_ClearIRQFlag(PORT_Type *base, uint8_t pin);
+  96:../Sources/drivers/port/port.h **** 
+  97:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  98:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+  99:../Sources/drivers/port/port.h **** 
+ 100:../Sources/drivers/port/port.h **** 
+ 101:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES INLINE*/
+ 102:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 103:../Sources/drivers/port/port.h **** 
+ 104:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base);
+ 105:../Sources/drivers/port/port.h **** static inline void PORT_SetMux(PORT_Type *base, uint8_t pin, portMux_t mux);
+ 106:../Sources/drivers/port/port.h **** static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin);
+ 107:../Sources/drivers/port/port.h **** static inline void PORT_HighStrengthEnable(PORT_Type *base, uint8_t pin);
+ 108:../Sources/drivers/port/port.h **** 
+ 109:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES INLINE*/
+ 110:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 111:../Sources/drivers/port/port.h **** 
+ 112:../Sources/drivers/port/port.h **** /*FUNÇÕES INLINE*/
+ 113:../Sources/drivers/port/port.h **** /*=======================================================================================*/
+ 114:../Sources/drivers/port/port.h **** 
+ 115:../Sources/drivers/port/port.h **** /**********************************************************************
+ 116:../Sources/drivers/port/port.h ****  * Função		:	PORT_Init
+ 117:../Sources/drivers/port/port.h ****  *
+ 118:../Sources/drivers/port/port.h ****  * Descrição	:   Deve ser chamado antes de utilizar um módulo PORT.
+ 119:../Sources/drivers/port/port.h ****  *
+ 120:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+ 121:../Sources/drivers/port/port.h ****  *
+ 122:../Sources/drivers/port/port.h ****  * Saídas 		:   Nenhuma.
+ 123:../Sources/drivers/port/port.h ****  *
+ 124:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 125:../Sources/drivers/port/port.h ****  * ********************************************************************/
+ 126:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base)
+ 127:../Sources/drivers/port/port.h **** {
+  32              		.loc 1 127 0
+  33              		.cfi_startproc
+  34 0000 80B5     		push	{r7, lr}
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 7, -8
+  37              		.cfi_offset 14, -4
+  38 0002 82B0     		sub	sp, sp, #8
+  39              		.cfi_def_cfa_offset 16
+  40 0004 00AF     		add	r7, sp, #0
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+ 128:../Sources/drivers/port/port.h **** 	assert(base);
+  43              		.loc 1 128 0
+  44 0008 7B68     		ldr	r3, [r7, #4]
+  45 000a 002B     		cmp	r3, #0
+  46 000c 06D1     		bne	.L2
+  47              		.loc 1 128 0 is_stmt 0 discriminator 1
+  48 000e 1949     		ldr	r1, .L5
+  49 0010 194A     		ldr	r2, .L5+4
+  50 0012 1A4B     		ldr	r3, .L5+8
+  51 0014 081C     		mov	r0, r1
+  52 0016 8021     		mov	r1, #128
+  53 0018 FFF7FEFF 		bl	__assert_func
+  54              	.L2:
+ 129:../Sources/drivers/port/port.h **** 
+ 130:../Sources/drivers/port/port.h **** 	if( PORTA == base )
+  55              		.loc 1 130 0 is_stmt 1
+  56 001c 7A68     		ldr	r2, [r7, #4]
+  57 001e 184B     		ldr	r3, .L5+12
+  58 0020 9A42     		cmp	r2, r3
+  59 0022 09D1     		bne	.L3
+ 131:../Sources/drivers/port/port.h **** 	{
+ 132:../Sources/drivers/port/port.h **** 		   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK; /* Ativa o clock do periférico PORTA*/
+  60              		.loc 1 132 0
+  61 0024 174A     		ldr	r2, .L5+16
+  62 0026 1749     		ldr	r1, .L5+16
+  63 0028 174B     		ldr	r3, .L5+20
+  64 002a CB58     		ldr	r3, [r1, r3]
+  65 002c 8021     		mov	r1, #128
+  66 002e 8900     		lsl	r1, r1, #2
+  67 0030 1943     		orr	r1, r3
+  68 0032 154B     		ldr	r3, .L5+20
+  69 0034 D150     		str	r1, [r2, r3]
+  70 0036 19E0     		b	.L1
+  71              	.L3:
+ 133:../Sources/drivers/port/port.h **** 	}
+ 134:../Sources/drivers/port/port.h **** 	else
+ 135:../Sources/drivers/port/port.h **** 	{
+ 136:../Sources/drivers/port/port.h **** 		if( PORTB == base )
+  72              		.loc 1 136 0
+  73 0038 7A68     		ldr	r2, [r7, #4]
+  74 003a 144B     		ldr	r3, .L5+24
+  75 003c 9A42     		cmp	r2, r3
+  76 003e 15D1     		bne	.L1
+ 137:../Sources/drivers/port/port.h **** 		{
+ 138:../Sources/drivers/port/port.h **** 			SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; /* Ativa o clock do periférico PORTB*/
+  77              		.loc 1 138 0
+  78 0040 104A     		ldr	r2, .L5+16
+  79 0042 1049     		ldr	r1, .L5+16
+  80 0044 104B     		ldr	r3, .L5+20
+  81 0046 CB58     		ldr	r3, [r1, r3]
+  82 0048 8021     		mov	r1, #128
+  83 004a C900     		lsl	r1, r1, #3
+  84 004c 1943     		orr	r1, r3
+  85 004e 0E4B     		ldr	r3, .L5+20
+  86 0050 D150     		str	r1, [r2, r3]
+ 139:../Sources/drivers/port/port.h **** 			/*Desabilita NMI em PTB5 e habilita como GPIO*/
+ 140:../Sources/drivers/port/port.h **** 			base->PCR[5] &= ~PORT_PCR_MUX_MASK; /*Limpa configurações anteriores*/
+  87              		.loc 1 140 0
+  88 0052 7B68     		ldr	r3, [r7, #4]
+  89 0054 5A69     		ldr	r2, [r3, #20]
+  90 0056 0E4B     		ldr	r3, .L5+28
+  91 0058 1A40     		and	r2, r3
+  92 005a 7B68     		ldr	r3, [r7, #4]
+  93 005c 5A61     		str	r2, [r3, #20]
+ 141:../Sources/drivers/port/port.h **** 			base->PCR[5] |= PORT_PCR_MUX(PORT_MUX_ALT1);
+  94              		.loc 1 141 0
+  95 005e 7B68     		ldr	r3, [r7, #4]
+  96 0060 5B69     		ldr	r3, [r3, #20]
+  97 0062 8022     		mov	r2, #128
+  98 0064 5200     		lsl	r2, r2, #1
+  99 0066 1A43     		orr	r2, r3
+ 100 0068 7B68     		ldr	r3, [r7, #4]
+ 101 006a 5A61     		str	r2, [r3, #20]
+ 102              	.L1:
+ 142:../Sources/drivers/port/port.h **** 		}
+ 143:../Sources/drivers/port/port.h **** 	}
+ 144:../Sources/drivers/port/port.h **** }
+ 103              		.loc 1 144 0
+ 104 006c BD46     		mov	sp, r7
+ 105 006e 02B0     		add	sp, sp, #8
+ 106              		@ sp needed
+ 107 0070 80BD     		pop	{r7, pc}
+ 108              	.L6:
+ 109 0072 C046     		.align	2
+ 110              	.L5:
+ 111 0074 00000000 		.word	.LC0
+ 112 0078 00000000 		.word	__func__.5655
+ 113 007c 20000000 		.word	.LC3
+ 114 0080 00900440 		.word	1074040832
+ 115 0084 00700440 		.word	1074032640
+ 116 0088 38100000 		.word	4152
+ 117 008c 00A00440 		.word	1074044928
+ 118 0090 FFF8FFFF 		.word	-1793
+ 119              		.cfi_endproc
+ 120              	.LFE39:
+ 122              		.global	myChar
+ 123              		.section	.rodata.myChar,"a",%progbits
+ 124              		.align	2
+ 127              	myChar:
+ 128 0000 04       		.byte	4
+ 129 0001 04       		.byte	4
+ 130 0002 0A       		.byte	10
+ 131 0003 0A       		.byte	10
+ 132 0004 11       		.byte	17
+ 133 0005 1F       		.byte	31
+ 134 0006 00       		.byte	0
+ 135 0007 00       		.byte	0
+ 136 0008 00       		.byte	0
+ 137 0009 000000   		.section	.rodata
+ 138 0025 000000   		.align	2
+ 139              	.LC5:
+ 140 0028 4F6C6120 		.ascii	"Ola mundo\000"
+ 140      6D756E64 
+ 140      6F00
+ 141 0032 0000     		.section	.text.main,"ax",%progbits
+ 142              		.align	2
+ 143              		.global	main
+ 144              		.code	16
+ 145              		.thumb_func
+ 147              	main:
+ 148              	.LFB76:
+ 149              		.file 2 "../Sources/main_lcd.c"
+   1:../Sources/main_lcd.c **** /*
+   2:../Sources/main_lcd.c ****  * Copyright (c) 2015, Freescale Semiconductor, Inc.
+   3:../Sources/main_lcd.c ****  * All rights reserved.
+   4:../Sources/main_lcd.c ****  *
+   5:../Sources/main_lcd.c ****  * Redistribution and use in source and binary forms, with or without modification,
+   6:../Sources/main_lcd.c ****  * are permitted provided that the following conditions are met:
+   7:../Sources/main_lcd.c ****  *
+   8:../Sources/main_lcd.c ****  * o Redistributions of source code must retain the above copyright notice, this list
+   9:../Sources/main_lcd.c ****  *   of conditions and the following disclaimer.
+  10:../Sources/main_lcd.c ****  *
+  11:../Sources/main_lcd.c ****  * o Redistributions in binary form must reproduce the above copyright notice, this
+  12:../Sources/main_lcd.c ****  *   list of conditions and the following disclaimer in the documentation and/or
+  13:../Sources/main_lcd.c ****  *   other materials provided with the distribution.
+  14:../Sources/main_lcd.c ****  *
+  15:../Sources/main_lcd.c ****  * o Neither the name of Freescale Semiconductor, Inc. nor the names of its
+  16:../Sources/main_lcd.c ****  *   contributors may be used to endorse or promote products derived from this
+  17:../Sources/main_lcd.c ****  *   software without specific prior written permission.
+  18:../Sources/main_lcd.c ****  *
+  19:../Sources/main_lcd.c ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  20:../Sources/main_lcd.c ****  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  21:../Sources/main_lcd.c ****  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  22:../Sources/main_lcd.c ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+  23:../Sources/main_lcd.c ****  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  24:../Sources/main_lcd.c ****  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  25:../Sources/main_lcd.c ****  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  26:../Sources/main_lcd.c ****  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  27:../Sources/main_lcd.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  28:../Sources/main_lcd.c ****  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  29:../Sources/main_lcd.c ****  */
+  30:../Sources/main_lcd.c **** 
+  31:../Sources/main_lcd.c **** #include "mcu_general_config.h"
+  32:../Sources/main_lcd.c **** #include "generic_drivers/lcd/lcd.h"
+  33:../Sources/main_lcd.c **** #include "libraries/delay/delay.h"
+  34:../Sources/main_lcd.c **** #include "libraries/emb_util/emb_util.h"
+  35:../Sources/main_lcd.c **** #include "drivers/port/port.h"
+  36:../Sources/main_lcd.c **** #include "drivers/gpio/gpio.h"
+  37:../Sources/main_lcd.c **** #include "drivers/tpm/tpm.h"
+  38:../Sources/main_lcd.c **** #include "drivers/adc/adc.h"
+  39:../Sources/main_lcd.c **** 
+  40:../Sources/main_lcd.c **** 
+  41:../Sources/main_lcd.c **** #define BOARD_TIMER_PORT PORTB
+  42:../Sources/main_lcd.c **** #define BOARD_TIMER_PIN 13
+  43:../Sources/main_lcd.c **** 
+  44:../Sources/main_lcd.c **** #define BOARD_KEY0_GPIO GPIOA
+  45:../Sources/main_lcd.c **** #define BOARD_KEY0_PORT PORTA
+  46:../Sources/main_lcd.c **** #define BOARD_KEY0_PIN 11
+  47:../Sources/main_lcd.c **** #define BOARD_KEY0_PIN_MASK (1 << BOARD_LCD_D4_PIN)
+  48:../Sources/main_lcd.c **** 
+  49:../Sources/main_lcd.c **** #define BOARD_KEY1_GPIO GPIOA
+  50:../Sources/main_lcd.c **** #define BOARD_KEY1_PORT PORTA
+  51:../Sources/main_lcd.c **** #define BOARD_KEY1_PIN 1
+  52:../Sources/main_lcd.c **** #define BOARD_KEY1_PIN_MASK (1 << BOARD_LCD_D4_PIN)
+  53:../Sources/main_lcd.c **** 
+  54:../Sources/main_lcd.c **** #define BOARD_LCD_D4_GPIO GPIOA
+  55:../Sources/main_lcd.c **** #define BOARD_LCD_D4_PORT PORTA
+  56:../Sources/main_lcd.c **** #define BOARD_LCD_D4_PIN 10
+  57:../Sources/main_lcd.c **** #define BOARD_LCD_D4_PIN_MASK (1 << BOARD_LCD_D4_PIN)
+  58:../Sources/main_lcd.c **** 
+  59:../Sources/main_lcd.c **** #define BOARD_LCD_D5_GPIO GPIOA
+  60:../Sources/main_lcd.c **** #define BOARD_LCD_D5_PORT PORTA
+  61:../Sources/main_lcd.c **** #define BOARD_LCD_D5_PIN 12
+  62:../Sources/main_lcd.c **** #define BOARD_LCD_D5_PIN_MASK (1 << BOARD_LCD_D5_PIN)
+  63:../Sources/main_lcd.c **** 
+  64:../Sources/main_lcd.c **** #define BOARD_LCD_D6_GPIO GPIOB
+  65:../Sources/main_lcd.c **** #define BOARD_LCD_D6_PORT PORTB
+  66:../Sources/main_lcd.c **** #define BOARD_LCD_D6_PIN 6
+  67:../Sources/main_lcd.c **** #define BOARD_LCD_D6_PIN_MASK (1 << BOARD_LCD_D6_PIN)
+  68:../Sources/main_lcd.c **** 
+  69:../Sources/main_lcd.c **** #define BOARD_LCD_D7_GPIO GPIOB
+  70:../Sources/main_lcd.c **** #define BOARD_LCD_D7_PORT PORTB
+  71:../Sources/main_lcd.c **** #define BOARD_LCD_D7_PIN 7
+  72:../Sources/main_lcd.c **** #define BOARD_LCD_D7_PIN_MASK (1 << BOARD_LCD_D7_PIN)
+  73:../Sources/main_lcd.c **** 
+  74:../Sources/main_lcd.c **** #define BOARD_LCD_RS_GPIO GPIOB
+  75:../Sources/main_lcd.c **** #define BOARD_LCD_RS_PORT PORTB
+  76:../Sources/main_lcd.c **** #define BOARD_LCD_RS_PIN 10
+  77:../Sources/main_lcd.c **** #define BOARD_LCD_RS_PIN_MASK (1 << BOARD_LCD_RS_PIN)
+  78:../Sources/main_lcd.c **** 
+  79:../Sources/main_lcd.c **** #define BOARD_LCD_EN_GPIO GPIOB
+  80:../Sources/main_lcd.c **** #define BOARD_LCD_EN_PORT PORTB
+  81:../Sources/main_lcd.c **** #define BOARD_LCD_EN_PIN 11
+  82:../Sources/main_lcd.c **** #define BOARD_LCD_EN_PIN_MASK (1 << BOARD_LCD_EN_PIN)
+  83:../Sources/main_lcd.c **** 
+  84:../Sources/main_lcd.c **** #define LCD_DELTA_CHAR 0x00
+  85:../Sources/main_lcd.c **** 
+  86:../Sources/main_lcd.c **** const uint8_t myChar[] =
+  87:../Sources/main_lcd.c **** {
+  88:../Sources/main_lcd.c **** 		0b00100,
+  89:../Sources/main_lcd.c **** 		0b00100,
+  90:../Sources/main_lcd.c **** 		0b01010,
+  91:../Sources/main_lcd.c **** 		0b01010,
+  92:../Sources/main_lcd.c **** 		0b10001,
+  93:../Sources/main_lcd.c **** 		0b11111,
+  94:../Sources/main_lcd.c **** 		0b00000,
+  95:../Sources/main_lcd.c **** 		0b00000,
+  96:../Sources/main_lcd.c **** 		0b00000
+  97:../Sources/main_lcd.c **** };
+  98:../Sources/main_lcd.c **** 
+  99:../Sources/main_lcd.c **** 
+ 100:../Sources/main_lcd.c **** /*
+ 101:../Sources/main_lcd.c ****  * Para rodar um exemplo, descomente sua macro correspondente e
+ 102:../Sources/main_lcd.c ****  * deixe comentado as macros dos outros exemplos.
+ 103:../Sources/main_lcd.c ****  *
+ 104:../Sources/main_lcd.c ****  * */
+ 105:../Sources/main_lcd.c **** #define EXEMPLO_1
+ 106:../Sources/main_lcd.c **** //#define EXEMPLO_2
+ 107:../Sources/main_lcd.c **** //#define EXEMPLO_3
+ 108:../Sources/main_lcd.c **** //#define EXEMPLO_4
+ 109:../Sources/main_lcd.c **** 
+ 110:../Sources/main_lcd.c **** 
+ 111:../Sources/main_lcd.c **** int main(void)
+ 112:../Sources/main_lcd.c **** {
+ 150              		.loc 2 112 0
+ 151              		.cfi_startproc
+ 152 0000 80B5     		push	{r7, lr}
+ 153              		.cfi_def_cfa_offset 8
+ 154              		.cfi_offset 7, -8
+ 155              		.cfi_offset 14, -4
+ 156 0002 82B0     		sub	sp, sp, #8
+ 157              		.cfi_def_cfa_offset 16
+ 158 0004 00AF     		add	r7, sp, #0
+ 159              		.cfi_def_cfa_register 7
+ 113:../Sources/main_lcd.c **** 	lcdConfig_t* lcd0Config;
+ 114:../Sources/main_lcd.c **** 	lcdHandle_t lcd0Handle;
+ 115:../Sources/main_lcd.c **** 
+ 116:../Sources/main_lcd.c **** 	PORT_Init(PORTA);
+ 160              		.loc 2 116 0
+ 161 0006 3C4B     		ldr	r3, .L9
+ 162 0008 181C     		mov	r0, r3
+ 163 000a FFF7FEFF 		bl	PORT_Init
+ 117:../Sources/main_lcd.c **** 	PORT_Init(PORTB);
+ 164              		.loc 2 117 0
+ 165 000e 3B4B     		ldr	r3, .L9+4
+ 166 0010 181C     		mov	r0, r3
+ 167 0012 FFF7FEFF 		bl	PORT_Init
+ 118:../Sources/main_lcd.c **** 
+ 119:../Sources/main_lcd.c **** 	GPIO_InitOutputPin(BOARD_LCD_D4_GPIO, BOARD_LCD_D4_PIN, 0);
+ 168              		.loc 2 119 0
+ 169 0016 3A4B     		ldr	r3, .L9+8
+ 170 0018 181C     		mov	r0, r3
+ 171 001a 0A21     		mov	r1, #10
+ 172 001c 0022     		mov	r2, #0
+ 173 001e FFF7FEFF 		bl	GPIO_InitOutputPin
+ 120:../Sources/main_lcd.c **** 	GPIO_InitOutputPin(BOARD_LCD_D5_GPIO, BOARD_LCD_D5_PIN, 0);
+ 174              		.loc 2 120 0
+ 175 0022 374B     		ldr	r3, .L9+8
+ 176 0024 181C     		mov	r0, r3
+ 177 0026 0C21     		mov	r1, #12
+ 178 0028 0022     		mov	r2, #0
+ 179 002a FFF7FEFF 		bl	GPIO_InitOutputPin
+ 121:../Sources/main_lcd.c **** 	GPIO_InitOutputPin(BOARD_LCD_D6_GPIO, BOARD_LCD_D6_PIN, 0);
+ 180              		.loc 2 121 0
+ 181 002e 354B     		ldr	r3, .L9+12
+ 182 0030 181C     		mov	r0, r3
+ 183 0032 0621     		mov	r1, #6
+ 184 0034 0022     		mov	r2, #0
+ 185 0036 FFF7FEFF 		bl	GPIO_InitOutputPin
+ 122:../Sources/main_lcd.c **** 	GPIO_InitOutputPin(BOARD_LCD_D7_GPIO, BOARD_LCD_D7_PIN, 0);
+ 186              		.loc 2 122 0
+ 187 003a 324B     		ldr	r3, .L9+12
+ 188 003c 181C     		mov	r0, r3
+ 189 003e 0721     		mov	r1, #7
+ 190 0040 0022     		mov	r2, #0
+ 191 0042 FFF7FEFF 		bl	GPIO_InitOutputPin
+ 123:../Sources/main_lcd.c **** 	GPIO_InitOutputPin(BOARD_LCD_RS_GPIO, BOARD_LCD_RS_PIN, 0);
+ 192              		.loc 2 123 0
+ 193 0046 2F4B     		ldr	r3, .L9+12
+ 194 0048 181C     		mov	r0, r3
+ 195 004a 0A21     		mov	r1, #10
+ 196 004c 0022     		mov	r2, #0
+ 197 004e FFF7FEFF 		bl	GPIO_InitOutputPin
+ 124:../Sources/main_lcd.c **** 	GPIO_InitOutputPin(BOARD_LCD_EN_GPIO, BOARD_LCD_EN_PIN, 0);
+ 198              		.loc 2 124 0
+ 199 0052 2C4B     		ldr	r3, .L9+12
+ 200 0054 181C     		mov	r0, r3
+ 201 0056 0B21     		mov	r1, #11
+ 202 0058 0022     		mov	r2, #0
+ 203 005a FFF7FEFF 		bl	GPIO_InitOutputPin
+ 125:../Sources/main_lcd.c **** 
+ 126:../Sources/main_lcd.c **** 	Delay_Init();
+ 204              		.loc 2 126 0
+ 205 005e FFF7FEFF 		bl	Delay_Init
+ 127:../Sources/main_lcd.c **** 
+ 128:../Sources/main_lcd.c **** 	lcd0Config = LCD_CreateConfig();
+ 206              		.loc 2 128 0
+ 207 0062 FFF7FEFF 		bl	LCD_CreateConfig
+ 208 0066 031C     		mov	r3, r0
+ 209 0068 7B60     		str	r3, [r7, #4]
+ 129:../Sources/main_lcd.c **** 
+ 130:../Sources/main_lcd.c **** 	lcd0Config->lines = 2;
+ 210              		.loc 2 130 0
+ 211 006a 7B68     		ldr	r3, [r7, #4]
+ 212 006c 0222     		mov	r2, #2
+ 213 006e 5A70     		strb	r2, [r3, #1]
+ 131:../Sources/main_lcd.c **** 	lcd0Config->cols = 16;
+ 214              		.loc 2 131 0
+ 215 0070 7B68     		ldr	r3, [r7, #4]
+ 216 0072 1022     		mov	r2, #16
+ 217 0074 1A70     		strb	r2, [r3]
+ 132:../Sources/main_lcd.c **** 	lcd0Config->charsize = LCD_5x8DOTS;
+ 218              		.loc 2 132 0
+ 219 0076 7B68     		ldr	r3, [r7, #4]
+ 220 0078 0022     		mov	r2, #0
+ 221 007a 9A70     		strb	r2, [r3, #2]
+ 133:../Sources/main_lcd.c **** 	lcd0Config->bus.data[0].portRegister = BOARD_LCD_D4_GPIO;
+ 222              		.loc 2 133 0
+ 223 007c 7B68     		ldr	r3, [r7, #4]
+ 224 007e 204A     		ldr	r2, .L9+8
+ 225 0080 5A60     		str	r2, [r3, #4]
+ 134:../Sources/main_lcd.c **** 	lcd0Config->bus.data[0].pinMask = BOARD_LCD_D4_PIN_MASK;
+ 226              		.loc 2 134 0
+ 227 0082 7B68     		ldr	r3, [r7, #4]
+ 228 0084 8022     		mov	r2, #128
+ 229 0086 D200     		lsl	r2, r2, #3
+ 230 0088 9A60     		str	r2, [r3, #8]
+ 135:../Sources/main_lcd.c **** 	lcd0Config->bus.data[1].portRegister = BOARD_LCD_D5_GPIO;
+ 231              		.loc 2 135 0
+ 232 008a 7B68     		ldr	r3, [r7, #4]
+ 233 008c 1C4A     		ldr	r2, .L9+8
+ 234 008e DA60     		str	r2, [r3, #12]
+ 136:../Sources/main_lcd.c **** 	lcd0Config->bus.data[1].pinMask = BOARD_LCD_D5_PIN_MASK;
+ 235              		.loc 2 136 0
+ 236 0090 7B68     		ldr	r3, [r7, #4]
+ 237 0092 8022     		mov	r2, #128
+ 238 0094 5201     		lsl	r2, r2, #5
+ 239 0096 1A61     		str	r2, [r3, #16]
+ 137:../Sources/main_lcd.c **** 	lcd0Config->bus.data[2].portRegister = BOARD_LCD_D6_GPIO;
+ 240              		.loc 2 137 0
+ 241 0098 7B68     		ldr	r3, [r7, #4]
+ 242 009a 1A4A     		ldr	r2, .L9+12
+ 243 009c 5A61     		str	r2, [r3, #20]
+ 138:../Sources/main_lcd.c **** 	lcd0Config->bus.data[2].pinMask = BOARD_LCD_D6_PIN_MASK;
+ 244              		.loc 2 138 0
+ 245 009e 7B68     		ldr	r3, [r7, #4]
+ 246 00a0 4022     		mov	r2, #64
+ 247 00a2 9A61     		str	r2, [r3, #24]
+ 139:../Sources/main_lcd.c **** 	lcd0Config->bus.data[3].portRegister = BOARD_LCD_D7_GPIO;
+ 248              		.loc 2 139 0
+ 249 00a4 7B68     		ldr	r3, [r7, #4]
+ 250 00a6 174A     		ldr	r2, .L9+12
+ 251 00a8 DA61     		str	r2, [r3, #28]
+ 140:../Sources/main_lcd.c **** 	lcd0Config->bus.data[3].pinMask = BOARD_LCD_D7_PIN_MASK;
+ 252              		.loc 2 140 0
+ 253 00aa 7B68     		ldr	r3, [r7, #4]
+ 254 00ac 8022     		mov	r2, #128
+ 255 00ae 1A62     		str	r2, [r3, #32]
+ 141:../Sources/main_lcd.c **** 	lcd0Config->bus.rs.portRegister = BOARD_LCD_RS_GPIO;
+ 256              		.loc 2 141 0
+ 257 00b0 7B68     		ldr	r3, [r7, #4]
+ 258 00b2 144A     		ldr	r2, .L9+12
+ 259 00b4 5A62     		str	r2, [r3, #36]
+ 142:../Sources/main_lcd.c **** 	lcd0Config->bus.rs.pinMask = BOARD_LCD_RS_PIN_MASK;
+ 260              		.loc 2 142 0
+ 261 00b6 7B68     		ldr	r3, [r7, #4]
+ 262 00b8 8022     		mov	r2, #128
+ 263 00ba D200     		lsl	r2, r2, #3
+ 264 00bc 9A62     		str	r2, [r3, #40]
+ 143:../Sources/main_lcd.c **** 	lcd0Config->bus.en.portRegister = BOARD_LCD_EN_GPIO;
+ 265              		.loc 2 143 0
+ 266 00be 7B68     		ldr	r3, [r7, #4]
+ 267 00c0 104A     		ldr	r2, .L9+12
+ 268 00c2 DA62     		str	r2, [r3, #44]
+ 144:../Sources/main_lcd.c **** 	lcd0Config->bus.en.pinMask = BOARD_LCD_EN_PIN_MASK;
+ 269              		.loc 2 144 0
+ 270 00c4 7B68     		ldr	r3, [r7, #4]
+ 271 00c6 8022     		mov	r2, #128
+ 272 00c8 1201     		lsl	r2, r2, #4
+ 273 00ca 1A63     		str	r2, [r3, #48]
+ 145:../Sources/main_lcd.c **** 
+ 146:../Sources/main_lcd.c **** 	lcd0Handle = LCD_Init(lcd0Config);
+ 274              		.loc 2 146 0
+ 275 00cc 7B68     		ldr	r3, [r7, #4]
+ 276 00ce 181C     		mov	r0, r3
+ 277 00d0 FFF7FEFF 		bl	LCD_Init
+ 278 00d4 031C     		mov	r3, r0
+ 279 00d6 3B60     		str	r3, [r7]
+ 147:../Sources/main_lcd.c **** 
+ 148:../Sources/main_lcd.c **** 	//==========================EXEMPLO_1=================================
+ 149:../Sources/main_lcd.c **** #ifdef EXEMPLO_1
+ 150:../Sources/main_lcd.c **** 	LCD_WriteString(lcd0Handle, "Ola mundo");
+ 280              		.loc 2 150 0
+ 281 00d8 3A68     		ldr	r2, [r7]
+ 282 00da 0B4B     		ldr	r3, .L9+16
+ 283 00dc 101C     		mov	r0, r2
+ 284 00de 191C     		mov	r1, r3
+ 285 00e0 FFF7FEFF 		bl	LCD_WriteString
+ 286              	.L8:
+ 151:../Sources/main_lcd.c **** 
+ 152:../Sources/main_lcd.c **** 	for (;;) {
+ 153:../Sources/main_lcd.c **** 		LCD_ScrollDisplayLeft(lcd0Handle);
+ 287              		.loc 2 153 0 discriminator 1
+ 288 00e4 3B68     		ldr	r3, [r7]
+ 289 00e6 181C     		mov	r0, r3
+ 290 00e8 FFF7FEFF 		bl	LCD_ScrollDisplayLeft
+ 154:../Sources/main_lcd.c **** 		Delay_Waitms(500);
+ 291              		.loc 2 154 0 discriminator 1
+ 292 00ec FA23     		mov	r3, #250
+ 293 00ee 5B00     		lsl	r3, r3, #1
+ 294 00f0 181C     		mov	r0, r3
+ 295 00f2 FFF7FEFF 		bl	Delay_Waitms
+ 155:../Sources/main_lcd.c **** 	}
+ 296              		.loc 2 155 0 discriminator 1
+ 297 00f6 F5E7     		b	.L8
+ 298              	.L10:
+ 299              		.align	2
+ 300              	.L9:
+ 301 00f8 00900440 		.word	1074040832
+ 302 00fc 00A00440 		.word	1074044928
+ 303 0100 00F00F40 		.word	1074786304
+ 304 0104 40F00F40 		.word	1074786368
+ 305 0108 28000000 		.word	.LC5
+ 306              		.cfi_endproc
+ 307              	.LFE76:
+ 309              		.section	.rodata.__func__.5655,"a",%progbits
+ 310              		.align	2
+ 313              	__func__.5655:
+ 314 0000 504F5254 		.ascii	"PORT_Init\000"
+ 314      5F496E69 
+ 314      7400
+ 315 000a 0000     		.text
+ 316              	.Letext0:
+ 317              		.file 3 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 318              		.file 4 "c:\\freescale\\kds_v3\\toolchain\\arm-none-eabi\\include\\stdint.h"
+ 319              		.file 5 "../Includes/MKL05Z4.h"
+ 320              		.file 6 "../Sources/mcu_general_config.h"
+ 321              		.file 7 "../Sources/generic_drivers/lcd/lcd.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main_lcd.c
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:18     .rodata:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:25     .text.PORT_Init:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:29     .text.PORT_Init:00000000 PORT_Init
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:111    .text.PORT_Init:00000074 $d
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:313    .rodata.__func__.5655:00000000 __func__.5655
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:127    .rodata.myChar:00000000 myChar
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:124    .rodata.myChar:00000000 $d
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:142    .text.main:00000000 $t
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:147    .text.main:00000000 main
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:301    .text.main:000000f8 $d
+C:\Users\mathe\AppData\Local\Temp\ccsnruRx.s:310    .rodata.__func__.5655:00000000 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.0.e19fef13b9966be9a9a0df56dde4c190
+                           .group:00000000 wm4.features.h.22.6a4ca7cd053637cc1d0db6c16f39b2d7
+                           .group:00000000 wm4._default_types.h.15.8b2cb27e528498f8ff711db085d6e489
+                           .group:00000000 wm4.stdint.h.20.796e373797e732130a803d4c0338fa1b
+                           .group:00000000 wm4.MKL05Z4.h.103.c5a242a6313ded8e4c7cb62acb8df21b
+                           .group:00000000 wm4.core_cm0plus.h.43.8d0a7c3b62d57d3de08e0cf260e796f5
+                           .group:00000000 wm4.core_cmInstr.h.39.440aa208ad4c1679c5765c09acc09994
+                           .group:00000000 wm4.core_cm0plus.h.160.b16144213bf005ce96482cc39658f3eb
+                           .group:00000000 wm4.system_MKL05Z4.h.101.1304ea5d52ecf5deae71ccb0772f8612
+                           .group:00000000 wm4.MKL05Z4.h.274.69d105c645fb54a4873c1961c705a2ed
+                           .group:00000000 wm4.mcu_general_config.h.49.464b67ff30c511db75624d944293d898
+                           .group:00000000 wm4.lcd.h.59.7bba9926f48e0bbbc91322b4531ef773
+                           .group:00000000 wm4.delay.h.39.43a7ebb51f451ed360034624059d6293
+                           .group:00000000 wm4.stddef.h.39.daafd3d79fe2f3a84d2d73d7d4e706f8
+                           .group:00000000 wm4.stdbool.h.29.1c9ee6859ce8145f7838a4f2549ccec2
+                           .group:00000000 wm4.newlib.h.8.fec018e441fee7bfa1923812ad010f97
+                           .group:00000000 wm4.config.h.212.4163ef2871a828c674038d036b081cfd
+                           .group:00000000 wm4._ansi.h.23.2147fde150631f5584b9dc29b914d1b8
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.stddef.h.158.a7efb00f6cbc6f43213b50e183c9830c
+                           .group:00000000 wm4.lock.h.2.9bc98482741e5e2a9450b12934a684ea
+                           .group:00000000 wm4._types.h.54.d3d34a3b7f3cc230cd159baf022b4b08
+                           .group:00000000 wm4.stddef.h.158.61317cdbfb4026324507d123a50b0fd6
+                           .group:00000000 wm4.reent.h.17.8bd9e4098e0428508c282cad794fae43
+                           .group:00000000 wm4.stdlib.h.53.a73f7e963d962393b7f9086194931e4a
+                           .group:00000000 wm4.cdefs.h.56.a2d04de9d47039852021e66fca39bb58
+                           .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:00000000 wm4.math.h.35.543015094efee9028e0e4b7949018580
+                           .group:00000000 wm4.emb_util.h.51.8ea7742b72b4040e74b9712312555cf1
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+
+UNDEFINED SYMBOLS
+__assert_func
+GPIO_InitOutputPin
+Delay_Init
+LCD_CreateConfig
+LCD_Init
+LCD_WriteString
+LCD_ScrollDisplayLeft
+Delay_Waitms
