@@ -4,6 +4,16 @@
 /** Common driver includes */
 #include "../common_driver.h"
 
+typedef enum
+{
+	I2C_STATUS_SUCCESS = GENERAL_STATUS_SUCCESS,
+	I2C_STATUS_FAIL = GENERAL_STATUS_FAIL,
+	I2C_STATUS_TIMEOUT = 0x1U,
+	I2C_STATUS_INVALID_SLAVE_ADDR = 0x2U,
+	I2C_STATUS_INVALID_REGISTER_ADDR = 0x3U,
+	I2C_STATUS_DATA_TRANSFER_ERROR = 0x4U
+} i2cStatusCodes_t;
+
 /**
  * Function: I2C_InitWithBaud
  * 
@@ -15,9 +25,10 @@
  *  - baud_rate -> Baud rate to initialize I2C module in [bps]
  * 
  * Outputs:
- *  - {int} -> 0 if requested baud_rate in [bps] was achievable otherwise -1
+ *  - {i2cStatusCodes_t} -> I2C_STATUS_SUCCESS if requested baud_rate in [bps]
+ *                          was achievable otherwise I2C_STATUS_FAIL
  */
-int I2C_InitWithBaud(I2C_Type *base, uint32_t baud_rate);
+i2cStatusCodes_t I2C_InitWithBaud(I2C_Type *base, uint32_t baud_rate);
 
 /**
  * Function: I2C_InitManual
@@ -56,11 +67,13 @@ void I2C_InitManual(I2C_Type *base, uint8_t icr, uint8_t mult);
  *  - base -> I2C mem map of the I2C module to be initialized
  * 
  * Outputs:
- *  - {int} -> 0 if 100 [kbps] baud rate was possible to be set otherwise -1 in
- *             of any error when trying to set this speed or if this speed was
- *             not possible to be set with current bus clock speed
+ *  - {i2cStatusCodes_t}
+ *          -> I2C_STATUS_SUCCESS if 100 [kbps] baud rate was possible to be
+ *             set otherwise I2C_STATUS_FAIL in case of any error when trying
+ *             to set this speed or if this speed was not possible to be set
+ *             with current bus clock speed
  */
-int I2C_Init(I2C_Type *base);
+i2cStatusCodes_t I2C_Init(I2C_Type *base);
 
 /**
  * Function: I2C_Init_400kbps
@@ -72,11 +85,13 @@ int I2C_Init(I2C_Type *base);
  *  - base -> I2C mem map of the I2C module to be initialized
  * 
  * Outputs:
- *  - {int} -> 0 if 400 [kbps] baud rate was possible to be set otherwise -1 in
- *             of any error when trying to set this speed or if this speed was
- *             not possible to be set with current bus clock speed
+ *  - {i2cStatusCodes_t}
+ *          -> I2C_STATUS_SUCCESS if 400 [kbps] baud rate was possible to be set
+ *             otherwise I2C_STATUS_FAIL in case  of any error when trying to set
+ *             this speed or if this speed was not possible to be set with current
+ *             bus clock speed
  */
-int I2C_Init_400kbps(I2C_Type *base);
+i2cStatusCodes_t I2C_Init_400kbps(I2C_Type *base);
 
 /**
  * Function: I2C_GetRxAk
@@ -274,11 +289,11 @@ static inline void I2C_Stop(I2C_Type *base)
  *  - base -> I2C mem map of the I2C module to await
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
  */
-static inline int I2C_Wait(I2C_Type *base)
+static inline i2cStatusCodes_t I2C_Wait(I2C_Type *base)
 {
 	/**
 	 * Guess a number of retries based on system core clock to try to match
@@ -313,12 +328,12 @@ static inline int I2C_Wait(I2C_Type *base)
 			/** Clears the interrupt flag */
 			base->S |= I2C_S_IICIF_MASK;
 			/** Return success */
-			return 0;
+			return I2C_STATUS_SUCCESS;
 		}
 	}
 
 	/** Timeout */
-	return -1;
+	return I2C_STATUS_TIMEOUT;
 }
 
 /**
@@ -383,14 +398,16 @@ static inline uint8_t I2C_ReadByte(I2C_Type *base)
  *  - data -> 1 data byte to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteSlave(I2C_Type *base, uint8_t slave_addr, uint8_t data);
+i2cStatusCodes_t I2C_WriteSlave(
+	I2C_Type *base, uint8_t slave_addr, uint8_t data
+);
 
 /**
  * Function: I2C_WriteSlaveChunk
@@ -404,14 +421,14 @@ int I2C_WriteSlave(I2C_Type *base, uint8_t slave_addr, uint8_t data);
  *  - data_size -> size of the data to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteSlaveChunk(
+i2cStatusCodes_t I2C_WriteSlaveChunk(
 	I2C_Type *base, uint8_t slave_addr, const uint8_t* const data,
 	uint16_t data_size
 );
@@ -428,14 +445,14 @@ int I2C_WriteSlaveChunk(
  *  - data -> 1 data byte to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteRegister(
+i2cStatusCodes_t I2C_WriteRegister(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr, uint8_t data
 );
 
@@ -452,14 +469,14 @@ int I2C_WriteRegister(
  *  - data_size -> size of the data to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteRegisterChunk(
+i2cStatusCodes_t I2C_WriteRegisterChunk(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr,
 	const uint8_t* const data, uint16_t data_size
 );
@@ -475,14 +492,16 @@ int I2C_WriteRegisterChunk(
  *  - result -> Pointer to destination where the result data will be stored
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadSlave(I2C_Type *base, uint8_t slave_addr, uint8_t* const result);
+i2cStatusCodes_t I2C_ReadSlave(
+	I2C_Type *base, uint8_t slave_addr, uint8_t* const result
+);
 
 /**
  * Function: I2C_ReadSlaveChunk
@@ -496,14 +515,14 @@ int I2C_ReadSlave(I2C_Type *base, uint8_t slave_addr, uint8_t* const result);
  *  - result_size -> Number of bytes to be read from the slave
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadSlaveChunk(
+i2cStatusCodes_t I2C_ReadSlaveChunk(
 	I2C_Type *base, uint8_t slave_addr, uint8_t** const result,
 	uint16_t result_size
 );
@@ -520,14 +539,14 @@ int I2C_ReadSlaveChunk(
  *  - result -> Pointer to destination where the result data will be stored
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadRegister(
+i2cStatusCodes_t I2C_ReadRegister(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr,
 	uint8_t* const result
 );
@@ -545,14 +564,14 @@ int I2C_ReadRegister(
  *  - result_size -> Number of bytes to be read from the slave
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadRegisterChunk(
+i2cStatusCodes_t I2C_ReadRegisterChunk(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr,
 	uint8_t** const result, uint16_t result_size
 );

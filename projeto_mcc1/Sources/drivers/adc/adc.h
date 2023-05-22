@@ -1,9 +1,9 @@
 /***************************************************************************************
- * Módulo      : adc.h
- * Revisão     : 1.0
+ * Mï¿½dulo      : adc.h
+ * Revisï¿½o     : 1.0
  * Data        : 16/02/2023
- * Descrição   : Arquivo com implementações do Módulo ADC da Familia Kinetis KL05.
- * Comentários : Nenhum.
+ * Descriï¿½ï¿½o   : Arquivo com implementaï¿½ï¿½es do Mï¿½dulo ADC da Familia Kinetis KL05.
+ * Comentï¿½rios : Nenhum.
  * Autor(es)   : Matheus Leitzke Pinto
  ***************************************************************************************/
 
@@ -16,31 +16,31 @@
 /*Flags de status do canal*/
 enum adcChannelStatusFlags
 {
-    ADC_CHANNEL_CONVERSION_DONE_FLAG = ADC_SC1_COCO_MASK, /* Conversão pronta. */
+    ADC_CHANNEL_CONVERSION_DONE_FLAG = ADC_SC1_COCO_MASK, /* Conversï¿½o pronta. */
 };
 
 /*Flags de status do ADC*/
 enum adcStatusFlags
 {
-    ADC_ACTIVE_FLAG = ADC_SC2_ADACT_MASK, /*ADC está ativo. */
-    ADC_CALIBRATION_FAILED_FLAG = ADC_SC3_CALF_MASK, /*!< Calibração falhou. */
+    ADC_ACTIVE_FLAG = ADC_SC2_ADACT_MASK, /*ADC estï¿½ ativo. */
+    ADC_CALIBRATION_FAILED_FLAG = ADC_SC3_CALF_MASK, /*!< Calibraï¿½ï¿½o falhou. */
 };
 
 /*Divisor do clock do ADC*/
 typedef enum adcClockDivider
 {
-    ADC_CLOCK_DIV_1 = 0U, /* Dividir por 1 a entrada do clock para o módulo. */
-    ADC_CLOCK_DIV_2 = 1U, /* Dividir por 2 a entrada do clock para o módulo. */
-    ADC_CLOCK_DIV_4 = 2U, /* Dividir por 4 a entrada do clock para o módulo. */
-    ADC_CLOCK_DIV_8 = 3U, /* Dividir por 8 a entrada do clock para o módulo. */
+    ADC_CLOCK_DIV_1 = 0U, /* Dividir por 1 a entrada do clock para o mï¿½dulo. */
+    ADC_CLOCK_DIV_2 = 1U, /* Dividir por 2 a entrada do clock para o mï¿½dulo. */
+    ADC_CLOCK_DIV_4 = 2U, /* Dividir por 4 a entrada do clock para o mï¿½dulo. */
+    ADC_CLOCK_DIV_8 = 3U, /* Dividir por 8 a entrada do clock para o mï¿½dulo. */
 } adcClockDivider_t;
 
-/*Resolução do ADC*/
+/*Resoluï¿½ï¿½o do ADC*/
 typedef enum adcResolution
 {
-    ADC_RESOLUTION_8_BIT = 0U,  /* Resolução de 8 bits. */
-    ADC_RESOLUTION_12_BIT = 1U, /* Resolução de 12 bits. */
-    ADC_RESOLUTION_10_BIT = 2U, /* Resolução de 10 bits. */
+    ADC_RESOLUTION_8_BIT = 0U,  /* Resoluï¿½ï¿½o de 8 bits. */
+    ADC_RESOLUTION_12_BIT = 1U, /* Resoluï¿½ï¿½o de 12 bits. */
+    ADC_RESOLUTION_10_BIT = 2U, /* Resoluï¿½ï¿½o de 10 bits. */
 } adcResolution_t;
 
 /*Fonte de clock do ADC*/
@@ -50,7 +50,7 @@ typedef enum adcClockSource
     ADC_CLOCK_SRC_ALT_1 = 1U, /* Alternativa de fonte de clock 1. */
     ADC_CLOCK_SRC_ALT_2 = 2U, /* Alternativa de fonte de clock 2. */
     ADC_CLOCK_SRC_ALT_3 = 3U, /* Alternativa de fonte de clock 3. */
-    ADC_ASYNC_CLOCK_SRC = ADC_CLOCK_SRC_ALT_3, /* Usa fonte de clock assíncrona interna. */
+    ADC_ASYNC_CLOCK_SRC = ADC_CLOCK_SRC_ALT_3, /* Usa fonte de clock assï¿½ncrona interna. */
 } adcClockSource_t;
 
 /* Modo de longa amostragem. */
@@ -63,17 +63,17 @@ typedef enum adcLongSampleMode
     ADC_LONG_SAMPLE_DISABLE = 4U, /* Desabilita o recurso de longa amostragem. */
 } adcLongSampleMode_t;
 
-/* Modo média por hardware. */
+/* Modo mï¿½dia por hardware. */
 typedef enum adcHardwareAverageMode
 {
-    ADC_HARDWARE_AVG_COUNT_4 = 0U,   /* Média de hardware com 4 amostras. */
-    ADC_HARDWARE_AVG_COUNT_8 = 1U,   /* Média de hardware com 8 amostras. */
-    ADC_HARDWARE_AVG_COUNT_16 = 2U,  /* Média de hardware com 16 amostras. */
-    ADC_HARDWARE_AVG_COUNT_32 = 3U,  /* Média de hardware com 32 amostras. */
-    ADC_HARDWARE_AVG_DISABLE = 4U,   /* Desabilita o recurso de média por hardware.*/
+    ADC_HARDWARE_AVG_COUNT_4 = 0U,   /* Mï¿½dia de hardware com 4 amostras. */
+    ADC_HARDWARE_AVG_COUNT_8 = 1U,   /* Mï¿½dia de hardware com 8 amostras. */
+    ADC_HARDWARE_AVG_COUNT_16 = 2U,  /* Mï¿½dia de hardware com 16 amostras. */
+    ADC_HARDWARE_AVG_COUNT_32 = 3U,  /* Mï¿½dia de hardware com 32 amostras. */
+    ADC_HARDWARE_AVG_DISABLE = 4U,   /* Desabilita o recurso de mï¿½dia por hardware.*/
 } adcHardwareAverageMode_t;
 
-/* Fonte de disparo de ínicio de conversão do ADC. */
+/* Fonte de disparo de ï¿½nicio de conversï¿½o do ADC. */
 typedef enum adcHardwareTriggerSrc
 {
 	ADC_EXTRG_IN 	  = 0x0U,
@@ -88,8 +88,8 @@ typedef enum adcHardwareTriggerSrc
     ADC_LPTMR0_TRIGGER = 0xEU,
 } adcHardwareTriggerSrc_t;
 
-/* Modo de comparação no hardware. O valor converito x só estará disponível se
- * a condição escolhida for atendida. Os valores "value1" e "value2" e  são definidos
+/* Modo de comparaï¿½ï¿½o no hardware. O valor converito x sï¿½ estarï¿½ disponï¿½vel se
+ * a condiï¿½ï¿½o escolhida for atendida. Os valores "value1" e "value2" e  sï¿½o definidos
  * em  adcHardwareCompareConfig_t */
 typedef enum adcHardwareCompareMode
 {
@@ -101,19 +101,19 @@ typedef enum adcHardwareCompareMode
                                            else x >= value1 || x <= value2. */
 } adcHardwareCompareMode_t;
 
-/* Configuração de comparação no hardware. */
+/* Configuraï¿½ï¿½o de comparaï¿½ï¿½o no hardware. */
 typedef struct adcHardwareCompareConfig
 {
-    adcHardwareCompareMode_t hardwareCompareMode; /* Modo de comparação no hardware. */
-    int16_t value1;                               /* Definição de valor value1 de comparação. */
-    int16_t value2;                               /* Definição de valor value2 de comparação. */
+    adcHardwareCompareMode_t hardwareCompareMode; /* Modo de comparaï¿½ï¿½o no hardware. */
+    int16_t value1;                               /* Definiï¿½ï¿½o de valor value1 de comparaï¿½ï¿½o. */
+    int16_t value2;                               /* Definiï¿½ï¿½o de valor value2 de comparaï¿½ï¿½o. */
 } adcHardwareCompareConfig_t;
 
-/* Configuração de conversão de canal. */
+/* Configuraï¿½ï¿½o de conversï¿½o de canal. */
 typedef struct adcChannelConfig
 {
-    uint32_t channelNumber;                    /* Valor de 0-31, correspondente ao número do canal.
-    bool enableInterruptOnConversionCompleted; /* Gera pedido de interrupção quando conversão está completa. */
+    uint32_t channelNumber;                    /* Valor de 0-31, correspondente ao nï¿½mero do canal.
+    bool enableInterruptOnConversionCompleted; /* Gera pedido de interrupï¿½ï¿½o quando conversï¿½o estï¿½ completa. */
 } adcChannelConfig_t;
 
 
@@ -122,16 +122,16 @@ extern "C" {
 #endif
 
 /**********************************************************************
- * Função		:	ADC_SetClockDiv
+ * Funï¿½ï¿½o		:	ADC_SetClockDiv
  *
- * Descrição	:   Define o valor de divisão do clock de entrada do ADC.
+ * Descriï¿½ï¿½o	:   Define o valor de divisï¿½o do clock de entrada do ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
- *                  div   - valor de divisão, limitado por tipo enumerado.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
+ *                  div   - valor de divisï¿½o, limitado por tipo enumerado.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetClockDiv( ADC_Type *base, adcClockDivider_t div )
 {
@@ -142,15 +142,15 @@ static inline void ADC_SetClockDiv( ADC_Type *base, adcClockDivider_t div )
 }
 
 /**********************************************************************
- * Função		:	ADC_SetLowPowerMode
+ * Funï¿½ï¿½o		:	ADC_SetLowPowerMode
  *
- * Descrição	:   Define o consumo de potência de conversão como baixa.
+ * Descriï¿½ï¿½o	:   Define o consumo de potï¿½ncia de conversï¿½o como baixa.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetLowPowerMode( ADC_Type *base )
 {
@@ -160,15 +160,15 @@ static inline void ADC_SetLowPowerMode( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_SetNormalPowerMode
+ * Funï¿½ï¿½o		:	ADC_SetNormalPowerMode
  *
- * Descrição	:   Define o consumo de potência de conversão como normal.
+ * Descriï¿½ï¿½o	:   Define o consumo de potï¿½ncia de conversï¿½o como normal.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetNormalPowerMode( ADC_Type *base )
 {
@@ -178,15 +178,15 @@ static inline void ADC_SetNormalPowerMode( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_SetHighSpeedMode
+ * Funï¿½ï¿½o		:	ADC_SetHighSpeedMode
  *
- * Descrição	:   Define a velocidade de conversão como rápida.
+ * Descriï¿½ï¿½o	:   Define a velocidade de conversï¿½o como rï¿½pida.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetHighSpeedMode( ADC_Type *base )
 {
@@ -196,15 +196,15 @@ static inline void ADC_SetHighSpeedMode( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_SetNormalSpeedMode
+ * Funï¿½ï¿½o		:	ADC_SetNormalSpeedMode
  *
- * Descrição	:   Define a velocidade de conversão como normal.
+ * Descriï¿½ï¿½o	:   Define a velocidade de conversï¿½o como normal.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetNormalSpeedMode( ADC_Type *base )
 {
@@ -214,15 +214,15 @@ static inline void ADC_SetNormalSpeedMode( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_AsyncClkOutEnable
+ * Funï¿½ï¿½o		:	ADC_AsyncClkOutEnable
  *
- * Descrição	:   Habilita saída do clock interno assíncrono.
+ * Descriï¿½ï¿½o	:   Habilita saï¿½da do clock interno assï¿½ncrono.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_AsyncClkOutEnable( ADC_Type *base )
 {
@@ -232,15 +232,15 @@ static inline void ADC_AsyncClkOutEnable( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_SetVAltVoltage
+ * Funï¿½ï¿½o		:	ADC_SetVAltVoltage
  *
- * Descrição	:   Define e tensão de referência como VAlt.
+ * Descriï¿½ï¿½o	:   Define e tensï¿½o de referï¿½ncia como VAlt.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_AsyncClkOutDisable( ADC_Type *base )
 {
@@ -250,15 +250,15 @@ static inline void ADC_AsyncClkOutDisable( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_SetVAltVoltage
+ * Funï¿½ï¿½o		:	ADC_SetVAltVoltage
  *
- * Descrição	:   Define e tensão de referência como VAlt.
+ * Descriï¿½ï¿½o	:   Define e tensï¿½o de referï¿½ncia como VAlt.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetVAltVoltage( ADC_Type *base )
 {
@@ -269,15 +269,15 @@ static inline void ADC_SetVAltVoltage( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_SetVRefVoltage
+ * Funï¿½ï¿½o		:	ADC_SetVRefVoltage
  *
- * Descrição	:   Define e tensão de referência como VRef.
+ * Descriï¿½ï¿½o	:   Define e tensï¿½o de referï¿½ncia como VRef.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetVRefVoltage( ADC_Type *base )
 {
@@ -287,15 +287,15 @@ static inline void ADC_SetVRefVoltage( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_ContinuousConversionEnable
+ * Funï¿½ï¿½o		:	ADC_ContinuousConversionEnable
  *
- * Descrição	:   Habilita o modo de conversão continua do módulo ADC.
+ * Descriï¿½ï¿½o	:   Habilita o modo de conversï¿½o continua do mï¿½dulo ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_ContinuousConversionEnable( ADC_Type *base )
 {
@@ -305,15 +305,15 @@ static inline void ADC_ContinuousConversionEnable( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_ContinuousConversionDisable
+ * Funï¿½ï¿½o		:	ADC_ContinuousConversionDisable
  *
- * Descrição	:   Desabilita o modo de conversão continua do módulo ADC.
+ * Descriï¿½ï¿½o	:   Desabilita o modo de conversï¿½o continua do mï¿½dulo ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_ContinuousConversionDisable( ADC_Type *base )
 {
@@ -323,15 +323,15 @@ static inline void ADC_ContinuousConversionDisable( ADC_Type *base )
 }
 
 /**********************************************************************
- * Função		:	ADC_Init
+ * Funï¿½ï¿½o		:	ADC_Init
  *
- * Descrição	:   Inicializa o pino do módulo ADC.
+ * Descriï¿½ï¿½o	:   Inicializa o pino do mï¿½dulo ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_Init(ADC_Type *base)
 {
@@ -342,15 +342,15 @@ static inline void ADC_Init(ADC_Type *base)
 }
 
 /**********************************************************************
- * Função		:	ADC_Deinit
+ * Funï¿½ï¿½o		:	ADC_Deinit
  *
- * Descrição	:   Desabilita o módulo ADC.
+ * Descriï¿½ï¿½o	:   Desabilita o mï¿½dulo ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_Deinit(ADC_Type *base)
 {
@@ -361,34 +361,34 @@ static inline void ADC_Deinit(ADC_Type *base)
 }
 
 /**********************************************************************
- * Função		:	ADC_DoAutoCalibration
+ * Funï¿½ï¿½o		:	ADC_DoAutoCalibration
  *
- * Descrição	:   Realiza auto-calibragem no ADC.
+ * Descriï¿½ï¿½o	:   Realiza auto-calibragem no ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   STATUS_SUCCESS, calibração ocorreu corretamente;
- *                  STATUS_FAIL, caso contrário.
+ * Saï¿½das		: GENERAL_STATUS_SUCCESSSS, calibraï¿½ï¿½o ocorreu corretamente;
+ *                  GENERAL_STATUS_FAIL, caso contrï¿½rio.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 uint8_t ADC_DoAutoCalibration(ADC_Type *base);
 
 /**********************************************************************
- * Função		:	ADC_SetOffsetValue
+ * Funï¿½ï¿½o		:	ADC_SetOffsetValue
  *
- * Descrição	:   Esse valor de offset entra em vigor no
- *                  resultado da conversão. Se o valor do offset não
- *                  for zero, o resultado da leitura é subtraído por ele.
- *                  Observe que a calibração do hardware preenche o
+ * Descriï¿½ï¿½o	:   Esse valor de offset entra em vigor no
+ *                  resultado da conversï¿½o. Se o valor do offset nï¿½o
+ *                  for zero, o resultado da leitura ï¿½ subtraï¿½do por ele.
+ *                  Observe que a calibraï¿½ï¿½o do hardware preenche o
  *                  valor de deslocamento automaticamente.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
  *                  value - valor de offset.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_SetOffsetValue(ADC_Type *base, int16_t value)
 {
@@ -398,16 +398,16 @@ static inline void ADC_SetOffsetValue(ADC_Type *base, int16_t value)
 }
 
 /**********************************************************************
- * Função		:	ADC_EnableDMA
+ * Funï¿½ï¿½o		:	ADC_EnableDMA
  *
- * Descrição	:   Habilita geração de gatilho do DMA quando conversão
+ * Descriï¿½ï¿½o	:   Habilita geraï¿½ï¿½o de gatilho do DMA quando conversï¿½o
  *                  do ADC estiver completa.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_EnableDMA(ADC_Type *base)
 {
@@ -417,16 +417,16 @@ static inline void ADC_EnableDMA(ADC_Type *base)
 }
 
 /**********************************************************************
- * Função		:	ADC_DisableDMA
+ * Funï¿½ï¿½o		:	ADC_DisableDMA
  *
- * Descrição	:   Desabilita geração de gatilho do DMA quando conversão
+ * Descriï¿½ï¿½o	:   Desabilita geraï¿½ï¿½o de gatilho do DMA quando conversï¿½o
  *                  do ADC estiver completa.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_DisableDMA(ADC_Type *base)
 {
@@ -436,18 +436,18 @@ static inline void ADC_DisableDMA(ADC_Type *base)
 }
 
 /**********************************************************************
- * Função		:	ADC_EnableHardwareTrigger
+ * Funï¿½ï¿½o		:	ADC_EnableHardwareTrigger
  *
- * Descrição	:   Habilita e seleciona fonte de disparo de inicio
- *                  de conversão no ADC por hardware.
+ * Descriï¿½ï¿½o	:   Habilita e seleciona fonte de disparo de inicio
+ *                  de conversï¿½o no ADC por hardware.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
- * 					src   - uma das possíveis fontes de conversão
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
+ * 					src   - uma das possï¿½veis fontes de conversï¿½o
  * 					        definido em tipo enumerado.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_EnableHardwareTrigger(ADC_Type *base, adcHardwareTriggerSrc_t src)
 {
@@ -460,16 +460,16 @@ static inline void ADC_EnableHardwareTrigger(ADC_Type *base, adcHardwareTriggerS
 }
 
 /**********************************************************************
- * Função		:	ADC_DisableHardwareTrigger
+ * Funï¿½ï¿½o		:	ADC_DisableHardwareTrigger
  *
- * Descrição	:   Habilita fonte de disparo de inicio
- *                  de conversão no ADC por hardware.
+ * Descriï¿½ï¿½o	:   Habilita fonte de disparo de inicio
+ *                  de conversï¿½o no ADC por hardware.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void ADC_DisableHardwareTrigger(ADC_Type *base)
 {
@@ -479,97 +479,97 @@ static inline void ADC_DisableHardwareTrigger(ADC_Type *base)
 }
 
 /**********************************************************************
- * Função		:	ADC_SetHardwareCompareConfig
+ * Funï¿½ï¿½o		:	ADC_SetHardwareCompareConfig
  *
- * Descrição	:   Define o modo de comparação de conversão por
+ * Descriï¿½ï¿½o	:   Define o modo de comparaï¿½ï¿½o de conversï¿½o por
  *                  hardware.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
  *                  hardwareCompareMode - um dos quatro modos de
- *                      comparação, definidos em tipo enumerado;
- *                  value1, value2 - os valores de comparação.
+ *                      comparaï¿½ï¿½o, definidos em tipo enumerado;
+ *                  value1, value2 - os valores de comparaï¿½ï¿½o.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Verificar o tipo adcHardwareCompareMode_t para
+ * Comentï¿½rios 	: 	Verificar o tipo adcHardwareCompareMode_t para
  *                  mais detalhes.
  * ********************************************************************/
 void ADC_SetHardwareCompareConfig(ADC_Type *base, adcHardwareCompareMode_t hardwareCompareMode, int16_t value1, int16_t value2);
 
 /**********************************************************************
- * Função		:	ADC_SetHardwareAverage
+ * Funï¿½ï¿½o		:	ADC_SetHardwareAverage
  *
- * Descrição	:   Define o modo de conversão por média de amostras.
+ * Descriï¿½ï¿½o	:   Define o modo de conversï¿½o por mï¿½dia de amostras.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
- *                  mode - quantidade de médias, definida por tipo
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
+ *                  mode - quantidade de mï¿½dias, definida por tipo
  *                         enumerado.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 void ADC_SetHardwareAverage(ADC_Type *base, adcHardwareAverageMode_t mode);
 
 /**********************************************************************
- * Função		:	ADC_GetStatusFlags
+ * Funï¿½ï¿½o		:	ADC_GetStatusFlags
  *
- * Descrição	:   Retorna a flag de status do ADC.
+ * Descriï¿½ï¿½o	:   Retorna a flag de status do ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   - ADC_ACTIVE_FLAG, se ADC está ativo;
- *                  - ADC_CALIBRATION_FAILED_FLAG, se calibração falhou.
+ * Saï¿½das		:   - ADC_ACTIVE_FLAG, se ADC estï¿½ ativo;
+ *                  - ADC_CALIBRATION_FAILED_FLAG, se calibraï¿½ï¿½o falhou.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 uint32_t ADC_GetStatusFlags(ADC_Type *base);
 
 /**********************************************************************
- * Função		:	ADC_ClearCalibStatusFlags
+ * Funï¿½ï¿½o		:	ADC_ClearCalibStatusFlags
  *
- * Descrição	:   Limpa a flag de status de calibração do ADC.
+ * Descriï¿½ï¿½o	:   Limpa a flag de status de calibraï¿½ï¿½o do ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC.
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 void ADC_ClearCalibStatusFlags(ADC_Type *base);
 
 /**********************************************************************
- * Função		:	ADC_SetChConfig
+ * Funï¿½ï¿½o		:	ADC_SetChConfig
  *
- * Descrição	:   Configura um canal do ADC.
+ * Descriï¿½ï¿½o	:   Configura um canal do ADC.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
- *                  channelGroup - número do grupo do canal: 0 (A) ou 1 (B);
- *                  channelNumber - número do canal;
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
+ *                  channelGroup - nï¿½mero do grupo do canal: 0 (A) ou 1 (B);
+ *                  channelNumber - nï¿½mero do canal;
  *                  enableInterruptOnConversionCompleted - true se deve ser
- *                     gerada interrupção no fim da conversão, ou false
- *                     caso contrário.
+ *                     gerada interrupï¿½ï¿½o no fim da conversï¿½o, ou false
+ *                     caso contrï¿½rio.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	O grupo do canal A é usado para conversões disparadas
+ * Comentï¿½rios 	: 	O grupo do canal A ï¿½ usado para conversï¿½es disparadas
  *                  por software, enquando o grupo B pode ser usado tanto
  *                  para disparo de software, quanto de hardware.
  * ********************************************************************/
 void ADC_SetChConfig(ADC_Type *base, uint32_t channelGroup, uint32_t channelNumber, bool enableInterruptOnConversionCompleted);
 
 /**********************************************************************
- * Função		:	ADC_GetChConversionValue
+ * Funï¿½ï¿½o		:	ADC_GetChConversionValue
  *
- * Descrição	:   Retorna o valor de conversão do ADC pelo canal atribuído
+ * Descriï¿½ï¿½o	:   Retorna o valor de conversï¿½o do ADC pelo canal atribuï¿½do
  *                  ao grupo A ou B.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
  *                   channelGroup - grupo A (0) ou B (1).
  *
- * Saídas		:   Valor da conversão.
+ * Saï¿½das		:   Valor da conversï¿½o.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline uint32_t ADC_GetChConversionValue(ADC_Type *base, uint32_t channelGroup)
 {
@@ -580,18 +580,18 @@ static inline uint32_t ADC_GetChConversionValue(ADC_Type *base, uint32_t channel
 }
 
 /**********************************************************************
- * Função		:	ADC_IsConversionDone
+ * Funï¿½ï¿½o		:	ADC_IsConversionDone
  *
- * Descrição	:   Retorna verdadeiro se conversão do canal atribuído
- *                  ao grupo A ou B do ADC está pronto.
+ * Descriï¿½ï¿½o	:   Retorna verdadeiro se conversï¿½o do canal atribuï¿½do
+ *                  ao grupo A ou B do ADC estï¿½ pronto.
  *
- * Entradas		:   *base - registrador base do periférico ADC;
+ * Entradas		:   *base - registrador base do perifï¿½rico ADC;
  *                   channelGroup - grupo A (0) ou B (1).
  *
- * Saídas		:   true, se conversão finalizada;
- *                  false, caso contrário.
+ * Saï¿½das		:   true, se conversï¿½o finalizada;
+ *                  false, caso contrï¿½rio.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 bool ADC_IsConversionDone(ADC_Type *base, uint32_t channelGroup);
 

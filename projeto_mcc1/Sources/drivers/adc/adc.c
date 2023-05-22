@@ -66,7 +66,7 @@ void ADC_SetLongSampleTimeMode( ADC_Type *base, adcLongSampleMode_t mode )
 {
 	assert(base);
 
-	base->CFG1 &= ~ADC_CFG1_ADLSMP_MASK; /*Limpa configurações anteriores*/
+	base->CFG1 &= ~ADC_CFG1_ADLSMP_MASK; /*Limpa configuraï¿½ï¿½es anteriores*/
 	if ( ADC_LONG_SAMPLE_DISABLE != mode )
 	{
 		base->CFG1 |= ADC_CFG1_ADLSMP(1U);
@@ -80,7 +80,7 @@ uint8_t ADC_DoAutoCalibration(ADC_Type *base)
 {
     bool bHWTrigger = false;
     volatile uint32_t tmp32; /* 'volatile' here is for the dummy read of ADCx_R[0] register. */
-    uint8_t status = STATUS_SUCCESS;
+    uint8_t status = GENERAL_STATUS_SUCCESS;
 
     /* The calibration would be failed when in hardware mode.
      * Remember the hardware trigger state here and restore it later if the hardware trigger is enabled.*/
@@ -98,7 +98,7 @@ uint8_t ADC_DoAutoCalibration(ADC_Type *base)
         /* Check the CALF when the calibration is active. */
         if (0U != (ADC_CALIBRATION_FAILED_FLAG & ADC_GetStatusFlags(base)))
         {
-            status = STATUS_FAIL;
+            status = GENERAL_STATUS_FAIL;
             break;
         }
     }
@@ -112,9 +112,9 @@ uint8_t ADC_DoAutoCalibration(ADC_Type *base)
     /* Check the CALF at the end of calibration. */
     if (0U != (ADC_CALIBRATION_FAILED_FLAG & ADC_GetStatusFlags(base)))
     {
-        status = STATUS_FAIL;
+        status = GENERAL_STATUS_FAIL;
     }
-    if (STATUS_SUCCESS != status) /* Check if the calibration process is succeed. */
+    if (GENERAL_STATUS_SUCCESS != status) /* Check if the calibration process is succeed. */
     {
         return status;
     }
@@ -124,7 +124,7 @@ uint8_t ADC_DoAutoCalibration(ADC_Type *base)
     tmp32 = 0x8000U | (tmp32 >> 1U);
     base->PG = tmp32;
 
-    return STATUS_SUCCESS;
+    return GENERAL_STATUS_SUCCESS;
 }
 
 void ADC_SetHardwareCompareConfig(ADC_Type *base, adcHardwareCompareMode_t hardwareCompareMode, int16_t value1, int16_t value2)

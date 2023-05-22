@@ -816,29 +816,29 @@
  118              	.LFB39:
  119              		.file 2 "../Sources/drivers/port/port.h"
    1:../Sources/drivers/port/port.h **** /***************************************************************************************
-   2:../Sources/drivers/port/port.h ****  * Módulo      : port.h
-   3:../Sources/drivers/port/port.h ****  * Revisão     : 1.0
+   2:../Sources/drivers/port/port.h ****  * Mï¿½dulo      : port.h
+   3:../Sources/drivers/port/port.h ****  * Revisï¿½o     : 1.0
    4:../Sources/drivers/port/port.h ****  * Data        : 09/02/2023
-   5:../Sources/drivers/port/port.h ****  * Descrição   : Arquivo com implementações dos Módulos PORT da Familia Kinetis KL05.
-   6:../Sources/drivers/port/port.h ****  * Comentários : Nenhum.
+   5:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o   : Arquivo com implementaï¿½ï¿½es dos Mï¿½dulos PORT da Familia Kinetis KL05.
+   6:../Sources/drivers/port/port.h ****  * Comentï¿½rios : Nenhum.
    7:../Sources/drivers/port/port.h ****  * Autor(es)   : Matheus Leitzke Pinto
    8:../Sources/drivers/port/port.h ****  ***************************************************************************************/
    9:../Sources/drivers/port/port.h **** 
   10:../Sources/drivers/port/port.h **** #ifndef PORT_DRV_H_
   11:../Sources/drivers/port/port.h **** #define PORT_DRV_H_
   12:../Sources/drivers/port/port.h **** 
-  13:../Sources/drivers/port/port.h **** /*ARQUIVOS DE CABEÇALHO*/
+  13:../Sources/drivers/port/port.h **** /*ARQUIVOS DE CABEï¿½ALHO*/
   14:../Sources/drivers/port/port.h **** /*=======================================================================================*/
   15:../Sources/drivers/port/port.h **** 
   16:../Sources/drivers/port/port.h **** #include "drivers/common_driver.h"
   17:../Sources/drivers/port/port.h **** 
-  18:../Sources/drivers/port/port.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  18:../Sources/drivers/port/port.h **** /*FIM: ARQUIVOS DE CABEï¿½ALHO*/
   19:../Sources/drivers/port/port.h **** /*=======================================================================================*/
   20:../Sources/drivers/port/port.h **** 
   21:../Sources/drivers/port/port.h **** /*TIPOS ENUMERADOS*/
   22:../Sources/drivers/port/port.h **** /*=======================================================================================*/
   23:../Sources/drivers/port/port.h **** 
-  24:../Sources/drivers/port/port.h **** /*Possíveis alternativas de multiplexação dos pinos das PORTs*/
+  24:../Sources/drivers/port/port.h **** /*Possï¿½veis alternativas de multiplexaï¿½ï¿½o dos pinos das PORTs*/
   25:../Sources/drivers/port/port.h **** typedef enum{
   26:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT0 		= 0x0u,
   27:../Sources/drivers/port/port.h **** 	PORT_MUX_ALT1 		= 0x1u,
@@ -847,7 +847,7 @@
   30:../Sources/drivers/port/port.h **** 	PORT_MUX_DISABLE 	= PORT_MUX_ALT0
   31:../Sources/drivers/port/port.h **** }portMux_t;
   32:../Sources/drivers/port/port.h **** 
-  33:../Sources/drivers/port/port.h **** /*Possíveis alternativas de interrupção dos pinos das PORTs*/
+  33:../Sources/drivers/port/port.h **** /*Possï¿½veis alternativas de interrupï¿½ï¿½o dos pinos das PORTs*/
   34:../Sources/drivers/port/port.h **** typedef enum{
   35:../Sources/drivers/port/port.h **** 	PORT_IRQ_DISABLE 		 	 = 0x0U,
   36:../Sources/drivers/port/port.h **** 	PORT_IRQ_DMA_ON_RISING_EDGE  = 0x1U,
@@ -863,59 +863,59 @@
   46:../Sources/drivers/port/port.h **** /*FIM: TIPOS ENUMERADOS*/
   47:../Sources/drivers/port/port.h **** /*=======================================================================================*/
   48:../Sources/drivers/port/port.h **** 
-  49:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  49:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNï¿½ï¿½ES Pï¿½BLICAS*/
   50:../Sources/drivers/port/port.h **** /*=======================================================================================*/
   51:../Sources/drivers/port/port.h **** 
   52:../Sources/drivers/port/port.h **** /**********************************************************************
-  53:../Sources/drivers/port/port.h ****  * Função		:	PORT_IRQEnable
+  53:../Sources/drivers/port/port.h ****  * Funï¿½ï¿½o		:	PORT_IRQEnable
   54:../Sources/drivers/port/port.h ****  *
-  55:../Sources/drivers/port/port.h ****  * Descrição	:   Habilita a geração de interrupção pelo pino de
-  56:../Sources/drivers/port/port.h ****  * 					um módulo PORT.
+  55:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o	:   Habilita a geraï¿½ï¿½o de interrupï¿½ï¿½o pelo pino de
+  56:../Sources/drivers/port/port.h ****  * 					um mï¿½dulo PORT.
   57:../Sources/drivers/port/port.h ****  *
-  58:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
-  59:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
-  60:../Sources/drivers/port/port.h ****  * 					irq - uma das alternativas de interrupção do pino.
+  58:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do perifï¿½rico PORT.
+  59:../Sources/drivers/port/port.h ****  *                  pin	- numeraï¿½ï¿½o do pino;
+  60:../Sources/drivers/port/port.h ****  * 					irq - uma das alternativas de interrupï¿½ï¿½o do pino.
   61:../Sources/drivers/port/port.h ****  *
-  62:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  62:../Sources/drivers/port/port.h ****  * Saï¿½das		:  Nenhuma.
   63:../Sources/drivers/port/port.h ****  *
-  64:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  64:../Sources/drivers/port/port.h ****  * Comentï¿½rios 	:  Nenhum.
   65:../Sources/drivers/port/port.h ****  * ********************************************************************/
   66:../Sources/drivers/port/port.h **** void PORT_IRQEnable(PORT_Type *base, uint8_t pin, portIRQ_t irq);
   67:../Sources/drivers/port/port.h **** 
   68:../Sources/drivers/port/port.h **** /**********************************************************************
-  69:../Sources/drivers/port/port.h ****  * Função		:	PORT_GetIRQFlag
+  69:../Sources/drivers/port/port.h ****  * Funï¿½ï¿½o		:	PORT_GetIRQFlag
   70:../Sources/drivers/port/port.h ****  *
-  71:../Sources/drivers/port/port.h ****  * Descrição	:   Retorna se a flag de interrupção de pino do PORT foi setada.
+  71:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o	:   Retorna se a flag de interrupï¿½ï¿½o de pino do PORT foi setada.
   72:../Sources/drivers/port/port.h ****  *
-  73:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
-  74:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  73:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do perifï¿½rico PORT.
+  74:../Sources/drivers/port/port.h ****  *                  pin	- numeraï¿½ï¿½o do pino;
   75:../Sources/drivers/port/port.h ****  *
-  76:../Sources/drivers/port/port.h ****  * Saídas		:  0 - se flag não setada;
+  76:../Sources/drivers/port/port.h ****  * Saï¿½das		:  0 - se flag nï¿½o setada;
   77:../Sources/drivers/port/port.h ****  *                 !0 - se flag setada.
   78:../Sources/drivers/port/port.h ****  *
-  79:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  79:../Sources/drivers/port/port.h ****  * Comentï¿½rios 	:  Nenhum.
   80:../Sources/drivers/port/port.h ****  * ********************************************************************/
   81:../Sources/drivers/port/port.h **** uint8_t PORT_GetIRQFlag(PORT_Type *base, uint8_t pin);
   82:../Sources/drivers/port/port.h **** 
   83:../Sources/drivers/port/port.h **** /**********************************************************************
-  84:../Sources/drivers/port/port.h ****  * Função		:	PORT_ClearIRQFlag
+  84:../Sources/drivers/port/port.h ****  * Funï¿½ï¿½o		:	PORT_ClearIRQFlag
   85:../Sources/drivers/port/port.h ****  *
-  86:../Sources/drivers/port/port.h ****  * Descrição	:   Limpa flag de interrupção do pino de PORT.
+  86:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o	:   Limpa flag de interrupï¿½ï¿½o do pino de PORT.
   87:../Sources/drivers/port/port.h ****  *
-  88:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
-  89:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
+  88:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do perifï¿½rico PORT.
+  89:../Sources/drivers/port/port.h ****  *                  pin	- numeraï¿½ï¿½o do pino;
   90:../Sources/drivers/port/port.h ****  *
-  91:../Sources/drivers/port/port.h ****  * Saídas		:  Nenhuma.
+  91:../Sources/drivers/port/port.h ****  * Saï¿½das		:  Nenhuma.
   92:../Sources/drivers/port/port.h ****  *
-  93:../Sources/drivers/port/port.h ****  * Comentários 	:  Nenhum.
+  93:../Sources/drivers/port/port.h ****  * Comentï¿½rios 	:  Nenhum.
   94:../Sources/drivers/port/port.h ****  * ********************************************************************/
   95:../Sources/drivers/port/port.h **** void PORT_ClearIRQFlag(PORT_Type *base, uint8_t pin);
   96:../Sources/drivers/port/port.h **** 
-  97:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+  97:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNï¿½ï¿½ES Pï¿½BLICAS*/
   98:../Sources/drivers/port/port.h **** /*=======================================================================================*/
   99:../Sources/drivers/port/port.h **** 
  100:../Sources/drivers/port/port.h **** 
- 101:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNÇÕES INLINE*/
+ 101:../Sources/drivers/port/port.h **** /*PROTOTIPOS - FUNï¿½ï¿½ES INLINE*/
  102:../Sources/drivers/port/port.h **** /*=======================================================================================*/
  103:../Sources/drivers/port/port.h **** 
  104:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base);
@@ -923,22 +923,22 @@
  106:../Sources/drivers/port/port.h **** static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin);
  107:../Sources/drivers/port/port.h **** static inline void PORT_HighStrengthEnable(PORT_Type *base, uint8_t pin);
  108:../Sources/drivers/port/port.h **** 
- 109:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNÇÕES INLINE*/
+ 109:../Sources/drivers/port/port.h **** /*FIM: PROTOTIPOS - FUNï¿½ï¿½ES INLINE*/
  110:../Sources/drivers/port/port.h **** /*=======================================================================================*/
  111:../Sources/drivers/port/port.h **** 
- 112:../Sources/drivers/port/port.h **** /*FUNÇÕES INLINE*/
+ 112:../Sources/drivers/port/port.h **** /*FUNï¿½ï¿½ES INLINE*/
  113:../Sources/drivers/port/port.h **** /*=======================================================================================*/
  114:../Sources/drivers/port/port.h **** 
  115:../Sources/drivers/port/port.h **** /**********************************************************************
- 116:../Sources/drivers/port/port.h ****  * Função		:	PORT_Init
+ 116:../Sources/drivers/port/port.h ****  * Funï¿½ï¿½o		:	PORT_Init
  117:../Sources/drivers/port/port.h ****  *
- 118:../Sources/drivers/port/port.h ****  * Descrição	:   Deve ser chamado antes de utilizar um módulo PORT.
+ 118:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o	:   Deve ser chamado antes de utilizar um mï¿½dulo PORT.
  119:../Sources/drivers/port/port.h ****  *
- 120:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
+ 120:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do perifï¿½rico PORT.
  121:../Sources/drivers/port/port.h ****  *
- 122:../Sources/drivers/port/port.h ****  * Saídas 		:   Nenhuma.
+ 122:../Sources/drivers/port/port.h ****  * Saï¿½das 		:   Nenhuma.
  123:../Sources/drivers/port/port.h ****  *
- 124:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 124:../Sources/drivers/port/port.h ****  * Comentï¿½rios 	: 	Nenhum.
  125:../Sources/drivers/port/port.h ****  * ********************************************************************/
  126:../Sources/drivers/port/port.h **** static inline void PORT_Init(PORT_Type* base)
  127:../Sources/drivers/port/port.h **** {
@@ -974,7 +974,7 @@
  146 0020 9A42     		cmp	r2, r3
  147 0022 09D1     		bne	.L9
  131:../Sources/drivers/port/port.h **** 	{
- 132:../Sources/drivers/port/port.h **** 		   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK; /* Ativa o clock do periférico da porta A*/
+ 132:../Sources/drivers/port/port.h **** 		   SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK; /* Ativa o clock do perifï¿½rico da porta A*/
  148              		.loc 2 132 0
  149 0024 174A     		ldr	r2, .L11+16
  150 0026 1749     		ldr	r1, .L11+16
@@ -997,7 +997,7 @@
  163 003c 9A42     		cmp	r2, r3
  164 003e 15D1     		bne	.L7
  137:../Sources/drivers/port/port.h **** 		{
- 138:../Sources/drivers/port/port.h **** 			SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; /* Ativa o clock do periférico da porta B*/
+ 138:../Sources/drivers/port/port.h **** 			SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK; /* Ativa o clock do perifï¿½rico da porta B*/
  165              		.loc 2 138 0
  166 0040 104A     		ldr	r2, .L11+16
  167 0042 1049     		ldr	r1, .L11+16
@@ -1009,7 +1009,7 @@
  173 004e 0E4B     		ldr	r3, .L11+20
  174 0050 D150     		str	r1, [r2, r3]
  139:../Sources/drivers/port/port.h **** 			/*Desabilita NMI em PTB5 e habilita como GPIO*/
- 140:../Sources/drivers/port/port.h **** 			base->PCR[5] &= ~PORT_PCR_MUX_MASK; /*Limpa configurações anteriores*/
+ 140:../Sources/drivers/port/port.h **** 			base->PCR[5] &= ~PORT_PCR_MUX_MASK; /*Limpa configuraï¿½ï¿½es anteriores*/
  175              		.loc 2 140 0
  176 0052 7B68     		ldr	r3, [r7, #4]
  177 0054 5A69     		ldr	r2, [r3, #20]
@@ -1063,16 +1063,16 @@
  219              	PORT_PullEnable:
  220              	.LFB40:
  145:../Sources/drivers/port/port.h **** /**********************************************************************
- 146:../Sources/drivers/port/port.h ****  * Função		:	PORT_PullEnable
+ 146:../Sources/drivers/port/port.h ****  * Funï¿½ï¿½o		:	PORT_PullEnable
  147:../Sources/drivers/port/port.h ****  *
- 148:../Sources/drivers/port/port.h ****  * Descrição	:   Habilita pullUp no pino do módulo PORT.
+ 148:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o	:   Habilita pullUp no pino do mï¿½dulo PORT.
  149:../Sources/drivers/port/port.h ****  *
- 150:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
- 151:../Sources/drivers/port/port.h ****  *                  pin	  - numeração do pino;
+ 150:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do perifï¿½rico PORT.
+ 151:../Sources/drivers/port/port.h ****  *                  pin	  - numeraï¿½ï¿½o do pino;
  152:../Sources/drivers/port/port.h ****  *
- 153:../Sources/drivers/port/port.h ****  * Saídas		:   Nenhuma.
+ 153:../Sources/drivers/port/port.h ****  * Saï¿½das		:   Nenhuma.
  154:../Sources/drivers/port/port.h ****  *
- 155:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 155:../Sources/drivers/port/port.h ****  * Comentï¿½rios 	: 	Nenhum.
  156:../Sources/drivers/port/port.h ****  * ********************************************************************/
  157:../Sources/drivers/port/port.h **** static inline void PORT_PullEnable(PORT_Type *base, uint8_t pin)
  158:../Sources/drivers/port/port.h **** {
@@ -1155,16 +1155,16 @@
  294              	.LFB42:
  164:../Sources/drivers/port/port.h **** 
  165:../Sources/drivers/port/port.h **** /**********************************************************************
- 166:../Sources/drivers/port/port.h ****  * Função		:	PORT_HighStrengthEnable
+ 166:../Sources/drivers/port/port.h ****  * Funï¿½ï¿½o		:	PORT_HighStrengthEnable
  167:../Sources/drivers/port/port.h ****  *
- 168:../Sources/drivers/port/port.h ****  * Descrição	:   Habilita a intensidade da corrente do pino como alta.
+ 168:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o	:   Habilita a intensidade da corrente do pino como alta.
  169:../Sources/drivers/port/port.h ****  *
- 170:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
- 171:../Sources/drivers/port/port.h ****  *                  pin	  - numeração do pino;
+ 170:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do perifï¿½rico PORT.
+ 171:../Sources/drivers/port/port.h ****  *                  pin	  - numeraï¿½ï¿½o do pino;
  172:../Sources/drivers/port/port.h ****  *
- 173:../Sources/drivers/port/port.h ****  * Saídas		:   Nenhuma.
+ 173:../Sources/drivers/port/port.h ****  * Saï¿½das		:   Nenhuma.
  174:../Sources/drivers/port/port.h ****  *
- 175:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 175:../Sources/drivers/port/port.h ****  * Comentï¿½rios 	: 	Nenhum.
  176:../Sources/drivers/port/port.h ****  * ********************************************************************/
  177:../Sources/drivers/port/port.h **** static inline void PORT_HighStrengthEnable(PORT_Type *base, uint8_t pin)
  178:../Sources/drivers/port/port.h **** {
@@ -1175,17 +1175,17 @@
  183:../Sources/drivers/port/port.h **** }
  184:../Sources/drivers/port/port.h **** 
  185:../Sources/drivers/port/port.h **** /**********************************************************************
- 186:../Sources/drivers/port/port.h ****  * Função		:	PORTB_SetMux
+ 186:../Sources/drivers/port/port.h ****  * Funï¿½ï¿½o		:	PORTB_SetMux
  187:../Sources/drivers/port/port.h ****  *
- 188:../Sources/drivers/port/port.h ****  * Descrição	:   Configura a multiplexação no pino do módulo PORTB.
+ 188:../Sources/drivers/port/port.h ****  * Descriï¿½ï¿½o	:   Configura a multiplexaï¿½ï¿½o no pino do mï¿½dulo PORTB.
  189:../Sources/drivers/port/port.h ****  *
- 190:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do periférico PORT.
- 191:../Sources/drivers/port/port.h ****  *                  pin	- numeração do pino;
- 192:../Sources/drivers/port/port.h ****  * 					mux - uma das alternativas de multiplexação do pino.
+ 190:../Sources/drivers/port/port.h ****  * Entradas		:   *base - registrador base do perifï¿½rico PORT.
+ 191:../Sources/drivers/port/port.h ****  *                  pin	- numeraï¿½ï¿½o do pino;
+ 192:../Sources/drivers/port/port.h ****  * 					mux - uma das alternativas de multiplexaï¿½ï¿½o do pino.
  193:../Sources/drivers/port/port.h ****  *
- 194:../Sources/drivers/port/port.h ****  * Saídas		:   Nenhuma.
+ 194:../Sources/drivers/port/port.h ****  * Saï¿½das		:   Nenhuma.
  195:../Sources/drivers/port/port.h ****  *
- 196:../Sources/drivers/port/port.h ****  * Comentários 	: 	Nenhum.
+ 196:../Sources/drivers/port/port.h ****  * Comentï¿½rios 	: 	Nenhum.
  197:../Sources/drivers/port/port.h ****  * ********************************************************************/
  198:../Sources/drivers/port/port.h **** static inline void PORT_SetMux(PORT_Type *base, uint8_t pin, portMux_t mux)
  199:../Sources/drivers/port/port.h **** {
@@ -1232,7 +1232,7 @@
  333 0036 FFF7FEFF 		bl	__assert_func
  334              	.L20:
  202:../Sources/drivers/port/port.h **** 
- 203:../Sources/drivers/port/port.h **** 	base->PCR[pin] &= ~PORT_PCR_MUX_MASK; /*Limpa configurações anteriores*/
+ 203:../Sources/drivers/port/port.h **** 	base->PCR[pin] &= ~PORT_PCR_MUX_MASK; /*Limpa configuraï¿½ï¿½es anteriores*/
  335              		.loc 2 203 0 is_stmt 1
  336 003a FB1C     		add	r3, r7, #3
  337 003c 1A78     		ldrb	r2, [r3]
@@ -1297,15 +1297,15 @@
  392              	.LFB50:
  393              		.file 3 "../Sources/drivers/tpm/tpm.h"
    1:../Sources/drivers/tpm/tpm.h **** /***************************************************************************************
-   2:../Sources/drivers/tpm/tpm.h ****  * Módulo      : tpm.h
+   2:../Sources/drivers/tpm/tpm.h ****  * Mï¿½dulo      : tpm.h
    3:../Sources/drivers/tpm/tpm.h ****  *
-   4:../Sources/drivers/tpm/tpm.h ****  * Revisão     : 1.0
+   4:../Sources/drivers/tpm/tpm.h ****  * Revisï¿½o     : 1.0
    5:../Sources/drivers/tpm/tpm.h ****  *
    6:../Sources/drivers/tpm/tpm.h ****  * Data        : 16/02/2022
    7:../Sources/drivers/tpm/tpm.h ****  *
-   8:../Sources/drivers/tpm/tpm.h ****  * Descrição   : Arquivo com implementações dos Módulos Timer/PWM (TPM) da Familia Kinetis KL05.
+   8:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o   : Arquivo com implementaï¿½ï¿½es dos Mï¿½dulos Timer/PWM (TPM) da Familia Kinetis KL05.
    9:../Sources/drivers/tpm/tpm.h ****  *
-  10:../Sources/drivers/tpm/tpm.h ****  * Comentários : Nenhum.
+  10:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios : Nenhum.
   11:../Sources/drivers/tpm/tpm.h ****  *
   12:../Sources/drivers/tpm/tpm.h ****  * Autor(es)   : Matheus Leitzke Pinto
   13:../Sources/drivers/tpm/tpm.h ****  ***************************************************************************************/
@@ -1313,50 +1313,50 @@
   15:../Sources/drivers/tpm/tpm.h **** #ifndef TPM_DRV_H_
   16:../Sources/drivers/tpm/tpm.h **** #define TPM_DRV_H_
   17:../Sources/drivers/tpm/tpm.h **** 
-  18:../Sources/drivers/tpm/tpm.h **** /*ARQUIVOS DE CABEÇALHO*/
+  18:../Sources/drivers/tpm/tpm.h **** /*ARQUIVOS DE CABEï¿½ALHO*/
   19:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
   20:../Sources/drivers/tpm/tpm.h **** 
   21:../Sources/drivers/tpm/tpm.h **** #include "drivers/common_driver.h"
   22:../Sources/drivers/tpm/tpm.h **** 
-  23:../Sources/drivers/tpm/tpm.h **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  23:../Sources/drivers/tpm/tpm.h **** /*FIM: ARQUIVOS DE CABEï¿½ALHO*/
   24:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
   25:../Sources/drivers/tpm/tpm.h **** 
   26:../Sources/drivers/tpm/tpm.h **** /*TIPOS ENUMERADOS*/
   27:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
   28:../Sources/drivers/tpm/tpm.h **** 
-  29:../Sources/drivers/tpm/tpm.h **** /*Possíveis modos de operação dos módulos TPM*/
+  29:../Sources/drivers/tpm/tpm.h **** /*Possï¿½veis modos de operaï¿½ï¿½o dos mï¿½dulos TPM*/
   30:../Sources/drivers/tpm/tpm.h **** typedef enum{
-  31:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_COMPARE_MODE, 		/* Modo comparador de saída*/
+  31:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_COMPARE_MODE, 		/* Modo comparador de saï¿½da*/
   32:../Sources/drivers/tpm/tpm.h **** 	TPM_IN_COMPARE_MODE	,		/* Modo captura de entrada*/
   33:../Sources/drivers/tpm/tpm.h **** 	TPM_EDGE_PWM_MODE	,		/* Modo PWM alinhado a borda*/
   34:../Sources/drivers/tpm/tpm.h **** 	TPM_CENTER_PWM_MODE			/* Modo PWM alinhado ao centro */
   35:../Sources/drivers/tpm/tpm.h **** }tpmChMode_t;
   36:../Sources/drivers/tpm/tpm.h **** 
-  37:../Sources/drivers/tpm/tpm.h **** /*Possíveis configurações do modos de operação dos módulos TPM*/
+  37:../Sources/drivers/tpm/tpm.h **** /*Possï¿½veis configuraï¿½ï¿½es do modos de operaï¿½ï¿½o dos mï¿½dulos TPM*/
   38:../Sources/drivers/tpm/tpm.h **** typedef enum{
-  39:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_TOGGLE_GONFIG		, 	/*Modo comparação de saída: inverte lógica de saída*/
-  40:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_CLEAR_GONFIG		,  	/*Modo comparação de saída: limpa saída*/
-  41:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_SET_GONFIG			,  	/*Modo comparação de saída: seta saída*/
+  39:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_TOGGLE_GONFIG		, 	/*Modo comparaï¿½ï¿½o de saï¿½da: inverte lï¿½gica de saï¿½da*/
+  40:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_CLEAR_GONFIG		,  	/*Modo comparaï¿½ï¿½o de saï¿½da: limpa saï¿½da*/
+  41:../Sources/drivers/tpm/tpm.h **** 	TPM_OUT_SET_GONFIG			,  	/*Modo comparaï¿½ï¿½o de saï¿½da: seta saï¿½da*/
   42:../Sources/drivers/tpm/tpm.h **** 	TPM_IN_RISING_EDGE_CONFIG	, 	/*Modo captura de entrada: borda de subida*/
   43:../Sources/drivers/tpm/tpm.h **** 	TPM_IN_FALLING_EDGE_CONFIG	, 	/*Modo captura de entrada: borda de descida*/
   44:../Sources/drivers/tpm/tpm.h **** 	TPM_IN_BOTH_EDGE_CONFIG		, 	/*Modo captura de entrada: borda de subida/descida*/
-  45:../Sources/drivers/tpm/tpm.h **** 	TPM_PWM_HIGH_TRUE_CONFIG	,	/*Modos PWM: Pulso é o nível*/
-  46:../Sources/drivers/tpm/tpm.h **** 	TPM_PWM_HIGH_LOW_CONFIG		,	/*Modos PWM: Pulso é o baixo*/
+  45:../Sources/drivers/tpm/tpm.h **** 	TPM_PWM_HIGH_TRUE_CONFIG	,	/*Modos PWM: Pulso ï¿½ o nï¿½vel*/
+  46:../Sources/drivers/tpm/tpm.h **** 	TPM_PWM_HIGH_LOW_CONFIG		,	/*Modos PWM: Pulso ï¿½ o baixo*/
   47:../Sources/drivers/tpm/tpm.h **** }tpmChConfig_t;
   48:../Sources/drivers/tpm/tpm.h **** 
-  49:../Sources/drivers/tpm/tpm.h **** /*Possíveis valores de divisões do prescaler dos módulos TPM*/
+  49:../Sources/drivers/tpm/tpm.h **** /*Possï¿½veis valores de divisï¿½es do prescaler dos mï¿½dulos TPM*/
   50:../Sources/drivers/tpm/tpm.h **** typedef enum{
-  51:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_1		=	0x0, 	/*Prescaler do módulo TPM divide por 0*/
-  52:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_2		=	0x1,  	/*Prescaler do módulo TPM divide por 1*/
-  53:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_4		=	0x2,  	/*Prescaler do módulo TPM divide por 2*/
-  54:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_8		=	0x3,  	/*Prescaler do módulo TPM divide por 3*/
-  55:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_16	=	0x4,  	/*Prescaler do módulo TPM divide por 4*/
-  56:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_32	=	0x5,  	/*Prescaler do módulo TPM divide por 5*/
-  57:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_64	=	0x6,  	/*Prescaler do módulo TPM divide por 6*/
-  58:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_128	=	0x7,  	/*Prescaler do módulo TPM divide por 7*/
+  51:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_1		=	0x0, 	/*Prescaler do mï¿½dulo TPM divide por 0*/
+  52:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_2		=	0x1,  	/*Prescaler do mï¿½dulo TPM divide por 1*/
+  53:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_4		=	0x2,  	/*Prescaler do mï¿½dulo TPM divide por 2*/
+  54:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_8		=	0x3,  	/*Prescaler do mï¿½dulo TPM divide por 3*/
+  55:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_16	=	0x4,  	/*Prescaler do mï¿½dulo TPM divide por 4*/
+  56:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_32	=	0x5,  	/*Prescaler do mï¿½dulo TPM divide por 5*/
+  57:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_64	=	0x6,  	/*Prescaler do mï¿½dulo TPM divide por 6*/
+  58:../Sources/drivers/tpm/tpm.h **** 	TPM_PRESCALER_DIV_128	=	0x7,  	/*Prescaler do mï¿½dulo TPM divide por 7*/
   59:../Sources/drivers/tpm/tpm.h **** }tpmPrescalerValues_t;
   60:../Sources/drivers/tpm/tpm.h **** 
-  61:../Sources/drivers/tpm/tpm.h **** /*Possíveis fontes de clock*/
+  61:../Sources/drivers/tpm/tpm.h **** /*Possï¿½veis fontes de clock*/
   62:../Sources/drivers/tpm/tpm.h **** typedef enum{
   63:../Sources/drivers/tpm/tpm.h **** 	TPM_CNT_CLOCK_DISABLE = 0U,
   64:../Sources/drivers/tpm/tpm.h **** 	TPM_CNT_CLOCK_FLL = 1U,
@@ -1367,7 +1367,7 @@
   69:../Sources/drivers/tpm/tpm.h **** /*FIM: TIPOS ENUMERADOS*/
   70:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
   71:../Sources/drivers/tpm/tpm.h **** 
-  72:../Sources/drivers/tpm/tpm.h **** /*PROTÓTIPOS - FUNÇÕES INLINE*/
+  72:../Sources/drivers/tpm/tpm.h **** /*PROTï¿½TIPOS - FUNï¿½ï¿½ES INLINE*/
   73:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
   74:../Sources/drivers/tpm/tpm.h **** 
   75:../Sources/drivers/tpm/tpm.h **** static inline void TPM_InitCounter(TPM_Type *base);
@@ -1378,81 +1378,81 @@
   80:../Sources/drivers/tpm/tpm.h **** static inline void TPM_ClearIRQFlag(TPM_Type *base);
   81:../Sources/drivers/tpm/tpm.h **** static inline void TPM_SetModulo(TPM_Type *base, uint16_t modulo);
   82:../Sources/drivers/tpm/tpm.h **** 
-  83:../Sources/drivers/tpm/tpm.h **** /*FIM: PROTÓTIPOS - FUNÇÕES INLINE*/
+  83:../Sources/drivers/tpm/tpm.h **** /*FIM: PROTï¿½TIPOS - FUNï¿½ï¿½ES INLINE*/
   84:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
   85:../Sources/drivers/tpm/tpm.h **** 
-  86:../Sources/drivers/tpm/tpm.h **** /*PROTÓTIPOS - FUNÇÕES PÚBLICAS*/
+  86:../Sources/drivers/tpm/tpm.h **** /*PROTï¿½TIPOS - FUNï¿½ï¿½ES Pï¿½BLICAS*/
   87:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
   88:../Sources/drivers/tpm/tpm.h **** 
   89:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
-  90:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_SetCounterClkSrc
+  90:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_SetCounterClkSrc
   91:../Sources/drivers/tpm/tpm.h ****  *
-  92:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Define a fonte de clock utilizada pelo contador.
+  92:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Define a fonte de clock utilizada pelo contador.
   93:../Sources/drivers/tpm/tpm.h ****  *
-  94:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM;
+  94:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM;
   95:../Sources/drivers/tpm/tpm.h ****  *                  src   - tipo enumerado que define a fonte de clock.
   96:../Sources/drivers/tpm/tpm.h ****  *
-  97:../Sources/drivers/tpm/tpm.h ****  * Saídas 		:   STATUS_SUCCESS, se configuração ocorreu corretamente;
-  98:../Sources/drivers/tpm/tpm.h ****  *                  STATUS_FAIL, caso contrário.
+  97:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das 		: GENERAL_STATUS_SUCCESSSS, se configuraï¿½ï¿½o ocorreu corretamente;
+  98:../Sources/drivers/tpm/tpm.h ****  *                  GENERAL_STATUS_FAIL, caso contrï¿½rio.
   99:../Sources/drivers/tpm/tpm.h ****  *
- 100:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Pode ser chamada após a inicialização (TPM_Init).
- 101:../Sources/drivers/tpm/tpm.h ****  *                  Porém, contador vai iniciar contagem apenas quando
- 102:../Sources/drivers/tpm/tpm.h ****  *                  essa função for chamada.
+ 100:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Pode ser chamada apï¿½s a inicializaï¿½ï¿½o (TPM_Init).
+ 101:../Sources/drivers/tpm/tpm.h ****  *                  Porï¿½m, contador vai iniciar contagem apenas quando
+ 102:../Sources/drivers/tpm/tpm.h ****  *                  essa funï¿½ï¿½o for chamada.
  103:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  104:../Sources/drivers/tpm/tpm.h **** uint8_t TPM_SetCounterClkSrc(TPM_Type *base, tpmClkSrc_t src);
  105:../Sources/drivers/tpm/tpm.h **** 
  106:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 107:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_Init
+ 107:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_Init
  108:../Sources/drivers/tpm/tpm.h ****  *
- 109:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Inicialização do driver do módulo TPM.
+ 109:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Inicializaï¿½ï¿½o do driver do mï¿½dulo TPM.
  110:../Sources/drivers/tpm/tpm.h ****  *
- 111:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base    - registrador base do periférico TPM;
+ 111:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base    - registrador base do perifï¿½rico TPM;
  112:../Sources/drivers/tpm/tpm.h ****  *                  modulo   - valor de final de contagem;
- 113:../Sources/drivers/tpm/tpm.h ****  *                  prescale - tipo enumerado com um dos possíveis
+ 113:../Sources/drivers/tpm/tpm.h ****  *                  prescale - tipo enumerado com um dos possï¿½veis
  114:../Sources/drivers/tpm/tpm.h ****  *                             valores de prescaler.
  115:../Sources/drivers/tpm/tpm.h ****  *
- 116:../Sources/drivers/tpm/tpm.h ****  * Saídas 		:   Nenhuma.
+ 116:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das 		:   Nenhuma.
  117:../Sources/drivers/tpm/tpm.h ****  *
- 118:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 118:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  119:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  120:../Sources/drivers/tpm/tpm.h **** void TPM_Init(TPM_Type *base, uint16_t modulo, tpmPrescalerValues_t prescale);
  121:../Sources/drivers/tpm/tpm.h **** 
  122:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 123:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_InitChannel
+ 123:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_InitChannel
  124:../Sources/drivers/tpm/tpm.h ****  *
- 125:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Inicializa um canal do módulo TPM.
+ 125:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Inicializa um canal do mï¿½dulo TPM.
  126:../Sources/drivers/tpm/tpm.h ****  *
- 127:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base  - registrador base do periférico TPM;
- 128:../Sources/drivers/tpm/tpm.h ****  *                  chNum  - numéro do canal;
- 129:../Sources/drivers/tpm/tpm.h ****  *                  mode   - modo de operação do canal, sendo
+ 127:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base  - registrador base do perifï¿½rico TPM;
+ 128:../Sources/drivers/tpm/tpm.h ****  *                  chNum  - numï¿½ro do canal;
+ 129:../Sources/drivers/tpm/tpm.h ****  *                  mode   - modo de operaï¿½ï¿½o do canal, sendo
  130:../Sources/drivers/tpm/tpm.h ****  * 							 definidos pelo tipo TPM_chMode_t.
- 131:../Sources/drivers/tpm/tpm.h ****  * 					config - possíveisconfigurações de cada modo de
- 132:../Sources/drivers/tpm/tpm.h ****  * 							 operação do canal, sendo definidos pelo
+ 131:../Sources/drivers/tpm/tpm.h ****  * 					config - possï¿½veisconfiguraï¿½ï¿½es de cada modo de
+ 132:../Sources/drivers/tpm/tpm.h ****  * 							 operaï¿½ï¿½o do canal, sendo definidos pelo
  133:../Sources/drivers/tpm/tpm.h ****  * 							 tipo TPM_chConfig_t.
  134:../Sources/drivers/tpm/tpm.h ****  *
- 135:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   Nenhuma.
+ 135:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   Nenhuma.
  136:../Sources/drivers/tpm/tpm.h ****  *
- 137:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 137:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  138:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  139:../Sources/drivers/tpm/tpm.h **** void TPM_InitChannel(TPM_Type *base, uint8_t chNum, tpmChMode_t mode, tpmChConfig_t config);
  140:../Sources/drivers/tpm/tpm.h **** 
  141:../Sources/drivers/tpm/tpm.h **** 
- 142:../Sources/drivers/tpm/tpm.h **** /*FIM: PROTÓTIPOS - FUNÇÕES PÚBLICAS*/
+ 142:../Sources/drivers/tpm/tpm.h **** /*FIM: PROTï¿½TIPOS - FUNï¿½ï¿½ES Pï¿½BLICAS*/
  143:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
  144:../Sources/drivers/tpm/tpm.h **** 
- 145:../Sources/drivers/tpm/tpm.h **** /*FUNÇÕES INLINE*/
+ 145:../Sources/drivers/tpm/tpm.h **** /*FUNï¿½ï¿½ES INLINE*/
  146:../Sources/drivers/tpm/tpm.h **** /*=======================================================================================*/
  147:../Sources/drivers/tpm/tpm.h **** 
  148:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 149:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_InitCounter
+ 149:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_InitCounter
  150:../Sources/drivers/tpm/tpm.h ****  *
- 151:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Inicializa registrador contador do módulo TPM0.
+ 151:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Inicializa registrador contador do mï¿½dulo TPM0.
  152:../Sources/drivers/tpm/tpm.h ****  *
- 153:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM.
+ 153:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM.
  154:../Sources/drivers/tpm/tpm.h ****  *
- 155:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   Nenhuma.
+ 155:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   Nenhuma.
  156:../Sources/drivers/tpm/tpm.h ****  *
- 157:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 157:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  158:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  159:../Sources/drivers/tpm/tpm.h **** static inline void TPM_InitCounter(TPM_Type *base)
  160:../Sources/drivers/tpm/tpm.h **** {
@@ -1510,18 +1510,18 @@
  444              	.LFB52:
  164:../Sources/drivers/tpm/tpm.h **** 
  165:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 166:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_GetChValue
+ 166:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_GetChValue
  167:../Sources/drivers/tpm/tpm.h ****  *
- 168:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Retorna o valor do registrador contador no modo "Captura
- 169:../Sources/drivers/tpm/tpm.h ****  * 					de Entrada" ou o valor de "match" no modo "Comparação de Saída"
- 170:../Sources/drivers/tpm/tpm.h ****  * 					do canal 0 módulo TPM.
+ 168:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Retorna o valor do registrador contador no modo "Captura
+ 169:../Sources/drivers/tpm/tpm.h ****  * 					de Entrada" ou o valor de "match" no modo "Comparaï¿½ï¿½o de Saï¿½da"
+ 170:../Sources/drivers/tpm/tpm.h ****  * 					do canal 0 mï¿½dulo TPM.
  171:../Sources/drivers/tpm/tpm.h ****  *
- 172:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM;
+ 172:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM;
  173:../Sources/drivers/tpm/tpm.h ****  *                  channel - valor do canal do TPM.
  174:../Sources/drivers/tpm/tpm.h ****  *
- 175:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   modulo: valor de 1 à 65535.
+ 175:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   modulo: valor de 1 ï¿½ 65535.
  176:../Sources/drivers/tpm/tpm.h ****  *
- 177:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 177:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  178:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  179:../Sources/drivers/tpm/tpm.h **** static inline uint16_t TPM_GetChValue(TPM_Type *base, uint8_t channel)
  180:../Sources/drivers/tpm/tpm.h **** {
@@ -1532,17 +1532,17 @@
  185:../Sources/drivers/tpm/tpm.h **** 
  186:../Sources/drivers/tpm/tpm.h **** 
  187:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 188:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_SetChMatch
+ 188:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_SetChMatch
  189:../Sources/drivers/tpm/tpm.h ****  *
- 190:../Sources/drivers/tpm/tpm.h ****  * Descrição	:    Define valor de "match" em canal do módulo TPM0.
+ 190:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:    Define valor de "match" em canal do mï¿½dulo TPM0.
  191:../Sources/drivers/tpm/tpm.h ****  *
- 192:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM;
+ 192:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM;
  193:../Sources/drivers/tpm/tpm.h ****  *                  channel - valor do canal do TPM;
- 194:../Sources/drivers/tpm/tpm.h ****  *                  match: valor de 2 à 65535.
+ 194:../Sources/drivers/tpm/tpm.h ****  *                  match: valor de 2 ï¿½ 65535.
  195:../Sources/drivers/tpm/tpm.h ****  *
- 196:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   Nenhuma.
+ 196:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   Nenhuma.
  197:../Sources/drivers/tpm/tpm.h ****  *
- 198:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 198:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  199:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  200:../Sources/drivers/tpm/tpm.h **** static inline void TPM_SetChMatch(TPM_Type *base, uint8_t channel, uint16_t match)
  201:../Sources/drivers/tpm/tpm.h **** {
@@ -1608,15 +1608,15 @@
  502              	.LFB56:
  206:../Sources/drivers/tpm/tpm.h **** 
  207:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 208:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_EnableIRQ
+ 208:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_EnableIRQ
  209:../Sources/drivers/tpm/tpm.h ****  *
- 210:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Habilita a geração de interrupção pelo módulo TPM.
+ 210:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Habilita a geraï¿½ï¿½o de interrupï¿½ï¿½o pelo mï¿½dulo TPM.
  211:../Sources/drivers/tpm/tpm.h ****  *
- 212:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM.
+ 212:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM.
  213:../Sources/drivers/tpm/tpm.h ****  *
- 214:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   Nenhuma.
+ 214:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   Nenhuma.
  215:../Sources/drivers/tpm/tpm.h ****  *
- 216:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 216:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  217:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  218:../Sources/drivers/tpm/tpm.h **** static inline void TPM_EnableIRQ(TPM_Type *base)
  219:../Sources/drivers/tpm/tpm.h **** {
@@ -1624,17 +1624,17 @@
  221:../Sources/drivers/tpm/tpm.h **** }
  222:../Sources/drivers/tpm/tpm.h **** 
  223:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 224:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_GetIRQFlag
+ 224:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_GetIRQFlag
  225:../Sources/drivers/tpm/tpm.h ****  *
- 226:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Retorna o valor da flag de interrupção gerada
- 227:../Sources/drivers/tpm/tpm.h ****  * 					pelo módulo TPM.
+ 226:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Retorna o valor da flag de interrupï¿½ï¿½o gerada
+ 227:../Sources/drivers/tpm/tpm.h ****  * 					pelo mï¿½dulo TPM.
  228:../Sources/drivers/tpm/tpm.h ****  *
- 229:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM.
+ 229:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM.
  230:../Sources/drivers/tpm/tpm.h ****  *
- 231:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   0	,  se não houve interrupção;
- 232:../Sources/drivers/tpm/tpm.h ****  * 					!0	,  se houve interrupção.
+ 231:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   0	,  se nï¿½o houve interrupï¿½ï¿½o;
+ 232:../Sources/drivers/tpm/tpm.h ****  * 					!0	,  se houve interrupï¿½ï¿½o.
  233:../Sources/drivers/tpm/tpm.h ****  *
- 234:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 234:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  235:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  236:../Sources/drivers/tpm/tpm.h **** static inline uint8_t TPM_GetIRQFlag(TPM_Type *base)
  237:../Sources/drivers/tpm/tpm.h **** {
@@ -1642,15 +1642,15 @@
  239:../Sources/drivers/tpm/tpm.h **** }
  240:../Sources/drivers/tpm/tpm.h **** 
  241:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 242:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_ClearIRQFlag
+ 242:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_ClearIRQFlag
  243:../Sources/drivers/tpm/tpm.h ****  *
- 244:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Limpa a flag de interrupção gerada pelo módulo TPM.
+ 244:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Limpa a flag de interrupï¿½ï¿½o gerada pelo mï¿½dulo TPM.
  245:../Sources/drivers/tpm/tpm.h ****  *
- 246:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM.
+ 246:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM.
  247:../Sources/drivers/tpm/tpm.h ****  *
- 248:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   Nenhuma.
+ 248:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   Nenhuma.
  249:../Sources/drivers/tpm/tpm.h ****  *
- 250:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 250:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  251:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  252:../Sources/drivers/tpm/tpm.h **** static inline void TPM_ClearIRQFlag(TPM_Type *base)
  253:../Sources/drivers/tpm/tpm.h **** {
@@ -1658,16 +1658,16 @@
  255:../Sources/drivers/tpm/tpm.h **** }
  256:../Sources/drivers/tpm/tpm.h **** 
  257:../Sources/drivers/tpm/tpm.h **** /**********************************************************************
- 258:../Sources/drivers/tpm/tpm.h ****  * Função		:	TPM_SetModulo
+ 258:../Sources/drivers/tpm/tpm.h ****  * Funï¿½ï¿½o		:	TPM_SetModulo
  259:../Sources/drivers/tpm/tpm.h ****  *
- 260:../Sources/drivers/tpm/tpm.h ****  * Descrição	:   Define valor de fim de contagem do módulo do TPM.
+ 260:../Sources/drivers/tpm/tpm.h ****  * Descriï¿½ï¿½o	:   Define valor de fim de contagem do mï¿½dulo do TPM.
  261:../Sources/drivers/tpm/tpm.h ****  *
- 262:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do periférico TPM;
+ 262:../Sources/drivers/tpm/tpm.h ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM;
  263:../Sources/drivers/tpm/tpm.h ****  * 					modulo - valor de fim de contagem.
  264:../Sources/drivers/tpm/tpm.h ****  *
- 265:../Sources/drivers/tpm/tpm.h ****  * Saídas		:   Nenhuma.
+ 265:../Sources/drivers/tpm/tpm.h ****  * Saï¿½das		:   Nenhuma.
  266:../Sources/drivers/tpm/tpm.h ****  *
- 267:../Sources/drivers/tpm/tpm.h ****  * Comentários 	: 	Nenhum.
+ 267:../Sources/drivers/tpm/tpm.h ****  * Comentï¿½rios 	: 	Nenhum.
  268:../Sources/drivers/tpm/tpm.h ****  * ********************************************************************/
  269:../Sources/drivers/tpm/tpm.h **** static inline void TPM_SetModulo(TPM_Type *base, uint16_t modulo)
  270:../Sources/drivers/tpm/tpm.h **** {
@@ -2081,8 +2081,8 @@
  769 00bc 0D21     		mov	r1, #13
  770 00be 0222     		mov	r2, #2
  771 00c0 FFF7FEFF 		bl	PORT_SetMux
- 139:../Sources/main.c **** 	/* O canal que controla o pino PTB13 é o TPM1_Ch1
- 140:../Sources/main.c **** 	 * Irá ser utilizado o PWM alinhado a borda, com o duty cycle em nível alto*/
+ 139:../Sources/main.c **** 	/* O canal que controla o pino PTB13 ï¿½ o TPM1_Ch1
+ 140:../Sources/main.c **** 	 * Irï¿½ ser utilizado o PWM alinhado a borda, com o duty cycle em nï¿½vel alto*/
  141:../Sources/main.c **** 	TPM_InitChannel(TPM1, 0, TPM_EDGE_PWM_MODE, TPM_PWM_HIGH_TRUE_CONFIG);
  772              		.loc 4 141 0
  773 00c4 BA4B     		ldr	r3, .L49
@@ -2091,7 +2091,7 @@
  776 00ca 0222     		mov	r2, #2
  777 00cc 0623     		mov	r3, #6
  778 00ce FFF7FEFF 		bl	TPM_InitChannel
- 142:../Sources/main.c **** 	TPM_SetChMatch(TPM1, 0, 0); /*Configuração do duty cycle (valor de match)*/
+ 142:../Sources/main.c **** 	TPM_SetChMatch(TPM1, 0, 0); /*Configuraï¿½ï¿½o do duty cycle (valor de match)*/
  779              		.loc 4 142 0
  780 00d2 B74B     		ldr	r3, .L49
  781 00d4 181C     		mov	r0, r3
@@ -2379,7 +2379,7 @@
  1005 026a 1A70     		strb	r2, [r3]
  1006              	.L43:
  201:../Sources/main.c ****     		}
- 202:../Sources/main.c ****             TPM_SetChMatch(TPM1, 0, ( pwmDuty * tpmPwmModulo ) / 100 ); /*Configuração do duty cycl
+ 202:../Sources/main.c ****             TPM_SetChMatch(TPM1, 0, ( pwmDuty * tpmPwmModulo ) / 100 ); /*Configuraï¿½ï¿½o do duty cycl
  1007              		.loc 4 202 0
  1008 026c 5E4B     		ldr	r3, .L49+56
  1009 026e 1B78     		ldrb	r3, [r3]
@@ -2497,7 +2497,7 @@
  1101 031a 264B     		ldr	r3, .L49+4
  1102 031c 1A80     		strh	r2, [r3]
  223:../Sources/main.c **** 
- 224:../Sources/main.c ****     		TPM_SetModulo(TPM1, tpmPwmModulo); /*Seta o valor de módulo - fim de contagem (borda)*/
+ 224:../Sources/main.c ****     		TPM_SetModulo(TPM1, tpmPwmModulo); /*Seta o valor de mï¿½dulo - fim de contagem (borda)*/
  1103              		.loc 4 224 0
  1104 031e 254B     		ldr	r3, .L49+4
  1105 0320 1B88     		ldrh	r3, [r3]
@@ -2558,7 +2558,7 @@
  1151              		.loc 4 233 0
  1152 037c 1E20     		mov	r0, #30
  1153 037e FFF7FEFF 		bl	NVIC_DisableIRQ
- 234:../Sources/main.c ****     	if(portaISRFlag) /* Verifica se ISR já estava habilitada e ja foi chamada*/
+ 234:../Sources/main.c ****     	if(portaISRFlag) /* Verifica se ISR jï¿½ estava habilitada e ja foi chamada*/
  1154              		.loc 4 234 0
  1155 0382 1C4B     		ldr	r3, .L49+68
  1156 0384 1B78     		ldrb	r3, [r3]

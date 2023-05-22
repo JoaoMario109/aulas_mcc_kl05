@@ -31,51 +31,51 @@
   36              	.LFB41:
   37              		.file 1 "../Sources/drivers/tpm/tpm.c"
    1:../Sources/drivers/tpm/tpm.c **** /***************************************************************************************
-   2:../Sources/drivers/tpm/tpm.c ****  * Módulo      : TPM_HAL.c
+   2:../Sources/drivers/tpm/tpm.c ****  * Mï¿½dulo      : TPM_HAL.c
    3:../Sources/drivers/tpm/tpm.c ****  *
-   4:../Sources/drivers/tpm/tpm.c ****  * Revisão     : 1.0
+   4:../Sources/drivers/tpm/tpm.c ****  * Revisï¿½o     : 1.0
    5:../Sources/drivers/tpm/tpm.c ****  *
    6:../Sources/drivers/tpm/tpm.c ****  * Data        : 26/10/2017
    7:../Sources/drivers/tpm/tpm.c ****  *
-   8:../Sources/drivers/tpm/tpm.c ****  * Descrição   : Arquivo com implementações dos Módulos Timer/PWM (TPM) da Familia Kinetis KL25.
+   8:../Sources/drivers/tpm/tpm.c ****  * Descriï¿½ï¿½o   : Arquivo com implementaï¿½ï¿½es dos Mï¿½dulos Timer/PWM (TPM) da Familia Kinetis KL25.
    9:../Sources/drivers/tpm/tpm.c ****  *
-  10:../Sources/drivers/tpm/tpm.c ****  * Comentários : Nenhum.
+  10:../Sources/drivers/tpm/tpm.c ****  * Comentï¿½rios : Nenhum.
   11:../Sources/drivers/tpm/tpm.c ****  *
   12:../Sources/drivers/tpm/tpm.c ****  * Autor(es)   : Matheus Leitzke Pinto
   13:../Sources/drivers/tpm/tpm.c ****  ***************************************************************************************/
   14:../Sources/drivers/tpm/tpm.c **** 
-  15:../Sources/drivers/tpm/tpm.c **** /*ARQUIVOS DE CABEÇALHO*/
+  15:../Sources/drivers/tpm/tpm.c **** /*ARQUIVOS DE CABEï¿½ALHO*/
   16:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
   17:../Sources/drivers/tpm/tpm.c **** 
   18:../Sources/drivers/tpm/tpm.c **** #include "tpm.h"
   19:../Sources/drivers/tpm/tpm.c **** 
-  20:../Sources/drivers/tpm/tpm.c **** /*FIM: ARQUIVOS DE CABEÇALHO*/
+  20:../Sources/drivers/tpm/tpm.c **** /*FIM: ARQUIVOS DE CABEï¿½ALHO*/
   21:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
   22:../Sources/drivers/tpm/tpm.c **** 
-  23:../Sources/drivers/tpm/tpm.c **** /*VARIÁVEIS PRIVADAS*/
+  23:../Sources/drivers/tpm/tpm.c **** /*VARIï¿½VEIS PRIVADAS*/
   24:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
   25:../Sources/drivers/tpm/tpm.c **** 
   26:../Sources/drivers/tpm/tpm.c **** static uint16_t matchVal;
   27:../Sources/drivers/tpm/tpm.c **** static moduleClock_t g_tpmClkSrc;
   28:../Sources/drivers/tpm/tpm.c **** 
-  29:../Sources/drivers/tpm/tpm.c **** /*FIM: VARIÁVEIS PRIVADAS*/
+  29:../Sources/drivers/tpm/tpm.c **** /*FIM: VARIï¿½VEIS PRIVADAS*/
   30:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
   31:../Sources/drivers/tpm/tpm.c **** 
-  32:../Sources/drivers/tpm/tpm.c **** /*FUNÇÕES PÚBLICAS*/
+  32:../Sources/drivers/tpm/tpm.c **** /*FUNï¿½ï¿½ES Pï¿½BLICAS*/
   33:../Sources/drivers/tpm/tpm.c **** /*=======================================================================================*/
   34:../Sources/drivers/tpm/tpm.c **** 
   35:../Sources/drivers/tpm/tpm.c **** /**********************************************************************
-  36:../Sources/drivers/tpm/tpm.c ****  * Função		:	TPM_SetCounterClkSrc
+  36:../Sources/drivers/tpm/tpm.c ****  * Funï¿½ï¿½o		:	TPM_SetCounterClkSrc
   37:../Sources/drivers/tpm/tpm.c ****  *
-  38:../Sources/drivers/tpm/tpm.c ****  * Descrição	:   Define a fonte de clock utilizada pelo contador.
+  38:../Sources/drivers/tpm/tpm.c ****  * Descriï¿½ï¿½o	:   Define a fonte de clock utilizada pelo contador.
   39:../Sources/drivers/tpm/tpm.c ****  *
-  40:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base - registrador base do periférico TPM;
+  40:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base - registrador base do perifï¿½rico TPM;
   41:../Sources/drivers/tpm/tpm.c ****  *                  src   - tipo enumerado que define a fonte de clock.
   42:../Sources/drivers/tpm/tpm.c ****  *
-  43:../Sources/drivers/tpm/tpm.c ****  * Saídas 		:   STATUS_SUCCESS, se configuração ocorreu corretamente;
-  44:../Sources/drivers/tpm/tpm.c ****  *                  STATUS_FAIL, caso contrário.
+  43:../Sources/drivers/tpm/tpm.c ****  * Saï¿½das 		:   GENERAL_STATUS_SUCCESS, se configuraï¿½ï¿½o ocorreu corretamente;
+  44:../Sources/drivers/tpm/tpm.c ****  *                  GENERAL_STATUS_FAIL, caso contrï¿½rio.
   45:../Sources/drivers/tpm/tpm.c ****  *
-  46:../Sources/drivers/tpm/tpm.c ****  * Comentários 	: 	Deve ser chamada antes da função TPM_Init.
+  46:../Sources/drivers/tpm/tpm.c ****  * Comentï¿½rios 	: 	Deve ser chamada antes da funï¿½ï¿½o TPM_Init.
   47:../Sources/drivers/tpm/tpm.c ****  * ********************************************************************/
   48:../Sources/drivers/tpm/tpm.c **** uint8_t TPM_SetCounterClkSrc(TPM_Type *base, tpmClkSrc_t src)
   49:../Sources/drivers/tpm/tpm.c **** {
@@ -155,7 +155,7 @@
   97 004c 01E0     		b	.L8
   98              	.L2:
   64:../Sources/drivers/tpm/tpm.c **** 	default:
-  65:../Sources/drivers/tpm/tpm.c **** 		return STATUS_FAIL;
+  65:../Sources/drivers/tpm/tpm.c **** 		return GENERAL_STATUS_FAIL;
   99              		.loc 1 65 0
  100 004e 0123     		mov	r3, #1
  101 0050 15E0     		b	.L9
@@ -189,7 +189,7 @@
  124 0078 054B     		ldr	r3, .L10+8
  125 007a D150     		str	r1, [r2, r3]
   71:../Sources/drivers/tpm/tpm.c **** 
-  72:../Sources/drivers/tpm/tpm.c **** 	return STATUS_SUCCESS;
+  72:../Sources/drivers/tpm/tpm.c **** 	return GENERAL_STATUS_SUCCESS;
  126              		.loc 1 72 0
  127 007c 0023     		mov	r3, #0
  128              	.L9:
@@ -230,18 +230,18 @@
  159              	.LFB42:
   74:../Sources/drivers/tpm/tpm.c **** 
   75:../Sources/drivers/tpm/tpm.c **** /**********************************************************************
-  76:../Sources/drivers/tpm/tpm.c ****  * Função		:	TPM_Init
+  76:../Sources/drivers/tpm/tpm.c ****  * Funï¿½ï¿½o		:	TPM_Init
   77:../Sources/drivers/tpm/tpm.c ****  *
-  78:../Sources/drivers/tpm/tpm.c ****  * Descrição	:   Inicialização do driver do módulo TPM.
+  78:../Sources/drivers/tpm/tpm.c ****  * Descriï¿½ï¿½o	:   Inicializaï¿½ï¿½o do driver do mï¿½dulo TPM.
   79:../Sources/drivers/tpm/tpm.c ****  *
-  80:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base    - registrador base do periférico TPM;
+  80:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base    - registrador base do perifï¿½rico TPM;
   81:../Sources/drivers/tpm/tpm.c ****  *                  modulo   - valor de final de contagem;
-  82:../Sources/drivers/tpm/tpm.c ****  *                  prescale - tipo enumerado com um dos possíveis
+  82:../Sources/drivers/tpm/tpm.c ****  *                  prescale - tipo enumerado com um dos possï¿½veis
   83:../Sources/drivers/tpm/tpm.c ****  *                             valores de prescaler.
   84:../Sources/drivers/tpm/tpm.c ****  *
-  85:../Sources/drivers/tpm/tpm.c ****  * Saídas 		:   Nenhuma.
+  85:../Sources/drivers/tpm/tpm.c ****  * Saï¿½das 		:   Nenhuma.
   86:../Sources/drivers/tpm/tpm.c ****  *
-  87:../Sources/drivers/tpm/tpm.c ****  * Comentários 	: 	Deve ser chamada após a função TPM_SetCounterClkSrc.
+  87:../Sources/drivers/tpm/tpm.c ****  * Comentï¿½rios 	: 	Deve ser chamada apï¿½s a funï¿½ï¿½o TPM_SetCounterClkSrc.
   88:../Sources/drivers/tpm/tpm.c ****  * ********************************************************************/
   89:../Sources/drivers/tpm/tpm.c **** void TPM_Init(TPM_Type *base, uint16_t modulo, tpmPrescalerValues_t prescale)
   90:../Sources/drivers/tpm/tpm.c **** {
@@ -281,7 +281,7 @@
  190 0028 9A42     		cmp	r2, r3
  191 002a 09D1     		bne	.L14
   94:../Sources/drivers/tpm/tpm.c **** 	{
-  95:../Sources/drivers/tpm/tpm.c **** 		SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK; /* Ativa o clock do módulo TPM0 */
+  95:../Sources/drivers/tpm/tpm.c **** 		SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK; /* Ativa o clock do mï¿½dulo TPM0 */
  192              		.loc 1 95 0
  193 002c 1C4A     		ldr	r2, .L16+16
  194 002e 1C49     		ldr	r1, .L16+16
@@ -304,7 +304,7 @@
  207 0044 9A42     		cmp	r2, r3
  208 0046 08D1     		bne	.L15
  100:../Sources/drivers/tpm/tpm.c **** 		{
- 101:../Sources/drivers/tpm/tpm.c **** 			SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK; /* Ativa o clock do módulo TPM1 */
+ 101:../Sources/drivers/tpm/tpm.c **** 			SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK; /* Ativa o clock do mï¿½dulo TPM1 */
  209              		.loc 1 101 0
  210 0048 154A     		ldr	r2, .L16+16
  211 004a 1549     		ldr	r1, .L16+16
@@ -389,21 +389,21 @@
  112:../Sources/drivers/tpm/tpm.c **** 
  113:../Sources/drivers/tpm/tpm.c **** 
  114:../Sources/drivers/tpm/tpm.c **** /**********************************************************************
- 115:../Sources/drivers/tpm/tpm.c ****  * Função		:	TPM_InitChannel
+ 115:../Sources/drivers/tpm/tpm.c ****  * Funï¿½ï¿½o		:	TPM_InitChannel
  116:../Sources/drivers/tpm/tpm.c ****  *
- 117:../Sources/drivers/tpm/tpm.c ****  * Descrição	:   Inicializa um canal do módulo TPM.
+ 117:../Sources/drivers/tpm/tpm.c ****  * Descriï¿½ï¿½o	:   Inicializa um canal do mï¿½dulo TPM.
  118:../Sources/drivers/tpm/tpm.c ****  *
- 119:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base  - registrador base do periférico TPM;
- 120:../Sources/drivers/tpm/tpm.c ****  *                  chNum  - numéro do canal;
- 121:../Sources/drivers/tpm/tpm.c ****  *                  mode   - modo de operação do canal, sendo
+ 119:../Sources/drivers/tpm/tpm.c ****  * Entradas		:   *base  - registrador base do perifï¿½rico TPM;
+ 120:../Sources/drivers/tpm/tpm.c ****  *                  chNum  - numï¿½ro do canal;
+ 121:../Sources/drivers/tpm/tpm.c ****  *                  mode   - modo de operaï¿½ï¿½o do canal, sendo
  122:../Sources/drivers/tpm/tpm.c ****  * 							 definidos pelo tipo TPM_chMode_t.
- 123:../Sources/drivers/tpm/tpm.c ****  * 					config - possíveisconfigurações de cada modo de
- 124:../Sources/drivers/tpm/tpm.c ****  * 							 operação do canal, sendo definidos pelo
+ 123:../Sources/drivers/tpm/tpm.c ****  * 					config - possï¿½veisconfiguraï¿½ï¿½es de cada modo de
+ 124:../Sources/drivers/tpm/tpm.c ****  * 							 operaï¿½ï¿½o do canal, sendo definidos pelo
  125:../Sources/drivers/tpm/tpm.c ****  * 							 tipo TPM_chConfig_t.
  126:../Sources/drivers/tpm/tpm.c ****  *
- 127:../Sources/drivers/tpm/tpm.c ****  * Saídas		:   Nenhuma.
+ 127:../Sources/drivers/tpm/tpm.c ****  * Saï¿½das		:   Nenhuma.
  128:../Sources/drivers/tpm/tpm.c ****  *
- 129:../Sources/drivers/tpm/tpm.c ****  * Comentários 	: 	Nenhum.
+ 129:../Sources/drivers/tpm/tpm.c ****  * Comentï¿½rios 	: 	Nenhum.
  130:../Sources/drivers/tpm/tpm.c ****  * ********************************************************************/
  131:../Sources/drivers/tpm/tpm.c **** void TPM_InitChannel(TPM_Type *base, uint8_t chNum, tpmChMode_t mode, tpmChConfig_t config){
  278              		.loc 1 131 0
@@ -466,7 +466,7 @@
  330 0050 06D0     		beq	.L24
  137:../Sources/drivers/tpm/tpm.c **** 	{
  138:../Sources/drivers/tpm/tpm.c **** 		case(TPM_OUT_COMPARE_MODE):
- 139:../Sources/drivers/tpm/tpm.c **** 			base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 139:../Sources/drivers/tpm/tpm.c **** 			base->SC &= ~TPM_SC_CPWMS_MASK; /*Nï¿½o ï¿½ Center PWM*/
  140:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_OUT_TOGGLE_GONFIG)
  141:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | TPM_CnSC_ELSA_MASK);
  142:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_OUT_CLEAR_GONFIG)
@@ -475,7 +475,7 @@
  145:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSA_MASK | (TPM_CnSC_ELSA_MASK) | TPM_CnSC_ELSA_MASK);
  146:../Sources/drivers/tpm/tpm.c **** 			break;
  147:../Sources/drivers/tpm/tpm.c **** 		case(TPM_IN_COMPARE_MODE):
- 148:../Sources/drivers/tpm/tpm.c **** 				base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 148:../Sources/drivers/tpm/tpm.c **** 				base->SC &= ~TPM_SC_CPWMS_MASK; /*Nï¿½o ï¿½ Center PWM*/
  149:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_IN_RISING_EDGE_CONFIG)
  150:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = TPM_CnSC_ELSA_MASK;
  151:../Sources/drivers/tpm/tpm.c **** 			else if(config == TPM_IN_FALLING_EDGE_CONFIG)
@@ -484,14 +484,14 @@
  154:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_ELSA_MASK | TPM_CnSC_ELSA_MASK);
  155:../Sources/drivers/tpm/tpm.c **** 			break;
  156:../Sources/drivers/tpm/tpm.c **** 		case(TPM_EDGE_PWM_MODE):
- 157:../Sources/drivers/tpm/tpm.c **** 		base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 157:../Sources/drivers/tpm/tpm.c **** 		base->SC &= ~TPM_SC_CPWMS_MASK; /*Nï¿½o ï¿½ Center PWM*/
  158:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_PWM_HIGH_TRUE_CONFIG)
  159:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK);
  160:../Sources/drivers/tpm/tpm.c **** 			else
  161:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSA_MASK);
  162:../Sources/drivers/tpm/tpm.c **** 			break;
  163:../Sources/drivers/tpm/tpm.c **** 		case(TPM_CENTER_PWM_MODE):
- 164:../Sources/drivers/tpm/tpm.c **** 				base->SC |= TPM_SC_CPWMS_MASK; /*É Center PWM*/
+ 164:../Sources/drivers/tpm/tpm.c **** 				base->SC |= TPM_SC_CPWMS_MASK; /*ï¿½ Center PWM*/
  165:../Sources/drivers/tpm/tpm.c **** 			if(config == TPM_PWM_HIGH_TRUE_CONFIG)
  166:../Sources/drivers/tpm/tpm.c **** 				base->CONTROLS[chNum].CnSC = (TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK);
  167:../Sources/drivers/tpm/tpm.c **** 			else
@@ -513,7 +513,7 @@
  341              		.loc 1 171 0
  342 005e 95E0     		b	.L18
  343              	.L24:
- 139:../Sources/drivers/tpm/tpm.c **** 			base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 139:../Sources/drivers/tpm/tpm.c **** 			base->SC &= ~TPM_SC_CPWMS_MASK; /*Nï¿½o ï¿½ Center PWM*/
  344              		.loc 1 139 0
  345 0060 7B68     		ldr	r3, [r7, #4]
  346 0062 1B68     		ldr	r3, [r3]
@@ -581,7 +581,7 @@
  401              	.L28:
  402 00be 65E0     		b	.L18
  403              	.L22:
- 148:../Sources/drivers/tpm/tpm.c **** 				base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 148:../Sources/drivers/tpm/tpm.c **** 				base->SC &= ~TPM_SC_CPWMS_MASK; /*Nï¿½o ï¿½ Center PWM*/
  404              		.loc 1 148 0
  405 00c0 7B68     		ldr	r3, [r7, #4]
  406 00c2 1B68     		ldr	r3, [r3]
@@ -643,7 +643,7 @@
  456              	.L32:
  457 0116 39E0     		b	.L18
  458              	.L25:
- 157:../Sources/drivers/tpm/tpm.c **** 		base->SC &= ~TPM_SC_CPWMS_MASK; /*Não é Center PWM*/
+ 157:../Sources/drivers/tpm/tpm.c **** 		base->SC &= ~TPM_SC_CPWMS_MASK; /*Nï¿½o ï¿½ Center PWM*/
  459              		.loc 1 157 0
  460 0118 7B68     		ldr	r3, [r7, #4]
  461 011a 1B68     		ldr	r3, [r3]
@@ -687,7 +687,7 @@
  494              		.loc 1 162 0
  495 0152 1BE0     		b	.L18
  496              	.L26:
- 164:../Sources/drivers/tpm/tpm.c **** 				base->SC |= TPM_SC_CPWMS_MASK; /*É Center PWM*/
+ 164:../Sources/drivers/tpm/tpm.c **** 				base->SC |= TPM_SC_CPWMS_MASK; /*ï¿½ Center PWM*/
  497              		.loc 1 164 0
  498 0154 7B68     		ldr	r3, [r7, #4]
  499 0156 1B68     		ldr	r3, [r3]

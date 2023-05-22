@@ -46,8 +46,11 @@ extern "C" {
  * Definitions
  ******************************************************************************/
 
-#define STATUS_SUCCESS 0x0U
-#define STATUS_FAIL 0x1U
+typedef enum
+{
+	GENERAL_STATUS_SUCCESS = 0x0U,
+	GENERAL_STATUS_FAIL = 0x1U,
+} generalStatusCodes_t;
 
 /*!< If FreeRTOS is present, uncomment this macro.*/
 //#define __FREERTOS_H

@@ -61,9 +61,9 @@
 	 */																		\
 	I2C_WriteByte(base, (uint8_t)((slave_addr << 1) | op));					\
 	/** Waits and checks for timeout */										\
-	if (I2C_Wait(base)) return -1;											\
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;											\
 	/** Checks for invalid address */										\
-	if (I2C_GetRxAk(base)) return -2;										\
+	if (I2C_GetRxAk(base)) return I2C_STATUS_INVALID_SLAVE_ADDR;										\
 }
 
 /**
@@ -81,9 +81,9 @@
 	/** Sends the register address byte */									\
 	I2C_WriteByte(base, register_addr);										\
 	/** Waits and checks for timeout */										\
-	if (I2C_Wait(base)) return -1;											\
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;											\
 	/** Checks for invalid register */										\
-	if (I2C_GetRxAk(base)) return -3;										\
+	if (I2C_GetRxAk(base)) return I2C_STATUS_INVALID_REGISTER_ADDR;										\
 }
 
 /**
@@ -107,15 +107,15 @@
 	 */																		\
 	I2C_WriteByte(base, (uint8_t)((slave_addr << 1) | 1));					\
 	/** Waits and checks for timeout */										\
-	if (I2C_Wait(base)) return -1;											\
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;											\
 	/** Checks for invalid address */										\
-	if (I2C_GetRxAk(base)) return -2;										\
+	if (I2C_GetRxAk(base)) return I2C_STATUS_INVALID_SLAVE_ADDR;										\
 }
 
 /**
  * Function: I2C_InitWithBaud
  * 
- * Description: Initializes I2C module using a given baud rate provided in
+ * Description: Initializes the I2C module using a given baud rate provided in
  * "baud_rate" parameter as [bps]
  * 
  * Inputs:
@@ -123,9 +123,10 @@
  *  - baud_rate -> Baud rate to initialize I2C module in [bps]
  * 
  * Outputs:
- *  - {int} -> 0 if requested speed in [bps] was achievable otherwise -1
+ *  - {int} -> I2C_STATUS_SUCCESS if requested baud_rate in [bps] was
+ *             achievable otherwise I2C_STATUS_FAIL
  */
-int I2C_InitWithBaud(I2C_Type *base, uint32_t baud_rate)
+i2cStatusCodes_t I2C_InitWithBaud(I2C_Type *base, uint32_t baud_rate)
 {
 	/** Pre initialization steps */
 	I2C_PRE_INIT
@@ -163,7 +164,7 @@ int I2C_InitWithBaud(I2C_Type *base, uint32_t baud_rate)
 		const uint32_t scl_divider = SystemCoreClock / (baud_rate * mult);
 
 		/** scl_divider must be greater of equal to minimum available divider */
-		if (scl_divider < scl_dividers[0]) return -1;
+		if (scl_divider < scl_dividers[0]) return I2C_STATUS_FAIL;
 
 		/** scl_divider is greater than all available dividers, increase mult */
 		if (
@@ -191,13 +192,13 @@ int I2C_InitWithBaud(I2C_Type *base, uint32_t baud_rate)
 				/** Post initialization steps */
 				I2C_POST_INIT
 
-				return 0;
+				return I2C_STATUS_SUCCESS;
 			}
 		}
 	}
 
 	/** No configuration found */
-	return -1;
+	return I2C_STATUS_FAIL;
 }
 
 /**
@@ -210,11 +211,13 @@ int I2C_InitWithBaud(I2C_Type *base, uint32_t baud_rate)
  *  - base -> I2C mem map of the I2C module to be initialized
  * 
  * Outputs:
- *  - {int} -> 0 if 100 [kbps] baud rate was possible to be set otherwise -1 in
- *             of any error when trying to set this speed or if this speed was
- *             not possible to be set with current bus clock speed
+ *  - {i2cStatusCodes_t}
+ *          -> I2C_STATUS_SUCCESS if 100 [kbps] baud rate was possible to be
+ *             set otherwise I2C_STATUS_FAIL in case of any error when trying
+ *             to set this speed or if this speed was not possible to be set
+ *             with current bus clock speed
  */
-int I2C_Init(I2C_Type *base)
+i2cStatusCodes_t I2C_Init(I2C_Type *base)
 {
 	return I2C_InitWithBaud(base, 100000);
 }
@@ -229,11 +232,13 @@ int I2C_Init(I2C_Type *base)
  *  - base -> I2C mem map of the I2C module to be initialized
  * 
  * Outputs:
- *  - {int} -> 0 if 400 [kbps] baud rate was possible to be set otherwise -1 in
- *             of any error when trying to set this speed or if this speed was
- *             not possible to be set with current bus clock speed
+ *  - {i2cStatusCodes_t}
+ *          -> I2C_STATUS_SUCCESS if 400 [kbps] baud rate was possible to be set
+ *             otherwise I2C_STATUS_FAIL in case  of any error when trying to set
+ *             this speed or if this speed was not possible to be set with current
+ *             bus clock speed
  */
-int I2C_Init_400kbps(I2C_Type *base)
+i2cStatusCodes_t I2C_Init_400kbps(I2C_Type *base)
 {
 	return I2C_InitWithBaud(base, 400000);
 }
@@ -286,14 +291,16 @@ void I2C_InitManual(I2C_Type *base, uint8_t icr, uint8_t mult)
  *  - data -> 1 data byte to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteSlave(I2C_Type *base, uint8_t slave_addr, uint8_t data)
+i2cStatusCodes_t I2C_WriteSlave(
+	I2C_Type *base, uint8_t slave_addr, uint8_t data
+)
 {
 	/** Starts Write operation */
 	I2C_START_SLAVE_TRANSMISSION(0)
@@ -301,9 +308,9 @@ int I2C_WriteSlave(I2C_Type *base, uint8_t slave_addr, uint8_t data)
 	/** Transmit the data */
 	I2C_WriteByte(base, data);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 	/** Checks transfer error */
-	if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return -4;
+	if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return I2C_STATUS_DATA_TRANSFER_ERROR;
 
 	/**
 	 * Puts the I2C module in receiver and slave mode and puts the Stop
@@ -314,7 +321,7 @@ int I2C_WriteSlave(I2C_Type *base, uint8_t slave_addr, uint8_t data)
 	/** Performs a small pause */
 	I2C_Pause();
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }
 
 /**
@@ -329,14 +336,14 @@ int I2C_WriteSlave(I2C_Type *base, uint8_t slave_addr, uint8_t data)
  *  - data_size -> size of the data to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteSlaveChunk(
+i2cStatusCodes_t I2C_WriteSlaveChunk(
 	I2C_Type *base, uint8_t slave_addr, const uint8_t* const data,
 	uint16_t data_size
 )
@@ -349,9 +356,9 @@ int I2C_WriteSlaveChunk(
 		/** Transmit the data */
 		I2C_WriteByte(base, data[i]);
 		/** Waits and checks for timeout */
-		if (I2C_Wait(base)) return -1;
+		if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 		/** Checks transfer error */
-		if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return -4;
+		if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return I2C_STATUS_DATA_TRANSFER_ERROR;
 	}
 
 	/**
@@ -363,7 +370,7 @@ int I2C_WriteSlaveChunk(
 	/** Performs a small pause */
 	I2C_Pause();
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }
 
 /**
@@ -378,14 +385,14 @@ int I2C_WriteSlaveChunk(
  *  - data -> 1 data byte to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteRegister(
+i2cStatusCodes_t I2C_WriteRegister(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr, uint8_t data
 )
 {
@@ -396,9 +403,9 @@ int I2C_WriteRegister(
 	/** Transmit the data */
 	I2C_WriteByte(base, data);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 	/** Checks transfer error */
-	if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return -4;
+	if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return I2C_STATUS_DATA_TRANSFER_ERROR;
 
 	/**
 	 * Puts the I2C module in receiver and slave mode and puts the Stop
@@ -409,7 +416,7 @@ int I2C_WriteRegister(
 	/** Performs a small pause */
 	I2C_Pause();
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }
 
 /**
@@ -425,14 +432,14 @@ int I2C_WriteRegister(
  *  - data_size -> size of the data to be transferred
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_WriteRegisterChunk(
+i2cStatusCodes_t I2C_WriteRegisterChunk(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr,
 	const uint8_t* const data, uint16_t data_size
 )
@@ -446,9 +453,9 @@ int I2C_WriteRegisterChunk(
 		/** Transmit the data */
 		I2C_WriteByte(base, data[i]);
 		/** Waits and checks for timeout */
-		if (I2C_Wait(base)) return -1;
+		if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 		/** Checks transfer error */
-		if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return -4;
+		if (I2C_GetRxAk(base) || !I2C_GetTcf(base)) return I2C_STATUS_DATA_TRANSFER_ERROR;
 	}
 
 	/**
@@ -460,7 +467,7 @@ int I2C_WriteRegisterChunk(
 	/** Performs a small pause */
 	I2C_Pause();
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }
 
 /**
@@ -474,14 +481,16 @@ int I2C_WriteRegisterChunk(
  *  - result -> Pointer to destination where the result data will be stored
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadSlave(I2C_Type *base, uint8_t slave_addr, uint8_t* const result)
+i2cStatusCodes_t I2C_ReadSlave(
+	I2C_Type *base, uint8_t slave_addr, uint8_t* const result
+)
 {
 		/** Starts Write operation */
 	I2C_START_SLAVE_TRANSMISSION(1)
@@ -500,18 +509,18 @@ int I2C_ReadSlave(I2C_Type *base, uint8_t slave_addr, uint8_t* const result)
 	/** Performs the dummy read */
 	*result = I2C_ReadByte(base);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 
 	/** Sends a I2C stop condition onto the bus */
 	I2C_Stop(base);
 	/** Performs actual read of the byte */
 	*result = I2C_ReadByte(base);
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }
 
 /**
- * Function: I2C_ReadRegisterChunk
+ * Function: I2C_ReadSlaveChunk
  * 
  * Description: Reads N data byte from slave
  * 
@@ -522,14 +531,14 @@ int I2C_ReadSlave(I2C_Type *base, uint8_t slave_addr, uint8_t* const result)
  *  - result_size -> Number of bytes to be read from the slave
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadSlaveChunk(
+i2cStatusCodes_t I2C_ReadSlaveChunk(
 	I2C_Type *base, uint8_t slave_addr, uint8_t** const result,
 	uint16_t result_size
 )
@@ -551,7 +560,7 @@ int I2C_ReadSlaveChunk(
 	/** Performs the dummy read */
 	*result[0] = I2C_ReadByte(base);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 
 	uint16_t i;
 	for (i = 0; i < result_size - 2; ++i)
@@ -559,7 +568,7 @@ int I2C_ReadSlaveChunk(
 		/** Reads one byte */
 		*result[i] = I2C_ReadByte(base);
 		/** Waits and checks for timeout */
-		if (I2C_Wait(base)) return -1;
+		if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 	}
 	/**
 	 * Disable ACK bit signaling to slave to not send more data after this
@@ -569,14 +578,14 @@ int I2C_ReadSlaveChunk(
 	/** Reads one byte */
 	*result[i++] = I2C_ReadByte(base);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 
 	/** Sends a I2C stop condition onto the bus */
 	I2C_Stop(base);
 	/** Read last byte */
 	*result[i] = I2C_ReadByte(base);
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }
 
 /**
@@ -591,14 +600,14 @@ int I2C_ReadSlaveChunk(
  *  - result -> Pointer to destination where the result data will be stored
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadRegister(
+i2cStatusCodes_t I2C_ReadRegister(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr,
 	uint8_t* const result
 )
@@ -621,14 +630,14 @@ int I2C_ReadRegister(
 	/** Performs the dummy read */
 	*result = I2C_ReadByte(base);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 
 	/** Sends a I2C stop condition onto the bus */
 	I2C_Stop(base);
 	/** Performs actual read of the byte */
 	*result = I2C_ReadByte(base);
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }
 
 /**
@@ -644,14 +653,14 @@ int I2C_ReadRegister(
  *  - result_size -> Number of bytes to be read from the slave
  * 
  * Outputs:
- *  - {int} -> One of possible scenarios
- *               0 = success
- *              -1 = timeout
- *              -2 = invalid slave address
- *              -3 = invalid register address
- *              -4 = data transfer error
+ *  - {i2cStatusCodes_t} -> One of possible scenarios
+ *              I2C_STATUS_SUCCESS
+ *              I2C_STATUS_TIMEOUT
+ *              I2C_STATUS_INVALID_SLAVE_ADDR
+ *              I2C_STATUS_INVALID_REGISTER_ADDR
+ *              I2C_STATUS_DATA_TRANSFER_ERROR
  */
-int I2C_ReadRegisterChunk(
+i2cStatusCodes_t I2C_ReadRegisterChunk(
 	I2C_Type *base, uint8_t slave_addr, uint8_t register_addr,
 	uint8_t** const result, uint16_t result_size
 )
@@ -674,7 +683,7 @@ int I2C_ReadRegisterChunk(
 	/** Performs the dummy read */
 	*result[0] = I2C_ReadByte(base);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 
 	uint16_t i;
 	for (i = 0; i < result_size - 2; ++i)
@@ -682,7 +691,7 @@ int I2C_ReadRegisterChunk(
 		/** Reads one byte */
 		*result[i] = I2C_ReadByte(base);
 		/** Waits and checks for timeout */
-		if (I2C_Wait(base)) return -1;
+		if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 	}
 	/**
 	 * Disable ACK bit signaling to slave to not send more data after this
@@ -692,12 +701,12 @@ int I2C_ReadRegisterChunk(
 	/** Reads one byte */
 	*result[i++] = I2C_ReadByte(base);
 	/** Waits and checks for timeout */
-	if (I2C_Wait(base)) return -1;
+	if (I2C_Wait(base)) return I2C_STATUS_TIMEOUT;
 
 	/** Sends a I2C stop condition onto the bus */
 	I2C_Stop(base);
 	/** Read last byte */
 	*result[i] = I2C_ReadByte(base);
 
-	return 0;
+	return I2C_STATUS_SUCCESS;
 }

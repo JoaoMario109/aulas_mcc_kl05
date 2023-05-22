@@ -174,7 +174,7 @@
  105 001e FFF7FEFF 		bl	__assert_func
  106              	.L5:
   68:../Sources/drivers/adc/adc.c **** 
-  69:../Sources/drivers/adc/adc.c **** 	base->CFG1 &= ~ADC_CFG1_ADLSMP_MASK; /*Limpa configurações anteriores*/
+  69:../Sources/drivers/adc/adc.c **** 	base->CFG1 &= ~ADC_CFG1_ADLSMP_MASK; /*Limpa configuraï¿½ï¿½es anteriores*/
  107              		.loc 1 69 0 is_stmt 1
  108 0022 7B68     		ldr	r3, [r7, #4]
  109 0024 9B68     		ldr	r3, [r3, #8]
@@ -265,7 +265,7 @@
  184 000c 0022     		mov	r2, #0
  185 000e 1A70     		strb	r2, [r3]
   82:../Sources/drivers/adc/adc.c ****     volatile uint32_t tmp32; /* 'volatile' here is for the dummy read of ADCx_R[0] register. */
-  83:../Sources/drivers/adc/adc.c ****     uint8_t status = STATUS_SUCCESS;
+  83:../Sources/drivers/adc/adc.c ****     uint8_t status = GENERAL_STATUS_SUCCESS;
  186              		.loc 1 83 0
  187 0010 3B1C     		mov	r3, r7
  188 0012 0E33     		add	r3, r3, #14
@@ -327,7 +327,7 @@
  228 0054 1340     		and	r3, r2
  229 0056 04D0     		beq	.L11
  100:../Sources/drivers/adc/adc.c ****         {
- 101:../Sources/drivers/adc/adc.c ****             status = STATUS_FAIL;
+ 101:../Sources/drivers/adc/adc.c ****             status = GENERAL_STATUS_FAIL;
  230              		.loc 1 101 0
  231 0058 3B1C     		mov	r3, r7
  232 005a 0E33     		add	r3, r3, #14
@@ -388,7 +388,7 @@
  274 00a0 1340     		and	r3, r2
  275 00a2 03D0     		beq	.L15
  114:../Sources/drivers/adc/adc.c ****     {
- 115:../Sources/drivers/adc/adc.c ****         status = STATUS_FAIL;
+ 115:../Sources/drivers/adc/adc.c ****         status = GENERAL_STATUS_FAIL;
  276              		.loc 1 115 0
  277 00a4 3B1C     		mov	r3, r7
  278 00a6 0E33     		add	r3, r3, #14
@@ -396,7 +396,7 @@
  280 00aa 1A70     		strb	r2, [r3]
  281              	.L15:
  116:../Sources/drivers/adc/adc.c ****     }
- 117:../Sources/drivers/adc/adc.c ****     if (STATUS_SUCCESS != status) /* Check if the calibration process is succeed. */
+ 117:../Sources/drivers/adc/adc.c ****     if (GENERAL_STATUS_SUCCESS != status) /* Check if the calibration process is succeed. */
  282              		.loc 1 117 0
  283 00ac 3B1C     		mov	r3, r7
  284 00ae 0E33     		add	r3, r3, #14
@@ -448,7 +448,7 @@
  322 00f0 7B68     		ldr	r3, [r7, #4]
  323 00f2 DA62     		str	r2, [r3, #44]
  126:../Sources/drivers/adc/adc.c **** 
- 127:../Sources/drivers/adc/adc.c ****     return STATUS_SUCCESS;
+ 127:../Sources/drivers/adc/adc.c ****     return GENERAL_STATUS_SUCCESS;
  324              		.loc 1 127 0
  325 00f4 0023     		mov	r3, #0
  326              	.L17:

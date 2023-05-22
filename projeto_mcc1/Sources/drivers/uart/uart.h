@@ -1,13 +1,13 @@
 /***************************************************************************************
- * Módulo      : uart.h
+ * Mï¿½dulo      : uart.h
  *
- * Revisão     : 1.0
+ * Revisï¿½o     : 1.0
  *
  * Data        : 16/02/2023
  *
- * Descrição   : Arquivo com implementações dos Módulos UART da Familia Kinetis KL05.
+ * Descriï¿½ï¿½o   : Arquivo com implementaï¿½ï¿½es dos Mï¿½dulos UART da Familia Kinetis KL05.
  *
- * Comentários : Nenhum.
+ * Comentï¿½rios : Nenhum.
  *
  * Autor(es)   : Matheus Leitzke Pinto
  ***************************************************************************************/
@@ -15,19 +15,19 @@
 #ifndef UART_DRV_H_
 #define UART_DRV_H_
 
-/*ARQUIVOS DE CABEÇALHO*/
+/*ARQUIVOS DE CABEï¿½ALHO*/
 /*=======================================================================================*/
 
 #include "drivers/common_driver.h"
 
-/*FIM: ARQUIVOS DE CABEÇALHO*/
+/*FIM: ARQUIVOS DE CABEï¿½ALHO*/
 /*=======================================================================================*/
 
 
 /*TIPOS ENUMERADOS*/
 /*=======================================================================================*/
 
-/*Possíveis combinações para habilitar Tx e Rx*/
+/*Possï¿½veis combinaï¿½ï¿½es para habilitar Tx e Rx*/
 typedef enum{
 	UART_TX_RX_DISABLE = 0U, 					/* Desabilita Tx e Rx*/
 	UART_TX_ENABLE = UART0_C2_TE_MASK,			/* Habilita Tx*/
@@ -36,7 +36,7 @@ typedef enum{
 			UART0_C2_TE_MASK | UART0_C2_RE_MASK	/* Habilita Tx e Rx*/
 }uartTxRxEnabling_t;
 
-/*Possíveis métodos de paridade*/
+/*Possï¿½veis mï¿½todos de paridade*/
 typedef enum{
 	UART_NO_PARITY = 0U, 						 /* Desabilita Tx e Rx*/
 	UART_PARITY_EVEN =
@@ -45,7 +45,7 @@ typedef enum{
 			UART0_C1_PE_MASK | UART0_C2_RE_MASK, /* Habilita Rx*/
 }uartParity_t;
 
-/*Possíveis fontes de clock para o módulo UART*/
+/*Possï¿½veis fontes de clock para o mï¿½dulo UART*/
 typedef enum{
 	UART_CLOCK_DISABLE = 0U,
 	UART_CLOCK_FLL = 1U,
@@ -57,7 +57,7 @@ typedef enum{
 /*=======================================================================================*/
 
 
-/*PROTOTIPOS - FUNÇÕES INLINE*/
+/*PROTOTIPOS - FUNï¿½ï¿½ES INLINE*/
 /*=======================================================================================*/
 
 static inline uint8_t UART_IsRxAvailable(UART0_Type * base);
@@ -71,43 +71,43 @@ static inline uint8_t UART_IsRxOverrun(UART0_Type * base);
 static inline uint8_t UART_IsFramingError(UART0_Type * base);
 static inline uint8_t UART_IsParityError(UART0_Type * base);
 
-/*FIM: PROTOTIPOS - FUNÇÕES INLINE*/
+/*FIM: PROTOTIPOS - FUNï¿½ï¿½ES INLINE*/
 /*=======================================================================================*/
 
 
-/*PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+/*PROTOTIPOS - FUNï¿½ï¿½ES Pï¿½BLICAS*/
 /*=======================================================================================*/
 
 /**********************************************************************
- * Função		:	UART_SetClkSrc
+ * Funï¿½ï¿½o		:	UART_SetClkSrc
  *
- * Descrição	:   Define a fonte de clock utilizada pelo UART.
+ * Descriï¿½ï¿½o	:   Define a fonte de clock utilizada pelo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART;
+ * Entradas		:   *base - registrador base do perifï¿½rico UART;
  * 					src   - fonte do clock definido em tipo
  * 					        enumerado.
  *
- * Saídas		:   STATUS_SUCCESS, se configuração ocorreu corretamente;
- *                  STATUS_FAIL, caso contrário.
+ * Saï¿½das		: GENERAL_STATUS_SUCCESSSS, se configuraï¿½ï¿½o ocorreu corretamente;
+ *                  GENERAL_STATUS_FAIL, caso contrï¿½rio.
  *
- * Comentários 	: 	Deve ser chamada antes da função UART_Init.
+ * Comentï¿½rios 	: 	Deve ser chamada antes da funï¿½ï¿½o UART_Init.
  * ********************************************************************/
 uint8_t UART_SetClkSrc(UART0_Type * base, uartClkSrc_t src);
 
 /**********************************************************************
- * Função		:	UART_Init
+ * Funï¿½ï¿½o		:	UART_Init
  *
- * Descrição	:   Inicializa o pino do módulo UART.
+ * Descriï¿½ï¿½o	:   Inicializa o pino do mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART;
+ * Entradas		:   *base - registrador base do perifï¿½rico UART;
  * 					baudrate - o baudarate;
  * 					enTxRx - Desabilita ou habilita Tx, Rx ou ambos;
- * 					parity - paridade par ou ímpar;
- * 					stopBitsN - número de bits de parada (1U ou 2U).
+ * 					parity - paridade par ou ï¿½mpar;
+ * 					stopBitsN - nï¿½mero de bits de parada (1U ou 2U).
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Deve ser chamada após a função UART_SetClkSrc.
+ * Comentï¿½rios 	: 	Deve ser chamada apï¿½s a funï¿½ï¿½o UART_SetClkSrc.
  * ********************************************************************/
 void UART_Init( UART0_Type * base,
 		        uint16_t baudRate,
@@ -115,24 +115,24 @@ void UART_Init( UART0_Type * base,
 				uartParity_t parity,
 				uint8_t stopBitsN);
 
-/*FIM: PROTOTIPOS - FUNÇÕES PÚBLICAS*/
+/*FIM: PROTOTIPOS - FUNï¿½ï¿½ES Pï¿½BLICAS*/
 /*=======================================================================================*/
 
 
-/*FUNÇÕES INLINE*/
+/*FUNï¿½ï¿½ES INLINE*/
 /*=======================================================================================*/
 
 /**********************************************************************
- * Função		:	UART_IsRxOverrun
+ * Funï¿½ï¿½o		:	UART_IsRxOverrun
  *
- * Descrição	:   Verifica se houve erro de Overrun na recepção dos dados.
+ * Descriï¿½ï¿½o	:   Verifica se houve erro de Overrun na recepï¿½ï¿½o dos dados.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   0 : não houve Overrun;
+ * Saï¿½das		:   0 : nï¿½o houve Overrun;
  * 					1: houve Overrun.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline uint8_t UART_IsRxOverrun(UART0_Type * base)
 {
@@ -140,16 +140,16 @@ static inline uint8_t UART_IsRxOverrun(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_IsFramingError
+ * Funï¿½ï¿½o		:	UART_IsFramingError
  *
- * Descrição	:   Verifica se houve erro de Framing na recepção dos dados.
+ * Descriï¿½ï¿½o	:   Verifica se houve erro de Framing na recepï¿½ï¿½o dos dados.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   0 : não houve erro;
+ * Saï¿½das		:   0 : nï¿½o houve erro;
  * 					1 : houve erro.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline uint8_t UART_IsFramingError(UART0_Type * base)
 {
@@ -157,16 +157,16 @@ static inline uint8_t UART_IsFramingError(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_IsParityError
+ * Funï¿½ï¿½o		:	UART_IsParityError
  *
- * Descrição	:   Verifica se houve erro de paridade na recepção dos dados.
+ * Descriï¿½ï¿½o	:   Verifica se houve erro de paridade na recepï¿½ï¿½o dos dados.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   0 : não houve erro;
+ * Saï¿½das		:   0 : nï¿½o houve erro;
  * 					1 : houve erro.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline uint8_t UART_IsParityError(UART0_Type * base)
 {
@@ -174,32 +174,32 @@ static inline uint8_t UART_IsParityError(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_CleanRxBuffer
+ * Funï¿½ï¿½o		:	UART_CleanRxBuffer
  *
- * Descrição	:   Limpa flags de erro e buffer de recepção.
+ * Descriï¿½ï¿½o	:   Limpa flags de erro e buffer de recepï¿½ï¿½o.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void UART_CleanRxBuffer(UART0_Type * base)
 {
-	UART_IsRxAvailable(base);  /*Lê o registrador UART_S1*/
+	UART_IsRxAvailable(base);  /*Lï¿½ o registrador UART_S1*/
 	UART_Read(base);
 }
 
 /**********************************************************************
- * Função		:	UART_Deinit
+ * Funï¿½ï¿½o		:	UART_Deinit
  *
- * Descrição	:   Desabilita o módulo UART.
+ * Descriï¿½ï¿½o	:   Desabilita o mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void UART_Deinit(UART0_Type * base)
 {
@@ -209,16 +209,16 @@ static inline void UART_Deinit(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_IsRxAvailable
+ * Funï¿½ï¿½o		:	UART_IsRxAvailable
  *
- * Descrição	:   Verifica se há dados para serem lidos do buffer Rx.
+ * Descriï¿½ï¿½o	:   Verifica se hï¿½ dados para serem lidos do buffer Rx.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   0: não há dados para serem lidos;
- * 					1: existem dados não lidos no buffer.
+ * Saï¿½das		:   0: nï¿½o hï¿½ dados para serem lidos;
+ * 					1: existem dados nï¿½o lidos no buffer.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline uint8_t UART_IsRxAvailable(UART0_Type * base)
 {
@@ -226,16 +226,16 @@ static inline uint8_t UART_IsRxAvailable(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_IsTxAvailable
+ * Funï¿½ï¿½o		:	UART_IsTxAvailable
  *
- * Descrição	:   Verifica se o buffer Tx está disponível para escrita.
+ * Descriï¿½ï¿½o	:   Verifica se o buffer Tx estï¿½ disponï¿½vel para escrita.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   0: buffer Tx não disponível;
- * 					1: buffer Tx disponível para escrita.
+ * Saï¿½das		:   0: buffer Tx nï¿½o disponï¿½vel;
+ * 					1: buffer Tx disponï¿½vel para escrita.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline uint8_t UART_IsTxAvailable(UART0_Type * base)
 {
@@ -243,16 +243,16 @@ static inline uint8_t UART_IsTxAvailable(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_Write
+ * Funï¿½ï¿½o		:	UART_Write
  *
- * Descrição	:   Envia um dado de 8 bits pelo módulo UART0.
+ * Descriï¿½ï¿½o	:   Envia um dado de 8 bits pelo mï¿½dulo UART0.
  *
- * Entradas		:   *base - registrador base do periférico UART;
+ * Entradas		:   *base - registrador base do perifï¿½rico UART;
  * 					data  - valor de 8 bits.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void UART_Write(UART0_Type * base, uint8_t data)
 {
@@ -260,17 +260,17 @@ static inline void UART_Write(UART0_Type * base, uint8_t data)
 }
 
 /**********************************************************************
- * Função		:	UART_Read
+ * Funï¿½ï¿½o		:	UART_Read
  *
- * Descrição	:   Retorna um dado de 8 bits pelo módulo UART.
+ * Descriï¿½ï¿½o	:   Retorna um dado de 8 bits pelo mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   valor de 8 bits.
+ * Saï¿½das		:   valor de 8 bits.
  *
- * Comentários 	: 	- Se não foi enviado valor novo para o RX, será lido o último
+ * Comentï¿½rios 	: 	- Se nï¿½o foi enviado valor novo para o RX, serï¿½ lido o ï¿½ltimo
  * 					  valor recebido.
- * 					- Utilizar a função UART0_IsRxAvailable para
+ * 					- Utilizar a funï¿½ï¿½o UART0_IsRxAvailable para
  * 					  verificar se foi enviado novo dado.
  * ********************************************************************/
 static inline uint8_t UART_Read(UART0_Type * base)
@@ -279,16 +279,16 @@ static inline uint8_t UART_Read(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_EnableTxIRQ
+ * Funï¿½ï¿½o		:	UART_EnableTxIRQ
  *
- * Descrição	:   Habilita interrupção de envio de dado completo
- * 					pelo módulo UART.
+ * Descriï¿½ï¿½o	:   Habilita interrupï¿½ï¿½o de envio de dado completo
+ * 					pelo mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void UART_EnableTxIRQ(UART0_Type * base)
 {
@@ -296,35 +296,35 @@ static inline void UART_EnableTxIRQ(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_EnableRxIRQ
+ * Funï¿½ï¿½o		:	UART_EnableRxIRQ
  *
- * Descrição	:   Habilita interrupção de recepção de dado completo
- * 					pelo módulo UART.
+ * Descriï¿½ï¿½o	:   Habilita interrupï¿½ï¿½o de recepï¿½ï¿½o de dado completo
+ * 					pelo mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void UART_EnableRxIRQ(UART0_Type * base)
 {
-	/*Habilita interrupção de recepção completa, overrun e framing error*/
+	/*Habilita interrupï¿½ï¿½o de recepï¿½ï¿½o completa, overrun e framing error*/
 	UART0_C2 |= UART0_C2_RIE_MASK;
 	UART0_C3 |= UART0_C3_ORIE_MASK | UART0_C3_FEIE_MASK;
 }
 
 /**********************************************************************
- * Função		:	UART_DisableTxIRQ
+ * Funï¿½ï¿½o		:	UART_DisableTxIRQ
  *
- * Descrição	:   Desabilita interrupção de envio de dado completo
- * 					pelo módulo UART.
+ * Descriï¿½ï¿½o	:   Desabilita interrupï¿½ï¿½o de envio de dado completo
+ * 					pelo mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void UART_DisableTxIRQ(UART0_Type * base)
 {
@@ -332,27 +332,27 @@ static inline void UART_DisableTxIRQ(UART0_Type * base)
 }
 
 /**********************************************************************
- * Função		:	UART_DisableRxIRQ
+ * Funï¿½ï¿½o		:	UART_DisableRxIRQ
  *
- * Descrição	:   Desabilita interrupção de recepção de dado completo
- * 					pelo módulo UART.
+ * Descriï¿½ï¿½o	:   Desabilita interrupï¿½ï¿½o de recepï¿½ï¿½o de dado completo
+ * 					pelo mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART.
+ * Entradas		:   *base - registrador base do perifï¿½rico UART.
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Nenhum.
+ * Comentï¿½rios 	: 	Nenhum.
  * ********************************************************************/
 static inline void UART_DisableRxIRQ(UART0_Type * base)
 {
 	UART0_C2 &= ~UART0_C2_RIE_MASK;
 }
 
-/*FIM: FUNÇÕES INLINE*/
+/*FIM: FUNï¿½ï¿½ES INLINE*/
 /*=======================================================================================*/
 
 #endif /*UART_DRV_H_*/
 
 /***************************************************************************************
- * FIM: Módulo - uart.h
+ * FIM: Mï¿½dulo - uart.h
  ***************************************************************************************/

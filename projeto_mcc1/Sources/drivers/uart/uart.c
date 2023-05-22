@@ -1,51 +1,51 @@
 /***************************************************************************************
- * Módulo      : uart.c
+ * Mï¿½dulo      : uart.c
  *
- * Revisão     : 1.0
+ * Revisï¿½o     : 1.0
  *
  * Data        : 16/02/2023
  *
- * Descrição   : Arquivo com implementações dos Módulos UART da Familia Kinetis KL05.
+ * Descriï¿½ï¿½o   : Arquivo com implementaï¿½ï¿½es dos Mï¿½dulos UART da Familia Kinetis KL05.
  *
- * Comentários : Nenhum.
+ * Comentï¿½rios : Nenhum.
  *
  * Autor(es)   : Matheus Leitzke Pinto
  ***************************************************************************************/
 
 
-/*ARQUIVOS DE CABEÇALHO*/
+/*ARQUIVOS DE CABEï¿½ALHO*/
 /*=======================================================================================*/
 
 #include "uart.h"
 
-/*FIM: ARQUIVOS DE CABEÇALHO*/
+/*FIM: ARQUIVOS DE CABEï¿½ALHO*/
 /*=======================================================================================*/
 
-/*VÁRIAVEIS GLOBAIS PRIVADAS*/
+/*Vï¿½RIAVEIS GLOBAIS PRIVADAS*/
 /*=======================================================================================*/
 
 static moduleClock_t g_uartClkSrc;
 
-/*FIM: VÁRIAVEIS GLOBAIS PRIVADAS*/
+/*FIM: Vï¿½RIAVEIS GLOBAIS PRIVADAS*/
 /*=======================================================================================*/
 
 
-/*FUNÇÕES PÚBLICAS*/
+/*FUNï¿½ï¿½ES Pï¿½BLICAS*/
 /*=======================================================================================*/
 
 /**********************************************************************
- * Função		:	UART_SetClkSrc
+ * Funï¿½ï¿½o		:	UART_SetClkSrc
  *
- * Descrição	:   Define a fonte de clock utilizada pelo UART.
+ * Descriï¿½ï¿½o	:   Define a fonte de clock utilizada pelo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART;
+ * Entradas		:   *base - registrador base do perifï¿½rico UART;
  * 					src   - fonte do clock definido em tipo
  * 					        enumerado.
  *
- * Saídas		:   STATUS_SUCCESS, se configuração ocorreu corretamente;
- *                  STATUS_FAIL, caso contrário.
+ * Saï¿½das		: GENERAL_STATUS_SUCCESSSS, se configuraï¿½ï¿½o ocorreu corretamente;
+ *                  GENERAL_STATUS_FAIL, caso contrï¿½rio.
  *
- * Comentários 	: 	Deve ser chamada antes da função UART_Init.
+ * Comentï¿½rios 	: 	Deve ser chamada antes da funï¿½ï¿½o UART_Init.
  * ********************************************************************/
 uint8_t UART_SetClkSrc(UART0_Type * base, uartClkSrc_t src)
 {
@@ -64,30 +64,30 @@ uint8_t UART_SetClkSrc(UART0_Type * base, uartClkSrc_t src)
 		g_uartClkSrc = OSC_ER_CLK_FREQ;
 		break;
 	default:
-		return STATUS_FAIL;
+		return GENERAL_STATUS_FAIL;
 		break;
 	}
 
 	SIM->SOPT2 &= ~SIM_SOPT2_UART0SRC_MASK;
 	SIM->SOPT2 |= SIM_SOPT2_UART0SRC(src);
 
-	return STATUS_SUCCESS;
+	return GENERAL_STATUS_SUCCESS;
 }
 
 /**********************************************************************
- * Função		:	UART_Init
+ * Funï¿½ï¿½o		:	UART_Init
  *
- * Descrição	:   Inicializa o pino do módulo UART.
+ * Descriï¿½ï¿½o	:   Inicializa o pino do mï¿½dulo UART.
  *
- * Entradas		:   *base - registrador base do periférico UART;
+ * Entradas		:   *base - registrador base do perifï¿½rico UART;
  * 					baudrate - o baudarate;
  * 					enTxRx - Desabilita ou habilita Tx, Rx ou ambos;
- * 					parity - paridade par ou ímpar;
- * 					stopBitsN - número de bits de parada (1U ou 2U).
+ * 					parity - paridade par ou ï¿½mpar;
+ * 					stopBitsN - nï¿½mero de bits de parada (1U ou 2U).
  *
- * Saídas		:   Nenhuma.
+ * Saï¿½das		:   Nenhuma.
  *
- * Comentários 	: 	Deve ser chamada após a função UART_SetClkSrc.
+ * Comentï¿½rios 	: 	Deve ser chamada apï¿½s a funï¿½ï¿½o UART_SetClkSrc.
  * ********************************************************************/
 void UART_Init( UART0_Type * base,
 		        uint16_t baudRate,
@@ -98,7 +98,7 @@ void UART_Init( UART0_Type * base,
 	uint16_t sbr_field;
 
 	SIM->SCGC4 |= SIM_SCGC4_UART0_MASK;
-	/*Limpa configurações iniciais*/
+	/*Limpa configuraï¿½ï¿½es iniciais*/
 	base->C1 = 0x00U;
 	base->C2 = 0x00U;
 	base->C3 = 0x00U;
@@ -110,16 +110,16 @@ void UART_Init( UART0_Type * base,
 
 	base->C2 |= enTxRx;
 
-	UART_CleanRxBuffer(base); /*Limpa flags de inicialização de Rx*/
+	UART_CleanRxBuffer(base); /*Limpa flags de inicializaï¿½ï¿½o de Rx*/
 
-	base->C1 &= ~UART0_C1_PT_MASK; /*limpa configuração anterior de paridade*/
+	base->C1 &= ~UART0_C1_PT_MASK; /*limpa configuraï¿½ï¿½o anterior de paridade*/
 	base->C1 |= parity; /*Habilita paridade*/
 }
 
-/*FIM: FUNÇÕES PÚBLICAS*/
+/*FIM: FUNï¿½ï¿½ES Pï¿½BLICAS*/
 /*=======================================================================================*/
 
 
 /***************************************************************************************
- * FIM: Módulo - uart.c
+ * FIM: Mï¿½dulo - uart.c
  ***************************************************************************************/
