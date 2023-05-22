@@ -37,9 +37,10 @@
  *
  */
 
-#include "generic_drivers/lcd/lcd.h"
-#include "libraries/delay/delay.h"
-#include "libraries/emb_util/emb_util.h"
+#include "lcd.h"
+#include "../../libraries/delay/delay.h"
+#include "../../libraries/emb_util/emb_util.h"
+
 #ifdef __FREERTOS_H
 #include "FreeRTOS.h"
 #include "semphr.h"
@@ -51,110 +52,116 @@
  ******************************************************************************/
 
 /*!< Information to create new big number characters, stored in non-volatile memory.*/
-const uint8_t _bigNumsCodes[] = {0b00000001,//0
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00011111,
-								 0b00000000,
-								 0b00011111,//1
-								 0b00010000,
-								 0b00010000,
-								 0b00010000,
-								 0b00010000,
-								 0b00010000,
-								 0b00010000,
-								 0b00000000,
-								 0b00011111,//2
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000000,
-								 0b00000001,//3
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000000,
-								 0b00011111,//4
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00011111,
-								 0b00000000,
-								 0b00011111,//5
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00000001,
-								 0b00011111,
-								 0b00000000,
-								 0b00011111,//6
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00000000,
-								 0b00011111,//7
-								 0b00010000,
-								 0b00010000,
-								 0b00010000,
-								 0b00010000,
-								 0b00010000,
-								 0b00011111,
-								 0b00000000};
+const uint8_t _bigNumsCodes[] =
+{
+	0b00000001, // 0
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00011111,
+	0b00000000,
+	0b00011111, // 1
+	0b00010000,
+	0b00010000,
+	0b00010000,
+	0b00010000,
+	0b00010000,
+	0b00010000,
+	0b00000000,
+	0b00011111, // 2
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000000,
+	0b00000001, // 3
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000000,
+	0b00011111, // 4
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00011111,
+	0b00000000,
+	0b00011111, // 5
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00011111,
+	0b00000000,
+	0b00011111, // 6
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00000000,
+	0b00011111, // 7
+	0b00010000,
+	0b00010000,
+	0b00010000,
+	0b00010000,
+	0b00010000,
+	0b00011111,
+	0b00000000
+};
 
 /*!< Commands to print big numbers in screen.*/
 static const uint8_t _bigNumCommands[10][4] =
 {
-		{0x01, 0x02, 0x4C, 0x00}, //nr. 0
-		{0x20, 0x7C, 0x20, 0x7C}, //nr. 1
-		{0x04, 0x05, 0x4C, 0x5F}, //nr. 2
-		{0x06, 0x05, 0x5F, 0x00}, //nr. 3
-		{0x4C, 0x00, 0x20, 0x03}, //nr. 4
-		{0x07, 0x04, 0x5F, 0x00}, //nr. 5
-		{0x07, 0x04, 0x4C, 0x00}, //nr. 5
-		{0x06, 0x02, 0x20, 0x03}, //nr. 7
-		{0x07, 0x05, 0x4C, 0x00}, //nr. 8
-		{0x07, 0x05, 0x20, 0x03}  //nr. 9
+		{0x01, 0x02, 0x4C, 0x00}, // nr. 0
+		{0x20, 0x7C, 0x20, 0x7C}, // nr. 1
+		{0x04, 0x05, 0x4C, 0x5F}, // nr. 2
+		{0x06, 0x05, 0x5F, 0x00}, // nr. 3
+		{0x4C, 0x00, 0x20, 0x03}, // nr. 4
+		{0x07, 0x04, 0x5F, 0x00}, // nr. 5
+		{0x07, 0x04, 0x4C, 0x00}, // nr. 5
+		{0x06, 0x02, 0x20, 0x03}, // nr. 7
+		{0x07, 0x05, 0x4C, 0x00}, // nr. 8
+		{0x07, 0x05, 0x20, 0x03}  // nr. 9
 };
-
-
 
 /*!< Enumeration to identify objects creation.*/
-enum{
-	kLcdObjectIsHandle,
-	kLcdObjectIsConfig,
+enum
+{
+	LCD_OBJECT_IS_HANDLE,
+	LCD_OBJECT_IS_CONFIG,
 };
-
 
 /*!
  * @brief LCD handle structure used internally
- *
  */
-struct lcdHandle_s{
+struct lcdHandle_s
+{
 	/*!< The pointer to the configuration structure passed by the user.*/
 	lcdConfig_t* config;
+
 	/*!< The display function command that will be send to the LCD controller.*/
-	uint8_t displayfunction;
+	uint8_t display_function;
+
 	/*!< The display control command that will be send to the LCD controller.*/
-	uint8_t displaycontrol;
+	uint8_t display_control;
+
 	/*!< The display mode command that will be send to the LCD controller.*/
-	uint8_t displaymode;
+	uint8_t display_mode;
+
 	/*!< The row offsets list determined by the number of LCD rows and columns.*/
 	uint8_t row_offsets[4];
+
 #ifdef __FREERTOS_H
 #ifdef LCD_REENTRANT_ACCESS
 	/*!< The mutex used for mutual exclusion in API calls.*/
@@ -163,36 +170,40 @@ struct lcdHandle_s{
 #endif /* __FREERTOS_H */
 };
 
-
 #ifdef LCD_STATIC_OBJECTS_CREATION
+
 /*!< The static list of configuration structures that is returned to the LCD API.*/
 static lcdConfig_t g_lcdConfigList[LCD_MAX_STATIC_OBJECTS];
+
 /*!< The static list of handle structures that is returned to the LCD API.*/
 static struct lcdHandle_s g_lcdHandleList[LCD_MAX_STATIC_OBJECTS];
+
 /*!< The number of configuration and handle structures created using the LCD API.*/
-static uint8_t g_staticConfigsCreated, g_staticHandlesCreated;
+static uint8_t g_staticConfigsCreated;
+static uint8_t g_staticHandlesCreated;
+
 #endif
 
 
 /* waiting macros */
 #define Waitns(x) \
-        Delay_Waitns(x)                 /* Wait x ns */
+		Delay_Waitns(x)                 /* Wait x ns */
 #define Waitus(x) \
-        Delay_Waitus(x)                 /* Wait x us */
+		Delay_Waitus(x)                 /* Wait x us */
 #define Waitms(x) \
-        Delay_Waitms(x)                 /* Wait x ms */
+		Delay_Waitms(x)                 /* Wait x ms */
 
 /* macros for the RS pin */
 #define ClrRS(handle) \
-	    MCU_PortClear(handle->config->bus.rs.portRegister, handle->config->bus.rs.pinMask)  /* RS=0: command mode */
+		MCU_PortClear(handle->config->bus.rs.portRegister, handle->config->bus.rs.pinMask)  /* RS=0: command mode */
 #define SetRS(handle) \
-	    MCU_PortSet(handle->config->bus.rs.portRegister, handle->config->bus.rs.pinMask)    /* RS=1: data mode */
+		MCU_PortSet(handle->config->bus.rs.portRegister, handle->config->bus.rs.pinMask)    /* RS=1: data mode */
 
 /* macros for the EN pin */
 #define ClrEN(handle) \
-	    MCU_PortClear(handle->config->bus.en.portRegister, handle->config->bus.en.pinMask)   /* EN=0 */
+		MCU_PortClear(handle->config->bus.en.portRegister, handle->config->bus.en.pinMask)   /* EN=0 */
 #define SetEN(handle) \
-	    MCU_PortSet(handle->config->bus.en.portRegister, handle->config->bus.en.pinMask)              /* EN=1 */
+		MCU_PortSet(handle->config->bus.en.portRegister, handle->config->bus.en.pinMask)              /* EN=1 */
 
 
 #ifndef __FREERTOS_H
@@ -238,8 +249,8 @@ static void SetRowOffsets(struct lcdHandle_s* handle);
 /**
  * @brief Create an specific object used by an LCD instance.
  *
- * @param objectType - \a kLcdObjectIsHandle, if want to create a LCD handle;
- * 	                   \a kLcdObjectIsConfig, if want to create a LCD configuration structure.
+ * @param objectType - \a K_LCD_OBJECT_IS_HANDLE, if want to create a LCD handle;
+ * 	                   \a K_LCD_OBJECT_IS_CONFIG, if want to create a LCD configuration structure.
  *
  */
 static void* CreateObject(uint8_t objectType);
@@ -248,8 +259,8 @@ static void* CreateObject(uint8_t objectType);
  * @brief Destroy an specific object used by an LCD instance.
  *
  * @param obj        - The object pointer.
- * @param objectType - \a kLcdObjectIsHandle, if want to destroy a LCD handle;
- * 	                   \a kLcdObjectIsConfig, if want to destroy a LCD configuration structure.
+ * @param objectType - \a K_LCD_OBJECT_IS_HANDLE, if want to destroy a LCD handle;
+ * 	                   \a K_LCD_OBJECT_IS_CONFIG, if want to destroy a LCD configuration structure.
  *
  */
 static void DestroyObject(void* obj, uint8_t objectType);
@@ -265,13 +276,13 @@ static void* CreateObject(uint8_t objectType)
 #ifdef LCD_STATIC_OBJECTS_CREATION
 	switch (objectType)
 	{
-	case kLcdObjectIsHandle:
+	case K_LCD_OBJECT_IS_HANDLE:
 		if(g_staticHandlesCreated < LCD_MAX_STATIC_OBJECTS)
 		{
 			objectCreated = (void*)&g_lcdHandleList[g_staticHandlesCreated++];
 		}
 		break;
-	case kLcdObjectIsConfig:
+	case K_LCD_OBJECT_IS_CONFIG:
 		if(g_staticConfigsCreated < LCD_MAX_STATIC_OBJECTS)
 		{
 			objectCreated = (void*)&g_lcdConfigList[g_staticConfigsCreated++];
@@ -290,11 +301,11 @@ static void DestroyObject(void* obj, uint8_t objectType)
 #ifdef LCD_STATIC_OBJECTS_CREATION
 	switch (objectType)
 	{
-	case kLcdObjectIsHandle:
+	case K_LCD_OBJECT_IS_HANDLE:
 		if(g_staticHandlesCreated)
 			--g_staticHandlesCreated;
 		break;
-	case kLcdObjectIsConfig:
+	case K_LCD_OBJECT_IS_CONFIG:
 		if(g_staticConfigsCreated)
 			--g_staticConfigsCreated;
 		break;
@@ -308,9 +319,51 @@ static void DestroyObject(void* obj, uint8_t objectType)
 
 lcdConfig_t* LCD_CreateConfig(void)
 {
-	return CreateObject(kLcdObjectIsConfig);
+	return CreateObject(K_LCD_OBJECT_IS_CONFIG);
 }
 
+/**
+ * @brief Creates a I2C hardware adaptor configuration object.
+ *
+ * @param cols - Number of columns that LCD contains.
+ * @param lines - Number of lines that LCD contains.
+ * @param char_size - LCD character size.
+ * @param base - I2C base memory map.
+ * @param slave_addr - LCD slave address.
+ *
+ * @return - Created I2C LCD hardware configuration object based on provided
+ *           parameters.
+ */
+lcdConfig_t LCD_CreateI2CConfig(
+	uint8_t cols, uint8_t lines, uint8_t char_size, I2C_Type *base,
+	uint8_t slave_addr
+)
+{
+
+}
+
+/**
+ * @brief Creates a Parallel hardware adaptor configuration object.
+ *
+ * @param cols - Number of columns that LCD contains.
+ * @param lines - Number of lines that LCD contains.
+ * @param char_size - LCD character size.
+ *
+ * @return - Created I2C LCD hardware configuration object based on provided
+ *           parameters.
+ */
+lcdConfig_t LCD_CreateParallelConfig(
+	uint8_t cols, uint8_t lines, uint8_t char_size,
+#ifdef LCD_8_BIT_MODE
+	lcdPin_t data[8],
+#else
+	lcdPin_t data[4],
+#endif
+	lcdPin_t reset, lcdPin_t enable
+)
+{
+	
+}
 
 static void EnablePulse(struct lcdHandle_s* handle)
 {
@@ -336,7 +389,7 @@ lcdHandle_t LCD_Init(lcdConfig_t *config)
 {
 	EmbUtil_Assert(config);
 
-	struct lcdHandle_s* handle = (struct lcdHandle_s*)CreateObject(kLcdObjectIsHandle);
+	struct lcdHandle_s *handle = (struct lcdHandle_s*)CreateObject(K_LCD_OBJECT_IS_HANDLE);
 	if(!handle)
 	{
 		return NULL;
@@ -344,27 +397,27 @@ lcdHandle_t LCD_Init(lcdConfig_t *config)
 		handle->lcdAccessMutex = xSemaphoreCreateMutex();
 		if(!handle->lcdAccessMutex)
 		{
-			DestroyObject(handle, kLcdObjectIsHandle);
+			DestroyObject(handle, K_LCD_OBJECT_IS_HANDLE);
 		}
 #endif /* __FREERTOS_H */
 	}
 	handle->config = config;
-#ifdef LCD_4BITMODE
-	handle->displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+#ifdef LCD_4_BIT_MODE
+	handle->display_function = LCD_4_BIT_MODE | LCD_1_LINE | LCD_5x8_DOTS;
 #else
-	handle->displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
+	handle->display_function = LCD_8_BIT_MODE | LCD_1_LINE | LCD_5x8_DOTS;
 #endif
 
     if (config->lines > 1)
     {
-    	handle->displayfunction |= LCD_2LINE;
+    	handle->display_function |= LCD_2_LINE;
     }
 
     SetRowOffsets(handle);
 
     // for some 1 line displays you can select a 10 pixel high font
-    if ((config->charsize != LCD_5x8DOTS) && (config->lines == 1)) {
-    	handle->displayfunction |= LCD_5x10DOTS;
+    if ((config->char_size != LCD_5x8_DOTS) && (config->lines == 1)) {
+    	handle->display_function |= LCD_5x10_DOTS;
     }
 
     // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
@@ -375,7 +428,7 @@ lcdHandle_t LCD_Init(lcdConfig_t *config)
     ClrEN(handle);
 
     //put the LCD into 4 bit or 8 bit mode
-#ifdef LCD_4BITMODE
+#ifdef LCD_4_BIT_MODE
     // this is according to the hitachi HD44780 datasheet
     // figure 24, pg 46
     // we start in 8bit mode, try to set 4 bit mode
@@ -394,30 +447,30 @@ lcdHandle_t LCD_Init(lcdConfig_t *config)
     // page 45 figure 23
 
     // Send function set command sequence
-    LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | displayfunction);
+    LCD_Command((lcdHandle_t)handle, LCD_FUNCTION_SET | display_function);
     Waitus(4500); // wait min 4.1ms
 
     // second try
-    LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | displayfunction);
+    LCD_Command((lcdHandle_t)handle, LCD_FUNCTION_SET | display_function);
     Waitus(150);
 
     // third go
-    LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | displayfunction);
+    LCD_Command((lcdHandle_t)handle, LCD_FUNCTION_SET | display_function);
 #endif
     // finally, set # lines, font size, etc.
-    LCD_Command((lcdHandle_t)handle, LCD_FUNCTIONSET | handle->displayfunction);
+    LCD_Command((lcdHandle_t)handle, LCD_FUNCTION_SET | handle->display_function);
 
     // turn the display on with no cursor or blinking default
-    handle->displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
+    handle->display_control = LCD_DISPLAY_ON | LCD_CURSOR_OFF | LCD_BLINK_OFF;
     LCD_Display((lcdHandle_t)handle);
 
     // clear it off
     LCD_Clear((lcdHandle_t)handle);
 
     // Initialize to default text direction (for romance languages)
-    handle->displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+    handle->display_mode = LCD_ENTRY_LEFT | LCD_ENTRY_SHIFT_DECREMENT;
     // set the entry mode
-    LCD_Command((lcdHandle_t)handle, LCD_ENTRYMODESET | handle->displaymode);
+    LCD_Command((lcdHandle_t)handle, LCD_ENTRY_MODE_SET | handle->display_mode);
 
     Waitus(400);
 
@@ -431,7 +484,7 @@ void LCD_Clear(lcdHandle_t handle)
 	EmbUtil_Assert(handle);
 	LcdEnterMutex(handle);
 
-	LCD_Command(handle, LCD_CLEARDISPLAY);  // clear display, set cursor position to zero
+	LCD_Command(handle, LCD_CLEAR_DISPLAY);  // clear display, set cursor position to zero
 	Waitus(2000);  // this command takes a long time!
 
 	LcdExitMutex(handle);
@@ -442,7 +495,7 @@ void LCD_Home(lcdHandle_t handle)
 	EmbUtil_Assert(handle);
 	LcdEnterMutex(handle);
 
-	LCD_Command(handle, LCD_RETURNHOME);  // set cursor position to zero
+	LCD_Command(handle, LCD_RETURN_HOME);  // set cursor position to zero
 	Waitus(2000);  // this command takes a long time!
 
 	LcdExitMutex(handle);
@@ -466,7 +519,7 @@ void LCD_SetCursor(lcdHandle_t handle, uint8_t col, uint8_t row)
 	row = lcdHandle->config->lines - 1;    // we count rows starting w/0
 	}
 
-	LCD_Command(handle, LCD_SETDDRAMADDR | (col + lcdHandle->row_offsets[row]));
+	LCD_Command(handle, LCD_SET_DD_RAM_ADDR | (col + lcdHandle->row_offsets[row]));
 
 	LcdExitMutex(handle);
 }
@@ -479,8 +532,8 @@ void LCD_NoDisplay(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaycontrol &= ~LCD_DISPLAYON;
-	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+	lcdHandle->display_control &= ~LCD_DISPLAY_ON;
+	LCD_Command(handle, LCD_DISPLAY_CONTROL | lcdHandle->display_control);
 
 	LcdExitMutex(handle);
 }
@@ -491,8 +544,8 @@ void LCD_Display(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaycontrol |= LCD_DISPLAYON;
-	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+	lcdHandle->display_control |= LCD_DISPLAY_ON;
+	LCD_Command(handle, LCD_DISPLAY_CONTROL | lcdHandle->display_control);
 
 	LcdExitMutex(handle);
 }
@@ -504,8 +557,8 @@ void LCD_NoCursor(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaycontrol &= ~LCD_CURSORON;
-	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+	lcdHandle->display_control &= ~LCD_CURSOR_ON;
+	LCD_Command(handle, LCD_DISPLAY_CONTROL | lcdHandle->display_control);
 
 	LcdExitMutex(handle);
 }
@@ -516,8 +569,8 @@ void LCD_Cursor(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaycontrol |= LCD_CURSORON;
-	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+	lcdHandle->display_control |= LCD_CURSOR_ON;
+	LCD_Command(handle, LCD_DISPLAY_CONTROL | lcdHandle->display_control);
 
 	LcdExitMutex(handle);
 }
@@ -529,8 +582,8 @@ void LCD_NoBlink(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaycontrol &= ~LCD_BLINKON;
-	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+	lcdHandle->display_control &= ~LCD_BLINK_ON;
+	LCD_Command(handle, LCD_DISPLAY_CONTROL | lcdHandle->display_control);
 
 	LcdExitMutex(handle);
 }
@@ -541,8 +594,8 @@ void LCD_Blink(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaycontrol |= LCD_BLINKON;
-	LCD_Command(handle, LCD_DISPLAYCONTROL | lcdHandle->displaycontrol);
+	lcdHandle->display_control |= LCD_BLINK_ON;
+	LCD_Command(handle, LCD_DISPLAY_CONTROL | lcdHandle->display_control);
 
 	LcdExitMutex(handle);
 }
@@ -553,7 +606,7 @@ void LCD_ScrollDisplayLeft(lcdHandle_t handle)
 	EmbUtil_Assert(handle);
 	LcdEnterMutex(handle);
 
-	LCD_Command(handle, LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVELEFT);
+	LCD_Command(handle, LCD_CURSOR_SHIFT | LCD_DISPLAY_MOVE | LCD_MOVE_LEFT);
 
 	LcdExitMutex(handle);
 }
@@ -563,7 +616,7 @@ void LCD_ScrollDisplayRight(lcdHandle_t handle)
 	EmbUtil_Assert(handle);
 	LcdEnterMutex(handle);
 
-	LCD_Command(handle, LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVERIGHT);
+	LCD_Command(handle, LCD_CURSOR_SHIFT | LCD_DISPLAY_MOVE | LCD_MOVE_RIGHT);
 
 	LcdExitMutex(handle);
 }
@@ -575,8 +628,8 @@ void LCD_LeftToRight(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaymode |= LCD_ENTRYLEFT;
-	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+	lcdHandle->display_mode |= LCD_ENTRY_LEFT;
+	LCD_Command(handle, LCD_ENTRY_MODE_SET | lcdHandle->display_mode);
 
 	LcdExitMutex(handle);
 }
@@ -588,8 +641,8 @@ void LCD_RightToLeft(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaymode &= ~LCD_ENTRYLEFT;
-	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+	lcdHandle->display_mode &= ~LCD_ENTRY_LEFT;
+	LCD_Command(handle, LCD_ENTRY_MODE_SET | lcdHandle->display_mode);
 
 	LcdExitMutex(handle);
 }
@@ -601,8 +654,8 @@ void LCD_Autoscroll(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaymode |= LCD_ENTRYSHIFTINCREMENT;
-	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+	lcdHandle->display_mode |= LCD_ENTRY_SHIFT_INCREMENT;
+	LCD_Command(handle, LCD_ENTRY_MODE_SET | lcdHandle->display_mode);
 
 	LcdExitMutex(handle);
 }
@@ -614,8 +667,8 @@ void LCD_NoAutoscroll(lcdHandle_t handle)
 	LcdEnterMutex(handle);
 
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
-	lcdHandle->displaymode &= ~LCD_ENTRYSHIFTINCREMENT;
-	LCD_Command(handle, LCD_ENTRYMODESET | lcdHandle->displaymode);
+	lcdHandle->display_mode &= ~LCD_ENTRY_SHIFT_INCREMENT;
+	LCD_Command(handle, LCD_ENTRY_MODE_SET | lcdHandle->display_mode);
 
 	LcdExitMutex(handle);
 }
@@ -628,7 +681,7 @@ void LCD_CreateChar(lcdHandle_t handle, uint8_t location, uint8_t charmap[])
 	LcdEnterMutex(handle);
 
 	location &= 0x7; // we only have 8 locations 0-7
-	LCD_Command(handle, LCD_SETCGRAMADDR | (location << 3));
+	LCD_Command(handle, LCD_SET_CG_RAM_ADDR | (location << 3));
 	for (int i=0; i<8; i++)
 	{
 		LCD_Write(handle, charmap[i]);
@@ -679,7 +732,7 @@ inline void LCD_Command(lcdHandle_t handle, uint8_t value)
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
 	ClrRS(lcdHandle);
 	//Waitus(200);
-#ifdef LCD_8BITMODE
+#ifdef LCD_8_BIT_MODE
     WriteBits(lcdHandle, value);
 #else
     WriteBits(lcdHandle, value >> 4);
@@ -692,7 +745,7 @@ inline void LCD_Write(lcdHandle_t handle, uint8_t value)
 	struct lcdHandle_s* lcdHandle = (struct lcdHandle_s*)handle;
 	SetRS(lcdHandle);
 	//Waitus(200);
-#ifdef LCD_8BITMODE
+#ifdef LCD_8_BIT_MODE
     WriteBits(lcdHandle, value);
 #else
     WriteBits(lcdHandle, value >> 4);
@@ -705,7 +758,7 @@ inline void LCD_Write(lcdHandle_t handle, uint8_t value)
 
 static void WriteBits(struct lcdHandle_s* handle, uint8_t value)
 {
-#ifdef LCD_4BITMODE
+#ifdef LCD_4_BIT_MODE
 	uint8_t count = 4;
 #else
 	uint8_t count = 8;
